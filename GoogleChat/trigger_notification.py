@@ -1,10 +1,40 @@
+from datetime import datetime
 import os
+import subprocess
 import sys
 from bs4 import BeautifulSoup
 from GoogleChat import notify
 from Config import configfile
 
+def get_build_number():
+    """
+    Returns build number in format:
+    YYYYMMDD_HHMM_commitSHA
+    Example: 20260321_2325_f8874b0
+    """
+
+    # date + time
+    # timestamp = datetime.now().strftime("%Y%m%d_%H%M")
+    timestamp = datetime.now().strftime("%H%M")
+
+    sha = os.getenv("GITHUB_SHA")
+
+    if sha:
+        commit = sha[:7]
+    else:
+        try:
+            commit = subprocess.check_output(
+                ["git", "rev-parse", "--short", "HEAD"]
+            ).decode().strip()
+        except Exception:
+            commit = "local"
+
+    return f"{commit}"
+
 def trigger():
+
+    build = get_build_number()
+
     dashboard_path = configfile.DASHBOARD_REPORT
     if not os.path.exists(dashboard_path):
         print(f"Error: {dashboard_path} not found.")
@@ -74,12 +104,6 @@ def trigger():
     print(f"  Expected Reports: {expected_reports}")
     print(f"  Execution Goal Reached: {passed_testcases}/{total_tcs}")
 
-    # Extract Commit ID from footer
-    commit_id = "Unknown"
-    commit_badge = soup.find('span', class_='commit-badge')
-    if commit_badge:
-        commit_id = commit_badge.text.strip()
-
     status_code = notify.send_google_chat_report(
         env=env,
         sprint=sprint,
@@ -90,7 +114,7 @@ def trigger():
         total_tcs=total_tcs,
         passed_testcases=passed_testcases,
         expected_tcs=expected_tcs,
-        commit_id=commit_id
+        commit_id=build
     )
 
     if status_code == 200:
