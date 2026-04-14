@@ -4,7 +4,7 @@ from Config import configfile
 
 REPORT_DRIVE_URL = ReadConfigFile.ReadConfig.get_web_hook_details("REPORT_URL")
 WEB_HOOK_URL = ReadConfigFile.ReadConfig.get_web_hook_details("WEB_HOOK_URL")
-MENTION_TAG = f"<users/{ReadConfigFile.ReadConfig.get_web_hook_details("LEAD_USER_ID")}>"
+MENTION_TAG = f"<users/{ReadConfigFile.ReadConfig.get_web_hook_details("MANAGER_USER_ID")}>"
 
 
 def send_google_chat_report(env, sprint, suite_name, total_suites, expected_suites, passed_suite, total_tcs, passed_testcases, expected_tcs=configfile.TARGET_EXECUTION_GOAL, commit_id="Unknown"):
