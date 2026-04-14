@@ -203,7 +203,7 @@ def scan_folder(folder_path, date_str):
         if f.suffix == '.html':
             with f.open('r', encoding='utf-8', errors='ignore') as file: 
                 original_content = file.read()
-                entry["summary"] = extract_counts(original_content[:500000], f.name)
+                entry["summary"] = extract_counts(original_content[:1000000], f.name)
             
             # Sanitize original HTML report in-place
             sanitized_content = sanitize_content(original_content)
@@ -225,11 +225,41 @@ NEWMAN_FAILED_RE = re.compile(r'Failed Tests <span class="badge badge-light">(\d
 NEWMAN_COLLECTION_RE = re.compile(r'<strong> Collection:</strong>\s*(.*?)\s*<br>')
 MOCHAWESOME_RE = re.compile(r'data-raw="(.*?)"')
 TITLE_RE = re.compile(r'<title>(.*?)</title>')
+PYTEST_HTML_RE = re.compile(r'id="data-container"\s+data-jsonblob="(.*?)"')
 
 def extract_counts(html_content, filename):
-    """Extract test metrics from HTML reports (Newman or Mochawesome)."""
-    data = {"requests": 0, "failed": 0, "skipped": 0, "collection": "Unknown", "pass_percent": 0}
+    """Extract test metrics from HTML reports (Newman, Mochawesome, or Pytest)."""
+    data = {"requests": 0, "failed": 0, "skipped": 0, "collection": "Unknown", "pass_percent": 0, "failed_cases": []}
     clean_html = lambda text: html.unescape(text).strip() if text else ""
+    
+    if "pytest-html" in html_content:
+        m_pytest = PYTEST_HTML_RE.search(html_content)
+        if m_pytest:
+            try:
+                json_str = html.unescape(m_pytest.group(1))
+                report_data = json.loads(json_str)
+                tests = report_data.get("tests", {})
+                
+                total = 0
+                failed = 0
+                failed_cases = []
+                for test_id, results in tests.items():
+                    # pytest-html stores results in a list (usually one per test)
+                    for result in results:
+                        total += 1
+                        if result.get("result") in ["Failed", "Error"]:
+                            failed += 1
+                            failed_cases.append(test_id.split('::')[-1])
+                
+                data["requests"] = total
+                data["failed"] = failed
+                data["failed_cases"] = failed_cases
+                data["collection"] = "Pytest Suite"
+                if total > 0:
+                    data["pass_percent"] = round(((total - failed) / total) * 100, 1)
+                return data
+            except: pass
+
     if "Newman Run Dashboard" in html_content or "newman-report" in html_content:
         m_req = NEWMAN_REQUESTS_RE.search(html_content); m_fail = NEWMAN_FAILED_RE.search(html_content); m_coll = NEWMAN_COLLECTION_RE.search(html_content)
         if m_req: data["requests"] = int(m_req.group(1))
@@ -737,7 +767,13 @@ def generate():
             view_parts.append(f"""<details class="report-group"><summary style="background: #f8fafc; display:flex; align-items:center;"><div class="collapsible-loader"></div><div style="display:flex; align-items:center; flex:1; width:100%;"><span style="font-weight:800; color:var(--text);">{group} ({len(items)})</span><div style="display:flex; gap:1.25rem; font-size:0.75rem; margin-left:auto; margin-right: 1.5rem;"><span class="chip" data-tooltip="TOTAL">{g_total} T</span><span class="chip success" data-tooltip="PASSED">{g_passed} P</span><span class="chip danger" data-tooltip="FAILED" style="{'background:#ef4444; color:white;' if g_failed > 0 else ''}">{g_failed} F</span></div></div></summary><div class="content-wrapper"><div class="content-inner"><table><thead><tr><th>Suite Identity</th><th>Format</th><th>Verification</th><th>Quality Insight</th></tr></thead><tbody>""")
             for r in items:
                 s = r['summary']; pas, fld, pct = s['requests']-s['failed'], s['failed'], s['pass_percent']; clr = "#10b981" if pct > 90 else ("#f59e0b" if pct > 70 else "#ef4444")
-                view_parts.append(f"""<tr class="report-row"><td><a href="{r.get('view_path', r['path'])}" class="report-link" target="_blank"><i class="fas {'fa-file-lines' if r['type'] == 'HTML' else 'fa-file-excel'}" style="color:var(--primary)"></i> <span>{r['name']}</span></a></td><td><span class="badge {'badge-html' if r['type'] == 'HTML' else 'badge-excel'}">{r['type']}</span></td><td style="font-size: 0.85rem; color: var(--text-muted); font-weight: 500;">{r['mod_time']}</td><td><div style="display:flex;gap:4px;margin-bottom:6px;"><span class="chip">{s['requests']} T</span><span class="chip success">{pas} P</span><span class="chip danger">{fld} F</span></div><div style="display:flex; align-items:center; gap:8px;"><div style="height:6px;width:100px;background:#f1f5f9;border-radius:3px;overflow:hidden;"><div style="height:100%;width:{pct}%;background:{clr}"></div></div><span style="font-size:0.75rem;font-weight:700;color:{clr}">{pct}%</span></div></td></tr>""")
+                failed_list = ""
+                if s.get("failed_cases"):
+                    cases_str = ", ".join(s["failed_cases"][:5])
+                    if len(s["failed_cases"]) > 5: cases_str += "..."
+                    failed_list = f'<div style="font-size:0.65rem; color:#ef4444; margin-top:4px; font-weight:600;"><i class="fas fa-bug"></i> {cases_str}</div>'
+                
+                view_parts.append(f"""<tr class="report-row"><td><a href="{r.get('view_path', r['path'])}" class="report-link" target="_blank"><i class="fas {'fa-file-lines' if r['type'] == 'HTML' else 'fa-file-excel'}" style="color:var(--primary)"></i> <span>{r['name']}</span></a></td><td><span class="badge {'badge-html' if r['type'] == 'HTML' else 'badge-excel'}">{r['type']}</span></td><td style="font-size: 0.85rem; color: var(--text-muted); font-weight: 500;">{r['mod_time']}</td><td><div style="display:flex;gap:4px;margin-bottom:6px;"><span class="chip">{s['requests']} T</span><span class="chip success">{pas} P</span><span class="chip danger">{fld} F</span></div><div style="display:flex; align-items:center; gap:8px;"><div style="height:6px;width:100px;background:#f1f5f9;border-radius:3px;overflow:hidden;"><div style="height:100%;width:{pct}%;background:{clr}"></div></div><span style="font-size:0.75rem;font-weight:700;color:{clr}">{pct}%</span></div>{failed_list}</td></tr>""")
             view_parts.append("</tbody></table></div></div></details>")
         
         view_parts.append("</div>")
