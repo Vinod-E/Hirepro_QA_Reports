@@ -1,0 +1,25 @@
+# IDE folders
+.idea/
+.vscode/
+*.swp
+*.bak
+
+# Python junk
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.DS_Store
+
+# Sensitive Config (MANDATORY)
+Config/secrets_config.ini
+
+# Temporary diagnostic scripts
+scratch/
+test_new_integrity.py
+
+# Keep dashboard history but ignore other local-only temp files
+!reports/
+!history_data.json
+!dashboard.html

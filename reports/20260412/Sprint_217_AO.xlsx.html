@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preview: Sprint_217_AO.xlsx</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --primary: #4f46e5; --bg: #f8fafc; --text: #1e293b; --border: #e2e8f0; --success: #10b981; --danger: #ef4444; }
+        body { font-family: 'Outfit', sans-serif; background-color: var(--bg); color: var(--text); padding: 2rem; margin: 0; }
+        .container { max-width: 1400px; margin: 0 auto; background: white; padding: 2.5rem; border-radius: 1.5rem; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05); border: 1px solid var(--border); }
+        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 2px solid var(--bg); }
+        .title-area { display: flex; align-items: center; gap: 1rem; }
+        .title-area i { font-size: 2rem; color: var(--primary); }
+        h1 { font-size: 1.5rem; font-weight: 800; margin: 0; }
+        .actions { display: flex; gap: 1rem; }
+        .btn { text-decoration: none; padding: 0.6rem 1.25rem; border-radius: 10px; font-weight: 700; font-size: 0.85rem; display: flex; align-items: center; gap: 0.5rem; transition: all 0.2s; border: none; cursor: pointer; }
+        .btn-download { background: var(--primary); color: white; }
+        .btn-download:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3); }
+        .btn-back { background: #f1f5f9; color: var(--text); }
+        .btn-back:hover { background: #e2e8f0; }
+        .table-wrapper { overflow-x: auto; border-radius: 12px; border: 1px solid var(--border); background: white; }
+        .preview-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; border-spacing: 0; }
+        .preview-table td { padding: 0.85rem 1.15rem; border-bottom: 1px solid var(--border); border-right: 1px solid var(--border); white-space: nowrap; color: var(--text); }
+        .preview-table tr:hover { background: #f1f5f9 !important; }
+        
+        /* Header & Sub-header Styling */
+        .preview-table tr:first-child td,
+        .preview-table tr.sub-header td { 
+            background: #f1f5f9 !important; 
+            font-weight: 800 !important; 
+            color: #475569 !important; 
+            text-transform: uppercase; 
+            font-size: 0.75rem; 
+            letter-spacing: 0.025em;
+            border-bottom: 2px solid #cbd5e1 !important;
+        }
+        
+        .preview-table tr:nth-child(even) { background: #fafbfc; }
+        .preview-table tr:hover { background: #f1f5f9 !important; }
+        
+        /* Status Colors */
+        .status-pass { color: var(--success) !important; font-weight: 800; background: #ecfdf5 !important; }
+        .status-fail { color: var(--danger) !important; font-weight: 800; background: #fef2f2 !important; }
+        .status-na { color: #94a3b8; font-style: italic; opacity: 0.5; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="title-area">
+                <i class="fas fa-file-excel"></i>
+                <div>
+                    <h1>Sprint_217_AO.xlsx</h1>
+                    <div style="font-size: 0.75rem; color: #64748b; font-weight: 600; margin-top: 0.2rem; text-transform: uppercase;">Spreadsheet Preview (All Rows)</div>
+                </div>
+            </div>
+            <div class="actions">
+                <button onclick="window.close()" class="btn btn-back"><i class="fas fa-times"></i> Close Tab</button>
+                <a href="Sprint_217_AO.xlsx" download="Sprint_217_AO.xlsx" class="btn btn-download"><i class="fas fa-download"></i> Download Excel</a>
+            </div>
+        </header>
+        <div class="table-wrapper">
+            <table border="1" class="dataframe preview-table">
+  <tbody>
+    <tr>
+      <td>TC ID</td>
+      <td>Group</td>
+      <td>Priority</td>
+      <td>Title / Description</td>
+      <td>Steps / Details</td>
+      <td>Expected Result</td>
+      <td>Pass Criteria</td>
+      <td>Status</td>
+      <td>Actual Result</td>
+    </tr>
+    <tr>
+      <td>TC-01</td>
+      <td>Setup / Authentication</td>
+      <td>High</td>
+      <td>Background Script Request (pm.sendRequest)</td>
+      <td>Triggered via Collection/Folder/Request script logic.</td>
+      <td>Background request should execute successfully.</td>
+      <td>Request processed without error.</td>
+      <td>PASS</td>
+      <td>Script request processed in background.</td>
+    </tr>
+    <tr>
+      <td>TC-02</td>
+      <td>Oauth AO</td>
+      <td>High</td>
+      <td>Get Access Token</td>
+      <td>Method: POST\nURL: /py/oauth2/fc9ae4e9ea91434facd78728f575ace8/access_token/</td>
+      <td>Status Code: 200 - OK and all assertions should pass.</td>
+      <td>All assertions pass.</td>
+      <td>PASS</td>
+      <td>Response Code: 200 - OK\nAssertions: *** T O K E N - C R E A T E D ***  ==&gt;  bearer (PASS)</td>
+    </tr>
+    <tr>
+      <td>TC-03</td>
+      <td>Oauth AO</td>
+      <td>High</td>
+      <td>Test Oauth Access Token</td>
+      <td>Method: POST\nURL: /py/oauth2/testApi/testoauth/</td>
+      <td>Status Code: 200 - OK and all assertions should pass.</td>
+      <td>All assertions pass.</td>
+      <td>PASS</td>
+      <td>Response Code: 200 - OK\nAssertions: *** T O K E N - V A L I D A T E ***  ==&gt;  Success (PASS)</td>
+    </tr>
+    <tr>
+      <td>TC-04</td>
+      <td>Abacus Lateral AO</td>
+      <td>High</td>
+      <td>Register Abacus Candidate</td>
+      <td>Method: POST\nURL: /py/crpo/abacus/atci/registerAbacusCandidate</td>
+      <td>Status Code: 200 - OK and all assertions should pass.</td>
+      <td>All assertions pass.</td>
+      <td>PASS</td>
+      <td>Response Code: 200 - OK\nAssertions: *** *** C A N D I D A T E - C R E A T E D ***  ===&gt;  true (PASS), *** C A N D I D A T E - I d ***  ===&gt; 1602585 (PASS)</td>
+    </tr>
+    <tr>
+      <td>TC-05</td>
+      <td>Abacus Lateral AO</td>
+      <td>High</td>
+      <td>Fetch Candidate Details</td>
+      <td>Method: POST\nURL: /py/crpo/abacus/atci/fetchCandidateDetails</td>
+      <td>Status Code: 200 - OK and all assertions should pass.</td>
+      <td>All assertions pass.</td>
+      <td>PASS</td>
+      <td>Response Code: 200 - OK\nAssertions: ***C A N D I D A T E - I D  -  V E R I F I C A T I O N ***  ==&gt;  1602585 (PASS)</td>
+    </tr>
+    <tr>
+      <td>TC-06</td>
+      <td>Abacus Lateral AO</td>
+      <td>High</td>
+      <td>Update Candidate Photo</td>
+      <td>Method: POST\nURL: /py/crpo/abacus/atci/update_candidate_photo</td>
+      <td>Status Code: 200 - OK and all assertions should pass.</td>
+      <td>All assertions pass.</td>
+      <td>PASS</td>
+      <td>Response Code: 200 - OK\nAssertions: ***C A N D I D A T E - I D  -  V E R I F I C A T I O N ***  ==&gt;  1602585 (PASS), ***C A N D I D A T E - U P D A T E  -  V E R I F I C A T I O N ***  ==&gt;  true (PASS)</td>
+    </tr>
+    <tr>
+      <td>TC-07</td>
+      <td>Abacus Lateral AO</td>
+      <td>High</td>
+      <td>Update Candidate Govt ID Proof</td>
+      <td>Method: POST\nURL: /py/crpo/abacus/atci/update_candidate_photo</td>
+      <td>Status Code: 200 - OK and all assertions should pass.</td>
+      <td>All assertions pass.</td>
+      <td>PASS</td>
+      <td>Response Code: 200 - OK\nAssertions: ***C A N D I D A T E - I D  -  V E R I F I C A T I O N ***  ==&gt;  1602585 (PASS), ***C A N D I D A T E - U P D A T E  -  V E R I F I C A T I O N ***  ==&gt;  true (PASS)</td>
+    </tr>
+    <tr>
+      <td>TC-08</td>
+      <td>Abacus Lateral AO</td>
+      <td>High</td>
+      <td>upload Assessment Selfie</td>
+      <td>Method: POST\nURL: /py/crpo/abacus/atci/uploadAssessmentSelfie</td>
+      <td>Status Code: 200 - OK and all assertions should pass.</td>
+      <td>All assertions pass.</td>
+      <td>PASS</td>
+      <td>Response Code: 200 - OK\nAssertions: ***C A N D I D A T E - I D  -  V E R I F I C A T I O N ***  ==&gt;  1602585 (PASS)</td>
+    </tr>
+    <tr>
+      <td>TC-09</td>
+      <td>Abacus Lateral AO</td>
+      <td>High</td>
+      <td>Perform Assessment Selfie Comparison</td>
+      <td>Method: POST\nURL: /py/crpo/abacus/atci/performAssessmentSelfieComparison</td>
+      <td>Status Code: 200 - OK and all assertions should pass.</td>
+      <td>All assertions pass.</td>
+      <td>PASS</td>
+      <td>Response Code: 200 - OK\nAssertions: *** F A C E - M A T C H - V E R I F I C A T I O N ***  ==&gt;  0 (PASS), *** F A C E - M A T C H - V E R I F I C A T I O N ***  ==&gt;  No Match (PASS), *** F A C E - M A T C H - V E R I F I C A T I O N ***  ==&gt;  true (PASS)</td>
+    </tr>
+    <tr>
+      <td>TC-10</td>
+      <td>Abacus Lateral AO</td>
+      <td>High</td>
+      <td>Perform Face Comparison</td>
+      <td>Method: POST\nURL: /py/crpo/abacus/atci/performFaceComparison</td>
+      <td>Status Code: 200 - OK and all assertions should pass.</td>
+      <td>All assertions pass.</td>
+      <td>PASS</td>
+      <td>Response Code: 200 - OK\nAssertions: *** F A C E - M A T C H - V E R I F I C A T I O N ***  ==&gt;  No Match (PASS), *** F A C E - M A T C H - V E R I F I C A T I O N ***  ==&gt;  true (PASS)</td>
+    </tr>
+    <tr>
+      <td>TC-11</td>
+      <td>Abacus Lateral AO</td>
+      <td>High</td>
+      <td>Physical location Interview Schedule</td>
+      <td>Method: POST\nURL: /py/crpo/abacus/atci/schedule_interview</td>
+      <td>Status Code: 200 - OK and all assertions should pass.</td>
+      <td>All assertions pass.</td>
+      <td>PASS</td>
+      <td>Response Code: 200 - OK\nAssertions: *** I N T E R V I E W - I D ***  ==&gt;  62817 (PASS), *** I N T E R V I E W - L I N K ***  ==&gt;  https://[MASKED_INTERNAL_URL] (PASS)</td>
+    </tr>
+    <tr>
+      <td>TC-12</td>
+      <td>Abacus Lateral AO</td>
+      <td>High</td>
+      <td>Physical location Interview Schedule - Replace Interviewer</td>
+      <td>Method: POST\nURL: /py/crpo/abacus/atci/schedule_interview</td>
+      <td>Status Code: 200 - OK and all assertions should pass.</td>
+      <td>All assertions pass.</td>
+      <td>PASS</td>
+      <td>Response Code: 200 - OK\nAssertions: *** I N T E R V I E W - I D ***  ==&gt;  62819 (PASS), *** L I N K S - A R E - N O T - M A T C H E D - V E R I F I E D ***  ==&gt;  https://[MASKED_INTERNAL_URL] (PASS)</td>
+    </tr>
+    <tr>
+      <td>TC-13</td>
+      <td>Abacus Lateral AO</td>
+      <td>High</td>
+      <td>Get Interview Details By Id</td>
+      <td>Method: POST\nURL: /py/crpo/abacus/atci/getInterviewDetails</td>
+      <td>Status Code: 200 - OK and all assertions should pass.</td>
+      <td>All assertions pass.</td>
+      <td>PASS</td>
+      <td>Response Code: 200 - OK\nAssertions: *** I N T E R V I E W - D E T A I L S ***  ==&gt;  https://s3.ap-southeast-1.amazonaws.com/[MASKED_PATH]/?AWSAccessKeyId=[MASKED]&amp;Signature=[MASKED]&amp;Expires=[MASKED] (PASS)</td>
+    </tr>
+    <tr>
+      <td>TC-14</td>
+      <td>Abacus Lateral AO</td>
+      <td>High</td>
+      <td>Update Candidate Email</td>
+      <td>Method: POST\nURL: /py/crpo/abacus/atci/update_candidate_email</td>
+      <td>Status Code: 200 - OK and all assertions should pass.</td>
+      <td>All assertions pass.</td>
+      <td>PASS</td>
+      <td>Response Code: 200 - OK\nAssertions: ***C A N D I D A T E - ID  -  V E R I F I C A T I O N ***  ==&gt;  1602585 (PASS)</td>
+    </tr>
+    <tr>
+      <td>TC-15</td>
+      <td>Abacus Lateral AO</td>
+      <td>High</td>
+      <td>Mark Interview as Completed</td>
+      <td>Method: POST\nURL: /py/crpo/abacus/atci/markInterviewAsCompleted</td>
+      <td>Status Code: 200 - OK and all assertions should pass.</td>
+      <td>All assertions pass.</td>
+      <td>PASS</td>
+      <td>Response Code: 200 - OK\nAssertions: *** M A R K - I N T E R V I E W - C O M P L E T E D ***  ==&gt;  true (PASS)</td>
+    </tr>
+    <tr>
+      <td>TC-16</td>
+      <td>Abacus Lateral AO</td>
+      <td>High</td>
+      <td>Cancel Interview</td>
+      <td>Method: POST\nURL: /py/crpo/abacus/atci/cancelInterviews</td>
+      <td>Status Code: 200 - OK and all assertions should pass.</td>
+      <td>All assertions pass.</td>
+      <td>PASS</td>
+      <td>Response Code: 200 - OK\nAssertions: *** C A N C E L L E D - I N T E R V I E W - I D ***  ==&gt;  62819 (PASS)</td>
+    </tr>
+    <tr>
+      <td>TC-17</td>
+      <td>Abacus Lateral AO</td>
+      <td>High</td>
+      <td>Physical location Interview Schedule - maxParticipants(4)</td>
+      <td>Method: POST\nURL: /py/crpo/abacus/atci/schedule_interview</td>
+      <td>Status Code: 200 - OK and all assertions should pass.</td>
+      <td>All assertions pass.</td>
+      <td>PASS</td>
+      <td>Response Code: 200 - OK\nAssertions: *** M A X - A P P L I C A N T - E X C E E D ***  ==&gt;  Number of participants exceeded the limit. (PASS)</td>
+    </tr>
+    <tr>
+      <td>TC-18</td>
+      <td>Abacus Lateral AO</td>
+      <td>High</td>
+      <td>Decode Qr Code</td>
+      <td>Method: POST\nURL: /py/crpo/abacus/atci/decodeQrCode</td>
+      <td>Status Code: 200 - OK and all assertions should pass.</td>
+      <td>All assertions pass.</td>
+      <td>PASS</td>
+      <td>Response Code: 200 - OK</td>
+    </tr>
+    <tr>
+      <td>TC-19</td>
+      <td>Interview Schedule Cases AO</td>
+      <td>High</td>
+      <td>Save Preferences - No Key</td>
+      <td>Method: POST\nURL: /py/common/common_app_utils/save_app_preferences/</td>
+      <td>Status Code: 200 - OK and all assertions should pass.</td>
+      <td>All assertions pass.</td>
+      <td>PASS</td>
+      <td>Response Code: 200 - OK\nAssertions: *** S A V E D - A P P - P R E F E R E N C E ***  ==&gt;  abacus.lateral.interview.config (PASS)</td>
+    </tr>
+    <tr>
+      <td>TC-20</td>
+      <td>Interview Schedule Cases AO</td>
+      <td>High</td>
+      <td>Schedule_interview - Date format</td>
+      <td>Method: POST\nURL: /py/crpo/abacus/atci/schedule_interview</td>
+      <td>Status Code: 200 - OK and all assertions should pass.</td>
+      <td>All assertions pass.</td>
+      <td>PASS</td>
+      <td>Response Code: 200 - OK\nAssertions: *** I N T E R V I E W - I D ***  ==&gt;  62821 (PASS), *** I N T E R V I E W - L I N K ***  ==&gt;  https://[MASKED_INTERNAL_URL] (PASS)</td>
+    </tr>
+    <tr>
+      <td>TC-21</td>
+      <td>Interview Schedule Cases AO</td>
+      <td>High</td>
+      <td>Interviews Cancel</td>
+      <td>Method: POST\nURL: /py/crpo/abacus/atci/cancelInterviews</td>
+      <td>Status Code: 200 - OK and all assertions should pass.</td>
+      <td>All assertions pass.</td>
+      <td>PASS</td>
+      <td>Response Code: 200 - OK\nAssertions: *** C A N C E L L E D - I N T E R V I E W - I D ***  ==&gt;  62821 (PASS)</td>
+    </tr>
+    <tr>
+      <td>TC-22</td>
+      <td>Interview Schedule Cases AO</td>
+      <td>High</td>
+      <td>Schedule_interview - Date format/ 72 hrs</td>
+      <td>Method: POST\nURL: /py/crpo/abacus/atci/schedule_interview</td>
+      <td>Status Code: 200 - OK and all assertions should pass.</td>
+      <td>All assertions pass.</td>
+      <td>PASS</td>
+      <td>Response Code: 200 - OK\nAssertions: *** I N T E R V I E W - S C H E D U L E - F A I L U R E ***  ==&gt;  Invalid input. Interview time should not be older than 48 hours from current date-time. (PASS)</td>
+    </tr>
+    <tr>
+      <td>TC-23</td>
+      <td>Interview Schedule Cases AO</td>
+      <td>High</td>
+      <td>Save Preferences - Past Key 96 hrs</td>
+      <td>Method: POST\nURL: /py/common/common_app_utils/save_app_preferences/</td>
+      <td>Status Code: 200 - OK and all assertions should pass.</td>
+      <td>All assertions pass.</td>
+      <td>PASS</td>
+      <td>Response Code: 200 - OK\nAssertions: *** S A V E D - A P P - P R E F E R E N C E ***  ==&gt;  abacus.lateral.interview.config (PASS)</td>
+    </tr>
+    <tr>
+      <td>TC-24</td>
+      <td>Interview Schedule Cases AO</td>
+      <td>High</td>
+      <td>Schedule_interview - Date format/ 72 hrs(3days)</td>
+      <td>Method: POST\nURL: /py/crpo/abacus/atci/schedule_interview</td>
+      <td>Status Code: 200 - OK and all assertions should pass.</td>
+      <td>All assertions pass.</td>
+      <td>PASS</td>
+      <td>Response Code: 200 - OK\nAssertions: *** I N T E R V I E W - I D ***  ==&gt;  62823 (PASS), *** I N T E R V I E W - L I N K ***  ==&gt;  https://[MASKED_INTERNAL_URL] (PASS)</td>
+    </tr>
+    <tr>
+      <td>TC-25</td>
+      <td>Interview Schedule Cases AO</td>
+      <td>High</td>
+      <td>Interviews Cancelled</td>
+      <td>Method: POST\nURL: /py/crpo/abacus/atci/cancelInterviews</td>
+      <td>Status Code: 200 - OK and all assertions should pass.</td>
+      <td>All assertions pass.</td>
+      <td>PASS</td>
+      <td>Response Code: 200 - OK\nAssertions: *** C A N C E L L E D - I N T E R V I E W - I D ***  ==&gt;  62823 (PASS)</td>
+    </tr>
+    <tr>
+      <td>TC-26</td>
+      <td>Interview Schedule Cases AO</td>
+      <td>High</td>
+      <td>Schedule_interview - Date format/ 120 hrs</td>
+      <td>Method: POST\nURL: /py/crpo/abacus/atci/schedule_interview</td>
+      <td>Status Code: 200 - OK and all assertions should pass.</td>
+      <td>All assertions pass.</td>
+      <td>PASS</td>
+      <td>Response Code: 200 - OK\nAssertions: *** I N T E R V I E W - S C H E D U L E - F A I L U R E ***  ==&gt;  Invalid input. Interview time should not be older than 96 hours from current date-time. (PASS)</td>
+    </tr>
+    <tr>
+      <td>TC-27</td>
+      <td>Validations AO</td>
+      <td>High</td>
+      <td>Validate Picture: Half blur Image</td>
+      <td>Method: POST\nURL: /py/crpo/abacus/atci/validatePicture</td>
+      <td>Status Code: 200 - OK and all assertions should pass.</td>
+      <td>All assertions pass.</td>
+      <td>PASS</td>
+      <td>Response Code: 200 - OK\nAssertions: *** H A L F - B L U R - I M A G E - V E R I F I C A T I O N ***  ==&gt;  Only one face detected. (PASS)</td>
+    </tr>
+    <tr>
+      <td>TC-28</td>
+      <td>Validations AO</td>
+      <td>High</td>
+      <td>Validate Picture: Blur Image</td>
+      <td>Method: POST\nURL: /py/crpo/abacus/atci/validatePicture</td>
+      <td>Status Code: 200 - OK and all assertions should pass.</td>
+      <td>All assertions pass.</td>
+      <td>PASS</td>
+      <td>Response Code: 200 - OK\nAssertions: *** B L U R - I M A G E - V E R I F I C A T I O N ***  ==&gt;  Not a valid photo. (PASS)</td>
+    </tr>
+    <tr>
+      <td>TC-29</td>
+      <td>Validations AO</td>
+      <td>High</td>
+      <td>Validate Picture: Face like image but no face in the image</td>
+      <td>Method: POST\nURL: /py/crpo/abacus/atci/validatePicture</td>
+      <td>Status Code: 200 - OK and all assertions should pass.</td>
+      <td>All assertions pass.</td>
+      <td>PASS</td>
+      <td>Response Code: 200 - OK\nAssertions: *** N O - F A C E - V E R I F I C A T I O N ***  ==&gt;  No face detected. (PASS)</td>
+    </tr>
+    <tr>
+      <td>TC-30</td>
+      <td>Validations AO</td>
+      <td>High</td>
+      <td>Validate Picture: Face far from the camera</td>
+      <td>Method: POST\nURL: /py/crpo/abacus/atci/validatePicture</td>
+      <td>Status Code: 200 - OK and all assertions should pass.</td>
+      <td>All assertions pass.</td>
+      <td>PASS</td>
+      <td>Response Code: 200 - OK\nAssertions: *** N O T - V A L I D - P H O T O - V E R I F I C A T I O N ***  ==&gt;  Not a valid photo. (PASS)</td>
+    </tr>
+    <tr>
+      <td>TC-31</td>
+      <td>Validations AO</td>
+      <td>High</td>
+      <td>Validate Picture: Faces in background</td>
+      <td>Method: POST\nURL: /py/crpo/abacus/atci/validatePicture</td>
+      <td>Status Code: 200 - OK and all assertions should pass.</td>
+      <td>All assertions pass.</td>
+      <td>PASS</td>
+      <td>Response Code: 200 - OK\nAssertions: *** M O R E - F A C E S - V E R I F I C A T I O N ***  ==&gt;  More than one face detected. (PASS)</td>
+    </tr>
+    <tr>
+      <td>TC-32</td>
+      <td>Validations AO</td>
+      <td>High</td>
+      <td>Validate Picture: No face</td>
+      <td>Method: POST\nURL: /py/crpo/abacus/atci/validatePicture</td>
+      <td>Status Code: 200 - OK and all assertions should pass.</td>
+      <td>All assertions pass.</td>
+      <td>PASS</td>
+      <td>Response Code: 200 - OK\nAssertions: *** N O - F A C E - V E R I F I C A T I O N ***  ==&gt;  No face detected. (PASS)</td>
+    </tr>
+    <tr>
+      <td>TC-33</td>
+      <td>Validations AO</td>
+      <td>High</td>
+      <td>Validate Picture: More than one face</td>
+      <td>Method: POST\nURL: /py/crpo/abacus/atci/validatePicture</td>
+      <td>Status Code: 200 - OK and all assertions should pass.</td>
+      <td>All assertions pass.</td>
+      <td>PASS</td>
+      <td>Response Code: 200 - OK\nAssertions: *** M O R E - F A C E S - V E R I F I C A T I O N ***  ==&gt;  More than one face detected. (PASS)</td>
+    </tr>
+    <tr>
+      <td>TC-34</td>
+      <td>Validations AO</td>
+      <td>High</td>
+      <td>Validate Picture: Only one face</td>
+      <td>Method: POST\nURL: /py/crpo/abacus/atci/validatePicture</td>
+      <td>Status Code: 200 - OK and all assertions should pass.</td>
+      <td>All assertions pass.</td>
+      <td>PASS</td>
+      <td>Response Code: 200 - OK\nAssertions: *** M O R E - F A C E - V E R I F I C A T I O N ***  ==&gt;  Only one face detected. (PASS)</td>
+    </tr>
+    <tr>
+      <td>TC-35</td>
+      <td>Validations AO</td>
+      <td>High</td>
+      <td>Passport: Full</td>
+      <td>Method: POST\nURL: /py/crpo/abacus/atci/performIdValidation</td>
+      <td>Status Code: 200 - OK and all assertions should pass.</td>
+      <td>All assertions pass.</td>
+      <td>PASS</td>
+      <td>Response Code: 200 - OK\nAssertions: *** P A S S P O R T - N A M E - M A T C H - V E R I F I C A T I O N ***  ==&gt;  Full (PASS), *** P A S S P O R T - I D - M A T C H - V E R I F I C A T I O N ***  ==&gt;  true (PASS)</td>
+    </tr>
+    <tr>
+      <td>TC-36</td>
+      <td>Validations AO</td>
+      <td>High</td>
+      <td>Aadhaar Id Match: Yes</td>
+      <td>Method: POST\nURL: /py/crpo/abacus/atci/performIdValidation</td>
+      <td>Status Code: 200 - OK and all assertions should pass.</td>
+      <td>All assertions pass.</td>
+      <td>PASS</td>
+      <td>Response Code: 200 - OK\nAssertions: *** A A D H A A R - N A M E - M A T C H - V E R I F I C A T I O N ***  ==&gt;  Full (PASS), *** A A D H A A R - I D - M A T C H - V E R I F I C A T I O N ***  ==&gt;  true (PASS)</td>
+    </tr>
+    <tr>
+      <td>TC-37</td>
+      <td>Validations AO</td>
+      <td>High</td>
+      <td>Pancard Name match: Full</td>
+      <td>Method: POST\nURL: /py/crpo/abacus/atci/performIdValidation</td>
+      <td>Status Code: 200 - OK and all assertions should pass.</td>
+      <td>All assertions pass.</td>
+      <td>PASS</td>
+      <td>Response Code: 200 - OK\nAssertions: *** P A N - N A M E - M A T C H - V E R I F I C A T I O N ***  ==&gt;  Full (PASS), *** P A N - I D - M A T C H - V E R I F I C A T I O N ***  ==&gt;  true (PASS)</td>
+    </tr>
+    <tr>
+      <td>TC-38</td>
+      <td>Validations AO</td>
+      <td>High</td>
+      <td>Name match: No Match</td>
+      <td>Method: POST\nURL: /py/crpo/abacus/atci/performIdValidation</td>
+      <td>Status Code: 200 - OK and all assertions should pass.</td>
+      <td>All assertions pass.</td>
+      <td>PASS</td>
+      <td>Response Code: 200 - OK\nAssertions: *** N A M E - M A T C H - V E R I F I C A T I O N ***  ==&gt;  No (PASS), *** I D - M A T C H - V E R I F I C A T I O N ***  ==&gt;  true (PASS)</td>
+    </tr>
+    <tr>
+      <td>TC-39</td>
+      <td>Validations AO</td>
+      <td>High</td>
+      <td>Name match: Partial</td>
+      <td>Method: POST\nURL: /py/crpo/abacus/atci/performIdValidation</td>
+      <td>Status Code: 200 - OK and all assertions should pass.</td>
+      <td>All assertions pass.</td>
+      <td>PASS</td>
+      <td>Response Code: 200 - OK\nAssertions: *** N A M E - M A T C H - V E R I F I C A T I O N ***  ==&gt;  Partial (PASS), *** I D - M A T C H - V E R I F I C A T I O N ***  ==&gt;  true (PASS)</td>
+    </tr>
+  </tbody>
+</table>
+        </div>
+    </div>
+    <script>
+        document.querySelectorAll('.preview-table tr').forEach((tr, rowIndex) => {
+            let statusCount = 0;
+            const cells = tr.querySelectorAll('td');
+            
+            cells.forEach(td => {
+                const text = td.innerText.trim().toUpperCase();
+                
+                // Highlight Pass/Fail
+                if (['PASS', 'SUCCESS', 'PASSED'].includes(text)) {
+                    td.classList.add('status-pass');
+                } else if (['FAIL', 'FAILURE', 'FAILED', 'ERROR'].includes(text)) {
+                    td.classList.add('status-fail');
+                } else if (text === 'NA') {
+                    td.classList.add('status-na');
+                }
+                
+                // Header detection keywords
+                if (['STATUS', 'IDENTITY', 'ID'].includes(text)) {
+                    statusCount++;
+                }
+            });
+            
+            // If row has multiple 'Status' labels, it's a sub-header
+            if (statusCount >= 2 && rowIndex > 0) {
+                tr.classList.add('sub-header');
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+name: Generate HTML Report
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Generate HTML Dashboard Report"
+        required: true
+        default: "HTML"
+        type: choice
+        options:
+          - HTML
+
+jobs:
+  build-html:
+    runs-on: ubuntu-latest
+
+    env:
+      BASE_DIR: /home/runner/hirepro_automation/Hirepro_QA_Reports
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run:  |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Prepare project directory
+        run: |
+          mkdir -p $BASE_DIR
+          cp -r . $BASE_DIR
+
+      - name: List copied files
+        run: ls -la $BASE_DIR
+
+      - name: Inject secret config (secrets_config)
+        run: |
+          cat <<EOF > $BASE_DIR/Config/secrets_config.ini
+          ${{ secrets.SECRETS_CONFIG }}
+          EOF
+
+      - name: Convert Excel and HTML to Dashboard report
+        run: |
+          cd $BASE_DIR
+          export PYTHONPATH=$BASE_DIR
+          python3 DashboardReport/generate_dashboard.py 
+
+      - name: Send Google Chat Notification
+        run: |
+          cd $BASE_DIR
+          export PYTHONPATH=$BASE_DIR
+          python3 GoogleChat/trigger_notification.py
+        if: always() # Ensure notification is sent even if stats parsing has issues
+
+      - name: Deploy Dashboard Report
+        run: |
+          cd $BASE_DIR
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          
+          git add dashboard.html
+          git add reports/ history_data.json # Persist history data
+          
+          git commit -m "Update Dashboard HTML report [skip ci]" || echo "No changes"
+          git push origin HEAD:master

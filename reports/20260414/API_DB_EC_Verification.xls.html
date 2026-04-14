@@ -1,0 +1,1781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preview: API_DB_EC_Verification.xls</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --primary: #4f46e5; --bg: #f8fafc; --text: #1e293b; --border: #e2e8f0; --success: #10b981; --danger: #ef4444; }
+        body { font-family: 'Outfit', sans-serif; background-color: var(--bg); color: var(--text); padding: 2rem; margin: 0; }
+        .container { max-width: 1400px; margin: 0 auto; background: white; padding: 2.5rem; border-radius: 1.5rem; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05); border: 1px solid var(--border); }
+        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 2px solid var(--bg); }
+        .title-area { display: flex; align-items: center; gap: 1rem; }
+        .title-area i { font-size: 2rem; color: var(--primary); }
+        h1 { font-size: 1.5rem; font-weight: 800; margin: 0; }
+        .actions { display: flex; gap: 1rem; }
+        .btn { text-decoration: none; padding: 0.6rem 1.25rem; border-radius: 10px; font-weight: 700; font-size: 0.85rem; display: flex; align-items: center; gap: 0.5rem; transition: all 0.2s; border: none; cursor: pointer; }
+        .btn-download { background: var(--primary); color: white; }
+        .btn-download:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3); }
+        .btn-back { background: #f1f5f9; color: var(--text); }
+        .btn-back:hover { background: #e2e8f0; }
+        .table-wrapper { overflow-x: auto; border-radius: 12px; border: 1px solid var(--border); background: white; }
+        .preview-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; border-spacing: 0; }
+        .preview-table td { padding: 0.85rem 1.15rem; border-bottom: 1px solid var(--border); border-right: 1px solid var(--border); white-space: nowrap; color: var(--text); }
+        .preview-table tr:hover { background: #f1f5f9 !important; }
+        
+        /* Header & Sub-header Styling */
+        .preview-table tr:first-child td,
+        .preview-table tr.sub-header td { 
+            background: #f1f5f9 !important; 
+            font-weight: 800 !important; 
+            color: #475569 !important; 
+            text-transform: uppercase; 
+            font-size: 0.75rem; 
+            letter-spacing: 0.025em;
+            border-bottom: 2px solid #cbd5e1 !important;
+        }
+        
+        .preview-table tr:nth-child(even) { background: #fafbfc; }
+        .preview-table tr:hover { background: #f1f5f9 !important; }
+        
+        /* Status Colors */
+        .status-pass { color: var(--success) !important; font-weight: 800; background: #ecfdf5 !important; }
+        .status-fail { color: var(--danger) !important; font-weight: 800; background: #fef2f2 !important; }
+        .status-na { color: #94a3b8; font-style: italic; opacity: 0.5; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="title-area">
+                <i class="fas fa-file-excel"></i>
+                <div>
+                    <h1>API_DB_EC_Verification.xls</h1>
+                    <div style="font-size: 0.75rem; color: #64748b; font-weight: 600; margin-top: 0.2rem; text-transform: uppercase;">Spreadsheet Preview (All Rows)</div>
+                </div>
+            </div>
+            <div class="actions">
+                <button onclick="window.close()" class="btn btn-back"><i class="fas fa-times"></i> Close Tab</button>
+                <a href="API_DB_EC_Verification.xls" download="API_DB_EC_Verification.xls" class="btn btn-download"><i class="fas fa-download"></i> Download Excel</a>
+            </div>
+        </header>
+        <div class="table-wrapper">
+            <table border="1" class="dataframe preview-table">
+  <tbody>
+    <tr>
+      <td>Eligibility Criteria</td>
+      <td>Pass</td>
+      <td>Login Server</td>
+      <td>[MASKED_REF]</td>
+      <td>Lambda</td>
+      <td>On</td>
+      <td>APP Name</td>
+      <td>crpo</td>
+      <td>No.of Test cases</td>
+      <td>103.0</td>
+      <td>Start Time</td>
+      <td>2026-04-14 10:47:21.999098</td>
+      <td>Failed Test cases</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <td>Actual_status</td>
+      <td>Event Id</td>
+      <td>Job Id</td>
+      <td>CandidateID</td>
+      <td>Excel ApplicantId</td>
+      <td>DB Applicant ID</td>
+      <td>EC ID</td>
+      <td>Expected Status</td>
+      <td>DB Status</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218701</td>
+      <td>786193</td>
+      <td>786193</td>
+      <td>446</td>
+      <td>Eligible</td>
+      <td>Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218702</td>
+      <td>786194</td>
+      <td>786194</td>
+      <td>446</td>
+      <td>Eligible</td>
+      <td>Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218703</td>
+      <td>786195</td>
+      <td>786195</td>
+      <td>446</td>
+      <td>Eligible</td>
+      <td>Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218704</td>
+      <td>786196</td>
+      <td>786196</td>
+      <td>447</td>
+      <td>Not Eligible</td>
+      <td>Not Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218705</td>
+      <td>786197</td>
+      <td>786197</td>
+      <td>447</td>
+      <td>Eligible</td>
+      <td>Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218706</td>
+      <td>786198</td>
+      <td>786198</td>
+      <td>447</td>
+      <td>Eligible</td>
+      <td>Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218707</td>
+      <td>786199</td>
+      <td>786199</td>
+      <td>448</td>
+      <td>Not Eligible</td>
+      <td>Not Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218710</td>
+      <td>786200</td>
+      <td>786200</td>
+      <td>446</td>
+      <td>Not Eligible</td>
+      <td>Not Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218713</td>
+      <td>786201</td>
+      <td>786201</td>
+      <td>447</td>
+      <td>Eligible</td>
+      <td>Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218716</td>
+      <td>786202</td>
+      <td>786202</td>
+      <td>448</td>
+      <td>Eligible</td>
+      <td>Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218717</td>
+      <td>786203</td>
+      <td>786203</td>
+      <td>448</td>
+      <td>Eligible</td>
+      <td>Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218718</td>
+      <td>786204</td>
+      <td>786204</td>
+      <td>448</td>
+      <td>Eligible</td>
+      <td>Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218878</td>
+      <td>786121</td>
+      <td>786121</td>
+      <td>449</td>
+      <td>Eligible</td>
+      <td>Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218879</td>
+      <td>786122</td>
+      <td>786122</td>
+      <td>449</td>
+      <td>Not Eligible</td>
+      <td>Not Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218880</td>
+      <td>786123</td>
+      <td>786123</td>
+      <td>449</td>
+      <td>Not Eligible</td>
+      <td>Not Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218881</td>
+      <td>786124</td>
+      <td>786124</td>
+      <td>449</td>
+      <td>Not Eligible</td>
+      <td>Not Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218882</td>
+      <td>786125</td>
+      <td>786125</td>
+      <td>449</td>
+      <td>Not Eligible</td>
+      <td>Not Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218883</td>
+      <td>786126</td>
+      <td>786126</td>
+      <td>449</td>
+      <td>Not Eligible</td>
+      <td>Not Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218884</td>
+      <td>786127</td>
+      <td>786127</td>
+      <td>449</td>
+      <td>Not Eligible</td>
+      <td>Not Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218885</td>
+      <td>786128</td>
+      <td>786128</td>
+      <td>449</td>
+      <td>Not Eligible</td>
+      <td>Not Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218886</td>
+      <td>786129</td>
+      <td>786129</td>
+      <td>449</td>
+      <td>Not Eligible</td>
+      <td>Not Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218887</td>
+      <td>786130</td>
+      <td>786130</td>
+      <td>449</td>
+      <td>Not Eligible</td>
+      <td>Not Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218888</td>
+      <td>786131</td>
+      <td>786131</td>
+      <td>449</td>
+      <td>Not Eligible</td>
+      <td>Not Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218889</td>
+      <td>786132</td>
+      <td>786132</td>
+      <td>449</td>
+      <td>Not Eligible</td>
+      <td>Not Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218890</td>
+      <td>786133</td>
+      <td>786133</td>
+      <td>449</td>
+      <td>Not Eligible</td>
+      <td>Not Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218891</td>
+      <td>786134</td>
+      <td>786134</td>
+      <td>449</td>
+      <td>Not Eligible</td>
+      <td>Not Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218892</td>
+      <td>786135</td>
+      <td>786135</td>
+      <td>449</td>
+      <td>Not Eligible</td>
+      <td>Not Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218893</td>
+      <td>786136</td>
+      <td>786136</td>
+      <td>449</td>
+      <td>Not Eligible</td>
+      <td>Not Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218894</td>
+      <td>786137</td>
+      <td>786137</td>
+      <td>449</td>
+      <td>Not Eligible</td>
+      <td>Not Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218895</td>
+      <td>786138</td>
+      <td>786138</td>
+      <td>449</td>
+      <td>Not Eligible</td>
+      <td>Not Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218896</td>
+      <td>786139</td>
+      <td>786139</td>
+      <td>449</td>
+      <td>Not Eligible</td>
+      <td>Not Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218897</td>
+      <td>786140</td>
+      <td>786140</td>
+      <td>449</td>
+      <td>Not Eligible</td>
+      <td>Not Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218898</td>
+      <td>786141</td>
+      <td>786141</td>
+      <td>449</td>
+      <td>Not Eligible</td>
+      <td>Not Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218899</td>
+      <td>786142</td>
+      <td>786142</td>
+      <td>449</td>
+      <td>Not Eligible</td>
+      <td>Not Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218900</td>
+      <td>786143</td>
+      <td>786143</td>
+      <td>449</td>
+      <td>Not Eligible</td>
+      <td>Not Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218901</td>
+      <td>786144</td>
+      <td>786144</td>
+      <td>449</td>
+      <td>Not Eligible</td>
+      <td>Not Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218902</td>
+      <td>786145</td>
+      <td>786145</td>
+      <td>449</td>
+      <td>Not Eligible</td>
+      <td>Not Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218903</td>
+      <td>786146</td>
+      <td>786146</td>
+      <td>449</td>
+      <td>Not Eligible</td>
+      <td>Not Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218904</td>
+      <td>786147</td>
+      <td>786147</td>
+      <td>449</td>
+      <td>Not Eligible</td>
+      <td>Not Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218905</td>
+      <td>786148</td>
+      <td>786148</td>
+      <td>449</td>
+      <td>Not Eligible</td>
+      <td>Not Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218906</td>
+      <td>786149</td>
+      <td>786149</td>
+      <td>449</td>
+      <td>Not Eligible</td>
+      <td>Not Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218907</td>
+      <td>786150</td>
+      <td>786150</td>
+      <td>449</td>
+      <td>Not Eligible</td>
+      <td>Not Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218908</td>
+      <td>786151</td>
+      <td>786151</td>
+      <td>449</td>
+      <td>Not Eligible</td>
+      <td>Not Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218909</td>
+      <td>786152</td>
+      <td>786152</td>
+      <td>449</td>
+      <td>Not Eligible</td>
+      <td>Not Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218910</td>
+      <td>786153</td>
+      <td>786153</td>
+      <td>449</td>
+      <td>Not Eligible</td>
+      <td>Not Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218911</td>
+      <td>786154</td>
+      <td>786154</td>
+      <td>449</td>
+      <td>Not Eligible</td>
+      <td>Not Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218912</td>
+      <td>786155</td>
+      <td>786155</td>
+      <td>449</td>
+      <td>Not Eligible</td>
+      <td>Not Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218913</td>
+      <td>786156</td>
+      <td>786156</td>
+      <td>449</td>
+      <td>Not Eligible</td>
+      <td>Not Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218914</td>
+      <td>786157</td>
+      <td>786157</td>
+      <td>449</td>
+      <td>Not Eligible</td>
+      <td>Not Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218915</td>
+      <td>786158</td>
+      <td>786158</td>
+      <td>449</td>
+      <td>Not Eligible</td>
+      <td>Not Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218916</td>
+      <td>786159</td>
+      <td>786159</td>
+      <td>449</td>
+      <td>Not Eligible</td>
+      <td>Not Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218917</td>
+      <td>786160</td>
+      <td>786160</td>
+      <td>449</td>
+      <td>Not Eligible</td>
+      <td>Not Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218918</td>
+      <td>786161</td>
+      <td>786161</td>
+      <td>449</td>
+      <td>Not Eligible</td>
+      <td>Not Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218919</td>
+      <td>786162</td>
+      <td>786162</td>
+      <td>449</td>
+      <td>Not Eligible</td>
+      <td>Not Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218920</td>
+      <td>786163</td>
+      <td>786163</td>
+      <td>449</td>
+      <td>Not Eligible</td>
+      <td>Not Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218921</td>
+      <td>786164</td>
+      <td>786164</td>
+      <td>449</td>
+      <td>Not Eligible</td>
+      <td>Not Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218922</td>
+      <td>786165</td>
+      <td>786165</td>
+      <td>449</td>
+      <td>Not Eligible</td>
+      <td>Not Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218923</td>
+      <td>786166</td>
+      <td>786166</td>
+      <td>449</td>
+      <td>Not Eligible</td>
+      <td>Not Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218924</td>
+      <td>786167</td>
+      <td>786167</td>
+      <td>449</td>
+      <td>Not Eligible</td>
+      <td>Not Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218925</td>
+      <td>786168</td>
+      <td>786168</td>
+      <td>449</td>
+      <td>Not Eligible</td>
+      <td>Not Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218926</td>
+      <td>786169</td>
+      <td>786169</td>
+      <td>449</td>
+      <td>Not Eligible</td>
+      <td>Not Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218927</td>
+      <td>786170</td>
+      <td>786170</td>
+      <td>449</td>
+      <td>Not Eligible</td>
+      <td>Not Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218928</td>
+      <td>786171</td>
+      <td>786171</td>
+      <td>449</td>
+      <td>Not Eligible</td>
+      <td>Not Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218929</td>
+      <td>786172</td>
+      <td>786172</td>
+      <td>449</td>
+      <td>Not Eligible</td>
+      <td>Not Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218930</td>
+      <td>786173</td>
+      <td>786173</td>
+      <td>449</td>
+      <td>Not Eligible</td>
+      <td>Not Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218931</td>
+      <td>786174</td>
+      <td>786174</td>
+      <td>449</td>
+      <td>Not Eligible</td>
+      <td>Not Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218932</td>
+      <td>786175</td>
+      <td>786175</td>
+      <td>449</td>
+      <td>Not Eligible</td>
+      <td>Not Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218933</td>
+      <td>786176</td>
+      <td>786176</td>
+      <td>449</td>
+      <td>Not Eligible</td>
+      <td>Not Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218934</td>
+      <td>786177</td>
+      <td>786177</td>
+      <td>449</td>
+      <td>Not Eligible</td>
+      <td>Not Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218935</td>
+      <td>786178</td>
+      <td>786178</td>
+      <td>449</td>
+      <td>Not Eligible</td>
+      <td>Not Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218936</td>
+      <td>786179</td>
+      <td>786179</td>
+      <td>449</td>
+      <td>Not Eligible</td>
+      <td>Not Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218937</td>
+      <td>786180</td>
+      <td>786180</td>
+      <td>449</td>
+      <td>Not Eligible</td>
+      <td>Not Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218938</td>
+      <td>786181</td>
+      <td>786181</td>
+      <td>449</td>
+      <td>Not Eligible</td>
+      <td>Not Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218939</td>
+      <td>786182</td>
+      <td>786182</td>
+      <td>449</td>
+      <td>Not Eligible</td>
+      <td>Not Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218940</td>
+      <td>786183</td>
+      <td>786183</td>
+      <td>449</td>
+      <td>Not Eligible</td>
+      <td>Not Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218941</td>
+      <td>786184</td>
+      <td>786184</td>
+      <td>449</td>
+      <td>Not Eligible</td>
+      <td>Not Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218942</td>
+      <td>786185</td>
+      <td>786185</td>
+      <td>449</td>
+      <td>Not Eligible</td>
+      <td>Not Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218943</td>
+      <td>786186</td>
+      <td>786186</td>
+      <td>449</td>
+      <td>Not Eligible</td>
+      <td>Not Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218944</td>
+      <td>786187</td>
+      <td>786187</td>
+      <td>449</td>
+      <td>Not Eligible</td>
+      <td>Not Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218945</td>
+      <td>786188</td>
+      <td>786188</td>
+      <td>449</td>
+      <td>Not Eligible</td>
+      <td>Not Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218946</td>
+      <td>786189</td>
+      <td>786189</td>
+      <td>449</td>
+      <td>Not Eligible</td>
+      <td>Not Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218947</td>
+      <td>786190</td>
+      <td>786190</td>
+      <td>449</td>
+      <td>Not Eligible</td>
+      <td>Not Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218948</td>
+      <td>786191</td>
+      <td>786191</td>
+      <td>449</td>
+      <td>Not Eligible</td>
+      <td>Not Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218949</td>
+      <td>786192</td>
+      <td>786192</td>
+      <td>449</td>
+      <td>Not Eligible</td>
+      <td>Not Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218709</td>
+      <td>786205</td>
+      <td>786205</td>
+      <td>450</td>
+      <td>Eligible</td>
+      <td>Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218708</td>
+      <td>786206</td>
+      <td>786206</td>
+      <td>450</td>
+      <td>Eligible</td>
+      <td>Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218711</td>
+      <td>786207</td>
+      <td>786207</td>
+      <td>450</td>
+      <td>Not Eligible</td>
+      <td>Not Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218712</td>
+      <td>786208</td>
+      <td>786208</td>
+      <td>450</td>
+      <td>Eligible</td>
+      <td>Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218714</td>
+      <td>786209</td>
+      <td>786209</td>
+      <td>450</td>
+      <td>Eligible</td>
+      <td>Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218715</td>
+      <td>786211</td>
+      <td>786211</td>
+      <td>450</td>
+      <td>Eligible</td>
+      <td>Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218964</td>
+      <td>786210</td>
+      <td>786210</td>
+      <td>450</td>
+      <td>Eligible</td>
+      <td>Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218965</td>
+      <td>786212</td>
+      <td>786212</td>
+      <td>451</td>
+      <td>Eligible</td>
+      <td>Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218967</td>
+      <td>786213</td>
+      <td>786213</td>
+      <td>451</td>
+      <td>Eligible</td>
+      <td>Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218969</td>
+      <td>786214</td>
+      <td>786214</td>
+      <td>451</td>
+      <td>Eligible</td>
+      <td>Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218966</td>
+      <td>786215</td>
+      <td>786215</td>
+      <td>451</td>
+      <td>Eligible</td>
+      <td>Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218968</td>
+      <td>786216</td>
+      <td>786216</td>
+      <td>451</td>
+      <td>Eligible</td>
+      <td>Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218970</td>
+      <td>786217</td>
+      <td>786217</td>
+      <td>451</td>
+      <td>Not Eligible</td>
+      <td>Not Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218971</td>
+      <td>786218</td>
+      <td>786218</td>
+      <td>452</td>
+      <td>Eligible</td>
+      <td>Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218972</td>
+      <td>786239</td>
+      <td>786239</td>
+      <td>452</td>
+      <td>Eligible</td>
+      <td>Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218973</td>
+      <td>786240</td>
+      <td>786240</td>
+      <td>452</td>
+      <td>Not Eligible</td>
+      <td>Not Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218974</td>
+      <td>786241</td>
+      <td>786241</td>
+      <td>452</td>
+      <td>Eligible</td>
+      <td>Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218975</td>
+      <td>786242</td>
+      <td>786242</td>
+      <td>452</td>
+      <td>Eligible</td>
+      <td>Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>4598</td>
+      <td>27563</td>
+      <td>1218976</td>
+      <td>786243</td>
+      <td>786243</td>
+      <td>452</td>
+      <td>Eligible</td>
+      <td>Eligible</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+  </tbody>
+</table>
+        </div>
+    </div>
+    <script>
+        document.querySelectorAll('.preview-table tr').forEach((tr, rowIndex) => {
+            let statusCount = 0;
+            const cells = tr.querySelectorAll('td');
+            
+            cells.forEach(td => {
+                const text = td.innerText.trim().toUpperCase();
+                
+                // Highlight Pass/Fail
+                if (['PASS', 'SUCCESS', 'PASSED'].includes(text)) {
+                    td.classList.add('status-pass');
+                } else if (['FAIL', 'FAILURE', 'FAILED', 'ERROR'].includes(text)) {
+                    td.classList.add('status-fail');
+                } else if (text === 'NA') {
+                    td.classList.add('status-na');
+                }
+                
+                // Header detection keywords
+                if (['STATUS', 'IDENTITY', 'ID'].includes(text)) {
+                    statusCount++;
+                }
+            });
+            
+            // If row has multiple 'Status' labels, it's a sub-header
+            if (statusCount >= 2 && rowIndex > 0) {
+                tr.classList.add('sub-header');
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preview: API_Mask_Aadhar_Card_claude.xlsx</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --primary: #4f46e5; --bg: #f8fafc; --text: #1e293b; --border: #e2e8f0; --success: #10b981; --danger: #ef4444; }
+        body { font-family: 'Outfit', sans-serif; background-color: var(--bg); color: var(--text); padding: 2rem; margin: 0; }
+        .container { max-width: 1400px; margin: 0 auto; background: white; padding: 2.5rem; border-radius: 1.5rem; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05); border: 1px solid var(--border); }
+        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 2px solid var(--bg); }
+        .title-area { display: flex; align-items: center; gap: 1rem; }
+        .title-area i { font-size: 2rem; color: var(--primary); }
+        h1 { font-size: 1.5rem; font-weight: 800; margin: 0; }
+        .actions { display: flex; gap: 1rem; }
+        .btn { text-decoration: none; padding: 0.6rem 1.25rem; border-radius: 10px; font-weight: 700; font-size: 0.85rem; display: flex; align-items: center; gap: 0.5rem; transition: all 0.2s; border: none; cursor: pointer; }
+        .btn-download { background: var(--primary); color: white; }
+        .btn-download:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3); }
+        .btn-back { background: #f1f5f9; color: var(--text); }
+        .btn-back:hover { background: #e2e8f0; }
+        .table-wrapper { overflow-x: auto; border-radius: 12px; border: 1px solid var(--border); background: white; }
+        .preview-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; border-spacing: 0; }
+        .preview-table td { padding: 0.85rem 1.15rem; border-bottom: 1px solid var(--border); border-right: 1px solid var(--border); white-space: nowrap; color: var(--text); }
+        .preview-table tr:hover { background: #f1f5f9 !important; }
+        
+        /* Header & Sub-header Styling */
+        .preview-table tr:first-child td,
+        .preview-table tr.sub-header td { 
+            background: #f1f5f9 !important; 
+            font-weight: 800 !important; 
+            color: #475569 !important; 
+            text-transform: uppercase; 
+            font-size: 0.75rem; 
+            letter-spacing: 0.025em;
+            border-bottom: 2px solid #cbd5e1 !important;
+        }
+        
+        .preview-table tr:nth-child(even) { background: #fafbfc; }
+        .preview-table tr:hover { background: #f1f5f9 !important; }
+        
+        /* Status Colors */
+        .status-pass { color: var(--success) !important; font-weight: 800; background: #ecfdf5 !important; }
+        .status-fail { color: var(--danger) !important; font-weight: 800; background: #fef2f2 !important; }
+        .status-na { color: #94a3b8; font-style: italic; opacity: 0.5; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="title-area">
+                <i class="fas fa-file-excel"></i>
+                <div>
+                    <h1>API_Mask_Aadhar_Card_claude.xlsx</h1>
+                    <div style="font-size: 0.75rem; color: #64748b; font-weight: 600; margin-top: 0.2rem; text-transform: uppercase;">Spreadsheet Preview (All Rows)</div>
+                </div>
+            </div>
+            <div class="actions">
+                <button onclick="window.close()" class="btn btn-back"><i class="fas fa-times"></i> Close Tab</button>
+                <a href="API_Mask_Aadhar_Card_claude.xlsx" download="API_Mask_Aadhar_Card_claude.xlsx" class="btn btn-download"><i class="fas fa-download"></i> Download Excel</a>
+            </div>
+        </header>
+        <div class="table-wrapper">
+            <table border="1" class="dataframe preview-table">
+  <tbody>
+    <tr>
+      <td>TC ID</td>
+      <td>Group</td>
+      <td>Priority</td>
+      <td>Title / Description</td>
+      <td>Steps / Details</td>
+      <td>Expected Result</td>
+      <td>Pass Criteria</td>
+      <td>Status</td>
+      <td>Actual Result</td>
+    </tr>
+    <tr>
+      <td>TC-01: Fetch tenant config</td>
+      <td>Setup</td>
+      <td>High</td>
+      <td>Fetch existing crpo.tenantConfigurations to store original state for teardown.</td>
+      <td>1. Login to CRPO.\n2. Fetch current crpo.tenantConfigurations.</td>
+      <td>Original config is stored.</td>
+      <td>Config is fetched successfully.</td>
+      <td>PASS</td>
+      <td>pref_id=277, isMaskCandidateAadhaarNumber=False</td>
+    </tr>
+    <tr>
+      <td>TC-02: Enable masking config</td>
+      <td>Happy Path</td>
+      <td>High</td>
+      <td>Set isMaskCandidateAadhaarNumber=true in crpo.tenantConfigurations.</td>
+      <td>1. Set isMaskCandidateAadhaarNumber=true.\n2. Save config.</td>
+      <td>Config is updated.</td>
+      <td>isMaskCandidateAadhaarNumber is true.</td>
+      <td>PASS</td>
+      <td>isMaskCandidateAadhaarNumber=True</td>
+    </tr>
+    <tr>
+      <td>TC-03: Create candidate (masking ON)</td>
+      <td>Happy Path</td>
+      <td>High</td>
+      <td>Create candidate with AadhaarNo=[MASKED_AADHAAR], masking is ON.</td>
+      <td>1. Create candidate with AadhaarNo.</td>
+      <td>Candidate created.</td>
+      <td>Candidate created successfully.</td>
+      <td>PASS</td>
+      <td>CandidateId=1463</td>
+    </tr>
+    <tr>
+      <td>TC-04: Verify masked AadhaarNo</td>
+      <td>Happy Path</td>
+      <td>High</td>
+      <td>Same AadhaarNo=[MASKED_AADHAAR] must be stored as XXXX-XXXX-3333 when masking is ON.</td>
+      <td>1. GET candidate details.</td>
+      <td>AadhaarNo is masked.</td>
+      <td>AadhaarNo starts with XXXX-XXXX.</td>
+      <td>PASS</td>
+      <td>Input=[MASKED_AADHAAR], Expected=XXXX-XXXX-3333, Got=XXXX-XXXX-3333</td>
+    </tr>
+    <tr>
+      <td>TC-05: Disable masking config</td>
+      <td>Happy Path</td>
+      <td>High</td>
+      <td>Set isMaskCandidateAadhaarNumber=false in crpo.tenantConfigurations.</td>
+      <td>1. Set isMaskCandidateAadhaarNumber=false.\n2. Save config.</td>
+      <td>Config is updated.</td>
+      <td>isMaskCandidateAadhaarNumber is false.</td>
+      <td>PASS</td>
+      <td>isMaskCandidateAadhaarNumber=False</td>
+    </tr>
+    <tr>
+      <td>TC-06: Create candidate (masking OFF)</td>
+      <td>Happy Path</td>
+      <td>High</td>
+      <td>Create candidate with SAME AadhaarNo=[MASKED_AADHAAR], masking is OFF.</td>
+      <td>1. Create candidate with AadhaarNo.</td>
+      <td>Candidate created.</td>
+      <td>Candidate created successfully.</td>
+      <td>PASS</td>
+      <td>CandidateId=1475</td>
+    </tr>
+    <tr>
+      <td>TC-07: Verify unmasked AadhaarNo</td>
+      <td>Happy Path</td>
+      <td>High</td>
+      <td>Same AadhaarNo=[MASKED_AADHAAR] must be stored as-is when masking is OFF.</td>
+      <td>1. GET candidate details.</td>
+      <td>AadhaarNo is raw number.</td>
+      <td>AadhaarNo is stored as-is without masking.</td>
+      <td>PASS</td>
+      <td>Input=[MASKED_AADHAAR], Expected=[MASKED_AADHAAR], Got=[MASKED_AADHAAR]</td>
+    </tr>
+    <tr>
+      <td>TC-09: Already-masked input not double-masked</td>
+      <td>Edge Cases</td>
+      <td>Medium</td>
+      <td>AadhaarNo already starting with 'X' must not be re-masked (idempotent check).</td>
+      <td>1. Provide already masked AadhaarNo.\n2. Create candidate.</td>
+      <td>Candidate created.</td>
+      <td>Value remains as-is (no double masking).</td>
+      <td>PASS</td>
+      <td>Input=XXXX-XXXX-7890, Got=XXXX-XXXX-7890</td>
+    </tr>
+    <tr>
+      <td>TC-10: Empty AadhaarNo creates candidate OK</td>
+      <td>Edge Cases</td>
+      <td>Medium</td>
+      <td>Empty AadhaarNo must not cause a server error - candidate should still be created.</td>
+      <td>1. Provide empty string as AadhaarNo.\n2. Create candidate.</td>
+      <td>Candidate created.</td>
+      <td>No server error.</td>
+      <td>PASS</td>
+      <td>CandidateId=1479</td>
+    </tr>
+    <tr>
+      <td>TC-10b: Empty AadhaarNo stored as empty/null</td>
+      <td>Edge Cases</td>
+      <td>Medium</td>
+      <td>Empty AadhaarNo must be stored as empty string or null.</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>PASS</td>
+      <td>AadhaarNo=None</td>
+    </tr>
+    <tr>
+      <td>TC-11: No AadhaarNo field - candidate created OK</td>
+      <td>Edge Cases</td>
+      <td>Medium</td>
+      <td>Omitting AadhaarNo entirely must not prevent candidate creation.</td>
+      <td>1. Omit AadhaarNo field from JSON.</td>
+      <td>Candidate created.</td>
+      <td>No server error.</td>
+      <td>PASS</td>
+      <td>CandidateId=1481</td>
+    </tr>
+    <tr>
+      <td>TC-U1a: Candidate created with raw Aadhaar</td>
+      <td>Update Tests</td>
+      <td>High</td>
+      <td>Created with flag=false, AadhaarNo=[MASKED_AADHAAR] should be stored as-is.</td>
+      <td>1. Create candidate (Flag=False).</td>
+      <td>Candidate created with raw Aadhaar.</td>
+      <td>AadhaarNo is stored as-is.</td>
+      <td>PASS</td>
+      <td>CandidateId=1483, AadhaarNo=[MASKED_AADHAAR]</td>
+    </tr>
+    <tr>
+      <td>TC-U1b: AadhaarNo masked after update with flag=true</td>
+      <td>Update Tests</td>
+      <td>High</td>
+      <td>Updating candidate with AadhaarNo in payload + flag=true must mask the number.</td>
+      <td>1. Set Flag=True.\n2. Update candidate with AadhaarNo.</td>
+      <td>AadhaarNo is masked.</td>
+      <td>Final stored value is masked.</td>
+      <td>PASS</td>
+      <td>Before=[MASKED_AADHAAR], After=XXXX-XXXX-7777, Expected=XXXX-XXXX-7777</td>
+    </tr>
+    <tr>
+      <td>TC-U2a: Candidate created with raw Aadhaar</td>
+      <td>Update Tests</td>
+      <td>Medium</td>
+      <td>Created with flag=false, AadhaarNo=[MASKED_AADHAAR] should be stored as-is.</td>
+      <td>1. Create candidate (Flag=False).</td>
+      <td>AadhaarNo stored as-is.</td>
+      <td>Stored value = Raw number.</td>
+      <td>PASS</td>
+      <td>CandidateId=1485, AadhaarNo=[MASKED_AADHAAR]</td>
+    </tr>
+    <tr>
+      <td>TC-U2b: AadhaarNo stays raw when not in update payload</td>
+      <td>Update Tests</td>
+      <td>Medium</td>
+      <td>Updating without AadhaarNo in payload must NOT retroactively mask existing value.</td>
+      <td>1. Set Flag=True.\n2. Update candidate without AadhaarNo field.</td>
+      <td>Existing AadhaarNo stays raw.</td>
+      <td>No retroactive masking.</td>
+      <td>PASS</td>
+      <td>Before=[MASKED_AADHAAR], After=[MASKED_AADHAAR], Expected=[MASKED_AADHAAR]</td>
+    </tr>
+    <tr>
+      <td>TC-U3: AadhaarNo stays raw after update with flag=false</td>
+      <td>Update Tests</td>
+      <td>Medium</td>
+      <td>Updating with AadhaarNo + flag=false must keep the raw number unchanged.</td>
+      <td>1. Update candidate with AadhaarNo while Flag=False.</td>
+      <td>AadhaarNo stays raw.</td>
+      <td>Final stored value is raw.</td>
+      <td>PASS</td>
+      <td>Input=[MASKED_AADHAAR], Stored=[MASKED_AADHAAR]</td>
+    </tr>
+    <tr>
+      <td>TC-12: Default masking when config=None</td>
+      <td>Negative Tests</td>
+      <td>Medium</td>
+      <td>When isMaskCandidateAadhaarNumber is None, default behavior is masking ON.</td>
+      <td>1. Set isMaskCandidateAadhaarNumber to None.\n2. Create candidate.</td>
+      <td>Masking is ON by default.</td>
+      <td>AadhaarNo is masked.</td>
+      <td>PASS</td>
+      <td>Expected=XXXX-XXXX-7777, Got=XXXX-XXXX-7777</td>
+    </tr>
+    <tr>
+      <td>TC-S1: No auth token on create_candidate</td>
+      <td>Security Tests</td>
+      <td>High</td>
+      <td>Create candidate without X-Auth-Token must be rejected. 500 = rejected but not graceful.</td>
+      <td>1. Call create_candidate without token.</td>
+      <td>Request rejected.</td>
+      <td>401/403 status code.</td>
+      <td>PASS</td>
+      <td>HTTP 500, status=None (WARNING: should be 401/403, not 500)</td>
+    </tr>
+    <tr>
+      <td>TC-S2: Forged token on create_candidate</td>
+      <td>Security Tests</td>
+      <td>High</td>
+      <td>Create candidate with a forged/random token must be rejected.</td>
+      <td>1. Call create_candidate with random token.</td>
+      <td>Request rejected.</td>
+      <td>401/403 status code.</td>
+      <td>PASS</td>
+      <td>HTTP 200, status=KO, message=''</td>
+    </tr>
+    <tr>
+      <td>TC-S3: SQL injection in AadhaarNo</td>
+      <td>Security Tests</td>
+      <td>High</td>
+      <td>SQL injection strings in AadhaarNo must not cause 500 or leak data.</td>
+      <td>1. Provide SQL payloads in AadhaarNo field.</td>
+      <td>No crash/leak.</td>
+      <td>No 500 error, data stored as string.</td>
+      <td>PASS</td>
+      <td>payload="'; DROP TABLE candidates; --": created cid=1491, stored='XXXX-XXXX-XXXX-XXXX-XXXX-XXXX-'; payload='1 OR 1=1': created cid=1493, stored='XXXX- 1=1'; payload="[MASKED_AADHAAR]' UNION SELECT * F": created cid=1495, stored='XXXX-XXXX-XXXX-XXXX-XXXX-XXXX-'</td>
+    </tr>
+    <tr>
+      <td>TC-S4: XSS in AadhaarNo not reflected</td>
+      <td>Security Tests</td>
+      <td>High</td>
+      <td>XSS payload in AadhaarNo must not be echoed back unescaped in GET response.</td>
+      <td>1. Provide &lt;script&gt; tags in AadhaarNo.</td>
+      <td>Not reflected unescaped.</td>
+      <td>No script execution/raw reflection.</td>
+      <td>PASS</td>
+      <td>cid=1497, stored='XXXX-XXXX-XXXX-XXXX-XXXX-XXXX-X-ipt&gt;', xss_reflected=False</td>
+    </tr>
+    <tr>
+      <td>TC-S5: No auth token on get_candidate</td>
+      <td>Security Tests</td>
+      <td>High</td>
+      <td>GET candidate without auth must be rejected — no PII exposure. 500 = rejected but not graceful.</td>
+      <td>1. Call get_candidate without token.</td>
+      <td>Request rejected.</td>
+      <td>No PII exposure.</td>
+      <td>PASS</td>
+      <td>HTTP 500, status=None, pii_leaked=False (WARNING: should be 401/403, not 500)</td>
+    </tr>
+    <tr>
+      <td>TC-S6: Forged token on get_candidate</td>
+      <td>Security Tests</td>
+      <td>High</td>
+      <td>GET candidate with forged token must be rejected — no PII exposure.</td>
+      <td>1. Call get_candidate with random token.</td>
+      <td>Request rejected.</td>
+      <td>No PII exposure.</td>
+      <td>PASS</td>
+      <td>HTTP 200, status=KO</td>
+    </tr>
+    <tr>
+      <td>TC-S7: No auth token on save_app_preferences</td>
+      <td>Security Tests</td>
+      <td>High</td>
+      <td>Changing tenant config without auth must be rejected. 500 = rejected but not graceful.</td>
+      <td>1. Call save_app_preferences without token.</td>
+      <td>Request rejected.</td>
+      <td>Config remains unchanged.</td>
+      <td>PASS</td>
+      <td>HTTP 500, status=None (WARNING: should be 401/403, not 500)</td>
+    </tr>
+    <tr>
+      <td>TC-S8: Script tags stored safely with masking ON</td>
+      <td>Security Tests</td>
+      <td>High</td>
+      <td>HTML/JS payloads in AadhaarNo must not survive masking — no stored XSS.</td>
+      <td>1. Provide &lt;script&gt; tags when masking is ON.</td>
+      <td>Value is masked.</td>
+      <td>Masking removes/replaces script tags.</td>
+      <td>PASS</td>
+      <td>cid=1499, stored='XXXX-XXXX-XXXX-XXXX-XXXX-XXXX-XXXX-XXXX-XXXX-9012', has_html=False</td>
+    </tr>
+    <tr>
+      <td>TC-08: Restore original config</td>
+      <td>Teardown</td>
+      <td>Medium</td>
+      <td>Restore crpo.tenantConfigurations to its original state after tests.</td>
+      <td>1. Restore the original config stored in TC-01.</td>
+      <td>Config is restored.</td>
+      <td>Original state is recovered.</td>
+      <td>PASS</td>
+      <td>original=False, restored=False</td>
+    </tr>
+  </tbody>
+</table>
+        </div>
+    </div>
+    <script>
+        document.querySelectorAll('.preview-table tr').forEach((tr, rowIndex) => {
+            let statusCount = 0;
+            const cells = tr.querySelectorAll('td');
+            
+            cells.forEach(td => {
+                const text = td.innerText.trim().toUpperCase();
+                
+                // Highlight Pass/Fail
+                if (['PASS', 'SUCCESS', 'PASSED'].includes(text)) {
+                    td.classList.add('status-pass');
+                } else if (['FAIL', 'FAILURE', 'FAILED', 'ERROR'].includes(text)) {
+                    td.classList.add('status-fail');
+                } else if (text === 'NA') {
+                    td.classList.add('status-na');
+                }
+                
+                // Header detection keywords
+                if (['STATUS', 'IDENTITY', 'ID'].includes(text)) {
+                    statusCount++;
+                }
+            });
+            
+            // If row has multiple 'Status' labels, it's a sub-header
+            if (statusCount >= 2 && rowIndex > 0) {
+                tr.classList.add('sub-header');
+            }
+        });
+    </script>
+</body>
+</html>

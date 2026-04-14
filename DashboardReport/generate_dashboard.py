@@ -1,0 +1,907 @@
+import os
+import re
+import datetime
+import json
+import html
+import xlrd
+import subprocess
+import re
+from pathlib import Path
+from openpyxl import load_workbook
+import pandas as pd
+
+from Config import configfile
+
+# Config from central source
+REPORTS_DIR = Path(configfile.REPORT_DIR)
+OUTPUT_FILE = Path(configfile.DASHBOARD_REPORT)
+MASTER_LIST_FILE = Path(configfile.MASTER_REPORTS_LIST)
+TARGET_EXECUTION_GOAL = configfile.TARGET_EXECUTION_GOAL
+EXPECTED_REPORT_COUNT = configfile.EXPECTED_REPORT_COUNT
+
+def sanitize_content(text):
+    """Sanitize sensitive information from report content."""
+    if not isinstance(text, str): return text
+    
+    # Mask amsin domains and subdomains
+    text = re.sub(r'https?://[a-zA-Z0-9.-]*amsin\.hirepro\.in[^\s"\'<>]*', 'https://[MASKED_INTERNAL_URL]', text, flags=re.IGNORECASE)
+    
+    # Mask hirepro internal links that might look like /test-all-hirepro-files/
+    text = re.sub(r'/(?:test-all-hirepro-files|zwayam|hirepro-reports)/[a-zA-Z0-9._/-]*', '/[MASKED_PATH]/', text, flags=re.IGNORECASE)
+    
+    # Mask AWS Access Keys
+    text = re.sub(r'AKIA[A-Z0-9]{16}', 'AKIA[MASKED_AWS_KEY]', text)
+    
+    # Mask potential tokens in URLs (Base64 patterns)
+    text = re.sub(r'/(?:home|token|interview)/[a-zA-Z0-9+/=]{30,}', '/[MASKED_TOKEN]/', text)
+    
+    # Mask S3 signed URL components (Signature, Expires, AWSAccessKeyId, etc.)
+    text = re.sub(r'(Signature|Expires|AWSAccessKeyId|X-Amz-Signature|X-Amz-Algorithm|X-Amz-Credential|X-Amz-Date|X-Amz-SignedHeaders|X-Amz-Expires)=[^&\s"\'<>]+', r'\1=[MASKED]', text, flags=re.IGNORECASE)
+    
+    # Mask internal emails
+    text = re.sub(r'[a-zA-Z0-9._%+-]+@hirepro\.in', '[USER]@hirepro.in', text, flags=re.IGNORECASE)
+    
+    # Mask other emails (PII)
+    text = re.sub(r'[a-zA-Z0-9._%+-]+@(?!hirepro\.in)[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}', '[MASKED_EMAIL]', text, flags=re.IGNORECASE)
+    
+    # Mask Indian phone numbers
+    text = re.sub(r'\b(?:(?:\+91|0)?[6-9]\d{9})\b', '[MASKED_PHONE]', text)
+    
+    # Mask PanNo and AadhaarNo patterns
+    text = re.sub(r'\b[A-Z]{5}\d{4}[A-Z]\b', '[MASKED_PAN]', text)
+    text = re.sub(r'\b\d{12}\b', '[MASKED_AADHAAR]', text)
+    
+    # Specific amsin without full URL if in a table cell or similar
+    text = re.sub(r'\bamsin\b', '[MASKED_REF]', text, flags=re.IGNORECASE)
+    
+    return text
+
+def get_report_folders(base_dir, limit=5):
+    """Find the last 'limit' date folders (YYYYMMDD) in reverse chronological order."""
+    if not base_dir.exists(): return []
+    folders = []
+    for d in base_dir.iterdir():
+        if d.is_dir() and re.match(r'^\d{8}$', d.name):
+            folders.append(d.name)
+    folders.sort(reverse=True)
+    return folders[:limit]
+
+def create_excel_preview(filepath):
+    """Generate a clean HTML preview of an Excel file."""
+    try:
+        html_path = filepath.parent / (filepath.name + ".html")
+        # Read without assuming header to show all rows (including metadata/off-row headers)
+        df = pd.read_excel(filepath, header=None)
+        # Fill NA values with 'NA' string
+        df = df.fillna('NA')
+        table_html = df.to_html(classes='preview-table', index=False, header=False)
+        
+        table_html = sanitize_content(table_html)
+        
+        filename = filepath.name
+        html_content = f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preview: {filename}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {{ --primary: #4f46e5; --bg: #f8fafc; --text: #1e293b; --border: #e2e8f0; --success: #10b981; --danger: #ef4444; }}
+        body {{ font-family: 'Outfit', sans-serif; background-color: var(--bg); color: var(--text); padding: 2rem; margin: 0; }}
+        .container {{ max-width: 1400px; margin: 0 auto; background: white; padding: 2.5rem; border-radius: 1.5rem; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05); border: 1px solid var(--border); }}
+        header {{ display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 2px solid var(--bg); }}
+        .title-area {{ display: flex; align-items: center; gap: 1rem; }}
+        .title-area i {{ font-size: 2rem; color: var(--primary); }}
+        h1 {{ font-size: 1.5rem; font-weight: 800; margin: 0; }}
+        .actions {{ display: flex; gap: 1rem; }}
+        .btn {{ text-decoration: none; padding: 0.6rem 1.25rem; border-radius: 10px; font-weight: 700; font-size: 0.85rem; display: flex; align-items: center; gap: 0.5rem; transition: all 0.2s; border: none; cursor: pointer; }}
+        .btn-download {{ background: var(--primary); color: white; }}
+        .btn-download:hover {{ transform: translateY(-2px); box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3); }}
+        .btn-back {{ background: #f1f5f9; color: var(--text); }}
+        .btn-back:hover {{ background: #e2e8f0; }}
+        .table-wrapper {{ overflow-x: auto; border-radius: 12px; border: 1px solid var(--border); background: white; }}
+        .preview-table {{ width: 100%; border-collapse: collapse; font-size: 0.85rem; border-spacing: 0; }}
+        .preview-table td {{ padding: 0.85rem 1.15rem; border-bottom: 1px solid var(--border); border-right: 1px solid var(--border); white-space: nowrap; color: var(--text); }}
+        .preview-table tr:hover {{ background: #f1f5f9 !important; }}
+        
+        /* Header & Sub-header Styling */
+        .preview-table tr:first-child td,
+        .preview-table tr.sub-header td {{ 
+            background: #f1f5f9 !important; 
+            font-weight: 800 !important; 
+            color: #475569 !important; 
+            text-transform: uppercase; 
+            font-size: 0.75rem; 
+            letter-spacing: 0.025em;
+            border-bottom: 2px solid #cbd5e1 !important;
+        }}
+        
+        .preview-table tr:nth-child(even) {{ background: #fafbfc; }}
+        .preview-table tr:hover {{ background: #f1f5f9 !important; }}
+        
+        /* Status Colors */
+        .status-pass {{ color: var(--success) !important; font-weight: 800; background: #ecfdf5 !important; }}
+        .status-fail {{ color: var(--danger) !important; font-weight: 800; background: #fef2f2 !important; }}
+        .status-na {{ color: #94a3b8; font-style: italic; opacity: 0.5; }}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="title-area">
+                <i class="fas fa-file-excel"></i>
+                <div>
+                    <h1>{filename}</h1>
+                    <div style="font-size: 0.75rem; color: #64748b; font-weight: 600; margin-top: 0.2rem; text-transform: uppercase;">Spreadsheet Preview (All Rows)</div>
+                </div>
+            </div>
+            <div class="actions">
+                <button onclick="window.close()" class="btn btn-back"><i class="fas fa-times"></i> Close Tab</button>
+                <a href="{filename}" download="{filename}" class="btn btn-download"><i class="fas fa-download"></i> Download Excel</a>
+            </div>
+        </header>
+        <div class="table-wrapper">
+            {table_html}
+        </div>
+    </div>
+    <script>
+        document.querySelectorAll('.preview-table tr').forEach((tr, rowIndex) => {{
+            let statusCount = 0;
+            const cells = tr.querySelectorAll('td');
+            
+            cells.forEach(td => {{
+                const text = td.innerText.trim().toUpperCase();
+                
+                // Highlight Pass/Fail
+                if (['PASS', 'SUCCESS', 'PASSED'].includes(text)) {{
+                    td.classList.add('status-pass');
+                }} else if (['FAIL', 'FAILURE', 'FAILED', 'ERROR'].includes(text)) {{
+                    td.classList.add('status-fail');
+                }} else if (text === 'NA') {{
+                    td.classList.add('status-na');
+                }}
+                
+                // Header detection keywords
+                if (['STATUS', 'IDENTITY', 'ID'].includes(text)) {{
+                    statusCount++;
+                }}
+            }});
+            
+            // If row has multiple 'Status' labels, it's a sub-header
+            if (statusCount >= 2 && rowIndex > 0) {{
+                tr.classList.add('sub-header');
+            }}
+        }});
+    </script>
+</body>
+</html>"""
+        html_path.write_text(html_content, encoding='utf-8')
+        return f"{filepath.name}.html"
+    except Exception as e:
+        print(f"Error creating preview for {filepath}: {e}")
+        return None
+
+def scan_folder(folder_path, date_str):
+    """Scan a specific folder for report files and extract metrics."""
+    reports = []
+    for f in folder_path.iterdir():
+        if not f.is_file(): continue
+        if f.suffix not in ('.html', '.xls', '.xlsx'): continue
+        if f.name.endswith('.xls.html') or f.name.endswith('.xlsx.html'): continue
+        
+        mod_ts = f.stat().st_mtime
+        entry = {
+            "name": f.name, 
+            "path": f"reports/{date_str}/{f.name}", 
+            "type": "HTML" if f.suffix == '.html' else "Excel",
+            "mod_time": datetime.datetime.fromtimestamp(mod_ts).strftime('%Y-%m-%d %H:%M:%S'),
+            "mod_time_ts": mod_ts, 
+            "summary": {}
+        }
+        if f.suffix == '.html':
+            with f.open('r', encoding='utf-8', errors='ignore') as file: 
+                original_content = file.read()
+                entry["summary"] = extract_counts(original_content[:500000], f.name)
+            
+            # Sanitize original HTML report in-place
+            sanitized_content = sanitize_content(original_content)
+            if sanitized_content != original_content:
+                with f.open('w', encoding='utf-8') as file:
+                    file.write(sanitized_content)
+            
+            entry["view_path"] = entry["path"]
+        else:
+            entry["summary"] = extract_excel_counts(f)
+            preview_file = create_excel_preview(f)
+            entry["view_path"] = f"reports/{date_str}/{preview_file}" if preview_file else entry["path"]
+        reports.append(entry)
+    return reports
+
+# Pre-compiled regex patterns for speed
+NEWMAN_REQUESTS_RE = re.compile(r'Total Requests <span class="badge badge-light">(\d+)</span>')
+NEWMAN_FAILED_RE = re.compile(r'Failed Tests <span class="badge badge-light">(\d+)</span>')
+NEWMAN_COLLECTION_RE = re.compile(r'<strong> Collection:</strong>\s*(.*?)\s*<br>')
+MOCHAWESOME_RE = re.compile(r'data-raw="(.*?)"')
+TITLE_RE = re.compile(r'<title>(.*?)</title>')
+
+def extract_counts(html_content, filename):
+    """Extract test metrics from HTML reports (Newman or Mochawesome)."""
+    data = {"requests": 0, "failed": 0, "skipped": 0, "collection": "Unknown", "pass_percent": 0}
+    clean_html = lambda text: html.unescape(text).strip() if text else ""
+    if "Newman Run Dashboard" in html_content or "newman-report" in html_content:
+        m_req = NEWMAN_REQUESTS_RE.search(html_content); m_fail = NEWMAN_FAILED_RE.search(html_content); m_coll = NEWMAN_COLLECTION_RE.search(html_content)
+        if m_req: data["requests"] = int(m_req.group(1))
+        if m_fail: data["failed"] = int(m_fail.group(1))
+        if m_coll: data["collection"] = sanitize_content(clean_html(m_coll.group(1)))
+        if data["requests"] > 0: data["pass_percent"] = round(((data["requests"] - data["failed"]) / data["requests"]) * 100, 1)
+        return data
+    if "mochawesome" in html_content:
+        m_raw = MOCHAWESOME_RE.search(html_content)
+        if m_raw:
+            try:
+                stats = json.loads(html.unescape(m_raw.group(1))).get('stats', {})
+                data["requests"], data["failed"], data["pass_percent"] = stats.get('tests', 0), stats.get('failures', 0), stats.get('passPercent', 0)
+                m_title = TITLE_RE.search(html_content)
+                if m_title: data["collection"] = sanitize_content(clean_html(m_title.group(1)))
+                return data
+            except: pass
+    return data
+
+def extract_excel_counts(filepath):
+    """Extract test metrics from Excel reports (.xls or .xlsx)."""
+    data = {"requests": 0, "failed": 0, "collection": "Excel Data Asset", "pass_percent": 0}
+    try:
+        suffix = filepath.suffix.lower()
+        if suffix == '.xls':
+            workbook = xlrd.open_workbook(filepath)
+            sheet = workbook.sheet_by_index(0)
+            all_rows = [sheet.row_values(i) for i in range(sheet.nrows)]
+        else:
+            wb = load_workbook(filepath, data_only=True, read_only=True)
+            sheet = wb.active
+            all_rows = [[cell.value for cell in row] for row in sheet.iter_rows()]
+            wb.close()
+
+        if not all_rows: return data
+        row_values = all_rows[0]
+        p_val, f_val = 0, 0
+        pass_headers = {"no.of test cases", "success cases", "passed cases", "total pass steps", "sessions pass", "total pass"}
+        fail_headers = {"failed test cases", "failure cases", "failed cases", "total fail steps", "failed count", "total fail"}
+        
+        found_summary = False
+        for i, val in enumerate(row_values):
+            s = str(val).strip().lower() if val is not None else ""
+            if any(h in s for h in pass_headers):
+                if i + 1 < len(row_values) and isinstance(row_values[i+1], (int, float)):
+                    p_val = int(row_values[i+1])
+                    found_summary = True
+            elif any(h in s for h in fail_headers):
+                if i + 1 < len(row_values) and isinstance(row_values[i+1], (int, float)):
+                    f_val = int(row_values[i+1])
+                    found_summary = True
+
+        if not found_summary:
+            status_idx = -1
+            for i, val in enumerate(row_values):
+                if str(val).strip().lower() == 'status':
+                    status_idx = i
+                    break
+            
+            if status_idx != -1:
+                for row in all_rows[1:]:
+                    if status_idx < len(row):
+                        status_val = str(row[status_idx]).strip().upper()
+                        if status_val == 'PASS': p_val += 1
+                        elif status_val == 'FAIL': f_val += 1
+
+        total = p_val + f_val
+        data["requests"], data["failed"] = total, f_val
+        if total > 0: data["pass_percent"] = round(((total - f_val) / total) * 100, 1)
+        if row_values and isinstance(row_values[0], str): data["collection"] = sanitize_content(row_values[0])
+    except Exception as e: print(f"Error reading Excel {filepath}: {e}")
+    return data
+
+def get_git_commit():
+    """Retrieve current Git commit hash."""
+    try: return subprocess.check_output(['git', 'rev-parse', '--short', 'HEAD'], stderr=subprocess.DEVNULL).decode('ascii').strip()
+    except: return "Unknown"
+
+def classify_report(filename):
+    """Determine the group category for a report based on its filename."""
+    upper_name = filename.upper()
+    if upper_name.endswith('_PW.XLSX'): return "AI - Playwright Reports"
+    if upper_name.endswith('_CLAUDE.XLSX'): return "AI - Claude Reports"
+    if upper_name.startswith('API_'): return "API Reports"
+    if upper_name.startswith('UI_SSO_'): return "SSO Reports"
+    if upper_name.startswith('UI_') and 'SLOT' in upper_name: return "SLOTS Reports"
+    if upper_name.endswith('_MS.XLS') or upper_name.endswith('_MS.XLSX'): return "Microsite Reports"
+    if upper_name.startswith('UI_'): return "CRPO Reports"
+    if upper_name.startswith('SPRINT_'): return "ATS Reports"
+    return "Cypress Reports"
+
+def generate_styles():
+    """Return the CSS style block."""
+    return """
+    <style>
+        :root {
+            --primary: #4f46e5; --bg: #f8fafc; --card-bg: #ffffff;
+            --text: #1e293b; --text-muted: #64748b; --success: #10b981; --danger: #ef4444;
+            --border: #e2e8f0; --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Outfit', sans-serif; }
+        html, body { -ms-overflow-style: none; scrollbar-width: none; overflow-x: hidden; }
+        html::-webkit-scrollbar, body::-webkit-scrollbar { display: none; }
+        body { background-color: var(--bg); color: var(--text); padding: 1.5rem 1rem; width: 100%; min-height: 100vh; }
+        .container { max-width: 1240px; margin: 0 auto; }
+        header { margin-bottom: 1.5rem; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
+        h1 { font-size: 1.4rem; font-weight: 800; color: var(--text); line-height: 1.2; }
+        .subtitle { color: var(--text-muted); font-size: 0.75rem; margin-top: 0.25rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+        
+        .hero-banner { background: var(--card-bg); border: 1px solid var(--border); padding: 2rem; border-radius: 1.5rem; margin-bottom: 2.5rem; box-shadow: var(--shadow); display: flex; align-items: center; gap: 3rem; position: relative; overflow: hidden; }
+        .hero-banner::before { content: ''; position: absolute; left: 0; top: 0; width: 6px; height: 100%; background: var(--primary); }
+        .hero-main { flex: 1; }
+        .hero-label { font-size: 0.85rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.5rem; letter-spacing: 0.05em; }
+        .hero-value { font-size: 3rem; font-weight: 900; color: var(--text); display: flex; align-items: baseline; gap: 0.5rem; }
+        .hero-target { font-size: 1.25rem; color: var(--text-muted); font-weight: 500; }
+        .progress-container { flex: 1.5; }
+        .progress-header { display: flex; justify-content: space-between; margin-bottom: 0.75rem; font-weight: 700; font-size: 0.9rem; }
+        .progress-outer { height: 16px; background: #f1f5f9; border-radius: 8px; overflow: hidden; }
+        .progress-inner { height: 100%; background: linear-gradient(90deg, #4f46e5, #818cf8); transition: width 1s cubic-bezier(0.4, 0, 0.2, 1); }
+
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; margin-bottom: 3rem; }
+        .stat-card { background: linear-gradient(145deg, #ffffff, #f9fafb); border: 1px solid var(--border); padding: 1.75rem; border-radius: 1.5rem; display: flex; align-items: center; gap: 1.5rem; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 10px 20px -10px rgba(0,0,0,0.1); position: relative; overflow: hidden; }
+        .stat-card:hover { transform: translateY(-8px) scale(1.02); box-shadow: 0 20px 30px -15px rgba(0,0,0,0.15); border-color: rgba(79, 70, 229, 0.4); background: #ffffff; }
+        .stat-card::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; opacity: 0.6; }
+        .stat-card.blue::before { background: #4f46e5; } .stat-card.green::before { background: #10b981; }
+        .stat-card.red::before { background: #ef4444; } .stat-card.orange::before { background: #f59e0b; }
+        .stat-icon { width: 52px; height: 52px; border-radius: 1rem; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+        .icon-blue { background: #eff6ff; color: #3b82f6; } .icon-green { background: #ecfdf5; color: #10b981; }
+        .icon-red { background: #fff5f5; color: #ef4444; } .icon-orange { background: #fffbeb; color: #f59e0b; }
+        .stat-info .value { font-size: 2rem; font-weight: 900; display: block; color: var(--text); line-height: 1.1; }
+        .stat-info .label { color: var(--text-muted); font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 0.25rem; }
+
+        .alert-row { margin-bottom: 2rem; }
+        .alert-card { background: #fff5f5; border: 1px solid #fed7d7; padding: 1rem 1.5rem; border-radius: 1rem; display: flex; align-items: center; justify-content: space-between; color: #c53030; }
+        .alert-card i { font-size: 1.25rem; margin-right: 0.75rem; }
+
+        details { background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; margin-bottom: 1.5rem; box-shadow: var(--shadow); position: relative; overflow: visible; }
+        summary { padding: 1.5rem; font-weight: 700; font-size: 1.1rem; cursor: pointer; background: #f8fafc; display: flex; justify-content: space-between; align-items: center; list-style: none; position: relative; border-radius: 15px 15px 0 0; }
+        details:not([open]) summary { border-radius: 15px; }
+        summary::after { content: '\\f078'; font-family: "Font Awesome 6 Free"; font-weight: 900; transition: transform 0.3s; margin-left: 1rem; }
+        details[open] summary::after { transform: rotate(180deg); }
+        details[open] summary { border-bottom: 1px solid var(--border); margin-bottom: 0; }
+        
+        .content-wrapper { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        details[open] .content-wrapper { grid-template-rows: 1fr; }
+        .content-inner { overflow: hidden; }
+        
+        summary:hover { background: #f1f5f9 !important; }
+        summary span { transition: transform 0.2s; }
+        summary:hover span { transform: translateX(5px); }
+
+        table { width: 100%; border-collapse: collapse; }
+        th { background: #f8fafc; padding: 1rem 1.5rem; color: var(--text-muted); font-weight: 700; font-size: 0.8rem; text-transform: uppercase; text-align: left; border-bottom: 1px solid var(--border); }
+        td { padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border); vertical-align: middle; }
+        .report-link { color: var(--text); text-decoration: none; font-weight: 600; display: flex; align-items: center; gap: 0.75rem; }
+        .badge { padding: 0.5rem 0.75rem; border-radius: 8px; font-size: 0.7rem; font-weight: 700; }
+        .badge-html { background: #e0e7ff; color: #4338ca; } .badge-excel { background: #ecfdf5; color: #065f46; }
+        .chip { font-size: 0.8rem; padding: 6px 16px; border-radius: 20px; font-weight: 900; background: #f1f5f9; white-space: nowrap; display: inline-flex; align-items: center; justify-content: center; min-width: 70px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .chip.success { background: #d1fae5; color: #065f46; } .chip.danger { background: #fee2e2; color: #991b1b; }
+        .chip i { margin-right: 0.35rem; font-size: 0.7rem; opacity: 0.7; }
+        
+        .search-area { margin-bottom: 2rem; position: relative; }
+        .search-area input { width: 100%; padding: 1rem 3rem; border-radius: 12px; border: 1px solid var(--border); outline: none; }
+        .search-area i { position: absolute; left: 1.25rem; top: 50%; transform: translateY(-50%); color: var(--text-muted); z-index: 10; pointer-events: none; }
+        
+        footer { margin-top: 4rem; padding: 2rem 0; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; color: var(--text-muted); font-size: 0.85rem; font-weight: 500; }
+        .commit-badge { background: #f1f5f9; padding: 0.25rem 0.6rem; border-radius: 6px; font-family: monospace; font-weight: 700; color: var(--text); border: 1px solid var(--border); font-size: 0.75rem; }
+        
+        /* Liquid Glass Navigation */
+        .main-nav { 
+            display: flex; position: relative; justify-content: center; gap: 0; 
+            margin-bottom: 2.5rem; background: rgba(241, 245, 249, 0.75); 
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            padding: 0.45rem; border-radius: 99px; width: fit-content; margin: 0 auto 2.5rem auto;
+            border: 1px solid rgba(255,255,255,0.6); box-shadow: 0 8px 32px rgba(0,0,0,0.06);
+        }
+        .nav-btn { 
+            position: relative; z-index: 2; padding: 0.75rem 2.8rem; border-radius: 99px; 
+            border: none; background: transparent; color: var(--text-muted); 
+            font-weight: 700; cursor: pointer; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); 
+            display: flex; align-items: center; gap: 0.75rem; font-size: 0.95rem; 
+        }
+        .nav-btn.active { color: var(--primary); }
+        .nav-btn i { font-size: 1rem; transition: transform 0.3s; }
+        .nav-btn.active i { transform: scale(1.1); }
+        .nav-indicator {
+            position: absolute; height: calc(100% - 0.9rem); top: 0.45rem; left: 0.45rem;
+            background: white; border-radius: 99px; z-index: 1;
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.18);
+            width: 0;
+        }
+        
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        
+        /* Date Switching Styles */
+        .day-view { display: none; transform: translateY(10px); opacity: 0; transition: all 0.3s ease; }
+        .day-view.active { display: block; transform: translateY(0); opacity: 1; }
+        .view-btn { 
+            padding: 0.45rem 1.15rem; border-radius: 99px; 
+            border: 1px solid rgba(79, 70, 229, 0.15); 
+            background: rgba(255, 255, 255, 0.6); 
+            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            color: var(--primary); font-weight: 700; cursor: pointer; 
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); 
+            font-size: 0.75rem; position: relative; overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+            white-space: nowrap;
+        }
+        .view-btn::before {
+            content: ''; position: absolute; top: -50%; left: -150%; width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.5) 0%, transparent 70%);
+            transition: all 0.6s; pointer-events: none;
+        }
+        .view-btn:hover::before { left: -50%; top: -50%; }
+        .view-btn:hover { 
+            background: rgba(255, 255, 255, 0.8); 
+            border-color: rgba(79, 70, 229, 0.3); 
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(79, 70, 229, 0.1);
+        }
+        .view-btn.active { 
+            background: var(--primary); color: white; 
+            box-shadow: 0 8px 25px rgba(79, 70, 229, 0.35); 
+            border-color: var(--primary); 
+            transform: translateY(0);
+        }
+        .view-btn.active::before { display: none; }
+        .date-selector-wrapper { margin-bottom: 2rem; display: flex; align-items: center; gap: 1rem; }
+        .date-select-input { padding: 0.6rem 1rem; border-radius: 12px; border: 1px solid var(--border); font-weight: 600; font-family: 'Outfit'; color: var(--text); outline: none; background: white; cursor: pointer; }
+        .health-index { font-size: 0.7rem; font-weight: 800; padding: 2px 8px; border-radius: 4px; margin-left: 8px; }
+        .health-good { background: #d1fae5; color: #065f46; } .health-fair { background: #fffbeb; color: #92400e; } .health-bad { background: #fee2e2; color: #991b1b; }
+        
+        /* Custom Tooltip Styles - Bottom Placement */
+        [data-tooltip] { position: relative; cursor: pointer; }
+        [data-tooltip]::before {
+            content: attr(data-tooltip); position: absolute; top: 120%; left: 50%;
+            transform: translateX(-50%) translateY(-5px);
+            padding: 0.35rem 0.75rem; background: #f8fafc; color: #64748b;
+            font-size: 0.65rem; font-weight: 700; border-radius: 99px; white-space: nowrap;
+            opacity: 0; visibility: hidden; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: none; box-shadow: 0 4px 12px rgba(0,0,0,0.06); z-index: 1000;
+            border: 1px solid #e2e8f0; text-transform: uppercase; letter-spacing: 0.05em;
+        }
+        [data-tooltip]:hover::before { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+        
+        .floating-reset[data-tooltip]::before { top: auto; bottom: 100%; left: auto; right: 0; transform: translateY(5px); }
+        .floating-reset[data-tooltip]:hover::before { transform: translateY(0); }
+
+        @keyframes attentionBlink { 0% { opacity: 1; transform: scale(1); } 50% { opacity: 0.7; transform: scale(0.95); } 100% { opacity: 1; transform: scale(1); } }
+        .badge-urgent { animation: attentionBlink 1.5s infinite ease-in-out; background: white; color: var(--danger); padding: 0.35rem 0.85rem; border-radius: 99px; font-weight: 800; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.02em; box-shadow: 0 2px 4px rgba(239, 68, 68, 0.2); }
+        .sync-label { font-size: 0.65rem; font-weight: 800; color: #d97706; display: flex; align-items: center; gap: 4px; margin-top: 2px; text-transform: uppercase; }
+        .sync-label.error { color: #ea580c; }
+
+        /* History Section */
+        .history-section { background: var(--card-bg); border: 1px solid var(--border); border-radius: 1.5rem; padding: 1.5rem; box-shadow: var(--shadow); margin-bottom: 2.5rem; overflow: hidden; }
+        .trend-title { font-size: 1rem; font-weight: 800; margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.75rem; color: var(--text); }
+        .trend-title i { color: var(--primary); }
+        
+        .history-table-wrapper { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 0 -1.5rem; padding: 0 1.5rem; width: calc(100% + 3rem); }
+        .history-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; min-width: 580px; }
+        .history-table th { padding: 0.75rem; text-align: left; color: var(--text-muted); border-bottom: 1px solid var(--border); background: transparent; white-space: nowrap; }
+        .history-table td { padding: 0.75rem; border-bottom: 1px solid var(--border); vertical-align: middle; }
+        .history-date { font-weight: 700; color: var(--text); white-space: nowrap; }
+
+        .floating-reset {
+            position: fixed; bottom: 2rem; right: 2rem; width: 56px; height: 56px; 
+            background: var(--primary); color: white; border-radius: 50%; 
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.4); cursor: pointer;
+            z-index: 9999; border: none; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-decoration: none; font-size: 1.2rem;
+        }
+        .floating-reset:hover { transform: scale(1.1); box-shadow: 0 6px 16px rgba(79, 70, 229, 0.6); }
+        .floating-reset:hover i { transform: rotate(45deg); }
+        .floating-reset i { transition: transform 0.3s; }
+        .floating-reset:active { transform: scale(0.9); }
+        .floating-reset[data-tooltip]::before { top: auto; bottom: 125%; }
+        .floating-reset[data-tooltip]:hover::before { transform: translateX(-50%) translateY(0) rotate(0); }
+
+        @media (max-width: 768px) {
+            body { padding: 1rem 0.5rem; overflow-x: hidden; }
+            .container { width: 100%; padding: 0; }
+            header { grid-template-columns: 1fr; gap: 1rem; }
+            header > div { width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center !important; }
+            h1 { font-size: 1.2rem; }
+            .subtitle { font-size: 0.65rem; }
+            
+            .hero-value { font-size: 2rem; justify-content: center; }
+            .hero-target { font-size: 1rem; }
+            .hero-label { font-size: 0.75rem; }
+            .progress-container { width: 100%; }
+            .progress-header { font-size: 0.8rem; }
+            .hero-banner { flex-direction: column; gap: 1.5rem; text-align: center; padding: 1.5rem 1rem; margin: 0 auto 1.5rem auto; }
+            
+            .alert-card { flex-direction: column; text-align: center; gap: 1rem; padding: 1.25rem 1rem; }
+            .alert-card span { font-size: 0.85rem; line-height: 1.4; }
+            .badge-urgent { font-size: 0.65rem; padding: 0.3rem 0.6rem; }
+
+            .stats-grid { 
+                grid-template-columns: repeat(2, 1fr); 
+                background: white; 
+                border: 1px solid var(--border); 
+                border-radius: 1.25rem; 
+                padding: 0.5rem; 
+                gap: 0; 
+                margin-bottom: 2rem;
+            }
+            .stat-card { 
+                flex-direction: column; 
+                text-align: center; 
+                padding: 1.25rem 0.25rem; 
+                background: transparent !important; 
+                border: none !important; 
+                box-shadow: none !important; 
+            }
+            .stat-icon { width: 36px; height: 36px; font-size: 1rem; margin-bottom: 0.4rem; }
+            .stat-info .value { font-size: 1.25rem; }
+            .stat-info .label { font-size: 0.6rem; }
+            .stat-card:nth-child(1), .stat-card:nth-child(2) { border-bottom: 1px solid #f1f5f9 !important; }
+            .stat-card:nth-child(1), .stat-card:nth-child(3) { border-right: 1px solid #f1f5f9 !important; }
+            
+            .main-nav { padding: 0.25rem; width: 100%; max-width: 100%; margin-bottom: 1.5rem; }
+            .nav-btn { padding: 0.6rem 0.25rem; font-size: 0.75rem; flex: 1; justify-content: center; gap: 0.35rem; }
+            .nav-indicator { height: calc(100% - 0.5rem); top: 0.25rem; }
+
+            .history-section { padding: 0.75rem; border-radius: 1rem; overflow: visible; }
+            .history-table-wrapper { margin: 0; padding: 0; width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+            .history-table { font-size: 0.7rem; }
+            
+            .search-area input { font-size: 0.85rem; padding: 0.75rem 1rem 0.75rem 3rem; }
+            
+            .report-group { width: 100%; border-radius: 12px; }
+            summary { padding: 1.25rem 2.5rem 1.25rem 1rem; position: relative; }
+            summary::after { position: absolute; right: 1.25rem; top: 50%; transform: translateY(-50%); }
+            details[open] summary::after { transform: translateY(-50%) rotate(180deg); }
+            summary > div { flex-direction: column; align-items: center; text-align: center; gap: 0.75rem !important; width: 100%; }
+            summary span { font-size: 0.9rem !important; font-weight: 800; margin-right: 0; display: block; width: 100%; }
+            summary div .chip { font-size: 0.7rem; min-width: 50px; padding: 4px 10px; }
+            summary div div { justify-content: center !important; width: 100% !important; margin: 0 !important; }
+            
+            .content-inner { overflow-x: auto; width: 100%; }
+            table { min-width: 550px; }
+            td, th { padding: 0.75rem 0.5rem; font-size: 0.75rem; }
+            .view-btn { padding: 0.35rem 0.8rem; font-size: 0.65rem; }
+            
+            footer { flex-direction: column; gap: 1rem; text-align: center; font-size: 0.75rem; }
+            .floating-reset { display: none; }
+            [data-tooltip]::before { display: none !important; }
+        }
+        .loader-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255,255,255,0.7); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            display: flex; align-items: center; justify-content: center; z-index: 1000;
+            border-radius: 20px; transition: opacity 0.3s ease-out;
+        }
+        .loader-spinner {
+            width: 32px; height: 32px; border: 3px solid #e2e8f0;
+            border-top: 3px solid var(--primary); border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .collapsible-loader {
+            display: none; width: 16px; height: 16px; border: 2px solid rgba(0,0,0,0.05); border-top: 2px solid var(--primary); border-radius: 50%; animation: spin 0.6s linear infinite; margin-right: 0.75rem; flex-shrink: 0;
+        }
+        summary.loading .collapsible-loader { display: inline-block; }
+        summary.loading { background: #f1f5f9 !important; }
+        @media print {
+            .main-nav, .floating-reset, .loader-overlay, .search-area, .view-btn, .nav-btn, header { display: none !important; }
+            .container { width: 100%; max-width: 100%; padding: 0; }
+            .history-section, .hero-banner { box-shadow: none; border: 1px solid #eee; }
+            .day-view { display: block !important; opacity: 1 !important; transform: none !important; }
+        }
+    </style>
+    """
+
+def generate():
+    if not REPORTS_DIR.exists(): return
+    
+    # Identify Date Folders
+    date_folders = get_report_folders(REPORTS_DIR, limit=5)
+    if not date_folders: 
+        print("No date folders found in reports directory.")
+        return
+
+    # Load Expected Reports
+    expected_files = []
+    if MASTER_LIST_FILE.exists():
+        with MASTER_LIST_FILE.open('r') as f: expected_files = [line.strip() for line in f if line.strip()]
+    
+    history_data = [] # List of {date, total, passed, failed, reports, missing, no_result, groups}
+    
+    # Process Folders (Latest first)
+    for i, date_str in enumerate(date_folders):
+        folder_path = REPORTS_DIR / date_str
+        folder_reports = scan_folder(folder_path, date_str)
+        
+        found_filenames = {r['name'] for r in folder_reports}
+        missing = [name for name in expected_files if name not in found_filenames]
+        new_files = [name for name in found_filenames if name not in expected_files]
+        
+        
+        groups = {cat: [] for cat in ["AI - Playwright Reports", "AI - Claude Reports", "API Reports", "CRPO Reports", "ATS Reports", "SSO Reports", "SLOTS Reports", "Microsite Reports", "Cypress Reports"]}
+        no_result = []
+        for r in folder_reports:
+            if r["summary"].get("requests", 0) == 0: no_result.append(r)
+            else: groups[classify_report(r['name'])].append(r)
+
+        total = sum(r['summary'].get('requests', 0) for r in folder_reports)
+        failed = sum(r['summary'].get('failed', 0) for r in folder_reports)
+        passed = total - failed
+        pp = round((passed / total * 100), 1) if total > 0 else 0
+        
+        history_data.append({
+            "date": datetime.datetime.strptime(date_str, '%Y%m%d').strftime('%b %d, %Y'),
+            "raw_date": date_str,
+            "total": total, "passed": passed, "failed": failed, "pass_percent": pp,
+            "reports": folder_reports, "missing": missing, "new_files": new_files, "no_result": no_result, "groups": groups
+        })
+
+    current_day = history_data[0]
+    current_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'); commit_id = get_git_commit()
+
+    # Generate History UI Components
+    history_table_rows = []
+    date_options = []
+    
+    for h in history_data:
+        health_cls = "health-good" if h["pass_percent"] > 95 else ("health-fair" if h["pass_percent"] > 85 else "health-bad")
+        history_table_rows.append(f"""
+            <tr id="row-{h['raw_date']}">
+                <td class="history-date">{h['date']}</td>
+                <td>{h['total']} / <span style="color: var(--text-muted); font-size: 0.8rem; opacity: 0.6;">{TARGET_EXECUTION_GOAL}</span></td>
+                <td style="color: var(--success); font-weight: 700;">{h['passed']}</td>
+                <td style="color: var(--danger); font-weight: 700;">{h['failed']}</td>
+                <td><span class="health-index {health_cls}">{h['pass_percent']}%</span></td>
+                <td><button class="view-btn {'active' if h == current_day else ''}" onclick="switchDate('{h['raw_date']}', true)">View Details</button></td>
+            </tr>""")
+        date_options.append(f'<option value="{h["raw_date"]}">{h["date"]}</option>')
+
+    # Generate Day-Specific Breakdowns
+    day_views_html = []
+    for h in history_data:
+        is_active = "active" if h == current_day else ""
+        cov = round((h["total"] / TARGET_EXECUTION_GOAL) * 100, 1) if TARGET_EXECUTION_GOAL > 0 else 0
+        
+        view_parts = [f"""<div id="view-{h['raw_date']}" class="day-view {is_active}">"""]
+        
+        # Hero Banner
+        view_parts.append(f"""
+        <div class="hero-banner">
+            <div class="hero-main"><div class="hero-label">Execution Goal ({h['date']})</div><div class="hero-value">{h['total']} <span class="hero-target">/ {TARGET_EXECUTION_GOAL} Test Cases</span></div></div>
+            <div class="progress-container"><div class="progress-header"><span>Lifecycle Coverage</span><span>{cov}% Complete</span></div>
+            <div class="progress-outer"><div class="progress-inner" style="width: {cov}%"></div></div></div>
+        </div>
+        <div class="stats-grid">
+            <div class="stat-card blue"><div class="stat-icon icon-blue"><i class="fas fa-microscope"></i></div><div class="stat-info"><span class="value">{h['total']}</span><span class="label">Executed</span></div></div>
+            <div class="stat-card green"><div class="stat-icon icon-green"><i class="fas fa-check-circle"></i></div><div class="stat-info"><span class="value">{h['passed']}</span><span class="label">Passed</span></div></div>
+            <div class="stat-card red"><div class="stat-icon icon-red"><i class="fas fa-times-circle"></i></div><div class="stat-info"><span class="value">{h['failed']}</span><span class="label">Failed</span></div></div>
+            <div class="stat-card orange">
+                <div class="stat-icon icon-orange"><i class="fas fa-folder-open"></i></div>
+                <div class="stat-info">
+                    <span class="value">{len(h['reports'])} / {EXPECTED_REPORT_COUNT}</span>
+                    <span class="label">REPORTS</span>
+                    {f'<div class="sync-label error"><i class="fas fa-exclamation-circle"></i> OUT OF SYNC</div>' if len(h['reports']) < EXPECTED_REPORT_COUNT else (f'<div class="sync-label error"><i class="fas fa-exclamation-circle"></i> NEW REPORTS DETECTED</div>' if len(h['reports']) > EXPECTED_REPORT_COUNT else '<div class="sync-label" style="color:#059669"><i class="fas fa-check-double"></i> ALL SYNCED</div>')}
+                </div>
+            </div>
+        </div>
+        
+        <div class="search-area">
+            <i class="fas fa-search"></i>
+            <input type="text" placeholder="Search suites for {h['date']}..." onkeyup="searchInside(this)">
+        </div>
+        
+        """)
+        if h["no_result"]:
+            view_parts.append(f"""<div class="alert-row"><div class="alert-card"><div style="display:flex; align-items:center;"><i class="fas fa-exclamation-triangle"></i><span style="font-weight:700;">{len(h['no_result'])} Critical: Report(s) found with Zero results (Possible execution stall or crash) | {h['date']}</span></div><span class="badge-urgent">Action Required</span></div></div>""")
+
+        # Zero Result Reports
+        if h["no_result"]:
+            h["no_result"].sort(key=lambda x: x['mod_time_ts'], reverse=True)
+            view_parts.append(f"""<details class="report-group" style="border-color: #feb2b2; margin-bottom: 2.5rem;"><summary style="background: #fff5f5; color: #c53030; display:flex; align-items:center;"><div class="collapsible-loader"></div><span><i class="fas fa-bug"></i>Critical: Incomplete Executions ({len(h['no_result'])})</span></summary><div class="content-wrapper"><div class="content-inner"><table><thead><tr><th>Identity</th><th>Format</th><th>Check Time</th><th>Status</th></tr></thead><tbody>""")
+            for r in h["no_result"]: view_parts.append(f"""<tr class="report-row"><td><a href="{r.get('view_path', r['path'])}" class="report-link" target="_blank" style="color:#c53030;"><i class="fas fa-exclamation-circle"></i> <span>{r['name']}</span></a></td><td><span class="badge badge-html">{r['type']}</span></td><td style="font-size: 0.85rem; color: var(--text-muted); font-weight: 500;">{r['mod_time']}</td><td style="color: #c53030; font-style: italic; font-weight: 700;">No metrics found</td></tr>""")
+            view_parts.append("</tbody></table></div></div></details>")
+
+        # Missing Reports
+        if h["missing"]:
+            view_parts.append(f"""<details class="report-group" style="border-color: #f59e0b; margin-bottom: 2.5rem;"><summary style="background: #fffbeb; color: #d97706; display:flex; align-items:center;"><div class="collapsible-loader"></div><span><i class="fas fa-file-circle-exclamation"></i> Identity Integrity Check: Missing ({len(h['missing'])})</span></summary><div class="content-wrapper"><div class="content-inner"><table><thead><tr><th>Expected Filename</th><th>Status</th></tr></thead><tbody>""")
+            for name in h["missing"]: view_parts.append(f"""<tr class="report-row"><td><span class="report-link" style="color:#d97706;"><i class="fas fa-file-circle-xmark"></i> <span>{name}</span></span></td><td style="color: #d97706; font-style: italic; font-weight: 700;">Missing from manifest</td></tr>""")
+            view_parts.append("</tbody></table></div></div></details>")
+
+        # New Reports (Not in Master List)
+        if h.get("new_files"):
+            view_parts.append(f"""<details class="report-group" style="border-color: #10b981; margin-bottom: 2.5rem;"><summary style="background: #ecfdf5; color: #059669; display:flex; align-items:center;"><div class="collapsible-loader"></div><span><i class="fas fa-file-circle-plus"></i> Integrity Insight: Newly Detected Reports ({len(h['new_files'])})</span></summary><div class="content-wrapper"><div class="content-inner"><table><thead><tr><th>Detected Filename</th><th>Status</th></tr></thead><tbody>""")
+            for name in h["new_files"]: 
+                view_parts.append(f"""<tr class="report-row"><td><span class="report-link" style="color:#059669;"><i class="fas fa-plus-circle"></i> <span>{name}</span></span></td><td style="color: #059669; font-style: italic; font-weight: 700;">New report added</td></tr>""")
+            view_parts.append("</tbody></table></div></div></details>")
+
+        # Normal Groups
+        for group, items in h["groups"].items():
+            if not items: continue
+            items.sort(key=lambda x: x['mod_time_ts'], reverse=True)
+            g_total = sum(i['summary'].get('requests', 0) for i in items); g_failed = sum(i['summary'].get('failed', 0) for i in items); g_passed = g_total - g_failed
+            view_parts.append(f"""<details class="report-group"><summary style="background: #f8fafc; display:flex; align-items:center;"><div class="collapsible-loader"></div><div style="display:flex; align-items:center; flex:1; width:100%;"><span style="font-weight:800; color:var(--text);">{group} ({len(items)})</span><div style="display:flex; gap:1.25rem; font-size:0.75rem; margin-left:auto; margin-right: 1.5rem;"><span class="chip" data-tooltip="TOTAL">{g_total} T</span><span class="chip success" data-tooltip="PASSED">{g_passed} P</span><span class="chip danger" data-tooltip="FAILED" style="{'background:#ef4444; color:white;' if g_failed > 0 else ''}">{g_failed} F</span></div></div></summary><div class="content-wrapper"><div class="content-inner"><table><thead><tr><th>Suite Identity</th><th>Format</th><th>Verification</th><th>Quality Insight</th></tr></thead><tbody>""")
+            for r in items:
+                s = r['summary']; pas, fld, pct = s['requests']-s['failed'], s['failed'], s['pass_percent']; clr = "#10b981" if pct > 90 else ("#f59e0b" if pct > 70 else "#ef4444")
+                view_parts.append(f"""<tr class="report-row"><td><a href="{r.get('view_path', r['path'])}" class="report-link" target="_blank"><i class="fas {'fa-file-lines' if r['type'] == 'HTML' else 'fa-file-excel'}" style="color:var(--primary)"></i> <span>{r['name']}</span></a></td><td><span class="badge {'badge-html' if r['type'] == 'HTML' else 'badge-excel'}">{r['type']}</span></td><td style="font-size: 0.85rem; color: var(--text-muted); font-weight: 500;">{r['mod_time']}</td><td><div style="display:flex;gap:4px;margin-bottom:6px;"><span class="chip">{s['requests']} T</span><span class="chip success">{pas} P</span><span class="chip danger">{fld} F</span></div><div style="display:flex; align-items:center; gap:8px;"><div style="height:6px;width:100px;background:#f1f5f9;border-radius:3px;overflow:hidden;"><div style="height:100%;width:{pct}%;background:{clr}"></div></div><span style="font-size:0.75rem;font-weight:700;color:{clr}">{pct}%</span></div></td></tr>""")
+            view_parts.append("</tbody></table></div></div></details>")
+        
+        view_parts.append("</div>")
+        day_views_html.append("".join(view_parts))
+
+    html_parts = [f"""<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="https://lh3.googleusercontent.com/proxy/98it6d0vGqaPttxE8ImrHhVvaz5XpPeZ7qiXHcnm9PiPrwTBGvZcWp2vdQVdgZt5b7Vfu7kXnkh6mrKs_q_JIE5GGlw8uRAOeSvJOEtgNXWrXgOoGjGFCnKCA1gITLLZKNxv1mV6szDHEnNLK7RbJnfk-eFMZPlGXRpU2iKeBGr2Gm3-i_Lnv-IVisLlJwRR55nNMx9HndfYnmLOlraDHGgp9Rc7V4pNO1N8S1ZugYR5SUVMi8K_WGFwvYWsEh2cEnW6x-Zw-ncSM27yX509d6pmuUvfohenPAxHMNORCeWO">
+    <title>HirePro Quality Dashboard</title><link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    {generate_styles()}</head><body>
+    <div class="container">
+    <header>
+        <div style="display: flex; align-items: center;"><img src="https://hirepro.in/wp-content/uploads/2025/05/HirePro-logo.svg" alt="HirePro Logo" style="height: 32px; width: auto;"></div>
+        <div style="text-align: center;"><h1>Quality Dashboard</h1><p class="subtitle">Unified Test Lifecycle Monitoring</p></div>
+        <div style="text-align: right;">
+            <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600; margin-bottom: 0.25rem;">LATEST AUDIT</div>
+            <div style="font-weight: 700;"><i class="fas fa-sync-alt" style="color:var(--success); margin-right: 0.5rem;"></i> {current_time}</div>
+        </div>
+    </header>
+    
+    <div class="main-nav">
+        <div class="nav-indicator"></div>
+        <button class="nav-btn active" id="btn-current" onclick="showTab('current')"><i class="fas fa-satellite-dish"></i> Live Audit</button>
+        <button class="nav-btn" id="btn-history" onclick="showTab('history')"><i class="fas fa-clock-rotate-left"></i> Quality History</button>
+    </div>
+    
+    <div id="dashboard-main" style="position: relative;">
+        <div id="loader" class="loader-overlay"><div class="loader-spinner"></div></div>
+        <div id="tab-history" class="tab-content">
+            <div class="history-section">
+                <div class="trend-title" style="margin-bottom: 1.5rem;"><i class="fas fa-history"></i> Historical Audit Timeline</div>
+                <div class="history-table-wrapper">
+                    <table class="history-table">
+                        <thead><tr><th>Execution Date</th><th>Total Cases</th><th>Passed</th><th>Failed</th><th>Success Rate</th><th>Action</th></tr></thead>
+                        <tbody>{"".join(history_table_rows)}</tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="date-selector-wrapper">
+                <span style="font-weight: 800; color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase;">Switch Analytical Context</span>
+                <select id="dateSelector" class="date-select-input" onchange="switchDate(this.value)">
+                    {"".join(date_options)}
+                </select>
+            </div>
+        </div>
+
+        <div id="tab-current" class="tab-content active">
+            <div id="dayViewsContainer">
+                {"".join(day_views_html)}
+            </div>
+        </div>
+    </div>
+    """]
+
+    html_parts.append(f"""
+    <button class="floating-reset" onclick="switchDate('{current_day['raw_date']}', true)" data-tooltip="Reset to Live Audit">
+        <i class="fas fa-rotate-left"></i>
+    </button>
+    <script>
+        function showTab(tabId) {{
+            const loader = document.getElementById('loader');
+            const indicator = document.querySelector('.nav-indicator');
+            const targetBtn = document.getElementById('btn-' + tabId);
+            
+            loader.style.display = 'flex';
+            
+            if (targetBtn && indicator) {{
+                indicator.style.width = targetBtn.offsetWidth + 'px';
+                indicator.style.left = targetBtn.offsetLeft + 'px';
+            }}
+
+            setTimeout(() => {{
+                document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+                document.getElementById('tab-' + tabId).classList.add('active');
+                if(targetBtn) targetBtn.classList.add('active');
+                loader.style.display = 'none';
+            }}, 300);
+        }}
+        // Initialize Nav
+        function updateIndicator() {{
+            const activeBtn = document.querySelector('.nav-btn.active');
+            const indicator = document.querySelector('.nav-indicator');
+            if (activeBtn && indicator) {{
+                indicator.style.width = activeBtn.offsetWidth + 'px';
+                indicator.style.left = activeBtn.offsetLeft + 'px';
+            }}
+        }}
+        window.addEventListener('load', () => {{
+            updateIndicator();
+            const loader = document.getElementById('loader');
+            setTimeout(() => {{
+                loader.style.opacity = '0';
+                setTimeout(() => {{ loader.style.display = 'none'; loader.style.opacity = '1'; }}, 300);
+            }}, 500);
+            setTimeout(updateIndicator, 200); // Safety double-check after layout settles
+        }});
+        window.addEventListener('resize', updateIndicator);
+        function switchDate(dateStr, toTop) {{
+            document.querySelectorAll('.day-view').forEach(v => v.classList.remove('active'));
+            document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+            
+            const targetView = document.getElementById('view-' + dateStr);
+            if (targetView) {{
+                targetView.classList.add('active');
+                // Auto-collapse any open sections when switching
+                targetView.querySelectorAll('details[open]').forEach(d => {{
+                    d.open = false;
+                    const w = d.querySelector('.content-wrapper');
+                    if(w) w.style.gridTemplateRows = '';
+                }});
+            }}
+            
+            let btn = document.querySelector('#row-' + dateStr + ' .view-btn');
+            if(btn) btn.classList.add('active');
+            document.getElementById('dateSelector').value = dateStr;
+            showTab('current');
+            window.scrollTo({{ top: toTop ? 0 : 350, behavior: 'smooth' }});
+        }}
+        function searchInside(input) {{
+            let filter = input.value.toUpperCase();
+            let parent = input.closest('.day-view');
+            parent.querySelectorAll('.report-group').forEach(group => {{
+                let rows = group.querySelectorAll('.report-row'); let foundAny = false;
+                rows.forEach(row => {{ let text = row.innerText.toUpperCase(); if (text.indexOf(filter) > -1) {{ row.style.display = ""; foundAny = true; }} else {{ row.style.display = "none"; }} }});
+                group.style.display = foundAny ? "" : "none";
+            }});
+        }}
+        document.querySelectorAll('details').forEach(details => {{
+            const summary = details.querySelector('summary'), wrapper = details.querySelector('.content-wrapper');
+            summary.addEventListener('click', e => {{
+                e.preventDefault();
+                if (summary.classList.contains('loading')) return;
+                
+                summary.classList.add('loading');
+                const isOpening = !details.open;
+                
+                // Minor delay to let the spinner render
+                setTimeout(() => {{
+                    if (!isOpening) {{
+                        wrapper.style.gridTemplateRows = '0fr';
+                        const onFinish = () => {{
+                            details.open = false;
+                            wrapper.style.gridTemplateRows = '';
+                            summary.classList.remove('loading');
+                            wrapper.removeEventListener('transitionend', onFinish);
+                        }};
+                        wrapper.addEventListener('transitionend', onFinish, {{ once: true }});
+                        setTimeout(onFinish, 500); // Safety fallback
+                    }} else {{
+                        details.open = true;
+                        summary.classList.remove('loading');
+                    }}
+                }}, 100);
+            }});
+        }});
+        document.querySelectorAll('a.report-link:not([target="_blank"])').forEach(link => {{
+            link.addEventListener('click', () => {{
+                const loader = document.getElementById('loader');
+                loader.style.display = 'flex';
+                setTimeout(() => {{ loader.style.display = 'none'; }}, 1000);
+            }});
+        }});
+    </script><div class="container"><footer><div style="display: flex; align-items: center; gap: 0.75rem;"><span style="text-transform: uppercase; font-size: 0.7rem; letter-spacing: 0.05em; font-weight: 700;">Build ID:</span><span class="commit-badge"><i class="fas fa-code-branch" style="margin-right:0.4rem; opacity:0.5;"></i>{commit_id}</span></div><div>&copy; 2026 HirePro . All rights reserved.</div></footer></div></body></html>""")
+    OUTPUT_FILE.write_text("".join(html_parts), encoding='utf-8'); print(f"Dashboard generated at {OUTPUT_FILE}")
+
+if __name__ == "__main__": generate()
