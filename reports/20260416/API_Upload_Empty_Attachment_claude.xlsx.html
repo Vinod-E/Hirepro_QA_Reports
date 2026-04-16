@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preview: API_Upload_Empty_Attachment_claude.xlsx</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --primary: #4f46e5; --bg: #f8fafc; --text: #1e293b; --border: #e2e8f0; --success: #10b981; --danger: #ef4444; }
+        body { font-family: 'Outfit', sans-serif; background-color: var(--bg); color: var(--text); padding: 2rem; margin: 0; }
+        .container { max-width: 1400px; margin: 0 auto; background: white; padding: 2.5rem; border-radius: 1.5rem; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05); border: 1px solid var(--border); }
+        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 2px solid var(--bg); }
+        .title-area { display: flex; align-items: center; gap: 1rem; }
+        .title-area i { font-size: 2rem; color: var(--primary); }
+        h1 { font-size: 1.5rem; font-weight: 800; margin: 0; }
+        .actions { display: flex; gap: 1rem; }
+        .btn { text-decoration: none; padding: 0.6rem 1.25rem; border-radius: 10px; font-weight: 700; font-size: 0.85rem; display: flex; align-items: center; gap: 0.5rem; transition: all 0.2s; border: none; cursor: pointer; }
+        .btn-download { background: var(--primary); color: white; }
+        .btn-download:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3); }
+        .btn-back { background: #f1f5f9; color: var(--text); }
+        .btn-back:hover { background: #e2e8f0; }
+        .table-wrapper { overflow-x: auto; border-radius: 12px; border: 1px solid var(--border); background: white; }
+        .preview-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; border-spacing: 0; }
+        .preview-table td { padding: 0.85rem 1.15rem; border-bottom: 1px solid var(--border); border-right: 1px solid var(--border); white-space: nowrap; color: var(--text); }
+        .preview-table tr:hover { background: #f1f5f9 !important; }
+        
+        /* Header & Sub-header Styling */
+        .preview-table tr:first-child td,
+        .preview-table tr.sub-header td { 
+            background: #f1f5f9 !important; 
+            font-weight: 800 !important; 
+            color: #475569 !important; 
+            text-transform: uppercase; 
+            font-size: 0.75rem; 
+            letter-spacing: 0.025em;
+            border-bottom: 2px solid #cbd5e1 !important;
+        }
+        
+        .preview-table tr:nth-child(even) { background: #fafbfc; }
+        .preview-table tr:hover { background: #f1f5f9 !important; }
+        
+        /* Status Colors */
+        .status-pass { color: var(--success) !important; font-weight: 800; background: #ecfdf5 !important; }
+        .status-fail { color: var(--danger) !important; font-weight: 800; background: #fef2f2 !important; }
+        .status-na { color: #94a3b8; font-style: italic; opacity: 0.5; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="title-area">
+                <i class="fas fa-file-excel"></i>
+                <div>
+                    <h1>API_Upload_Empty_Attachment_claude.xlsx</h1>
+                    <div style="font-size: 0.75rem; color: #64748b; font-weight: 600; margin-top: 0.2rem; text-transform: uppercase;">Spreadsheet Preview (All Rows)</div>
+                </div>
+            </div>
+            <div class="actions">
+                <button onclick="window.close()" class="btn btn-back"><i class="fas fa-times"></i> Close Tab</button>
+                <a href="API_Upload_Empty_Attachment_claude.xlsx" download="API_Upload_Empty_Attachment_claude.xlsx" class="btn btn-download"><i class="fas fa-download"></i> Download Excel</a>
+            </div>
+        </header>
+        <div class="table-wrapper">
+            <table border="1" class="dataframe preview-table">
+  <tbody>
+    <tr>
+      <td>TC ID</td>
+      <td>Group</td>
+      <td>Priority</td>
+      <td>Title / Description</td>
+      <td>Steps</td>
+      <td>Expected Result</td>
+      <td>Pass Criteria</td>
+      <td>Status</td>
+      <td>Actual Result</td>
+    </tr>
+    <tr>
+      <td>TC-00-1</td>
+      <td>Setup</td>
+      <td>High</td>
+      <td>Create candidate 1</td>
+      <td>Create a fresh candidate for upload/attachment testing.</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>PASS</td>
+      <td>candidateId=1465</td>
+    </tr>
+    <tr>
+      <td>TC-00-2</td>
+      <td>Setup</td>
+      <td>High</td>
+      <td>Create candidate 2</td>
+      <td>Create a fresh candidate for upload/attachment testing.</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>PASS</td>
+      <td>candidateId=1471</td>
+    </tr>
+    <tr>
+      <td>TC-00-3</td>
+      <td>Setup</td>
+      <td>High</td>
+      <td>Tag candidates to event+job</td>
+      <td>Tag candidates to event so applicant records exist. Forced Sync=True.</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>PASS</td>
+      <td>2/2 tagged</td>
+    </tr>
+    <tr>
+      <td>TC-01</td>
+      <td>Happy Path - Interviews</td>
+      <td>High</td>
+      <td>create_update_interview_attachments</td>
+      <td>Empty Attachments[] with no interview context. Expect KO, errorCode=1000.</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>PASS</td>
+      <td>status=KO, errorCode=1000, message=Interview context not found in token</td>
+    </tr>
+    <tr>
+      <td>TC-02</td>
+      <td>Happy Path - Interviews</td>
+      <td>High</td>
+      <td>create_interview_attachments (v1, sync)</td>
+      <td>Sync=True, empty Attachments[]. Expect KO, errorCode=1000.</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>PASS</td>
+      <td>status=KO, errorCode=1000, message=Please specify interview request.</td>
+    </tr>
+    <tr>
+      <td>TC-03</td>
+      <td>Happy Path - Interviews</td>
+      <td>High</td>
+      <td>create_interview_attachments (v2, sync)</td>
+      <td>Sync=True, empty Attachments[]. Expect KO, errorCode=1000.</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>PASS</td>
+      <td>status=KO, errorCode=1000, message=Please specify interview request.</td>
+    </tr>
+    <tr>
+      <td>TC-04</td>
+      <td>Happy Path - Borrowed Interviewers</td>
+      <td>High</td>
+      <td>get_remote_interview_attachments</td>
+      <td>InterviewId=0 is invalid. Expect KO, errorCode=400.</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>PASS</td>
+      <td>status=KO, errorCode=400, message=Invalid request format</td>
+    </tr>
+    <tr>
+      <td>TC-05</td>
+      <td>Happy Path - Candidate</td>
+      <td>High</td>
+      <td>getZippedCandidatesPhoto</td>
+      <td>Fresh candidates have no photos. Expect OK, statusCode=200, failed list.</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>PASS</td>
+      <td>status=OK, statusCode=200, failed=2 (no photos)</td>
+    </tr>
+    <tr>
+      <td>TC-06</td>
+      <td>Happy Path - Microsite</td>
+      <td>High</td>
+      <td>microsite create_candidate_attachment</td>
+      <td>Fake FileUrl blocked by SSRF check. Expect KO, is_ssrf_violated=true.</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>PASS</td>
+      <td>status=KO, is_ssrf_violated=True, error=Unauthorized</td>
+    </tr>
+    <tr>
+      <td>TC-07</td>
+      <td>Happy Path - Microsite</td>
+      <td>High</td>
+      <td>microsite get_candidate_attachments</td>
+      <td>Fresh candidate has no attachments. Expect KO, status_code=200.</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>PASS</td>
+      <td>status=KO, status_code=200</td>
+    </tr>
+    <tr>
+      <td>TC-08</td>
+      <td>Happy Path - Microsite</td>
+      <td>High</td>
+      <td>microsite delete_candidate_attachments</td>
+      <td>AttachmentId=0 is invalid. Expect KO, status_code=200, 'specify attachment' message.</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>PASS</td>
+      <td>status=KO, status_code=200, message=Please specify attachment to remove.</td>
+    </tr>
+    <tr>
+      <td>TC-09</td>
+      <td>Happy Path - Pofu</td>
+      <td>High</td>
+      <td>pofu get_candidate_attachments</td>
+      <td>Expect KO with errorCode 200 or 401.</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>PASS</td>
+      <td>status=KO, errorCode=401</td>
+    </tr>
+    <tr>
+      <td>TC-10</td>
+      <td>Happy Path - Applicant</td>
+      <td>High</td>
+      <td>getApplicantsZippedResume (empty list)</td>
+      <td>Empty ApplicantIds triggers server error. Expect KO, errorCode=500.</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>PASS</td>
+      <td>status=KO, errorCode=500</td>
+    </tr>
+    <tr>
+      <td>TC-N01</td>
+      <td>Negative Tests</td>
+      <td>High</td>
+      <td>interview attachment - no CandidateId</td>
+      <td>Omitting CandidateId. Expect KO, errorCode=1000.</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>PASS</td>
+      <td>status=KO, errorCode=1000, message=Please specify interview request.</td>
+    </tr>
+    <tr>
+      <td>TC-N02</td>
+      <td>Negative Tests</td>
+      <td>High</td>
+      <td>interview attachment - no EventId</td>
+      <td>Omitting EventId. Expect KO, errorCode=1000.</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>PASS</td>
+      <td>status=KO, errorCode=1000, message=Please specify interview request.</td>
+    </tr>
+    <tr>
+      <td>TC-N03</td>
+      <td>Negative Tests</td>
+      <td>High</td>
+      <td>microsite attachment - no CandidateId</td>
+      <td>Fake FileUrl blocked by SSRF before CandidateId validation. Expect KO, SSRF violated.</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>PASS</td>
+      <td>status=KO, is_ssrf_violated=True</td>
+    </tr>
+    <tr>
+      <td>TC-N04</td>
+      <td>Negative Tests</td>
+      <td>High</td>
+      <td>microsite delete - empty AttachmentIds</td>
+      <td>Empty list. Expect KO, status_code=200, 'specify attachment' message.</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>PASS</td>
+      <td>status=KO, status_code=200, message=Please specify attachment to remove.</td>
+    </tr>
+    <tr>
+      <td>TC-N05</td>
+      <td>Negative Tests</td>
+      <td>High</td>
+      <td>pofu attachment - invalid CandidateId</td>
+      <td>Non-existent CandidateId. Expect KO with errorCode 200 or 401.</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>PASS</td>
+      <td>status=KO, errorCode=401</td>
+    </tr>
+    <tr>
+      <td>TC-N06</td>
+      <td>Negative Tests</td>
+      <td>High</td>
+      <td>microsite delete - negative IDs</td>
+      <td>Invalid IDs. Expect KO, status_code=200, 'specify attachment' message.</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>PASS</td>
+      <td>status=KO, status_code=200, message=Please specify attachment to remove.</td>
+    </tr>
+    <tr>
+      <td>TC-E01</td>
+      <td>Edge Cases</td>
+      <td>High</td>
+      <td>interview attachment - string CandidateId</td>
+      <td>String CandidateId. Expect KO, errorCode=1000.</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>PASS</td>
+      <td>status=KO, errorCode=1000, message=Please specify interview request.</td>
+    </tr>
+    <tr>
+      <td>TC-E02</td>
+      <td>Edge Cases</td>
+      <td>High</td>
+      <td>interview attachment - negative IDs</td>
+      <td>Negative IDs. Expect KO, errorCode=1000.</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>PASS</td>
+      <td>status=KO, errorCode=1000, message=Please specify interview request.</td>
+    </tr>
+    <tr>
+      <td>TC-E03</td>
+      <td>Edge Cases</td>
+      <td>High</td>
+      <td>getZippedPhoto - empty candidateIds</td>
+      <td>Empty candidateIds. Expect errorCode=1000, 'specify candidate' message.</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>PASS</td>
+      <td>errorCode=1000, message=Please specify candidate(s)/third party id(s).</td>
+    </tr>
+    <tr>
+      <td>TC-E04</td>
+      <td>Edge Cases</td>
+      <td>High</td>
+      <td>duplicate attachment create</td>
+      <td>Both calls blocked by SSRF. Expect KO with is_ssrf_violated=true.</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>PASS</td>
+      <td>1st=KO/ssrf=True, 2nd=KO/ssrf=True</td>
+    </tr>
+    <tr>
+      <td>TC-S01</td>
+      <td>Security Tests</td>
+      <td>High</td>
+      <td>no auth token -&gt; KO, errorCode=400</td>
+      <td>Expect KO, errorCode=400, 'Missing X-AUTH-TOKEN'.</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>PASS</td>
+      <td>status=KO, errorCode=400, error=Missing X-AUTH-TOKEN</td>
+    </tr>
+    <tr>
+      <td>TC-S02</td>
+      <td>Security Tests</td>
+      <td>High</td>
+      <td>forged token -&gt; KO</td>
+      <td>Forged token must return KO.</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>PASS</td>
+      <td>status=KO</td>
+    </tr>
+    <tr>
+      <td>TC-S03</td>
+      <td>Security Tests</td>
+      <td>High</td>
+      <td>SQL injection in CandidateId (GET)</td>
+      <td>Expect KO, status_code=200, no SQL payload leaked in response.</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>PASS</td>
+      <td>status=KO, status_code=200, injection_leaked=False</td>
+    </tr>
+    <tr>
+      <td>TC-S04</td>
+      <td>Security Tests</td>
+      <td>High</td>
+      <td>SQL injection in EventId</td>
+      <td>String EventId fails validation. Expect KO, errorCode=1000.</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>PASS</td>
+      <td>status=KO, errorCode=1000, message=Please specify interview request.</td>
+    </tr>
+    <tr>
+      <td>TC-S05</td>
+      <td>Security Tests</td>
+      <td>High</td>
+      <td>XSS in FileName not reflected</td>
+      <td>SSRF blocks first. XSS payload must not be echoed back.</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>PASS</td>
+      <td>status=KO, is_ssrf_violated=True, xss_reflected=False</td>
+    </tr>
+    <tr>
+      <td>TC-S06</td>
+      <td>Security Tests</td>
+      <td>High</td>
+      <td>IDOR - wrong CandidateId (GET)</td>
+      <td>Cross-tenant ID. Expect KO, status_code=200, empty data.</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>PASS</td>
+      <td>status=KO, status_code=200, data_empty=True</td>
+    </tr>
+  </tbody>
+</table>
+        </div>
+    </div>
+    <script>
+        document.querySelectorAll('.preview-table tr').forEach((tr, rowIndex) => {
+            let statusCount = 0;
+            const cells = tr.querySelectorAll('td');
+            
+            cells.forEach(td => {
+                const text = td.innerText.trim().toUpperCase();
+                
+                // Highlight Pass/Fail
+                if (['PASS', 'SUCCESS', 'PASSED'].includes(text)) {
+                    td.classList.add('status-pass');
+                } else if (['FAIL', 'FAILURE', 'FAILED', 'ERROR'].includes(text)) {
+                    td.classList.add('status-fail');
+                } else if (text === 'NA') {
+                    td.classList.add('status-na');
+                }
+                
+                // Header detection keywords
+                if (['STATUS', 'IDENTITY', 'ID'].includes(text)) {
+                    statusCount++;
+                }
+            });
+            
+            // If row has multiple 'Status' labels, it's a sub-header
+            if (statusCount >= 2 && rowIndex > 0) {
+                tr.classList.add('sub-header');
+            }
+        });
+    </script>
+</body>
+</html>

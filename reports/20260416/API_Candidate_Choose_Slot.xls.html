@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preview: API_Candidate_Choose_Slot.xls</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --primary: #4f46e5; --bg: #f8fafc; --text: #1e293b; --border: #e2e8f0; --success: #10b981; --danger: #ef4444; }
+        body { font-family: 'Outfit', sans-serif; background-color: var(--bg); color: var(--text); padding: 2rem; margin: 0; }
+        .container { max-width: 1400px; margin: 0 auto; background: white; padding: 2.5rem; border-radius: 1.5rem; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05); border: 1px solid var(--border); }
+        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 2px solid var(--bg); }
+        .title-area { display: flex; align-items: center; gap: 1rem; }
+        .title-area i { font-size: 2rem; color: var(--primary); }
+        h1 { font-size: 1.5rem; font-weight: 800; margin: 0; }
+        .actions { display: flex; gap: 1rem; }
+        .btn { text-decoration: none; padding: 0.6rem 1.25rem; border-radius: 10px; font-weight: 700; font-size: 0.85rem; display: flex; align-items: center; gap: 0.5rem; transition: all 0.2s; border: none; cursor: pointer; }
+        .btn-download { background: var(--primary); color: white; }
+        .btn-download:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3); }
+        .btn-back { background: #f1f5f9; color: var(--text); }
+        .btn-back:hover { background: #e2e8f0; }
+        .table-wrapper { overflow-x: auto; border-radius: 12px; border: 1px solid var(--border); background: white; }
+        .preview-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; border-spacing: 0; }
+        .preview-table td { padding: 0.85rem 1.15rem; border-bottom: 1px solid var(--border); border-right: 1px solid var(--border); white-space: nowrap; color: var(--text); }
+        .preview-table tr:hover { background: #f1f5f9 !important; }
+        
+        /* Header & Sub-header Styling */
+        .preview-table tr:first-child td,
+        .preview-table tr.sub-header td { 
+            background: #f1f5f9 !important; 
+            font-weight: 800 !important; 
+            color: #475569 !important; 
+            text-transform: uppercase; 
+            font-size: 0.75rem; 
+            letter-spacing: 0.025em;
+            border-bottom: 2px solid #cbd5e1 !important;
+        }
+        
+        .preview-table tr:nth-child(even) { background: #fafbfc; }
+        .preview-table tr:hover { background: #f1f5f9 !important; }
+        
+        /* Status Colors */
+        .status-pass { color: var(--success) !important; font-weight: 800; background: #ecfdf5 !important; }
+        .status-fail { color: var(--danger) !important; font-weight: 800; background: #fef2f2 !important; }
+        .status-na { color: #94a3b8; font-style: italic; opacity: 0.5; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="title-area">
+                <i class="fas fa-file-excel"></i>
+                <div>
+                    <h1>API_Candidate_Choose_Slot.xls</h1>
+                    <div style="font-size: 0.75rem; color: #64748b; font-weight: 600; margin-top: 0.2rem; text-transform: uppercase;">Spreadsheet Preview (All Rows)</div>
+                </div>
+            </div>
+            <div class="actions">
+                <button onclick="window.close()" class="btn btn-back"><i class="fas fa-times"></i> Close Tab</button>
+                <a href="API_Candidate_Choose_Slot.xls" download="API_Candidate_Choose_Slot.xls" class="btn btn-download"><i class="fas fa-download"></i> Download Excel</a>
+            </div>
+        </header>
+        <div class="table-wrapper">
+            <table border="1" class="dataframe preview-table">
+  <tbody>
+    <tr>
+      <td>CANDIDATE SLOTS</td>
+      <td>Pass</td>
+      <td>Login Server</td>
+      <td>[MASKED_REF]</td>
+      <td>Lambda</td>
+      <td>On</td>
+      <td>APP Name</td>
+      <td>verify</td>
+      <td>No.of Test cases</td>
+      <td>9</td>
+      <td>Start Time</td>
+      <td>2026-04-16 11:10:33.079141</td>
+      <td>Failed Test cases</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <td>Comparison</td>
+      <td>Actual_status</td>
+      <td>Applicant ID</td>
+      <td>Choose Slot Message</td>
+      <td>Applicant Status</td>
+      <td>Change Status Message</td>
+      <td>Slot Error Message</td>
+      <td>ReSelect Slot Message</td>
+      <td>Applicant Status</td>
+      <td>Change Status Message</td>
+      <td>ReSlot Error Message</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Input</td>
+      <td>NA</td>
+      <td>1337693</td>
+      <td>ContextId</td>
+      <td>Rejected</td>
+      <td>Status change: from : Aptitude Test-Rejected to: Aptitude Test-Pending changed successfully.</td>
+      <td>No Message</td>
+      <td>ContextId</td>
+      <td>Shortlisted</td>
+      <td>Status change: from : Aptitude Test-Shortlisted to: Aptitude Test-Pending changed successfully.</td>
+      <td>No Message</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Output</td>
+      <td>Pass</td>
+      <td>1337693</td>
+      <td>ContextId</td>
+      <td>Rejected</td>
+      <td>Status change: from : Aptitude Test-Rejected to: Aptitude Test-Pending changed successfully.</td>
+      <td>No Message</td>
+      <td>ContextId</td>
+      <td>Shortlisted</td>
+      <td>Status change: from : Aptitude Test-Shortlisted to: Aptitude Test-Pending changed successfully.</td>
+      <td>No Message</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Input</td>
+      <td>NA</td>
+      <td>1337693</td>
+      <td>Null</td>
+      <td>Pending</td>
+      <td>Status change: from : Aptitude Test-Pending to: Aptitude Test-Pending applicant cannot set the same status.</td>
+      <td>No Message</td>
+      <td>ContextId</td>
+      <td>Shortlisted</td>
+      <td>Status change: from : Aptitude Test-Shortlisted to: Aptitude Test-Pending changed successfully.</td>
+      <td>Resume status choice not in config.</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Output</td>
+      <td>Pass</td>
+      <td>1337693</td>
+      <td>Null</td>
+      <td>Pending</td>
+      <td>Status change: from : Aptitude Test-Pending to: Aptitude Test-Pending applicant cannot set the same status.</td>
+      <td>No Message</td>
+      <td>ContextId</td>
+      <td>Shortlisted</td>
+      <td>Status change: from : Aptitude Test-Shortlisted to: Aptitude Test-Pending changed successfully.</td>
+      <td>Resume status choice not in config.</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Input</td>
+      <td>NA</td>
+      <td>1337693</td>
+      <td>Null</td>
+      <td>Pending</td>
+      <td>Status change: from : Aptitude Test-Pending to: Aptitude Test-Pending applicant cannot set the same status.</td>
+      <td>No Message</td>
+      <td>ContextId</td>
+      <td>Shortlisted</td>
+      <td>Status change: from : Aptitude Test-Shortlisted to: Aptitude Test-Pending changed successfully.</td>
+      <td>Please specify choice.</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Output</td>
+      <td>Pass</td>
+      <td>1337693</td>
+      <td>Null</td>
+      <td>Pending</td>
+      <td>Status change: from : Aptitude Test-Pending to: Aptitude Test-Pending applicant cannot set the same status.</td>
+      <td>No Message</td>
+      <td>ContextId</td>
+      <td>Shortlisted</td>
+      <td>Status change: from : Aptitude Test-Shortlisted to: Aptitude Test-Pending changed successfully.</td>
+      <td>Please specify choice.</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Input</td>
+      <td>NA</td>
+      <td>1337693</td>
+      <td>Null</td>
+      <td>Pending</td>
+      <td>Status change: from : Aptitude Test-Pending to: Aptitude Test-Pending applicant cannot set the same status.</td>
+      <td>No Message</td>
+      <td>ContextId</td>
+      <td>Shortlisted</td>
+      <td>Status change: from : Aptitude Test-Shortlisted to: Aptitude Test-Pending changed successfully.</td>
+      <td>Please specify choice.</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Output</td>
+      <td>Pass</td>
+      <td>1337693</td>
+      <td>Null</td>
+      <td>Pending</td>
+      <td>Status change: from : Aptitude Test-Pending to: Aptitude Test-Pending applicant cannot set the same status.</td>
+      <td>No Message</td>
+      <td>ContextId</td>
+      <td>Shortlisted</td>
+      <td>Status change: from : Aptitude Test-Shortlisted to: Aptitude Test-Pending changed successfully.</td>
+      <td>Please specify choice.</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Input</td>
+      <td>NA</td>
+      <td>1337693</td>
+      <td>Null</td>
+      <td>Pending</td>
+      <td>Status change: from : Aptitude Test-Pending to: Aptitude Test-Pending applicant cannot set the same status.</td>
+      <td>No Message</td>
+      <td>ContextId</td>
+      <td>Shortlisted</td>
+      <td>Status change: from : Aptitude Test-Shortlisted to: Aptitude Test-Pending changed successfully.</td>
+      <td>Please specify choice.</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Output</td>
+      <td>Pass</td>
+      <td>1337693</td>
+      <td>Null</td>
+      <td>Pending</td>
+      <td>Status change: from : Aptitude Test-Pending to: Aptitude Test-Pending applicant cannot set the same status.</td>
+      <td>No Message</td>
+      <td>ContextId</td>
+      <td>Shortlisted</td>
+      <td>Status change: from : Aptitude Test-Shortlisted to: Aptitude Test-Pending changed successfully.</td>
+      <td>Please specify choice.</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Input</td>
+      <td>NA</td>
+      <td>1337693</td>
+      <td>ContextId</td>
+      <td>Rejected</td>
+      <td>Status change: from : Aptitude Test-Rejected to: Aptitude Test-Pending changed successfully.</td>
+      <td>Resume status choice not in config.</td>
+      <td>Null</td>
+      <td>Pending</td>
+      <td>Status change: from : Aptitude Test-Pending to: Aptitude Test-Pending applicant cannot set the same status.</td>
+      <td>No Message</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Output</td>
+      <td>Pass</td>
+      <td>1337693</td>
+      <td>ContextId</td>
+      <td>Rejected</td>
+      <td>Status change: from : Aptitude Test-Rejected to: Aptitude Test-Pending changed successfully.</td>
+      <td>Resume status choice not in config.</td>
+      <td>Null</td>
+      <td>Pending</td>
+      <td>Status change: from : Aptitude Test-Pending to: Aptitude Test-Pending applicant cannot set the same status.</td>
+      <td>No Message</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Input</td>
+      <td>NA</td>
+      <td>1337693</td>
+      <td>ContextId</td>
+      <td>Rejected</td>
+      <td>Status change: from : Aptitude Test-Rejected to: Aptitude Test-Pending changed successfully.</td>
+      <td>Please specify choice.</td>
+      <td>Null</td>
+      <td>Pending</td>
+      <td>Status change: from : Aptitude Test-Pending to: Aptitude Test-Pending applicant cannot set the same status.</td>
+      <td>No Message</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Output</td>
+      <td>Pass</td>
+      <td>1337693</td>
+      <td>ContextId</td>
+      <td>Rejected</td>
+      <td>Status change: from : Aptitude Test-Rejected to: Aptitude Test-Pending changed successfully.</td>
+      <td>Please specify choice.</td>
+      <td>Null</td>
+      <td>Pending</td>
+      <td>Status change: from : Aptitude Test-Pending to: Aptitude Test-Pending applicant cannot set the same status.</td>
+      <td>No Message</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Input</td>
+      <td>NA</td>
+      <td>1337693</td>
+      <td>ContextId</td>
+      <td>Rejected</td>
+      <td>Status change: from : Aptitude Test-Rejected to: Aptitude Test-Pending changed successfully.</td>
+      <td>Please specify choice.</td>
+      <td>Null</td>
+      <td>Pending</td>
+      <td>Status change: from : Aptitude Test-Pending to: Aptitude Test-Pending applicant cannot set the same status.</td>
+      <td>No Message</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Output</td>
+      <td>Pass</td>
+      <td>1337693</td>
+      <td>ContextId</td>
+      <td>Rejected</td>
+      <td>Status change: from : Aptitude Test-Rejected to: Aptitude Test-Pending changed successfully.</td>
+      <td>Please specify choice.</td>
+      <td>Null</td>
+      <td>Pending</td>
+      <td>Status change: from : Aptitude Test-Pending to: Aptitude Test-Pending applicant cannot set the same status.</td>
+      <td>No Message</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Input</td>
+      <td>NA</td>
+      <td>1337693</td>
+      <td>ContextId</td>
+      <td>Rejected</td>
+      <td>Status change: from : Aptitude Test-Rejected to: Aptitude Test-Pending changed successfully.</td>
+      <td>Please specify choice.</td>
+      <td>Null</td>
+      <td>Pending</td>
+      <td>Status change: from : Aptitude Test-Pending to: Aptitude Test-Pending applicant cannot set the same status.</td>
+      <td>No Message</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Output</td>
+      <td>Pass</td>
+      <td>1337693</td>
+      <td>ContextId</td>
+      <td>Rejected</td>
+      <td>Status change: from : Aptitude Test-Rejected to: Aptitude Test-Pending changed successfully.</td>
+      <td>Please specify choice.</td>
+      <td>Null</td>
+      <td>Pending</td>
+      <td>Status change: from : Aptitude Test-Pending to: Aptitude Test-Pending applicant cannot set the same status.</td>
+      <td>No Message</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+  </tbody>
+</table>
+        </div>
+    </div>
+    <script>
+        document.querySelectorAll('.preview-table tr').forEach((tr, rowIndex) => {
+            let statusCount = 0;
+            const cells = tr.querySelectorAll('td');
+            
+            cells.forEach(td => {
+                const text = td.innerText.trim().toUpperCase();
+                
+                // Highlight Pass/Fail
+                if (['PASS', 'SUCCESS', 'PASSED'].includes(text)) {
+                    td.classList.add('status-pass');
+                } else if (['FAIL', 'FAILURE', 'FAILED', 'ERROR'].includes(text)) {
+                    td.classList.add('status-fail');
+                } else if (text === 'NA') {
+                    td.classList.add('status-na');
+                }
+                
+                // Header detection keywords
+                if (['STATUS', 'IDENTITY', 'ID'].includes(text)) {
+                    statusCount++;
+                }
+            });
+            
+            // If row has multiple 'Status' labels, it's a sub-header
+            if (statusCount >= 2 && rowIndex > 0) {
+                tr.classList.add('sub-header');
+            }
+        });
+    </script>
+</body>
+</html>
