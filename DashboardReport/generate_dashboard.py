@@ -668,6 +668,14 @@ def generate_styles():
             .history-section, .hero-banner { box-shadow: none; border: 1px solid #eee; }
             .day-view { display: block !important; opacity: 1 !important; transform: none !important; }
         }
+        .fail-badge { 
+            background: #fff1f2; color: #e11d48; padding: 4px 12px; border-radius: 99px; 
+            font-size: 0.9rem; font-weight: 800; border: 1px solid #ffe4e6; 
+            display: inline-flex; align-items: center; gap: 6px; 
+            margin-top: 0.75rem;
+            animation: softPulse 2s infinite ease-in-out;
+            white-space: nowrap;
+        }
     </style>
     """
 
@@ -758,6 +766,7 @@ def generate():
                     { '<span class="sync-badge"><i class="fas fa-clock-rotate-left"></i> OUT OF SYNC</span>' if is_stale else '' }
                 </div>
                 <div class="hero-value">{h['total']} <span class="hero-target">/ {TARGET_EXECUTION_GOAL} Test Cases</span></div>
+                {f'<span class="fail-badge">{len(h["no_result"])} Failed Test (s)</span>' if h["no_result"] else ""}
             </div>
             <div class="progress-container"><div class="progress-header"><span>Lifecycle Coverage</span><span>{cov}% Complete</span></div>
             <div class="progress-outer"><div class="progress-inner" style="width: {cov}%"></div></div></div>
@@ -770,7 +779,7 @@ def generate():
                 <div class="stat-icon icon-orange"><i class="fas fa-folder-open"></i></div>
                 <div class="stat-info">
                     <span class="value">{len(h['reports'])} / {EXPECTED_REPORT_COUNT}</span>
-                    <span class="label">REPORTS</span>
+                    <span class="label">TEST REPORTS</span>
                     {f'<div class="sync-label error"><i class="fas fa-exclamation-circle"></i> OUT OF SYNC</div>' if len(h['reports']) < EXPECTED_REPORT_COUNT else (f'<div class="sync-label error"><i class="fas fa-exclamation-circle"></i> NEW REPORTS DETECTED</div>' if len(h['reports']) > EXPECTED_REPORT_COUNT else '<div class="sync-label" style="color:#059669"><i class="fas fa-check-double"></i> ALL SYNCED</div>')}
                 </div>
             </div>
@@ -778,7 +787,7 @@ def generate():
         
         <div class="search-area">
             <i class="fas fa-search"></i>
-            <input type="text" placeholder="Search suites for {h['date']}..." onkeyup="searchInside(this)">
+            <input type="text" placeholder="Search tests for {h['date']}..." onkeyup="searchInside(this)">
         </div>
         
         """)
