@@ -360,10 +360,10 @@ def generate_styles():
             --text: #1e293b; --text-muted: #64748b; --success: #10b981; --danger: #ef4444;
             --border: #e2e8f0; --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Outfit', sans-serif; }
-        html, body { -ms-overflow-style: none; scrollbar-width: none; overflow-x: hidden; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Outfit', sans-serif; -webkit-tap-highlight-color: transparent; }
+        html, body { -ms-overflow-style: none; scrollbar-width: none; overflow-x: hidden; scroll-behavior: smooth; }
         html::-webkit-scrollbar, body::-webkit-scrollbar { display: none; }
-        body { background-color: var(--bg); color: var(--text); padding: 1.5rem 1rem; width: 100%; min-height: 100vh; }
+        body { background-color: var(--bg); color: var(--text); padding: 1.5rem 1rem; width: 100%; min-height: 100vh; touch-action: manipulation; }
         .container { max-width: 1240px; margin: 0 auto; }
         header { margin-bottom: 1.5rem; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
         h1 { font-size: 1.4rem; font-weight: 800; color: var(--text); line-height: 1.2; }
@@ -429,6 +429,30 @@ def generate_styles():
         .commit-badge { background: #f1f5f9; padding: 0.25rem 0.6rem; border-radius: 6px; font-family: monospace; font-weight: 700; color: var(--text); border: 1px solid var(--border); font-size: 0.75rem; }
         
         /* Liquid Glass Navigation */
+        /* Pull to Refresh Styles */
+        #ptr-indicator {
+            position: fixed; top: -60px; left: 0; width: 100%; height: 60px;
+            display: flex; align-items: center; justify-content: center;
+            z-index: 1001; pointer-events: none; transition: transform 0.1s linear;
+        }
+        .ptr-circle {
+            width: 42px; height: 42px; background: white; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1); border: 1px solid var(--border);
+            color: var(--primary); font-size: 1.1rem; transform: scale(0);
+        }
+        .ptr-rotate { animation: spin 0.8s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* Refresh Button in Header */
+        .btn-refresh {
+            background: #f1f5f9; color: var(--text-muted); width: 32px; height: 32px;
+            border-radius: 8px; display: flex; align-items: center; justify-content: center;
+            border: 1px solid var(--border); transition: all 0.2s; cursor: pointer; margin-left: auto;
+        }
+        .btn-refresh:hover { background: white; color: var(--primary); transform: rotate(180deg); border-color: var(--primary); }
+        .btn-refresh:active { transform: scale(0.9) rotate(180deg); }
+        
         .main-nav { 
             display: flex; position: relative; justify-content: center; gap: 0; 
             margin-bottom: 2.5rem; background: rgba(241, 245, 249, 0.75); 
@@ -439,18 +463,21 @@ def generate_styles():
         .nav-btn { 
             position: relative; z-index: 2; padding: 0.75rem 2.8rem; border-radius: 99px; 
             border: none; background: transparent; color: var(--text-muted); 
-            font-weight: 700; cursor: pointer; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); 
+            font-weight: 700; cursor: pointer; transition: color 0.3s, transform 0.1s; 
             display: flex; align-items: center; gap: 0.75rem; font-size: 0.95rem; 
+            touch-action: manipulation;
         }
+        .nav-btn:active { transform: scale(0.96); }
         .nav-btn.active { color: var(--primary); }
         .nav-btn i { font-size: 1rem; transition: transform 0.3s; }
         .nav-btn.active i { transform: scale(1.1); }
         .nav-indicator {
             position: absolute; height: calc(100% - 0.9rem); top: 0.45rem; left: 0.45rem;
             background: white; border-radius: 99px; z-index: 1;
-            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            transition: all 0.35s cubic-bezier(0.23, 1, 0.32, 1);
             box-shadow: 0 4px 15px rgba(79, 70, 229, 0.18);
             width: 0;
+            pointer-events: none;
         }
         
         .tab-content { display: none; }
@@ -465,11 +492,13 @@ def generate_styles():
             background: rgba(255, 255, 255, 0.6); 
             backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
             color: var(--primary); font-weight: 700; cursor: pointer; 
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); 
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); 
             font-size: 0.75rem; position: relative; overflow: hidden;
             box-shadow: 0 2px 8px rgba(0,0,0,0.03);
             white-space: nowrap;
+            touch-action: manipulation;
         }
+        .view-btn:active { transform: translateY(0) scale(0.95); }
         .view-btn::before {
             content: ''; position: absolute; top: -50%; left: -150%; width: 200%; height: 200%;
             background: radial-gradient(circle, rgba(255,255,255,0.5) 0%, transparent 70%);
@@ -784,13 +813,17 @@ def generate():
     <title>HirePro Quality Dashboard</title><link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     {generate_styles()}</head><body>
+    <div id="ptr-indicator"><div class="ptr-circle"><i class="fas fa-sync-alt"></i></div></div>
     <div class="container">
     <header>
         <div style="display: flex; align-items: center;"><img src="https://hirepro.in/wp-content/uploads/2025/05/HirePro-logo.svg" alt="HirePro Logo" style="height: 32px; width: auto;"></div>
         <div style="text-align: center;"><h1>Quality Dashboard</h1><p class="subtitle">Unified Test Lifecycle Monitoring</p></div>
-        <div style="text-align: right;">
-            <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600; margin-bottom: 0.25rem;">LATEST AUDIT</div>
-            <div style="font-weight: 700;"><i class="fas fa-sync-alt" style="color:var(--success); margin-right: 0.5rem;"></i> {current_time}</div>
+        <div style="text-align: right; display: flex; align-items: center; justify-content: flex-end; gap: 1rem;">
+            <div>
+                <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600; margin-bottom: 0.25rem;">LATEST AUDIT</div>
+                <div style="font-weight: 700;"><i class="fas fa-sync-alt" style="color:var(--success); margin-right: 0.5rem;"></i> {current_time}</div>
+            </div>
+            <button class="btn-refresh" onclick="window.location.reload()" title="Refresh Data"><i class="fas fa-redo-alt"></i></button>
         </div>
     </header>
     
@@ -834,24 +867,19 @@ def generate():
     </button>
     <script>
         function showTab(tabId) {{
-            const loader = document.getElementById('loader');
             const indicator = document.querySelector('.nav-indicator');
             const targetBtn = document.getElementById('btn-' + tabId);
-            
-            loader.style.display = 'flex';
             
             if (targetBtn && indicator) {{
                 indicator.style.width = targetBtn.offsetWidth + 'px';
                 indicator.style.left = targetBtn.offsetLeft + 'px';
             }}
 
-            setTimeout(() => {{
-                document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-                document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-                document.getElementById('tab-' + tabId).classList.add('active');
-                if(targetBtn) targetBtn.classList.add('active');
-                loader.style.display = 'none';
-            }}, 300);
+            // Switch content immediately for mobile smoothness
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById('tab-' + tabId).classList.add('active');
+            if(targetBtn) targetBtn.classList.add('active');
         }}
         // Initialize Nav
         function updateIndicator() {{
@@ -908,26 +936,22 @@ def generate():
                 e.preventDefault();
                 if (summary.classList.contains('loading')) return;
                 
-                summary.classList.add('loading');
                 const isOpening = !details.open;
                 
-                // Minor delay to let the spinner render
-                setTimeout(() => {{
-                    if (!isOpening) {{
-                        wrapper.style.gridTemplateRows = '0fr';
-                        const onFinish = () => {{
-                            details.open = false;
-                            wrapper.style.gridTemplateRows = '';
-                            summary.classList.remove('loading');
-                            wrapper.removeEventListener('transitionend', onFinish);
-                        }};
-                        wrapper.addEventListener('transitionend', onFinish, {{ once: true }});
-                        setTimeout(onFinish, 500); // Safety fallback
-                    }} else {{
-                        details.open = true;
+                if (!isOpening) {{
+                    summary.classList.add('loading');
+                    wrapper.style.gridTemplateRows = '0fr';
+                    const onFinish = () => {{
+                        details.open = false;
+                        wrapper.style.gridTemplateRows = '';
                         summary.classList.remove('loading');
-                    }}
-                }}, 100);
+                        wrapper.removeEventListener('transitionend', onFinish);
+                    }};
+                    wrapper.addEventListener('transitionend', onFinish, {{ once: true }});
+                    setTimeout(onFinish, 500); // Safety fallback
+                }} else {{
+                    details.open = true;
+                }}
             }});
         }});
         document.querySelectorAll('a.report-link:not([target="_blank"])').forEach(link => {{
@@ -936,6 +960,48 @@ def generate():
                 loader.style.display = 'flex';
                 setTimeout(() => {{ loader.style.display = 'none'; }}, 1000);
             }});
+        }});
+        // Mobile Pull to Refresh
+        let touchStart = 0;
+        let pullDist = 0;
+        const mainContainer = document.querySelector('.container');
+        const ptr = document.getElementById('ptr-indicator');
+        const ptrCircle = ptr.querySelector('.ptr-circle');
+
+        window.addEventListener('touchstart', (e) => {{
+            if (window.scrollY <= 0) {{
+                touchStart = e.touches[0].screenY;
+            }}
+        }}, {{ passive: true }});
+
+        window.addEventListener('touchmove', (e) => {{
+            if (window.scrollY <= 0) {{
+                const touch = e.touches[0].screenY;
+                const diff = touch - touchStart;
+                pullDist = Math.max(0, diff * 0.4);
+                
+                if (pullDist > 5) {{
+                    mainContainer.style.transform = `translateY(${{pullDist}}px)`;
+                    ptr.style.transform = `translateY(${{pullDist}}px)`;
+                    ptrCircle.style.transform = `rotate(${{pullDist * 2}}deg) scale(${{Math.min(1, pullDist/60)}})`;
+                    ptrCircle.style.opacity = Math.min(1, pullDist/50);
+                }}
+            }}
+        }}, {{ passive: true }});
+
+        window.addEventListener('touchend', () => {{
+            if (pullDist > 70) {{
+                ptrCircle.classList.add('ptr-rotate');
+                mainContainer.style.transition = 'transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                mainContainer.style.transform = 'translateY(60px)';
+                setTimeout(() => window.location.reload(), 600);
+            }} else if (pullDist > 0) {{
+                mainContainer.style.transition = 'transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                mainContainer.style.transform = 'translateY(0)';
+                ptr.style.transform = 'translateY(0)';
+                setTimeout(() => mainContainer.style.transition = '', 400);
+            }}
+            pullDist = 0;
         }});
     </script><div class="container"><footer><div style="display: flex; align-items: center; gap: 0.75rem;"><span style="text-transform: uppercase; font-size: 0.7rem; letter-spacing: 0.05em; font-weight: 700;">Build ID:</span><span class="commit-badge"><i class="fas fa-code-branch" style="margin-right:0.4rem; opacity:0.5;"></i>{commit_id}</span></div><div>&copy; 2026 HirePro . All rights reserved.</div></footer></div></body></html>""")
     OUTPUT_FILE.write_text("".join(html_parts), encoding='utf-8'); print(f"Dashboard generated at {OUTPUT_FILE}")
