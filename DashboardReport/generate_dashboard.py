@@ -375,10 +375,19 @@ def generate_styles():
             margin-bottom: 2.5rem; box-shadow: var(--shadow); display: flex; align-items: center; gap: 3rem; 
             position: relative; overflow: hidden; transform: translateZ(0);
         }
-        .hero-banner::before { content: ''; position: absolute; left: 0; top: 0; width: 8px; height: 100%; background: linear-gradient(to bottom, var(--primary), #818cf8); }
-        .hero-main { flex: 1; }
-        .hero-label { font-size: 0.85rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.5rem; letter-spacing: 0.05em; }
+        .hero-banner.stale-banner { border-color: #fca5a5; background: #fffafb; box-shadow: 0 10px 25px -5px rgba(239, 68, 68, 0.08); }
+        .hero-banner.stale-banner::before { background: linear-gradient(to bottom, #ef4444, #fca5a5); }
+        .hero-main { flex: 1; min-width: 0; }
+        .hero-label { font-size: 0.85rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.5rem; letter-spacing: 0.05em; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; line-height: 1.6; }
         .hero-value { font-size: 3rem; font-weight: 900; color: var(--text); display: flex; align-items: baseline; gap: 0.5rem; }
+        .sync-badge { 
+            background: #ffe4e6; color: #e11d48; padding: 4px 12px; border-radius: 99px; 
+            font-size: 0.65rem; font-weight: 800; border: 1px solid #fecdd3; 
+            display: inline-flex; align-items: center; gap: 6px; 
+            animation: softPulse 2s infinite ease-in-out; 
+            white-space: nowrap; margin-left: 4px;
+        }
+        @keyframes softPulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.8; transform: scale(0.97); } }
         .hero-target { font-size: 1.25rem; color: var(--text-muted); font-weight: 500; }
         .progress-container { flex: 1.5; }
         .progress-header { display: flex; justify-content: space-between; margin-bottom: 0.75rem; font-weight: 700; font-size: 0.9rem; }
@@ -569,9 +578,11 @@ def generate_styles():
             .hero-value { font-size: 2rem; justify-content: center; }
             .hero-target { font-size: 1rem; }
             .hero-label { font-size: 0.75rem; }
+            .hero-banner { flex-direction: column; gap: 1.5rem; text-align: center; padding: 1.5rem 1.25rem; margin: 0 auto 1.5rem auto; align-items: center; }
+            .hero-label, .hero-value { justify-content: center; width: 100%; }
             .progress-container { width: 100%; }
-            .progress-header { font-size: 0.8rem; }
-            .hero-banner { flex-direction: column; gap: 1.5rem; text-align: center; padding: 1.5rem 1rem; margin: 0 auto 1.5rem auto; }
+            .progress-header { font-size: 0.8rem; justify-content: center; gap: 1rem; }
+            .hero-banner.stale-banner { text-align: center; }
             
             .alert-card { flex-direction: column; text-align: center; gap: 1rem; padding: 1.25rem 1rem; }
             .alert-card span { font-size: 0.85rem; line-height: 1.4; }
@@ -726,16 +737,28 @@ def generate():
 
     # Generate Day-Specific Breakdowns
     day_views_html = []
-    for h in history_data:
+    today_str = datetime.datetime.now().strftime('%Y%m%d')
+    for idx, h in enumerate(history_data):
         is_active = "active" if h == current_day else ""
         cov = round((h["total"] / TARGET_EXECUTION_GOAL) * 100, 1) if TARGET_EXECUTION_GOAL > 0 else 0
+        
+        # Only show the red stale alert for the VERY LATEST report if it's not today
+        # We don't want history reports to show red just because they are in the past
+        is_stale = (idx == 0 and h['raw_date'] != today_str)
+        stale_cls = "hero-stale" if is_stale else ""
         
         view_parts = [f"""<div id="view-{h['raw_date']}" class="day-view {is_active}">"""]
         
         # Hero Banner
         view_parts.append(f"""
-        <div class="hero-banner">
-            <div class="hero-main"><div class="hero-label">Execution Goal ({h['date']})</div><div class="hero-value">{h['total']} <span class="hero-target">/ {TARGET_EXECUTION_GOAL} Test Cases</span></div></div>
+        <div class="hero-banner { 'stale-banner' if is_stale else '' }">
+            <div class="hero-main">
+                <div class="hero-label">
+                    Execution Goal ({h['date']})
+                    { '<span class="sync-badge"><i class="fas fa-clock-rotate-left"></i> OUT OF SYNC</span>' if is_stale else '' }
+                </div>
+                <div class="hero-value">{h['total']} <span class="hero-target">/ {TARGET_EXECUTION_GOAL} Test Cases</span></div>
+            </div>
             <div class="progress-container"><div class="progress-header"><span>Lifecycle Coverage</span><span>{cov}% Complete</span></div>
             <div class="progress-outer"><div class="progress-inner" style="width: {cov}%"></div></div></div>
         </div>
