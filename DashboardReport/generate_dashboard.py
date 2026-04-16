@@ -356,9 +356,10 @@ def generate_styles():
     return """
     <style>
         :root {
-            --primary: #4f46e5; --bg: #f8fafc; --card-bg: #ffffff;
+            --primary: #4f46e5; --primary-dark: #4338ca; --bg: #f8fafc; --card-bg: #ffffff;
             --text: #1e293b; --text-muted: #64748b; --success: #10b981; --danger: #ef4444;
-            --border: #e2e8f0; --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            --border: #e2e8f0; --shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --glass: rgba(255, 255, 255, 0.7);
         }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Outfit', sans-serif; -webkit-tap-highlight-color: transparent; }
         html, body { -ms-overflow-style: none; scrollbar-width: none; overflow-x: hidden; scroll-behavior: smooth; }
@@ -369,8 +370,12 @@ def generate_styles():
         h1 { font-size: 1.4rem; font-weight: 800; color: var(--text); line-height: 1.2; }
         .subtitle { color: var(--text-muted); font-size: 0.75rem; margin-top: 0.25rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
         
-        .hero-banner { background: var(--card-bg); border: 1px solid var(--border); padding: 2rem; border-radius: 1.5rem; margin-bottom: 2.5rem; box-shadow: var(--shadow); display: flex; align-items: center; gap: 3rem; position: relative; overflow: hidden; }
-        .hero-banner::before { content: ''; position: absolute; left: 0; top: 0; width: 6px; height: 100%; background: var(--primary); }
+        .hero-banner { 
+            background: var(--card-bg); border: 1px solid var(--border); padding: 2.5rem; border-radius: 2rem; 
+            margin-bottom: 2.5rem; box-shadow: var(--shadow); display: flex; align-items: center; gap: 3rem; 
+            position: relative; overflow: hidden; transform: translateZ(0);
+        }
+        .hero-banner::before { content: ''; position: absolute; left: 0; top: 0; width: 8px; height: 100%; background: linear-gradient(to bottom, var(--primary), #818cf8); }
         .hero-main { flex: 1; }
         .hero-label { font-size: 0.85rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.5rem; letter-spacing: 0.05em; }
         .hero-value { font-size: 3rem; font-weight: 900; color: var(--text); display: flex; align-items: baseline; gap: 0.5rem; }
@@ -396,11 +401,12 @@ def generate_styles():
         .alert-card { background: #fff5f5; border: 1px solid #fed7d7; padding: 1rem 1.5rem; border-radius: 1rem; display: flex; align-items: center; justify-content: space-between; color: #c53030; }
         .alert-card i { font-size: 1.25rem; margin-right: 0.75rem; }
 
-        details { background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; margin-bottom: 1.5rem; box-shadow: var(--shadow); position: relative; overflow: visible; }
-        summary { padding: 1.5rem; font-weight: 700; font-size: 1.1rem; cursor: pointer; background: #f8fafc; display: flex; justify-content: space-between; align-items: center; list-style: none; position: relative; border-radius: 15px 15px 0 0; }
+        details { background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; margin-bottom: 1.5rem; box-shadow: var(--shadow); position: relative; overflow: visible; transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
+        details:hover { border-color: #cbd5e1; }
+        summary { padding: 1.5rem; font-weight: 700; font-size: 1.1rem; cursor: pointer; background: #f8fafc; display: flex; justify-content: space-between; align-items: center; list-style: none; position: relative; border-radius: 15px 15px 0 0; transition: background 0.2s; -webkit-tap-highlight-color: transparent; }
         details:not([open]) summary { border-radius: 15px; }
-        summary::after { content: '\\f078'; font-family: "Font Awesome 6 Free"; font-weight: 900; transition: transform 0.3s; margin-left: 1rem; }
-        details[open] summary::after { transform: rotate(180deg); }
+        summary::after { content: '\\f078'; font-family: "Font Awesome 6 Free"; font-weight: 900; transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); margin-left: 1rem; color: var(--text-muted); font-size: 0.9rem; }
+        details[open] summary::after { transform: rotate(180deg); color: var(--primary); }
         details[open] summary { border-bottom: 1px solid var(--border); margin-bottom: 0; }
         
         .content-wrapper { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
@@ -422,37 +428,19 @@ def generate_styles():
         .chip i { margin-right: 0.35rem; font-size: 0.7rem; opacity: 0.7; }
         
         .search-area { margin-bottom: 2rem; position: relative; }
-        .search-area input { width: 100%; padding: 1rem 3rem; border-radius: 12px; border: 1px solid var(--border); outline: none; }
-        .search-area i { position: absolute; left: 1.25rem; top: 50%; transform: translateY(-50%); color: var(--text-muted); z-index: 10; pointer-events: none; }
+        .search-area input { 
+            width: 100%; padding: 1rem 3.5rem; border-radius: 14px; border: 1.5px solid var(--border); 
+            outline: none; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); background: white;
+            font-size: 0.95rem; font-weight: 500;
+        }
+        .search-area input:focus { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1); }
+        .search-area i { position: absolute; left: 1.4rem; top: 50%; transform: translateY(-50%); color: var(--text-muted); z-index: 10; pointer-events: none; transition: color 0.3s; }
+        .search-area input:focus + i { color: var(--primary); }
         
         footer { margin-top: 4rem; padding: 2rem 0; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; color: var(--text-muted); font-size: 0.85rem; font-weight: 500; }
         .commit-badge { background: #f1f5f9; padding: 0.25rem 0.6rem; border-radius: 6px; font-family: monospace; font-weight: 700; color: var(--text); border: 1px solid var(--border); font-size: 0.75rem; }
         
         /* Liquid Glass Navigation */
-        /* Pull to Refresh Styles */
-        #ptr-indicator {
-            position: fixed; top: -60px; left: 0; width: 100%; height: 60px;
-            display: flex; align-items: center; justify-content: center;
-            z-index: 1001; pointer-events: none; transition: transform 0.1s linear;
-        }
-        .ptr-circle {
-            width: 42px; height: 42px; background: white; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1); border: 1px solid var(--border);
-            color: var(--primary); font-size: 1.1rem; transform: scale(0);
-        }
-        .ptr-rotate { animation: spin 0.8s linear infinite; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
-        /* Refresh Button in Header */
-        .btn-refresh {
-            background: #f1f5f9; color: var(--text-muted); width: 32px; height: 32px;
-            border-radius: 8px; display: flex; align-items: center; justify-content: center;
-            border: 1px solid var(--border); transition: all 0.2s; cursor: pointer; margin-left: auto;
-        }
-        .btn-refresh:hover { background: white; color: var(--primary); transform: rotate(180deg); border-color: var(--primary); }
-        .btn-refresh:active { transform: scale(0.9) rotate(180deg); }
-        
         .main-nav { 
             display: flex; position: relative; justify-content: center; gap: 0; 
             margin-bottom: 2.5rem; background: rgba(241, 245, 249, 0.75); 
@@ -612,23 +600,23 @@ def generate_styles():
             .stat-card:nth-child(1), .stat-card:nth-child(2) { border-bottom: 1px solid #f1f5f9 !important; }
             .stat-card:nth-child(1), .stat-card:nth-child(3) { border-right: 1px solid #f1f5f9 !important; }
             
-            .main-nav { padding: 0.25rem; width: 100%; max-width: 100%; margin-bottom: 1.5rem; }
-            .nav-btn { padding: 0.6rem 0.25rem; font-size: 0.75rem; flex: 1; justify-content: center; gap: 0.35rem; }
-            .nav-indicator { height: calc(100% - 0.5rem); top: 0.25rem; }
+            .main-nav { padding: 0.35rem; width: 95%; max-width: 400px; margin-bottom: 1.5rem; gap: 0.2rem; }
+            .nav-btn { padding: 0.75rem 0.5rem; font-size: 0.8rem; flex: 1; justify-content: center; gap: 0.5rem; }
+            .nav-indicator { height: calc(100% - 0.7rem); top: 0.35rem; }
 
             .history-section { padding: 0.75rem; border-radius: 1rem; overflow: visible; }
             .history-table-wrapper { margin: 0; padding: 0; width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
             .history-table { font-size: 0.7rem; }
             
-            .search-area input { font-size: 0.85rem; padding: 0.75rem 1rem 0.75rem 3rem; }
+            .search-area input { font-size: 0.9rem; padding: 0.85rem 1rem 0.85rem 3.25rem; }
             
-            .report-group { width: 100%; border-radius: 12px; }
-            summary { padding: 1.25rem 2.5rem 1.25rem 1rem; position: relative; }
+            .report-group { width: 100%; border-radius: 14px; }
+            summary { padding: 1.25rem 3rem 1.25rem 1.25rem; position: relative; }
             summary::after { position: absolute; right: 1.25rem; top: 50%; transform: translateY(-50%); }
             details[open] summary::after { transform: translateY(-50%) rotate(180deg); }
             summary > div { flex-direction: column; align-items: center; text-align: center; gap: 0.75rem !important; width: 100%; }
-            summary span { font-size: 0.9rem !important; font-weight: 800; margin-right: 0; display: block; width: 100%; }
-            summary div .chip { font-size: 0.7rem; min-width: 50px; padding: 4px 10px; }
+            summary span { font-size: 0.95rem !important; font-weight: 800; margin-right: 0; display: block; width: 100%; }
+            summary div .chip { font-size: 0.75rem; min-width: 60px; padding: 6px 12px; }
             summary div div { justify-content: center !important; width: 100% !important; margin: 0 !important; }
             
             .content-inner { overflow-x: auto; width: 100%; }
@@ -641,10 +629,10 @@ def generate_styles():
             [data-tooltip]::before { display: none !important; }
         }
         .loader-overlay {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(255,255,255,0.7); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-            display: flex; align-items: center; justify-content: center; z-index: 1000;
-            border-radius: 20px; transition: opacity 0.3s ease-out;
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(255,255,255,0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            display: flex; align-items: center; justify-content: center; z-index: 99999;
+            transition: opacity 0.3s ease-out;
         }
         .loader-spinner {
             width: 32px; height: 32px; border: 3px solid #e2e8f0;
@@ -652,6 +640,12 @@ def generate_styles():
             animation: spin 0.6s linear infinite;
         }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes pulse-text { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        .loader-text { 
+            font-weight: 800; color: var(--primary); font-size: 0.8rem; 
+            letter-spacing: 0.1em; text-transform: uppercase; 
+            margin-top: 1rem; animation: pulse-text 1.5s ease-in-out infinite; 
+        }
         .collapsible-loader {
             display: none; width: 16px; height: 16px; border: 2px solid rgba(0,0,0,0.05); border-top: 2px solid var(--primary); border-radius: 50%; animation: spin 0.6s linear infinite; margin-right: 0.75rem; flex-shrink: 0;
         }
@@ -813,17 +807,13 @@ def generate():
     <title>HirePro Quality Dashboard</title><link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     {generate_styles()}</head><body>
-    <div id="ptr-indicator"><div class="ptr-circle"><i class="fas fa-sync-alt"></i></div></div>
     <div class="container">
     <header>
         <div style="display: flex; align-items: center;"><img src="https://hirepro.in/wp-content/uploads/2025/05/HirePro-logo.svg" alt="HirePro Logo" style="height: 32px; width: auto;"></div>
         <div style="text-align: center;"><h1>Quality Dashboard</h1><p class="subtitle">Unified Test Lifecycle Monitoring</p></div>
-        <div style="text-align: right; display: flex; align-items: center; justify-content: flex-end; gap: 1rem;">
-            <div>
-                <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600; margin-bottom: 0.25rem;">LATEST AUDIT</div>
-                <div style="font-weight: 700;"><i class="fas fa-sync-alt" style="color:var(--success); margin-right: 0.5rem;"></i> {current_time}</div>
-            </div>
-            <button class="btn-refresh" onclick="window.location.reload()" title="Refresh Data"><i class="fas fa-redo-alt"></i></button>
+        <div style="text-align: right;">
+            <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600; margin-bottom: 0.25rem;">LATEST AUDIT</div>
+            <div style="font-weight: 700;"><i class="fas fa-sync-alt" style="color:var(--success); margin-right: 0.5rem;"></i> {current_time}</div>
         </div>
     </header>
     
@@ -834,7 +824,12 @@ def generate():
     </div>
     
     <div id="dashboard-main" style="position: relative;">
-        <div id="loader" class="loader-overlay"><div class="loader-spinner"></div></div>
+        <div id="loader" class="loader-overlay">
+            <div style="text-align: center;">
+                <div class="loader-spinner" style="margin: 0 auto;"></div>
+                <div class="loader-text">Syncing Dashboard...</div>
+            </div>
+        </div>
         <div id="tab-history" class="tab-content">
             <div class="history-section">
                 <div class="trend-title" style="margin-bottom: 1.5rem;"><i class="fas fa-history"></i> Historical Audit Timeline</div>
@@ -875,7 +870,6 @@ def generate():
                 indicator.style.left = targetBtn.offsetLeft + 'px';
             }}
 
-            // Switch content immediately for mobile smoothness
             document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
             document.getElementById('tab-' + tabId).classList.add('active');
@@ -960,48 +954,6 @@ def generate():
                 loader.style.display = 'flex';
                 setTimeout(() => {{ loader.style.display = 'none'; }}, 1000);
             }});
-        }});
-        // Mobile Pull to Refresh
-        let touchStart = 0;
-        let pullDist = 0;
-        const mainContainer = document.querySelector('.container');
-        const ptr = document.getElementById('ptr-indicator');
-        const ptrCircle = ptr.querySelector('.ptr-circle');
-
-        window.addEventListener('touchstart', (e) => {{
-            if (window.scrollY <= 0) {{
-                touchStart = e.touches[0].screenY;
-            }}
-        }}, {{ passive: true }});
-
-        window.addEventListener('touchmove', (e) => {{
-            if (window.scrollY <= 0) {{
-                const touch = e.touches[0].screenY;
-                const diff = touch - touchStart;
-                pullDist = Math.max(0, diff * 0.4);
-                
-                if (pullDist > 5) {{
-                    mainContainer.style.transform = `translateY(${{pullDist}}px)`;
-                    ptr.style.transform = `translateY(${{pullDist}}px)`;
-                    ptrCircle.style.transform = `rotate(${{pullDist * 2}}deg) scale(${{Math.min(1, pullDist/60)}})`;
-                    ptrCircle.style.opacity = Math.min(1, pullDist/50);
-                }}
-            }}
-        }}, {{ passive: true }});
-
-        window.addEventListener('touchend', () => {{
-            if (pullDist > 70) {{
-                ptrCircle.classList.add('ptr-rotate');
-                mainContainer.style.transition = 'transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
-                mainContainer.style.transform = 'translateY(60px)';
-                setTimeout(() => window.location.reload(), 600);
-            }} else if (pullDist > 0) {{
-                mainContainer.style.transition = 'transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
-                mainContainer.style.transform = 'translateY(0)';
-                ptr.style.transform = 'translateY(0)';
-                setTimeout(() => mainContainer.style.transition = '', 400);
-            }}
-            pullDist = 0;
         }});
     </script><div class="container"><footer><div style="display: flex; align-items: center; gap: 0.75rem;"><span style="text-transform: uppercase; font-size: 0.7rem; letter-spacing: 0.05em; font-weight: 700;">Build ID:</span><span class="commit-badge"><i class="fas fa-code-branch" style="margin-right:0.4rem; opacity:0.5;"></i>{commit_id}</span></div><div>&copy; 2026 HirePro . All rights reserved.</div></footer></div></body></html>""")
     OUTPUT_FILE.write_text("".join(html_parts), encoding='utf-8'); print(f"Dashboard generated at {OUTPUT_FILE}")
