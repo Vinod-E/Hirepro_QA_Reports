@@ -575,14 +575,14 @@ def generate_styles():
             h1 { font-size: 1.2rem; }
             .subtitle { font-size: 0.65rem; }
             
-            .hero-value { font-size: 2rem; justify-content: center; }
+            .hero-banner { flex-direction: column; gap: 1.5rem; text-align: center; padding: 1.5rem 1.25rem; margin: 0 auto 1.5rem auto; align-items: center !important; }
+            .hero-main { width: 100%; display: flex; flex-direction: column; align-items: center; }
+            .hero-label { font-size: 0.75rem; justify-content: center !important; width: 100%; }
+            .hero-value { font-size: 2rem; justify-content: center !important; width: 100%; margin: 0.5rem 0; }
             .hero-target { font-size: 1rem; }
-            .hero-label { font-size: 0.75rem; }
-            .hero-banner { flex-direction: column; gap: 1.5rem; text-align: center; padding: 1.5rem 1.25rem; margin: 0 auto 1.5rem auto; align-items: center; }
-            .hero-label, .hero-value { justify-content: center; width: 100%; }
             .progress-container { width: 100%; }
-            .progress-header { font-size: 0.8rem; justify-content: center; gap: 1rem; }
-            .hero-banner.stale-banner { text-align: center; }
+            .progress-header { font-size: 0.8rem; justify-content: space-between !important; }
+            .hero-banner.stale-banner { text-align: center !important; }
             
             .alert-card { flex-direction: column; text-align: center; gap: 1rem; padding: 1.25rem 1rem; }
             .alert-card span { font-size: 0.85rem; line-height: 1.4; }
