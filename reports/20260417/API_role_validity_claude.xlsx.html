@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preview: API_role_validity_claude.xlsx</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --primary: #4f46e5; --bg: #f8fafc; --text: #1e293b; --border: #e2e8f0; --success: #10b981; --danger: #ef4444; }
+        body { font-family: 'Outfit', sans-serif; background-color: var(--bg); color: var(--text); padding: 2rem; margin: 0; }
+        .container { max-width: 1400px; margin: 0 auto; background: white; padding: 2.5rem; border-radius: 1.5rem; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05); border: 1px solid var(--border); }
+        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 2px solid var(--bg); }
+        .title-area { display: flex; align-items: center; gap: 1rem; }
+        .title-area i { font-size: 2rem; color: var(--primary); }
+        h1 { font-size: 1.5rem; font-weight: 800; margin: 0; }
+        .actions { display: flex; gap: 1rem; }
+        .btn { text-decoration: none; padding: 0.6rem 1.25rem; border-radius: 10px; font-weight: 700; font-size: 0.85rem; display: flex; align-items: center; gap: 0.5rem; transition: all 0.2s; border: none; cursor: pointer; }
+        .btn-download { background: var(--primary); color: white; }
+        .btn-download:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3); }
+        .btn-back { background: #f1f5f9; color: var(--text); }
+        .btn-back:hover { background: #e2e8f0; }
+        .table-wrapper { overflow-x: auto; border-radius: 12px; border: 1px solid var(--border); background: white; }
+        .preview-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; border-spacing: 0; }
+        .preview-table td { padding: 0.85rem 1.15rem; border-bottom: 1px solid var(--border); border-right: 1px solid var(--border); white-space: nowrap; color: var(--text); }
+        .preview-table tr:hover { background: #f1f5f9 !important; }
+        
+        /* Header & Sub-header Styling */
+        .preview-table tr:first-child td,
+        .preview-table tr.sub-header td { 
+            background: #f1f5f9 !important; 
+            font-weight: 800 !important; 
+            color: #475569 !important; 
+            text-transform: uppercase; 
+            font-size: 0.75rem; 
+            letter-spacing: 0.025em;
+            border-bottom: 2px solid #cbd5e1 !important;
+        }
+        
+        .preview-table tr:nth-child(even) { background: #fafbfc; }
+        .preview-table tr:hover { background: #f1f5f9 !important; }
+        
+        /* Status Colors */
+        .status-pass { color: var(--success) !important; font-weight: 800; background: #ecfdf5 !important; }
+        .status-fail { color: var(--danger) !important; font-weight: 800; background: #fef2f2 !important; }
+        .status-na { color: #94a3b8; font-style: italic; opacity: 0.5; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="title-area">
+                <i class="fas fa-file-excel"></i>
+                <div>
+                    <h1>API_role_validity_claude.xlsx</h1>
+                    <div style="font-size: 0.75rem; color: #64748b; font-weight: 600; margin-top: 0.2rem; text-transform: uppercase;">Spreadsheet Preview (All Rows)</div>
+                </div>
+            </div>
+            <div class="actions">
+                <button onclick="window.close()" class="btn btn-back"><i class="fas fa-times"></i> Close Tab</button>
+                <a href="API_role_validity_claude.xlsx" download="API_role_validity_claude.xlsx" class="btn btn-download"><i class="fas fa-download"></i> Download Excel</a>
+            </div>
+        </header>
+        <div class="table-wrapper">
+            <table border="1" class="dataframe preview-table">
+  <tbody>
+    <tr>
+      <td>TC ID</td>
+      <td>Group</td>
+      <td>Priority</td>
+      <td>Title / Description</td>
+      <td>Steps / Details</td>
+      <td>Expected Result</td>
+      <td>Pass Criteria</td>
+      <td>Status</td>
+      <td>Actual Result</td>
+    </tr>
+    <tr>
+      <td>TC-01: Setup</td>
+      <td>Setup</td>
+      <td>High</td>
+      <td>Create role + user. validity_till must be null initially (not auto-set like expiry_on).</td>
+      <td>1. Create role.\n2. Create user with role.\n3. Check validityTill.</td>
+      <td>validityTill is null.</td>
+      <td>Initial validity value is null.</td>
+      <td>PASS</td>
+      <td>roleId=297, userId=349, email=[MASKED_EMAIL], initial validity_till=None (expected null)</td>
+    </tr>
+    <tr>
+      <td>TC-02: Set validity by userId</td>
+      <td>Happy Path</td>
+      <td>High</td>
+      <td>Set noOfDaysFromNow=30. validity_till must be ~now + 30d.</td>
+      <td>1. Update user role validity with noOfDaysFromNow=30 by userId.</td>
+      <td>validityTill is set to ~now + 30d.</td>
+      <td>Response message matches and stored date is correct.</td>
+      <td>PASS</td>
+      <td>message='Updated successfully.', expected~=2026-05-17 12:24:28, stored=2026-05-17 12:24:29</td>
+    </tr>
+    <tr>
+      <td>TC-03: validityTill in user details</td>
+      <td>Happy Path</td>
+      <td>Medium</td>
+      <td>GET user by ID must include validityTill in UserRoleDetails after it's been set.</td>
+      <td>1. Call get_user_by_id.\n2. Verify validityTill in UserRoleDetails.</td>
+      <td>validityTill is present.</td>
+      <td>Field exists and is not null.</td>
+      <td>PASS</td>
+      <td>userId=349, roleId=297, validityTill=2026-05-17T12:24:29</td>
+    </tr>
+    <tr>
+      <td>TC-04: Set validity by email</td>
+      <td>Happy Path</td>
+      <td>Medium</td>
+      <td>Setting validity by userEmail must work the same as by userId.</td>
+      <td>1. Update user role validity with noOfDaysFromNow=30 by userEmail.</td>
+      <td>Updated successfully.</td>
+      <td>Stored date matches expected (+30d).</td>
+      <td>PASS</td>
+      <td>email=[MASKED_EMAIL], message='Updated successfully.', expected~=2026-05-17 12:24:31, stored=2026-05-17 12:24:31</td>
+    </tr>
+    <tr>
+      <td>TC-05: Update to different days</td>
+      <td>Happy Path</td>
+      <td>Medium</td>
+      <td>Updating noOfDaysFromNow to 10 must overwrite previous validity_till.</td>
+      <td>1. Update validity with new noOfDaysFromNow=10.</td>
+      <td>Previous validity is overwritten.</td>
+      <td>New date is correct.</td>
+      <td>PASS</td>
+      <td>old=2026-05-17T12:24:29, new=2026-04-27 12:24:33, expected~=2026-04-27 12:24:33</td>
+    </tr>
+    <tr>
+      <td>TC-06: Max 365 days</td>
+      <td>Validation</td>
+      <td>High</td>
+      <td>noOfDaysFromNow &gt; 365 must be rejected with appropriate message.</td>
+      <td>1. Update validity with noOfDaysFromNow=400.</td>
+      <td>Rejected with error.</td>
+      <td>Message mentions 365 days limit.</td>
+      <td>PASS</td>
+      <td>noOfDaysFromNow=400, message='No of days to extend should be less than equal to 365.'</td>
+    </tr>
+    <tr>
+      <td>TC-07: Missing noOfDaysFromNow</td>
+      <td>Validation</td>
+      <td>Medium</td>
+      <td>Request without noOfDaysFromNow must be rejected with error message.</td>
+      <td>1. Send request missing noOfDaysFromNow.</td>
+      <td>Rejected.</td>
+      <td>Error message indicates missing field.</td>
+      <td>PASS</td>
+      <td>message='No of days to extend not in request.'</td>
+    </tr>
+    <tr>
+      <td>TC-08: Missing roleId</td>
+      <td>Validation</td>
+      <td>Medium</td>
+      <td>Request without roleId must be rejected.</td>
+      <td>1. Send request missing roleId.</td>
+      <td>Rejected.</td>
+      <td>Error message matches.</td>
+      <td>PASS</td>
+      <td>error='User roles not in request.'</td>
+    </tr>
+    <tr>
+      <td>TC-09: Non-existent userId</td>
+      <td>Validation</td>
+      <td>Medium</td>
+      <td>Non-existent userId.</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>PASS</td>
+      <td>error='Users not found.'</td>
+    </tr>
+    <tr>
+      <td>TC-10: Non-existent roleId</td>
+      <td>Validation</td>
+      <td>Medium</td>
+      <td>Non-existent roleId must return 'Role not found.'</td>
+      <td>1. Update validity for dummy roleId.</td>
+      <td>Error returned.</td>
+      <td>Message contains 'not found'.</td>
+      <td>PASS</td>
+      <td>message='Role not found.'</td>
+    </tr>
+    <tr>
+      <td>TC-11: User without role</td>
+      <td>Validation</td>
+      <td>Medium</td>
+      <td>User without the specified role must return 'User with role not found.'</td>
+      <td>1. Update validity for a role not assigned to the user.</td>
+      <td>Error returned.</td>
+      <td>Message specifies 'role not found' for user.</td>
+      <td>PASS</td>
+      <td>message='User with role not found.'</td>
+    </tr>
+    <tr>
+      <td>TC-12: New assignment null validity</td>
+      <td>Assignment</td>
+      <td>Medium</td>
+      <td>Newly assigned role must have validity_till=null — it's never auto-set.</td>
+      <td>1. Assign a new role.\n2. Verify validityTill is null.</td>
+      <td>validityTill is null.</td>
+      <td>Initial validity is not automatically inherited.</td>
+      <td>PASS</td>
+      <td>userId=349, roleId=303, validity_till=None (expected null)</td>
+    </tr>
+    <tr>
+      <td>TC-13: GetAllUsers validity filter</td>
+      <td>Filter</td>
+      <td>Medium</td>
+      <td>User with valid (future) validity_till must appear when filtering IsUserRoleValidityOver=false.</td>
+      <td>1. Call get_all_users with IsUserRoleValidityOver=false filter.</td>
+      <td>User is found.</td>
+      <td>Filter correctly identifies users with active validity.</td>
+      <td>PASS</td>
+      <td>filter=IsUserRoleValidityOver=false, role=297, user=349, total=1, found_in_page=False</td>
+    </tr>
+    <tr>
+      <td>TC-15: Bulk update</td>
+      <td>Bulk</td>
+      <td>High</td>
+      <td>Multiple user+role pairs in a single API call must all be updated independently.</td>
+      <td>1. Update multiple user+role pairs in one call.</td>
+      <td>All items updated.</td>
+      <td>Individual users get correct unique timestamps.</td>
+      <td>PASS</td>
+      <td>userA: msg='Updated successfully.', stored=2026-06-16 12:24:47, expected~=2026-06-16 12:24:47 | userB: msg='Updated successfully.', stored=2026-07-16 12:24:47, expected~=2026-07-16 12:24:47</td>
+    </tr>
+    <tr>
+      <td>TC-16: Exact 365 days</td>
+      <td>Boundary</td>
+      <td>Medium</td>
+      <td>noOfDaysFromNow=365 is the max allowed — must be accepted and stored correctly.</td>
+      <td>1. Update validity with noOfDaysFromNow=365.</td>
+      <td>Accepted.</td>
+      <td>Stored date is exactly +365 days.</td>
+      <td>PASS</td>
+      <td>message='Updated successfully.', expected~=2027-04-17 12:24:49, stored=2027-04-17 12:24:50</td>
+    </tr>
+    <tr>
+      <td>TC-17: Minimum 1 day</td>
+      <td>Boundary</td>
+      <td>Medium</td>
+      <td>noOfDaysFromNow=1 is the minimum truthy value — must be accepted.</td>
+      <td>1. Update validity with noOfDaysFromNow=1.</td>
+      <td>Accepted.</td>
+      <td>Stored date is exactly +1 day.</td>
+      <td>PASS</td>
+      <td>message='Updated successfully.', expected~=2026-04-18 12:24:51, stored=2026-04-18 12:24:52</td>
+    </tr>
+    <tr>
+      <td>TC-18: Missing userId and email</td>
+      <td>Validation</td>
+      <td>Medium</td>
+      <td>Missing both userId and email.</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>PASS</td>
+      <td>error='User id/email not in request.'</td>
+    </tr>
+    <tr>
+      <td>TC-S1: No auth on update validity</td>
+      <td>Security: Auth</td>
+      <td>High</td>
+      <td>Update validity without X-Auth-Token must be rejected.</td>
+      <td>1. Send update request without auth token.</td>
+      <td>Rejected or unauthorized.</td>
+      <td>HTTP 401/403 or KO status.</td>
+      <td>PASS</td>
+      <td>HTTP 400, status=KO</td>
+    </tr>
+    <tr>
+      <td>TC-S2: Forged token on update validity</td>
+      <td>Security: Auth</td>
+      <td>High</td>
+      <td>Update validity with forged token must be rejected.</td>
+      <td>1. Send update request with fake auth token.</td>
+      <td>Rejected.</td>
+      <td>Unauthorized status or KO.</td>
+      <td>PASS</td>
+      <td>HTTP 200, status=KO</td>
+    </tr>
+    <tr>
+      <td>TC-S3: Negative noOfDaysFromNow</td>
+      <td>Security: Input Validation</td>
+      <td>Medium</td>
+      <td>Negative noOfDaysFromNow must not cause a 500 server error.</td>
+      <td>1. Send noOfDaysFromNow=-10.</td>
+      <td>No 500 error.</td>
+      <td>HTTP status matches expectation (not 500).</td>
+      <td>PASS</td>
+      <td>HTTP 200, message='User with role not found.'</td>
+    </tr>
+    <tr>
+      <td>TC-S4: Zero noOfDaysFromNow</td>
+      <td>Security: Input Validation</td>
+      <td>Medium</td>
+      <td>Zero noOfDaysFromNow must not cause 500. Zero is falsy so API should reject it.</td>
+      <td>1. Send noOfDaysFromNow=0.</td>
+      <td>No 500 error.</td>
+      <td>HTTP status matches expectation (not 500).</td>
+      <td>PASS</td>
+      <td>HTTP 200, message='No of days to extend not in request.'</td>
+    </tr>
+    <tr>
+      <td>TC-S5: SQL injection in userEmail</td>
+      <td>Security: Injection</td>
+      <td>High</td>
+      <td>SQL injection in userEmail must not cause 500 or execute.</td>
+      <td>1. Send SQL injection payloads in userEmail.</td>
+      <td>No 500 error and no execution.</td>
+      <td>Payloads are treated as strings or rejected.</td>
+      <td>PASS</td>
+      <td>payload="'; DROP TABLE user_roles; --": HTTP 200, error=Users not found. | payload="[MASKED_EMAIL]' OR '1'='1": HTTP 200, error=Users not found.</td>
+    </tr>
+    <tr>
+      <td>TC-S6: No auth on get_all_users</td>
+      <td>Security: Auth</td>
+      <td>High</td>
+      <td>GetAllUsers without auth must be rejected — no user data leaked.</td>
+      <td>1. Send get_all_users request without auth token.</td>
+      <td>Rejected.</td>
+      <td>HTTP 401/403 and no data returned.</td>
+      <td>PASS</td>
+      <td>HTTP 400, status=KO, users_leaked=False</td>
+    </tr>
+    <tr>
+      <td>TC-S7: String noOfDaysFromNow</td>
+      <td>Security: Input Validation</td>
+      <td>Medium</td>
+      <td>String value 'abc' for noOfDaysFromNow must not cause 500 server error.</td>
+      <td>1. Send noOfDaysFromNow='abc'.</td>
+      <td>No 500 error.</td>
+      <td>JSON type validation handles it gracefully.</td>
+      <td>PASS</td>
+      <td>HTTP 200, error=''&gt;' not supported between instances of 'str' and 'int''</td>
+    </tr>
+    <tr>
+      <td>TC-S8: XSS in userEmail</td>
+      <td>Security: Injection</td>
+      <td>High</td>
+      <td>XSS payload in userEmail must not cause 500 or execute.</td>
+      <td>1. Send XSS script in userEmail.</td>
+      <td>No 500 error.</td>
+      <td>Script is not executed and handles safely.</td>
+      <td>PASS</td>
+      <td>HTTP 200, error='Users not found.'</td>
+    </tr>
+    <tr>
+      <td>TC-19: Teardown cleanup</td>
+      <td>Teardown</td>
+      <td>Medium</td>
+      <td>Delete all test users and roles created during the test run.</td>
+      <td>1. Delete all test users.\n2. Delete all test roles.</td>
+      <td>Clean environment.</td>
+      <td>Resources removed.</td>
+      <td>PASS</td>
+      <td>users=6 deleted=True, roles=2 deleted=True</td>
+    </tr>
+  </tbody>
+</table>
+        </div>
+    </div>
+    <script>
+        document.querySelectorAll('.preview-table tr').forEach((tr, rowIndex) => {
+            let statusCount = 0;
+            const cells = tr.querySelectorAll('td');
+            
+            cells.forEach(td => {
+                const text = td.innerText.trim().toUpperCase();
+                
+                // Highlight Pass/Fail
+                if (['PASS', 'SUCCESS', 'PASSED'].includes(text)) {
+                    td.classList.add('status-pass');
+                } else if (['FAIL', 'FAILURE', 'FAILED', 'ERROR'].includes(text)) {
+                    td.classList.add('status-fail');
+                } else if (text === 'NA') {
+                    td.classList.add('status-na');
+                }
+                
+                // Header detection keywords
+                if (['STATUS', 'IDENTITY', 'ID'].includes(text)) {
+                    statusCount++;
+                }
+            });
+            
+            // If row has multiple 'Status' labels, it's a sub-header
+            if (statusCount >= 2 && rowIndex > 0) {
+                tr.classList.add('sub-header');
+            }
+        });
+    </script>
+</body>
+</html>

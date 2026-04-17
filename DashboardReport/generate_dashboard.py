@@ -711,6 +711,7 @@ def generate():
             if r["summary"].get("requests", 0) == 0: no_result.append(r)
             else: groups[classify_report(r['name'])].append(r)
 
+        # Aggregate metrics (actual individual test case results)
         total = sum(r['summary'].get('requests', 0) for r in folder_reports)
         failed = sum(r['summary'].get('failed', 0) for r in folder_reports)
         passed = total - failed
@@ -766,7 +767,7 @@ def generate():
                     { '<span class="sync-badge"><i class="fas fa-clock-rotate-left"></i> OUT OF SYNC</span>' if is_stale else '' }
                 </div>
                 <div class="hero-value">{h['total']} <span class="hero-target">/ {TARGET_EXECUTION_GOAL} Test Cases</span></div>
-                {f'<span class="fail-badge">{len(h["no_result"])} Failed Test (s)</span>' if h["no_result"] else ""}
+                {f'<span class="fail-badge">{len(h["no_result"]) + len(h["missing"])} Failed Test (s)</span>' if (h["no_result"] or h["missing"]) else ""}
             </div>
             <div class="progress-container"><div class="progress-header"><span>Lifecycle Coverage</span><span>{cov}% Complete</span></div>
             <div class="progress-outer"><div class="progress-inner" style="width: {cov}%"></div></div></div>

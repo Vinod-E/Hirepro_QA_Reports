@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preview: UI_MASS_INTERVIEW.xls</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --primary: #4f46e5; --bg: #f8fafc; --text: #1e293b; --border: #e2e8f0; --success: #10b981; --danger: #ef4444; }
+        body { font-family: 'Outfit', sans-serif; background-color: var(--bg); color: var(--text); padding: 2rem; margin: 0; }
+        .container { max-width: 1400px; margin: 0 auto; background: white; padding: 2.5rem; border-radius: 1.5rem; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05); border: 1px solid var(--border); }
+        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 2px solid var(--bg); }
+        .title-area { display: flex; align-items: center; gap: 1rem; }
+        .title-area i { font-size: 2rem; color: var(--primary); }
+        h1 { font-size: 1.5rem; font-weight: 800; margin: 0; }
+        .actions { display: flex; gap: 1rem; }
+        .btn { text-decoration: none; padding: 0.6rem 1.25rem; border-radius: 10px; font-weight: 700; font-size: 0.85rem; display: flex; align-items: center; gap: 0.5rem; transition: all 0.2s; border: none; cursor: pointer; }
+        .btn-download { background: var(--primary); color: white; }
+        .btn-download:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3); }
+        .btn-back { background: #f1f5f9; color: var(--text); }
+        .btn-back:hover { background: #e2e8f0; }
+        .table-wrapper { overflow-x: auto; border-radius: 12px; border: 1px solid var(--border); background: white; }
+        .preview-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; border-spacing: 0; }
+        .preview-table td { padding: 0.85rem 1.15rem; border-bottom: 1px solid var(--border); border-right: 1px solid var(--border); white-space: nowrap; color: var(--text); }
+        .preview-table tr:hover { background: #f1f5f9 !important; }
+        
+        /* Header & Sub-header Styling */
+        .preview-table tr:first-child td,
+        .preview-table tr.sub-header td { 
+            background: #f1f5f9 !important; 
+            font-weight: 800 !important; 
+            color: #475569 !important; 
+            text-transform: uppercase; 
+            font-size: 0.75rem; 
+            letter-spacing: 0.025em;
+            border-bottom: 2px solid #cbd5e1 !important;
+        }
+        
+        .preview-table tr:nth-child(even) { background: #fafbfc; }
+        .preview-table tr:hover { background: #f1f5f9 !important; }
+        
+        /* Status Colors */
+        .status-pass { color: var(--success) !important; font-weight: 800; background: #ecfdf5 !important; }
+        .status-fail { color: var(--danger) !important; font-weight: 800; background: #fef2f2 !important; }
+        .status-na { color: #94a3b8; font-style: italic; opacity: 0.5; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="title-area">
+                <i class="fas fa-file-excel"></i>
+                <div>
+                    <h1>UI_MASS_INTERVIEW.xls</h1>
+                    <div style="font-size: 0.75rem; color: #64748b; font-weight: 600; margin-top: 0.2rem; text-transform: uppercase;">Spreadsheet Preview (All Rows)</div>
+                </div>
+            </div>
+            <div class="actions">
+                <button onclick="window.close()" class="btn btn-back"><i class="fas fa-times"></i> Close Tab</button>
+                <a href="UI_MASS_INTERVIEW.xls" download="UI_MASS_INTERVIEW.xls" class="btn btn-download"><i class="fas fa-download"></i> Download Excel</a>
+            </div>
+        </header>
+        <div class="table-wrapper">
+            <table border="1" class="dataframe preview-table">
+  <tbody>
+    <tr>
+      <td>MASS INTERVIEW FLOW</td>
+      <td>Fail</td>
+      <td>SPRINT VERSION</td>
+      <td>Sprint_216</td>
+      <td>SPRINT DATE</td>
+      <td>2026-04-17</td>
+      <td>SERVER</td>
+      <td>[MASKED_REF]</td>
+      <td>Success Cases</td>
+      <td>123</td>
+      <td>Failure Cases</td>
+      <td>3.0</td>
+      <td>Success %</td>
+      <td>97.62</td>
+      <td>Time Taken (min)</td>
+      <td>5.2</td>
+    </tr>
+    <tr>
+      <td>Create Event API</td>
+      <td>Status</td>
+      <td>Tag Event Owners</td>
+      <td>Status</td>
+      <td>Upload Candidate API</td>
+      <td>Status</td>
+      <td>Status Change API</td>
+      <td>Status</td>
+      <td>Mark Availability API</td>
+      <td>Status</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Create Event Api</td>
+      <td>Pass</td>
+      <td>Event Owners Api</td>
+      <td>Pass</td>
+      <td>Upload Candidate Api</td>
+      <td>Pass</td>
+      <td>Status Change Api</td>
+      <td>Pass</td>
+      <td>Mark Availability Api</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Event Search</td>
+      <td>Status</td>
+      <td>Lobby Configurations</td>
+      <td>Status</td>
+      <td>Slot Configurations</td>
+      <td>Status</td>
+      <td>Add Slots</td>
+      <td>Status</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Event Tab</td>
+      <td>Pass</td>
+      <td>Configurations Tab</td>
+      <td>Pass</td>
+      <td>Event Actions</td>
+      <td>Pass</td>
+      <td>Enter No.of Slots</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Advance Search Action</td>
+      <td>Pass</td>
+      <td>Allocation - On</td>
+      <td>Pass</td>
+      <td>Lobby Action</td>
+      <td>Pass</td>
+      <td>Generate Slots</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Advance ID Field</td>
+      <td>Pass</td>
+      <td>Chat - Click</td>
+      <td>Pass</td>
+      <td>Manage Slots Tab</td>
+      <td>Pass</td>
+      <td>Date Field</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Search Button</td>
+      <td>Pass</td>
+      <td>Search chat user</td>
+      <td>Pass</td>
+      <td>Click to select stage</td>
+      <td>Pass</td>
+      <td>Enter time Field</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Event Card Click</td>
+      <td>Pass</td>
+      <td>Done</td>
+      <td>Pass</td>
+      <td>Move All</td>
+      <td>Pass</td>
+      <td>Count Field</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Event validate</td>
+      <td>Pass</td>
+      <td>Enable chat</td>
+      <td>Pass</td>
+      <td>Done</td>
+      <td>Pass</td>
+      <td>Slot Config - Save</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>NA</td>
+      <td>NA</td>
+      <td>Save Button</td>
+      <td>Pass</td>
+      <td>Go Button</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>NA</td>
+      <td>NA</td>
+      <td>UI Notifier</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>NA</td>
+      <td>NA</td>
+      <td>Notifier Dismiss</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Assign Slots</td>
+      <td>Status</td>
+      <td>Create Room (1)</td>
+      <td>Status</td>
+      <td>Create Room (2)</td>
+      <td>Status</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Assign Slot Action</td>
+      <td>Pass</td>
+      <td>Manage Rooms Tab</td>
+      <td>Pass</td>
+      <td>Select Participants</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Slot Assign - Ok</td>
+      <td>Pass</td>
+      <td>Create room</td>
+      <td>Pass</td>
+      <td>Search Participants</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Slot Communicate - Ok</td>
+      <td>Pass</td>
+      <td>Room Name Field</td>
+      <td>Pass</td>
+      <td>Move all</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Link Action</td>
+      <td>Pass</td>
+      <td>Disable Available Interviewers</td>
+      <td>Pass</td>
+      <td>Done</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>LoginLink - Copied</td>
+      <td>Pass</td>
+      <td>Select interviewers</td>
+      <td>Pass</td>
+      <td>Created Room Button</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Cancel Button</td>
+      <td>Pass</td>
+      <td>Search Interviewers</td>
+      <td>Pass</td>
+      <td>Activate Room Action</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>NA</td>
+      <td>NA</td>
+      <td>Move all</td>
+      <td>Pass</td>
+      <td>Activated-Ok</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>NA</td>
+      <td>NA</td>
+      <td>Done</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Candidate Lobby (1)</td>
+      <td>Status</td>
+      <td>Interviewer Login</td>
+      <td>Status</td>
+      <td>Event Search</td>
+      <td>Status</td>
+      <td>Interview Panel</td>
+      <td>Status</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Candidate Lobby Link</td>
+      <td>Pass</td>
+      <td>Account Name Click</td>
+      <td>Pass</td>
+      <td>Event Tab</td>
+      <td>Pass</td>
+      <td>Event Actions</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Enter Id</td>
+      <td>Pass</td>
+      <td>Logout</td>
+      <td>Pass</td>
+      <td>Advance Search Action</td>
+      <td>Pass</td>
+      <td>Interview Panel</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Enter Button</td>
+      <td>Pass</td>
+      <td>Click Here Login</td>
+      <td>Pass</td>
+      <td>Advance ID Field</td>
+      <td>Pass</td>
+      <td>Select Candidate From Queue</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>ALMOST THERE</td>
+      <td>Pass</td>
+      <td>Login Name Field</td>
+      <td>Pass</td>
+      <td>Search Button</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Window Close</td>
+      <td>Pass</td>
+      <td>Password Field</td>
+      <td>Pass</td>
+      <td>Event Card Click</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Switch to CRPO</td>
+      <td>Pass</td>
+      <td>Next Button</td>
+      <td>Pass</td>
+      <td>Event validate</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>NA</td>
+      <td>NA</td>
+      <td>Account Name Validate</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Candidate Lobby (2)</td>
+      <td>Status</td>
+      <td>Invite Video Interview</td>
+      <td>Status</td>
+      <td>Candidate Lobby (3)</td>
+      <td>Status</td>
+      <td>Invite Interview</td>
+      <td>Status</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Candidate Lobby Link</td>
+      <td>Pass</td>
+      <td>Invite Button</td>
+      <td>Pass</td>
+      <td>Candidate Lobby Link</td>
+      <td>Pass</td>
+      <td>Finish Interview</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Enter Id</td>
+      <td>Pass</td>
+      <td>Confirmation check</td>
+      <td>Pass</td>
+      <td>Enter Id</td>
+      <td>Pass</td>
+      <td>Confirm Finish</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Enter Button</td>
+      <td>Pass</td>
+      <td>Proceed invite</td>
+      <td>Pass</td>
+      <td>Enter Button</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Its Your Turn</td>
+      <td>Fail</td>
+      <td>Switch to tab</td>
+      <td>Pass</td>
+      <td>INTERVIEW IN ONGOING</td>
+      <td>Fail</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Window Close</td>
+      <td>Pass</td>
+      <td>Close Tab</td>
+      <td>Pass</td>
+      <td>Window Close</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Switch to CRPO</td>
+      <td>Pass</td>
+      <td>Switch to tab</td>
+      <td>Pass</td>
+      <td>Switch to CRPO</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Candidate Lobby (4)</td>
+      <td>Status</td>
+      <td>Save Draft</td>
+      <td>Status</td>
+      <td>Provide Feedback</td>
+      <td>Status</td>
+      <td>Candidate Lobby (5)</td>
+      <td>Status</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Candidate Lobby Link</td>
+      <td>Pass</td>
+      <td>Provide Feedback</td>
+      <td>Pass</td>
+      <td>Feedback Provide Action</td>
+      <td>Pass</td>
+      <td>Candidate Lobby Link</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Enter Id</td>
+      <td>Pass</td>
+      <td>Switch to tab</td>
+      <td>Pass</td>
+      <td>Switch to new tab</td>
+      <td>Pass</td>
+      <td>Enter Id</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Enter Button</td>
+      <td>Pass</td>
+      <td>Ratings</td>
+      <td>Pass</td>
+      <td>shortlist - decision</td>
+      <td>Pass</td>
+      <td>Enter Button</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>WAIT ON THIS SCREEN</td>
+      <td>Pass</td>
+      <td>comments</td>
+      <td>Pass</td>
+      <td>overall comment</td>
+      <td>Pass</td>
+      <td>PROCESS COMPLETED</td>
+      <td>Fail</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Window Close</td>
+      <td>Pass</td>
+      <td>shortlist - decision</td>
+      <td>Pass</td>
+      <td>Submit Feedback</td>
+      <td>Pass</td>
+      <td>Window Close</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Switch to CRPO</td>
+      <td>Pass</td>
+      <td>overall comment</td>
+      <td>Pass</td>
+      <td>Feedback validation Agree</td>
+      <td>Pass</td>
+      <td>Switch to CRPO</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>NA</td>
+      <td>NA</td>
+      <td>Save Draft</td>
+      <td>Pass</td>
+      <td>Switch to tab</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>NA</td>
+      <td>NA</td>
+      <td>Draft Notifier</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>NA</td>
+      <td>NA</td>
+      <td>Draft Notifier Dismiss</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>NA</td>
+      <td>NA</td>
+      <td>Close Tab</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>NA</td>
+      <td>NA</td>
+      <td>Switch to tab</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+  </tbody>
+</table>
+        </div>
+    </div>
+    <script>
+        document.querySelectorAll('.preview-table tr').forEach((tr, rowIndex) => {
+            let statusCount = 0;
+            const cells = tr.querySelectorAll('td');
+            
+            cells.forEach(td => {
+                const text = td.innerText.trim().toUpperCase();
+                
+                // Highlight Pass/Fail
+                if (['PASS', 'SUCCESS', 'PASSED'].includes(text)) {
+                    td.classList.add('status-pass');
+                } else if (['FAIL', 'FAILURE', 'FAILED', 'ERROR'].includes(text)) {
+                    td.classList.add('status-fail');
+                } else if (text === 'NA') {
+                    td.classList.add('status-na');
+                }
+                
+                // Header detection keywords
+                if (['STATUS', 'IDENTITY', 'ID'].includes(text)) {
+                    statusCount++;
+                }
+            });
+            
+            // If row has multiple 'Status' labels, it's a sub-header
+            if (statusCount >= 2 && rowIndex > 0) {
+                tr.classList.add('sub-header');
+            }
+        });
+    </script>
+</body>
+</html>
