@@ -679,6 +679,270 @@ def generate_styles():
     </style>
     """
 
+def generate_landing_page():
+    """Generate the dashboard.html landing page for report type selection."""
+    index_path = Path(configfile.DASHBOARD_REPORT).parent / "dashboard.html"
+    html_content = """<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QAInsights | Report Selection</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        darkBg: '#0f172a',
+                        lightBg: '#f1f5f9',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        
+        .card-transition { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        
+        /* Glassmorphism & Gradients */
+        .perf-card { 
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.05), rgba(234, 179, 8, 0.05));
+            border: 1px solid rgba(234, 179, 8, 0.2);
+        }
+        .light .perf-card { background: white; border: 1px solid rgba(234, 179, 8, 0.3); }
+
+        .ui-card { 
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.05), rgba(59, 130, 246, 0.05));
+            border: 1px solid rgba(34, 197, 94, 0.2);
+        }
+        .light .ui-card { background: white; border: 1px solid rgba(34, 197, 94, 0.3); }
+        
+        @keyframes spin-slow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .animate-spin-slow {
+            animation: spin-slow 3s linear infinite;
+        }
+    </style>
+</head>
+<body class="bg-lightBg dark:bg-darkBg text-slate-900 dark:text-slate-100 min-h-screen transition-colors duration-500">
+
+    <div class="fixed top-6 right-6 z-50">
+        <button onclick="toggleTheme()" class="p-3 rounded-full bg-white dark:bg-slate-800 shadow-xl border border-slate-200 dark:border-slate-700 hover:scale-110 active:scale-95 transition-all">
+            <i id="theme-icon" data-lucide="sun" class="w-5 h-5 text-yellow-500"></i>
+        </button>
+    </div>
+
+    <div class="flex flex-col items-center justify-center min-h-screen p-6">
+        
+        <header class="w-full max-w-md lg:max-w-2xl text-center mb-10">
+            <div class="flex flex-col items-center justify-center gap-4 mb-6">
+                <img src="https://hirepro.in/wp-content/uploads/2025/05/HirePro-logo.svg" alt="HirePro Logo" class="h-12 w-auto dark:brightness-200">
+                <h1 class="text-xl font-bold tracking-tight">QA<span class="font-light">Insights</span></h1>
+            </div>
+            <p class="text-xs font-bold uppercase tracking-[0.3em] text-slate-500 dark:text-slate-400 opacity-80">Select Report To Enter</p>
+        </header>
+
+
+        <main class="w-full max-w-md lg:max-w-2xl space-y-6">
+            
+            <section onclick="window.location.href='automationreports.html'" 
+                     class="ui-card card-transition rounded-3xl p-8 shadow-sm hover:shadow-xl hover:-translate-y-1 cursor-pointer">
+                <div class="flex justify-center mb-8">
+                    <h3 class="text-sm font-bold tracking-widest text-slate-500 dark:text-slate-400 uppercase">UI Automation Report</h3>
+                </div>
+                
+                <div class="grid grid-cols-3 gap-4 mb-10">
+                    <div class="flex flex-col items-center text-center group">
+                        <div class="p-3 rounded-2xl bg-green-500/10 mb-3 group-hover:scale-110 transition-transform">
+                            <i data-lucide="check-circle" class="w-8 h-8 text-green-600 dark:text-green-500"></i>
+                        </div>
+                        <span class="text-[11px] font-semibold text-slate-500 dark:text-slate-400">Success Rate<br><span class="text-green-600 dark:text-green-500 font-bold">94%</span></span>
+                    </div>
+                    <div class="flex flex-col items-center text-center group">
+                        <div class="p-3 rounded-2xl bg-orange-500/10 mb-3 group-hover:scale-110 transition-transform">
+                            <i data-lucide="play-circle" class="w-8 h-8 text-orange-500 dark:text-orange-400"></i>
+                        </div>
+                        <span class="text-[11px] font-semibold text-slate-500 dark:text-slate-400">Total Tests<br><span class="text-orange-500 font-bold">1,250</span></span>
+                    </div>
+                    <div class="flex flex-col items-center text-center group">
+                        <div class="p-3 rounded-2xl bg-blue-500/10 mb-3 group-hover:scale-110 transition-transform">
+                            <i data-lucide="monitor" class="w-8 h-8 text-blue-600 dark:text-blue-400"></i>
+                        </div>
+                        <span class="text-[11px] font-semibold text-slate-500 dark:text-slate-400">Browser(Chrome)<br>Coverage</span>
+                    </div>
+                </div>
+
+                <a href="automationreports.html" 
+                   onclick="event.stopPropagation();"
+                   class="flex items-center justify-center gap-2 w-full bg-green-600 dark:bg-green-500 text-white font-bold py-4 rounded-2xl text-xs tracking-widest hover:bg-green-700 dark:hover:bg-green-400 transition-all shadow-lg uppercase">
+                    View UI Automation Report
+                    <i data-lucide="external-link" class="w-4 h-4"></i>
+                </a>
+            </section>
+
+            <section class="perf-card card-transition rounded-3xl p-8 shadow-sm hover:shadow-xl hover:-translate-y-1 cursor-pointer">
+                <div class="flex justify-center mb-8">
+                    <h3 class="text-sm font-bold tracking-widest text-slate-500 dark:text-slate-400 uppercase">Performance Report</h3>
+                </div>
+                
+                <div class="grid grid-cols-3 gap-4 mb-10">
+                    <div class="flex flex-col items-center text-center group">
+                        <div class="p-3 rounded-2xl bg-yellow-500/10 mb-3 group-hover:scale-110 transition-transform">
+                            <i data-lucide="timer" class="w-8 h-8 text-yellow-600 dark:text-yellow-500"></i>
+                        </div>
+                        <span class="text-[11px] font-semibold text-slate-500 dark:text-slate-400">Analyze API<br>Performance</span>
+                    </div>
+                    <div class="flex flex-col items-center text-center group">
+                        <div class="p-3 rounded-2xl bg-blue-500/10 mb-3 group-hover:scale-110 transition-transform">
+                            <i data-lucide="gauge" class="w-8 h-8 text-blue-600 dark:text-blue-400"></i>
+                        </div>
+                        <span class="text-[11px] font-semibold text-slate-500 dark:text-slate-400">Track<br>Response Times</span>
+                    </div>
+                    <div class="flex flex-col items-center text-center group">
+                        <div class="p-3 rounded-2xl bg-red-500/10 mb-3 group-hover:scale-110 transition-transform relative">
+                            <i data-lucide="globe" class="w-8 h-8 text-blue-500 dark:text-blue-300"></i>
+                            <span class="absolute top-2 right-2 flex h-3 w-3">
+                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
+                            </span>
+                        </div>
+                        <span class="text-[11px] font-semibold text-slate-500 dark:text-slate-400">Error Rates<br><span class="text-red-500 font-bold">0.8%</span></span>
+                    </div>
+                </div>
+
+                <a href="performance.html" 
+                   class="flex items-center justify-center gap-2 w-full bg-orange-500 hover:bg-orange-600 dark:bg-orange-600 dark:hover:bg-orange-500 text-white font-bold py-4 rounded-2xl text-xs tracking-widest transition-all shadow-lg uppercase">
+                    View Performance Report
+                    <i data-lucide="external-link" class="w-4 h-4"></i>
+                </a>
+            </section>
+
+        </main>
+
+        <footer class="mt-12 text-slate-400 dark:text-slate-600 text-[10px] uppercase tracking-widest text-center">
+            &copy; 2026 HirePro Technologies Pvt. Ltd.
+        </footer>
+    </div>
+
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Theme Toggle Functionality
+        function toggleTheme() {
+            const html = document.documentElement;
+            const icon = document.getElementById('theme-icon');
+            
+            if (html.classList.contains('dark')) {
+                html.classList.remove('dark');
+                html.classList.add('light');
+                icon.setAttribute('data-lucide', 'moon');
+                icon.classList.replace('text-yellow-500', 'text-slate-600');
+            } else {
+                html.classList.remove('light');
+                html.classList.add('dark');
+                icon.setAttribute('data-lucide', 'sun');
+                icon.classList.replace('text-slate-600', 'text-yellow-500');
+            }
+            lucide.createIcons();
+        }
+
+        // Auto-detect system preference on load
+        if (window.matchMedia && !window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            toggleTheme();
+        }
+    </script>
+</body>
+</html>"""
+    (Path(__file__).parent.parent / "dashboard.html").write_text(html_content, encoding='utf-8')
+    print(f"Landing page generated at {Path(__file__).parent.parent / 'dashboard.html'}")
+
+def generate_performance_page():
+    html_content = f"""<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Performance Report | In-Progress</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {{
+            darkMode: 'class',
+            theme: {{
+                extend: {{
+                    colors: {{
+                        darkBg: '#0f172a',
+                        lightBg: '#f1f5f9',
+                    }}
+                }}
+            }}
+        }}
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
+        body {{ font-family: 'Outfit', sans-serif; }}
+        .spin-slow {{ animation: spin 3s linear infinite; }}
+        @keyframes spin {{ from {{ transform: rotate(0deg); }} to {{ transform: rotate(360deg); }} }}
+    </style>
+</head>
+<body class="bg-lightBg dark:bg-darkBg text-slate-900 dark:text-slate-100 min-h-screen flex flex-col items-center justify-center p-6 transition-colors duration-500">
+    
+    <div class="fixed top-6 left-6 z-50">
+        <a href="dashboard.html" class="flex items-center gap-2 p-3 rounded-xl bg-white dark:bg-slate-800 shadow-xl border border-slate-200 dark:border-slate-700 hover:scale-105 active:scale-95 transition-all">
+            <i data-lucide="home" class="w-5 h-5 text-blue-500"></i>
+            <span class="text-xs font-bold uppercase tracking-widest pr-2">Home</span>
+        </a>
+    </div>
+
+    <div class="max-w-md w-full text-center space-y-8">
+        <div class="relative inline-block">
+            <div class="w-32 h-32 rounded-full border-4 border-orange-500/20 border-t-orange-500 animate-spin flex items-center justify-center">
+                <i data-lucide="timer" class="w-12 h-12 text-orange-500"></i>
+            </div>
+            <div class="absolute -bottom-2 -right-2 bg-blue-500 text-white p-2 rounded-lg shadow-lg">
+                <i data-lucide="hammer" class="w-4 h-4"></i>
+            </div>
+        </div>
+
+        <div class="space-y-4">
+            <h2 class="text-4xl font-extrabold tracking-tight">System <span class="text-orange-500 italic">Evolution</span></h2>
+            <div class="flex flex-col items-center gap-2">
+                <span class="px-4 py-1.5 rounded-full bg-orange-500/10 text-orange-600 dark:text-orange-400 text-xs font-black uppercase tracking-[0.2em] animate-pulse">
+                    Module In-Progress
+                </span>
+            </div>
+            <p class="text-slate-500 dark:text-slate-400 text-sm leading-relaxed max-w-sm mx-auto">
+                We are currently engineering the high-frequency performance monitoring engine. Real-time API analytics will be available soon.
+            </p>
+        </div>
+
+        <div class="flex gap-4 justify-center">
+            <div class="w-1.5 h-1.5 rounded-full bg-orange-500 animate-bounce" style="animation-delay: 0s"></div>
+            <div class="w-1.5 h-1.5 rounded-full bg-orange-500 animate-bounce" style="animation-delay: 0.1s"></div>
+            <div class="w-1.5 h-1.5 rounded-full bg-orange-500 animate-bounce" style="animation-delay: 0.2s"></div>
+        </div>
+    </div>
+
+    <footer class="fixed bottom-8 text-slate-400 dark:text-slate-600 text-[10px] uppercase tracking-widest">
+        &copy; 2026 HirePro Technologies Pvt. Ltd.
+    </footer>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>"""
+    (Path(__file__).parent.parent / "performance.html").write_text(html_content, encoding='utf-8')
+    print(f"Performance page generated at {Path(__file__).parent.parent / 'performance.html'}")
+
 def generate():
     if not REPORTS_DIR.exists(): return
     
@@ -842,7 +1106,12 @@ def generate():
     {generate_styles()}</head><body>
     <div class="container">
     <header>
-        <div style="display: flex; align-items: center;"><img src="https://hirepro.in/wp-content/uploads/2025/05/HirePro-logo.svg" alt="HirePro Logo" style="height: 32px; width: auto;"></div>
+        <div style="display: flex; align-items: center; gap: 1rem;">
+            <a href="dashboard.html" style="text-decoration: none; display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 12px; background: #f1f5f9; color: var(--primary); transition: all 0.2s;" onmouseover="this.style.background='#e2e8f0'" onmouseout="this.style.background='#f1f5f9'">
+                <i class="fas fa-home"></i>
+            </a>
+            <img src="https://hirepro.in/wp-content/uploads/2025/05/HirePro-logo.svg" alt="HirePro Logo" style="height: 32px; width: auto;">
+        </div>
         <div style="text-align: center;"><h1>Quality Dashboard</h1><p class="subtitle">Unified Test Lifecycle Monitoring</p></div>
         <div style="text-align: right;">
             <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600; margin-bottom: 0.25rem;">LATEST AUDIT</div>
@@ -989,6 +1258,9 @@ def generate():
             }});
         }});
     </script><div class="container"><footer><div style="display: flex; align-items: center; gap: 0.75rem;"><span style="text-transform: uppercase; font-size: 0.7rem; letter-spacing: 0.05em; font-weight: 700;">Build ID:</span><span class="commit-badge"><i class="fas fa-code-branch" style="margin-right:0.4rem; opacity:0.5;"></i>{commit_id}</span></div><div>&copy; 2026 HirePro . All rights reserved.</div></footer></div></body></html>""")
-    OUTPUT_FILE.write_text("".join(html_parts), encoding='utf-8'); print(f"Dashboard generated at {OUTPUT_FILE}")
+    OUTPUT_FILE.write_text("".join(html_parts), encoding='utf-8'); 
+    generate_performance_page()
+    generate_landing_page()
+    print(f"Dashboard generated at {OUTPUT_FILE}")
 
 if __name__ == "__main__": generate()

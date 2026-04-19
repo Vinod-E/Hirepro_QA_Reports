@@ -22,4 +22,4 @@ test_new_integrity.py
 # Keep dashboard history but ignore other local-only temp files
 !reports/
 !history_data.json
-!dashboard.html
+!automationreports.html

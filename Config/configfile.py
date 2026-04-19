@@ -20,7 +20,7 @@ AUTOMATION_PATH = os.path.join(HOME_PATH, "hirepro_automation", "Hirepro_QA_Repo
 # Paths
 REPORT_DIR = os.path.join(AUTOMATION_PATH, "reports")
 CONFIG_DIR = os.path.join(AUTOMATION_PATH, "Config", "secrets_config.ini")
-DASHBOARD_REPORT = os.path.join(AUTOMATION_PATH, "dashboard.html")
+DASHBOARD_REPORT = os.path.join(AUTOMATION_PATH, "automationreports.html")
 
 # Ensure report directory exists
 os.makedirs(REPORT_DIR, exist_ok=True)
