@@ -1,0 +1,1157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preview: API_Login_check.xls</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --primary: #4f46e5; --bg: #f8fafc; --text: #1e293b; --border: #e2e8f0; --success: #10b981; --danger: #ef4444; }
+        body { font-family: 'Outfit', sans-serif; background-color: var(--bg); color: var(--text); padding: 2rem; margin: 0; }
+        .container { max-width: 1400px; margin: 0 auto; background: white; padding: 2.5rem; border-radius: 1.5rem; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05); border: 1px solid var(--border); }
+        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 2px solid var(--bg); }
+        .title-area { display: flex; align-items: center; gap: 1rem; }
+        .title-area i { font-size: 2rem; color: var(--primary); }
+        h1 { font-size: 1.5rem; font-weight: 800; margin: 0; }
+        .actions { display: flex; gap: 1rem; }
+        .btn { text-decoration: none; padding: 0.6rem 1.25rem; border-radius: 10px; font-weight: 700; font-size: 0.85rem; display: flex; align-items: center; gap: 0.5rem; transition: all 0.2s; border: none; cursor: pointer; }
+        .btn-download { background: var(--primary); color: white; }
+        .btn-download:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3); }
+        .btn-back { background: #f1f5f9; color: var(--text); }
+        .btn-back:hover { background: #e2e8f0; }
+        .table-wrapper { overflow-x: auto; border-radius: 12px; border: 1px solid var(--border); background: white; }
+        .preview-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; border-spacing: 0; }
+        .preview-table td { padding: 0.85rem 1.15rem; border-bottom: 1px solid var(--border); border-right: 1px solid var(--border); white-space: nowrap; color: var(--text); }
+        .preview-table tr:hover { background: #f1f5f9 !important; }
+        
+        /* Header & Sub-header Styling */
+        .preview-table tr:first-child td,
+        .preview-table tr.sub-header td { 
+            background: #f1f5f9 !important; 
+            font-weight: 800 !important; 
+            color: #475569 !important; 
+            text-transform: uppercase; 
+            font-size: 0.75rem; 
+            letter-spacing: 0.025em;
+            border-bottom: 2px solid #cbd5e1 !important;
+        }
+        
+        .preview-table tr:nth-child(even) { background: #fafbfc; }
+        .preview-table tr:hover { background: #f1f5f9 !important; }
+        
+        /* Status Colors */
+        .status-pass { color: var(--success) !important; font-weight: 800; background: #ecfdf5 !important; }
+        .status-fail { color: var(--danger) !important; font-weight: 800; background: #fef2f2 !important; }
+        .status-na { color: #94a3b8; font-style: italic; opacity: 0.5; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="title-area">
+                <i class="fas fa-file-excel"></i>
+                <div>
+                    <h1>API_Login_check.xls</h1>
+                    <div style="font-size: 0.75rem; color: #64748b; font-weight: 600; margin-top: 0.2rem; text-transform: uppercase;">Spreadsheet Preview (All Rows)</div>
+                </div>
+            </div>
+            <div class="actions">
+                <button onclick="window.close()" class="btn btn-back"><i class="fas fa-times"></i> Close Tab</button>
+                <a href="API_Login_check.xls" download="API_Login_check.xls" class="btn btn-download"><i class="fas fa-download"></i> Download Excel</a>
+            </div>
+        </header>
+        <div class="table-wrapper">
+            <table border="1" class="dataframe preview-table">
+  <tbody>
+    <tr>
+      <td>Login Check</td>
+      <td>Pass</td>
+      <td>Login Server</td>
+      <td>[MASKED_REF]</td>
+      <td>Lambda</td>
+      <td>On</td>
+      <td>APP Name</td>
+      <td>crpo</td>
+      <td>No.of Test cases</td>
+      <td>64.0</td>
+      <td>Start Time</td>
+      <td>2026-04-20 08:51:41.804107</td>
+      <td>Failed Test cases</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <td>Actual_Status</td>
+      <td>Tenant</td>
+      <td>Username</td>
+      <td>Password</td>
+      <td>Expected_Login_Status</td>
+      <td>Actual_Login_Status</td>
+      <td>Expected_Message</td>
+      <td>Actual_Message</td>
+      <td>LastLogin</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Pass</td>
+      <td>Automation</td>
+      <td>logintest</td>
+      <td>logintest@123</td>
+      <td>Pass</td>
+      <td>Pass</td>
+      <td>Login Successfully</td>
+      <td>Login Successfully</td>
+      <td>20-April-2026 08:51:45</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Pass</td>
+      <td>Automation</td>
+      <td>[MASKED_EMAIL]</td>
+      <td>logintest@123</td>
+      <td>Pass</td>
+      <td>Pass</td>
+      <td>Login Successfully</td>
+      <td>Login Successfully</td>
+      <td>20-April-2026 08:51:50</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Pass</td>
+      <td>Automation</td>
+      <td>logintest</td>
+      <td>Empty</td>
+      <td>Fail</td>
+      <td>Fail</td>
+      <td>Please specify the password</td>
+      <td>Please specify the password</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Pass</td>
+      <td>Automation</td>
+      <td>[MASKED_EMAIL]</td>
+      <td>Empty</td>
+      <td>Fail</td>
+      <td>Fail</td>
+      <td>Please specify the password</td>
+      <td>Please specify the password</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Pass</td>
+      <td>Automation</td>
+      <td>Empty</td>
+      <td>logintest@123</td>
+      <td>Fail</td>
+      <td>Fail</td>
+      <td>Please specify the user name/email id</td>
+      <td>Please specify the user name/email id</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Pass</td>
+      <td>Automation</td>
+      <td>Empty</td>
+      <td>Empty</td>
+      <td>Fail</td>
+      <td>Fail</td>
+      <td>Please specify the user name/email id</td>
+      <td>Please specify the user name/email id</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Pass</td>
+      <td>Empty</td>
+      <td>logintest</td>
+      <td>logintest@123</td>
+      <td>Fail</td>
+      <td>Fail</td>
+      <td>Please specify the tenant</td>
+      <td>Please specify the tenant</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Pass</td>
+      <td>Empty</td>
+      <td>[MASKED_EMAIL]</td>
+      <td>logintest@123</td>
+      <td>Fail</td>
+      <td>Fail</td>
+      <td>Please specify the tenant</td>
+      <td>Please specify the tenant</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Pass</td>
+      <td>Empty</td>
+      <td>logintest</td>
+      <td>Empty</td>
+      <td>Fail</td>
+      <td>Fail</td>
+      <td>Please specify the password</td>
+      <td>Please specify the password</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Pass</td>
+      <td>Empty</td>
+      <td>[MASKED_EMAIL]</td>
+      <td>Empty</td>
+      <td>Fail</td>
+      <td>Fail</td>
+      <td>Please specify the password</td>
+      <td>Please specify the password</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Pass</td>
+      <td>Empty</td>
+      <td>Empty</td>
+      <td>logintest@123</td>
+      <td>Fail</td>
+      <td>Fail</td>
+      <td>Please specify the user name/email id</td>
+      <td>Please specify the user name/email id</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Pass</td>
+      <td>Empty</td>
+      <td>Empty</td>
+      <td>Empty</td>
+      <td>Fail</td>
+      <td>Fail</td>
+      <td>Please specify the user name/email id</td>
+      <td>Please specify the user name/email id</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Pass</td>
+      <td>Automation1</td>
+      <td>logintest</td>
+      <td>logintest@123</td>
+      <td>Fail</td>
+      <td>Fail</td>
+      <td>Tenant: Automation1 not found</td>
+      <td>Tenant: Automation1 not found</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Pass</td>
+      <td>Automation1</td>
+      <td>[MASKED_EMAIL]</td>
+      <td>logintest@123</td>
+      <td>Fail</td>
+      <td>Fail</td>
+      <td>Tenant: Automation1 not found</td>
+      <td>Tenant: Automation1 not found</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Pass</td>
+      <td>Automatio</td>
+      <td>logintest</td>
+      <td>logintest@123</td>
+      <td>Fail</td>
+      <td>Fail</td>
+      <td>Tenant: Automatio not found</td>
+      <td>Tenant: Automatio not found</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Pass</td>
+      <td>Automatio</td>
+      <td>[MASKED_EMAIL]</td>
+      <td>logintest@123</td>
+      <td>Fail</td>
+      <td>Fail</td>
+      <td>Tenant: Automatio not found</td>
+      <td>Tenant: Automatio not found</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Pass</td>
+      <td>@utomation</td>
+      <td>logintest</td>
+      <td>logintest@123</td>
+      <td>Fail</td>
+      <td>Fail</td>
+      <td>Tenant not found.</td>
+      <td>Tenant not found.</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Pass</td>
+      <td>@utomation</td>
+      <td>[MASKED_EMAIL]</td>
+      <td>logintest@123</td>
+      <td>Fail</td>
+      <td>Fail</td>
+      <td>Tenant not found.</td>
+      <td>Tenant not found.</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Pass</td>
+      <td>Autómation</td>
+      <td>logintest</td>
+      <td>logintest@123</td>
+      <td>Fail</td>
+      <td>Fail</td>
+      <td>Tenant not found.</td>
+      <td>Tenant not found.</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Pass</td>
+      <td>Autómation</td>
+      <td>[MASKED_EMAIL]</td>
+      <td>logintest@123</td>
+      <td>Fail</td>
+      <td>Fail</td>
+      <td>Tenant not found.</td>
+      <td>Tenant not found.</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Pass</td>
+      <td>Automation</td>
+      <td>Logintest</td>
+      <td>logintest@123</td>
+      <td>Pass</td>
+      <td>Pass</td>
+      <td>Login Successfully</td>
+      <td>Login Successfully</td>
+      <td>20-April-2026 08:53:06</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Pass</td>
+      <td>Automation</td>
+      <td>LogintesT</td>
+      <td>logintest@123</td>
+      <td>Pass</td>
+      <td>Pass</td>
+      <td>Login Successfully</td>
+      <td>Login Successfully</td>
+      <td>20-April-2026 08:53:11</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Pass</td>
+      <td>Automation</td>
+      <td>LogintêsT</td>
+      <td>logintest@123</td>
+      <td>Pass</td>
+      <td>Pass</td>
+      <td>Login Successfully</td>
+      <td>Login Successfully</td>
+      <td>20-April-2026 08:53:15</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Pass</td>
+      <td>Automation</td>
+      <td>LógintêsT</td>
+      <td>logintest@123</td>
+      <td>Pass</td>
+      <td>Pass</td>
+      <td>Login Successfully</td>
+      <td>Login Successfully</td>
+      <td>20-April-2026 08:53:20</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Pass</td>
+      <td>Automation</td>
+      <td>1ogintest</td>
+      <td>logintest@123</td>
+      <td>Fail</td>
+      <td>Fail</td>
+      <td>Please provide valid login name / email-id and password</td>
+      <td>Please provide valid login name / email-id and password</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Pass</td>
+      <td>Automation</td>
+      <td>logint6st</td>
+      <td>logintest@123</td>
+      <td>Fail</td>
+      <td>Fail</td>
+      <td>Please provide valid login name / email-id and password</td>
+      <td>Please provide valid login name / email-id and password</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Pass</td>
+      <td>Automation</td>
+      <td>[MASKED_EMAIL]</td>
+      <td>logintest@123</td>
+      <td>Pass</td>
+      <td>Pass</td>
+      <td>Login Successfully</td>
+      <td>Login Successfully</td>
+      <td>20-April-2026 08:53:54</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Pass</td>
+      <td>Automation</td>
+      <td>[MASKED_EMAIL]</td>
+      <td>logintest@123</td>
+      <td>Pass</td>
+      <td>Pass</td>
+      <td>Login Successfully</td>
+      <td>Login Successfully</td>
+      <td>20-April-2026 08:53:59</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Pass</td>
+      <td>Automation</td>
+      <td>ApilogiÑ[MASKED_EMAIL]</td>
+      <td>logintest@123</td>
+      <td>Pass</td>
+      <td>Pass</td>
+      <td>Login Successfully</td>
+      <td>Login Successfully</td>
+      <td>20-April-2026 08:54:03</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Pass</td>
+      <td>Automation</td>
+      <td>ApïlogiÑ[MASKED_EMAIL]</td>
+      <td>logintest@123</td>
+      <td>Pass</td>
+      <td>Pass</td>
+      <td>Login Successfully</td>
+      <td>Login Successfully</td>
+      <td>20-April-2026 08:54:08</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Pass</td>
+      <td>Automation</td>
+      <td>apilogincheck@gmail.©om</td>
+      <td>logintest@123</td>
+      <td>Fail</td>
+      <td>Fail</td>
+      <td>Please provide valid login name / email-id and password</td>
+      <td>Please provide valid login name / email-id and password</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Pass</td>
+      <td>Automation</td>
+      <td>logintest</td>
+      <td>Logintest@123</td>
+      <td>Fail</td>
+      <td>Fail</td>
+      <td>Please provide valid login name / email-id and password</td>
+      <td>Please provide valid login name / email-id and password</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Pass</td>
+      <td>Automation</td>
+      <td>logintest</td>
+      <td>LoginTest@123</td>
+      <td>Fail</td>
+      <td>Fail</td>
+      <td>Please provide valid login name / email-id and password</td>
+      <td>Please provide valid login name / email-id and password</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Pass</td>
+      <td>Automation</td>
+      <td>logintest</td>
+      <td>logintêst@123</td>
+      <td>Fail</td>
+      <td>Fail</td>
+      <td>Please provide valid login name / email-id and password</td>
+      <td>Please provide valid login name / email-id and password</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Pass</td>
+      <td>Automation</td>
+      <td>logintest</td>
+      <td>Logiñtêst@123</td>
+      <td>Fail</td>
+      <td>Fail</td>
+      <td>Please provide valid login name / email-id and password</td>
+      <td>Please provide valid login name / email-id and password</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Pass</td>
+      <td>Automation</td>
+      <td>[MASKED_EMAIL]</td>
+      <td>Logintest@123</td>
+      <td>Fail</td>
+      <td>Fail</td>
+      <td>Please provide valid login name / email-id and password</td>
+      <td>Please provide valid login name / email-id and password</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Pass</td>
+      <td>Automation</td>
+      <td>[MASKED_EMAIL]</td>
+      <td>LoginTest@123</td>
+      <td>Fail</td>
+      <td>Fail</td>
+      <td>Please provide valid login name / email-id and password</td>
+      <td>Please provide valid login name / email-id and password</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Pass</td>
+      <td>Automation</td>
+      <td>[MASKED_EMAIL]</td>
+      <td>logintêst@123</td>
+      <td>Fail</td>
+      <td>Fail</td>
+      <td>Please provide valid login name / email-id and password</td>
+      <td>Please provide valid login name / email-id and password</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Pass</td>
+      <td>Automation</td>
+      <td>[MASKED_EMAIL]</td>
+      <td>Logiñtêst@123</td>
+      <td>Fail</td>
+      <td>Fail</td>
+      <td>Please provide valid login name / email-id and password</td>
+      <td>Please provide valid login name / email-id and password</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Pass</td>
+      <td>Automation</td>
+      <td>login</td>
+      <td>logintest@123</td>
+      <td>Fail</td>
+      <td>Fail</td>
+      <td>Please provide valid login name / email-id and password</td>
+      <td>Please provide valid login name / email-id and password</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Pass</td>
+      <td>Automation</td>
+      <td>test</td>
+      <td>logintest@123</td>
+      <td>Fail</td>
+      <td>Fail</td>
+      <td>Please provide valid login name / email-id and password</td>
+      <td>Please provide valid login name / email-id and password</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Pass</td>
+      <td>Automation</td>
+      <td>logintest</td>
+      <td>@123logintest</td>
+      <td>Fail</td>
+      <td>Fail</td>
+      <td>Please provide valid login name / email-id and password</td>
+      <td>Please provide valid login name / email-id and password</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Pass</td>
+      <td>Automation</td>
+      <td>logintest</td>
+      <td>@123testlogin</td>
+      <td>Fail</td>
+      <td>Fail</td>
+      <td>Please provide valid login name / email-id and password</td>
+      <td>Please provide valid login name / email-id and password</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Pass</td>
+      <td>Automation</td>
+      <td>logintest</td>
+      <td>login@123test</td>
+      <td>Fail</td>
+      <td>Fail</td>
+      <td>Please provide valid login name / email-id and password</td>
+      <td>Please provide valid login name / email-id and password</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Pass</td>
+      <td>Automation</td>
+      <td>logintest</td>
+      <td>testlogin@123</td>
+      <td>Fail</td>
+      <td>Fail</td>
+      <td>Please provide valid login name / email-id and password</td>
+      <td>Please provide valid login name / email-id and password</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Pass</td>
+      <td>Automation</td>
+      <td>[MASKED_EMAIL]</td>
+      <td>@123logintest</td>
+      <td>Fail</td>
+      <td>Fail</td>
+      <td>Please provide valid login name / email-id and password</td>
+      <td>Please provide valid login name / email-id and password</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Pass</td>
+      <td>Automation</td>
+      <td>[MASKED_EMAIL]</td>
+      <td>@123testlogin</td>
+      <td>Fail</td>
+      <td>Fail</td>
+      <td>Please provide valid login name / email-id and password</td>
+      <td>Please provide valid login name / email-id and password</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Pass</td>
+      <td>Automation</td>
+      <td>[MASKED_EMAIL]</td>
+      <td>login@123test</td>
+      <td>Fail</td>
+      <td>Fail</td>
+      <td>Please provide valid login name / email-id and password</td>
+      <td>Please provide valid login name / email-id and password</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Pass</td>
+      <td>Automation</td>
+      <td>[MASKED_EMAIL]</td>
+      <td>testlogin@123</td>
+      <td>Fail</td>
+      <td>Fail</td>
+      <td>Please provide valid login name / email-id and password</td>
+      <td>Please provide valid login name / email-id and password</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Pass</td>
+      <td>Automation</td>
+      <td>logintest</td>
+      <td>qwertyui@234</td>
+      <td>Fail</td>
+      <td>Fail</td>
+      <td>Please provide valid login name / email-id and password</td>
+      <td>Please provide valid login name / email-id and password</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Pass</td>
+      <td>Automation</td>
+      <td>logintest</td>
+      <td>qwtyrtui@235</td>
+      <td>Fail</td>
+      <td>Fail</td>
+      <td>Please provide valid login name / email-id and password</td>
+      <td>Please provide valid login name / email-id and password</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Pass</td>
+      <td>Automation</td>
+      <td>[MASKED_EMAIL]</td>
+      <td>qwertyui@234</td>
+      <td>Fail</td>
+      <td>Fail</td>
+      <td>Please provide valid login name / email-id and password</td>
+      <td>Please provide valid login name / email-id and password</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Pass</td>
+      <td>Automation</td>
+      <td>[MASKED_EMAIL]</td>
+      <td>qwtyrtui@235</td>
+      <td>Fail</td>
+      <td>Fail</td>
+      <td>Please provide valid login name / email-id and password</td>
+      <td>Please provide valid login name / email-id and password</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Pass</td>
+      <td>Automation</td>
+      <td>logintest</td>
+      <td>Select * from users;</td>
+      <td>Fail</td>
+      <td>Fail</td>
+      <td>Please provide valid login name / email-id and password</td>
+      <td>Please provide valid login name / email-id and password</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Pass</td>
+      <td>Automation</td>
+      <td>logintest</td>
+      <td>select salt_password from users where login_name = 'logintest';</td>
+      <td>Fail</td>
+      <td>Fail</td>
+      <td>Please provide valid login name / email-id and password</td>
+      <td>Please provide valid login name / email-id and password</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Pass</td>
+      <td>Automation</td>
+      <td>logintest</td>
+      <td>SELECT * FROM Users WHERE login_name ="" or ""="" AND is_approved ="" or ""="";</td>
+      <td>Fail</td>
+      <td>Fail</td>
+      <td>Please provide valid login name / email-id and password</td>
+      <td>Please provide valid login name / email-id and password</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Pass</td>
+      <td>Automation</td>
+      <td>logintest</td>
+      <td>SELECT * FROM Users; DROP TABLE users</td>
+      <td>Fail</td>
+      <td>Fail</td>
+      <td>Please provide valid login name / email-id and password</td>
+      <td>Please provide valid login name / email-id and password</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Pass</td>
+      <td>Automation</td>
+      <td>[MASKED_EMAIL]</td>
+      <td>Select * from users;</td>
+      <td>Fail</td>
+      <td>Fail</td>
+      <td>Please provide valid login name / email-id and password</td>
+      <td>Please provide valid login name / email-id and password</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Pass</td>
+      <td>Automation</td>
+      <td>[MASKED_EMAIL]</td>
+      <td>select salt_password from users where login_name = 'logintest';</td>
+      <td>Fail</td>
+      <td>Fail</td>
+      <td>Please provide valid login name / email-id and password</td>
+      <td>Please provide valid login name / email-id and password</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Pass</td>
+      <td>Automation</td>
+      <td>[MASKED_EMAIL]</td>
+      <td>SELECT * FROM Users WHERE login_name ="" or ""="" AND is_approved ="" or ""="";</td>
+      <td>Fail</td>
+      <td>Fail</td>
+      <td>Please provide valid login name / email-id and password</td>
+      <td>Please provide valid login name / email-id and password</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Pass</td>
+      <td>Automation</td>
+      <td>[MASKED_EMAIL]</td>
+      <td>SELECT * FROM Users; DROP TABLE users</td>
+      <td>Fail</td>
+      <td>Fail</td>
+      <td>Please provide valid login name / email-id and password</td>
+      <td>Please provide valid login name / email-id and password</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Pass</td>
+      <td>Automation</td>
+      <td>[MASKED_EMAIL]</td>
+      <td>logintest@123</td>
+      <td>Fail</td>
+      <td>Fail</td>
+      <td>Please provide valid login name / email-id and password</td>
+      <td>Please provide valid login name / email-id and password</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Pass</td>
+      <td>Automation</td>
+      <td>Expier</td>
+      <td>ExpierExpier</td>
+      <td>Pass</td>
+      <td>Pass</td>
+      <td>Login Successfully and Expired the password</td>
+      <td>Login Successfully and Expired the password</td>
+      <td>20-April-2026 08:56:08</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Pass</td>
+      <td>Automation</td>
+      <td>[MASKED_EMAIL]</td>
+      <td>ExpierExpier</td>
+      <td>Pass</td>
+      <td>Pass</td>
+      <td>Login Successfully and Expired the password</td>
+      <td>Login Successfully and Expired the password</td>
+      <td>20-April-2026 08:56:13</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+  </tbody>
+</table>
+        </div>
+    </div>
+    <script>
+        document.querySelectorAll('.preview-table tr').forEach((tr, rowIndex) => {
+            let statusCount = 0;
+            const cells = tr.querySelectorAll('td');
+            
+            cells.forEach(td => {
+                const text = td.innerText.trim().toUpperCase();
+                
+                // Highlight Pass/Fail
+                if (['PASS', 'SUCCESS', 'PASSED'].includes(text)) {
+                    td.classList.add('status-pass');
+                } else if (['FAIL', 'FAILURE', 'FAILED', 'ERROR'].includes(text)) {
+                    td.classList.add('status-fail');
+                } else if (text === 'NA') {
+                    td.classList.add('status-na');
+                }
+                
+                // Header detection keywords
+                if (['STATUS', 'IDENTITY', 'ID'].includes(text)) {
+                    statusCount++;
+                }
+            });
+            
+            // If row has multiple 'Status' labels, it's a sub-header
+            if (statusCount >= 2 && rowIndex > 0) {
+                tr.classList.add('sub-header');
+            }
+        });
+    </script>
+</body>
+</html>

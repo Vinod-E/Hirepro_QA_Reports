@@ -30,7 +30,7 @@ SLASH = '\\' if IS_WINDOWS else '/'
 
 # --- Audit & Notification Baselines ---
 EXPECTED_REPORT_COUNT = 72
-TARGET_EXECUTION_GOAL = 2903
+TARGET_EXECUTION_GOAL = 2901
 EXPECTED_SPRINT = "217"
 ENVIRONMENT = "QA"
 AUDIT_SUITE_NAME = "Daily Run | Central QA Automation Reports"

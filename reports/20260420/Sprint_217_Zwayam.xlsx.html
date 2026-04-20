@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preview: Sprint_217_Zwayam.xlsx</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --primary: #4f46e5; --bg: #f8fafc; --text: #1e293b; --border: #e2e8f0; --success: #10b981; --danger: #ef4444; }
+        body { font-family: 'Outfit', sans-serif; background-color: var(--bg); color: var(--text); padding: 2rem; margin: 0; }
+        .container { max-width: 1400px; margin: 0 auto; background: white; padding: 2.5rem; border-radius: 1.5rem; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05); border: 1px solid var(--border); }
+        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 2px solid var(--bg); }
+        .title-area { display: flex; align-items: center; gap: 1rem; }
+        .title-area i { font-size: 2rem; color: var(--primary); }
+        h1 { font-size: 1.5rem; font-weight: 800; margin: 0; }
+        .actions { display: flex; gap: 1rem; }
+        .btn { text-decoration: none; padding: 0.6rem 1.25rem; border-radius: 10px; font-weight: 700; font-size: 0.85rem; display: flex; align-items: center; gap: 0.5rem; transition: all 0.2s; border: none; cursor: pointer; }
+        .btn-download { background: var(--primary); color: white; }
+        .btn-download:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3); }
+        .btn-back { background: #f1f5f9; color: var(--text); }
+        .btn-back:hover { background: #e2e8f0; }
+        .table-wrapper { overflow-x: auto; border-radius: 12px; border: 1px solid var(--border); background: white; }
+        .preview-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; border-spacing: 0; }
+        .preview-table td { padding: 0.85rem 1.15rem; border-bottom: 1px solid var(--border); border-right: 1px solid var(--border); white-space: nowrap; color: var(--text); }
+        .preview-table tr:hover { background: #f1f5f9 !important; }
+        
+        /* Header & Sub-header Styling */
+        .preview-table tr:first-child td,
+        .preview-table tr.sub-header td { 
+            background: #f1f5f9 !important; 
+            font-weight: 800 !important; 
+            color: #475569 !important; 
+            text-transform: uppercase; 
+            font-size: 0.75rem; 
+            letter-spacing: 0.025em;
+            border-bottom: 2px solid #cbd5e1 !important;
+        }
+        
+        .preview-table tr:nth-child(even) { background: #fafbfc; }
+        .preview-table tr:hover { background: #f1f5f9 !important; }
+        
+        /* Status Colors */
+        .status-pass { color: var(--success) !important; font-weight: 800; background: #ecfdf5 !important; }
+        .status-fail { color: var(--danger) !important; font-weight: 800; background: #fef2f2 !important; }
+        .status-na { color: #94a3b8; font-style: italic; opacity: 0.5; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="title-area">
+                <i class="fas fa-file-excel"></i>
+                <div>
+                    <h1>Sprint_217_Zwayam.xlsx</h1>
+                    <div style="font-size: 0.75rem; color: #64748b; font-weight: 600; margin-top: 0.2rem; text-transform: uppercase;">Spreadsheet Preview (All Rows)</div>
+                </div>
+            </div>
+            <div class="actions">
+                <button onclick="window.close()" class="btn btn-back"><i class="fas fa-times"></i> Close Tab</button>
+                <a href="Sprint_217_Zwayam.xlsx" download="Sprint_217_Zwayam.xlsx" class="btn btn-download"><i class="fas fa-download"></i> Download Excel</a>
+            </div>
+        </header>
+        <div class="table-wrapper">
+            <table border="1" class="dataframe preview-table">
+  <tbody>
+    <tr>
+      <td>TC ID</td>
+      <td>Group</td>
+      <td>Priority</td>
+      <td>Title / Description</td>
+      <td>Steps / Details</td>
+      <td>Expected Result</td>
+      <td>Pass Criteria</td>
+      <td>Status</td>
+      <td>Actual Result</td>
+    </tr>
+    <tr>
+      <td>TC-01</td>
+      <td>Oauth Zwayam</td>
+      <td>High</td>
+      <td>Get Access Token</td>
+      <td>Method: POST\nURL: /py/oauth2/2434c67102454ed2bd90247c01fe0d9a/access_token</td>
+      <td>Status Code: 200 - OK and all assertions should pass.</td>
+      <td>All assertions pass.</td>
+      <td>PASS</td>
+      <td>Response Code: 200 - OK\nAssertions: *** T O K E N - C R E A T E D ***&nbsp;&nbsp;==&gt;&nbsp;&nbsp;bearer (PASS)</td>
+    </tr>
+    <tr>
+      <td>TC-02</td>
+      <td>Oauth Zwayam</td>
+      <td>High</td>
+      <td>Test Oauth Access Token</td>
+      <td>Method: POST\nURL: /py/oauth2/testApi/testoauth</td>
+      <td>Status Code: 200 - OK and all assertions should pass.</td>
+      <td>All assertions pass.</td>
+      <td>PASS</td>
+      <td>Response Code: 200 - OK\nAssertions: *** T O K E N - V A L I D A T E ***&nbsp;&nbsp;==&gt;&nbsp;&nbsp;Success (PASS)</td>
+    </tr>
+    <tr>
+      <td>TC-03</td>
+      <td>Abacus Lateral Zwayam</td>
+      <td>High</td>
+      <td>RegisterAndScheduleInterview</td>
+      <td>Method: POST\nURL:</td>
+      <td>Status Code: 200 - OK and all assertions should pass.</td>
+      <td>All assertions pass.</td>
+      <td>PASS</td>
+      <td>Response Code: 200 - OK\nAssertions: *** *** C A N D I D A T E - C R E A T E D ***&nbsp;&nbsp;===&gt;&nbsp;&nbsp;1604125 (PASS), *** *** A P P L I C A T E - C R E A T E D ***&nbsp;&nbsp;===&gt;&nbsp;&nbsp;1436073 (PASS), *** I N T E R V I E W - I D ***&nbsp;&nbsp;==&gt;&nbsp;&nbsp;63861 (PASS), *** I N T E R V I E W - L I N K ***&nbsp;&nbsp;==&gt;&nbsp;&nbsp; (PASS), *** C A N D I D A T E - L I N K ***&nbsp;&nbsp;==&gt;&nbsp;&nbsp; (PASS)</td>
+    </tr>
+    <tr>
+      <td>TC-04</td>
+      <td>Abacus Lateral Zwayam</td>
+      <td>High</td>
+      <td>Get&nbsp;&nbsp;Details By Id</td>
+      <td>Method: POST\nURL:</td>
+      <td>Status Code: 200 - OK and all assertions should pass.</td>
+      <td>All assertions pass.</td>
+      <td>PASS</td>
+      <td>Response Code: 200 - OK\nAssertions: *** I N T E R V I E W - D E T A I L S ***&nbsp;&nbsp;==&gt;&nbsp;&nbsp; (PASS)</td>
+    </tr>
+    <tr>
+      <td>TC-05</td>
+      <td>Abacus Lateral Zwayam</td>
+      <td>High</td>
+      <td>Mark&nbsp;&nbsp;as Completed</td>
+      <td>Method: POST\nURL:</td>
+      <td>Status Code: 200 - OK and all assertions should pass.</td>
+      <td>All assertions pass.</td>
+      <td>PASS</td>
+      <td>Response Code: 200 - OK\nAssertions: *** M A R K - I N T E R V I E W - C O M P L E T E D ***&nbsp;&nbsp;==&gt;&nbsp;&nbsp;true (PASS)</td>
+    </tr>
+    <tr>
+      <td>TC-06</td>
+      <td>Abacus Lateral Zwayam</td>
+      <td>High</td>
+      <td>Cancel</td>
+      <td>Method: POST\nURL:</td>
+      <td>Status Code: 200 - OK and all assertions should pass.</td>
+      <td>All assertions pass.</td>
+      <td>PASS</td>
+      <td>Response Code: 200 - OK\nAssertions: *** C A N C E L L E D - I N T E R V I E W - I D ***&nbsp;&nbsp;==&gt;&nbsp;&nbsp;true (PASS)</td>
+    </tr>
+  </tbody>
+</table>
+        </div>
+    </div>
+    <script>
+        document.querySelectorAll('.preview-table tr').forEach((tr, rowIndex) => {
+            let statusCount = 0;
+            const cells = tr.querySelectorAll('td');
+            
+            cells.forEach(td => {
+                const text = td.innerText.trim().toUpperCase();
+                
+                // Highlight Pass/Fail
+                if (['PASS', 'SUCCESS', 'PASSED'].includes(text)) {
+                    td.classList.add('status-pass');
+                } else if (['FAIL', 'FAILURE', 'FAILED', 'ERROR'].includes(text)) {
+                    td.classList.add('status-fail');
+                } else if (text === 'NA') {
+                    td.classList.add('status-na');
+                }
+                
+                // Header detection keywords
+                if (['STATUS', 'IDENTITY', 'ID'].includes(text)) {
+                    statusCount++;
+                }
+            });
+            
+            // If row has multiple 'Status' labels, it's a sub-header
+            if (statusCount >= 2 && rowIndex > 0) {
+                tr.classList.add('sub-header');
+            }
+        });
+    </script>
+</body>
+</html>

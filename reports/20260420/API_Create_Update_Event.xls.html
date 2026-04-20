@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preview: API_Create_Update_Event.xls</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --primary: #4f46e5; --bg: #f8fafc; --text: #1e293b; --border: #e2e8f0; --success: #10b981; --danger: #ef4444; }
+        body { font-family: 'Outfit', sans-serif; background-color: var(--bg); color: var(--text); padding: 2rem; margin: 0; }
+        .container { max-width: 1400px; margin: 0 auto; background: white; padding: 2.5rem; border-radius: 1.5rem; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05); border: 1px solid var(--border); }
+        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 2px solid var(--bg); }
+        .title-area { display: flex; align-items: center; gap: 1rem; }
+        .title-area i { font-size: 2rem; color: var(--primary); }
+        h1 { font-size: 1.5rem; font-weight: 800; margin: 0; }
+        .actions { display: flex; gap: 1rem; }
+        .btn { text-decoration: none; padding: 0.6rem 1.25rem; border-radius: 10px; font-weight: 700; font-size: 0.85rem; display: flex; align-items: center; gap: 0.5rem; transition: all 0.2s; border: none; cursor: pointer; }
+        .btn-download { background: var(--primary); color: white; }
+        .btn-download:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3); }
+        .btn-back { background: #f1f5f9; color: var(--text); }
+        .btn-back:hover { background: #e2e8f0; }
+        .table-wrapper { overflow-x: auto; border-radius: 12px; border: 1px solid var(--border); background: white; }
+        .preview-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; border-spacing: 0; }
+        .preview-table td { padding: 0.85rem 1.15rem; border-bottom: 1px solid var(--border); border-right: 1px solid var(--border); white-space: nowrap; color: var(--text); }
+        .preview-table tr:hover { background: #f1f5f9 !important; }
+        
+        /* Header & Sub-header Styling */
+        .preview-table tr:first-child td,
+        .preview-table tr.sub-header td { 
+            background: #f1f5f9 !important; 
+            font-weight: 800 !important; 
+            color: #475569 !important; 
+            text-transform: uppercase; 
+            font-size: 0.75rem; 
+            letter-spacing: 0.025em;
+            border-bottom: 2px solid #cbd5e1 !important;
+        }
+        
+        .preview-table tr:nth-child(even) { background: #fafbfc; }
+        .preview-table tr:hover { background: #f1f5f9 !important; }
+        
+        /* Status Colors */
+        .status-pass { color: var(--success) !important; font-weight: 800; background: #ecfdf5 !important; }
+        .status-fail { color: var(--danger) !important; font-weight: 800; background: #fef2f2 !important; }
+        .status-na { color: #94a3b8; font-style: italic; opacity: 0.5; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="title-area">
+                <i class="fas fa-file-excel"></i>
+                <div>
+                    <h1>API_Create_Update_Event.xls</h1>
+                    <div style="font-size: 0.75rem; color: #64748b; font-weight: 600; margin-top: 0.2rem; text-transform: uppercase;">Spreadsheet Preview (All Rows)</div>
+                </div>
+            </div>
+            <div class="actions">
+                <button onclick="window.close()" class="btn btn-back"><i class="fas fa-times"></i> Close Tab</button>
+                <a href="API_Create_Update_Event.xls" download="API_Create_Update_Event.xls" class="btn btn-download"><i class="fas fa-download"></i> Download Excel</a>
+            </div>
+        </header>
+        <div class="table-wrapper">
+            <table border="1" class="dataframe preview-table">
+  <tbody>
+    <tr>
+      <td>Create / Update Event</td>
+      <td>Pass</td>
+      <td>Login Server</td>
+      <td>[MASKED_REF]</td>
+      <td>Lambda</td>
+      <td>On</td>
+      <td>APP Name</td>
+      <td>crpo</td>
+      <td>No.of Test cases</td>
+      <td>12</td>
+      <td>Start Time</td>
+      <td>2026-04-20 09:12:56.045937</td>
+      <td>Failed Test cases</td>
+      <td>0</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Comparison</td>
+      <td>Status</td>
+      <td>EventID</td>
+      <td>EventName</td>
+      <td>EventType</td>
+      <td>City</td>
+      <td>State</td>
+      <td>EventFrom</td>
+      <td>EventTo</td>
+      <td>SlotId</td>
+      <td>Requirement Name</td>
+      <td>EventManagerId</td>
+      <td>Campuses</td>
+      <td>Address</td>
+      <td>Event_Status</td>
+    </tr>
+    <tr>
+      <td>Input</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>Auto_WalkIn_01</td>
+      <td>Walkin</td>
+      <td>Dwarka</td>
+      <td>Delhi</td>
+      <td>2020-01-23 00:00:00</td>
+      <td>2020-05-22 00:00:00</td>
+      <td>37016</td>
+      <td>Create_Update_Event</td>
+      <td>38825</td>
+      <td>NA</td>
+      <td>HirePro Consulting Pvt. Ltd.</td>
+      <td>Open</td>
+    </tr>
+    <tr>
+      <td>Output</td>
+      <td>Pass</td>
+      <td>32817</td>
+      <td>Auto_WalkIn_01</td>
+      <td>Walkin</td>
+      <td>Dwarka</td>
+      <td>Delhi</td>
+      <td>2020-01-23T00:00:00</td>
+      <td>2020-05-22T00:00:00</td>
+      <td>37016</td>
+      <td>Create_Update_Event</td>
+      <td>38825</td>
+      <td>NA</td>
+      <td>HirePro Consulting Pvt. Ltd.</td>
+      <td>Open</td>
+    </tr>
+    <tr>
+      <td>Input</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>Auto_OffCampus_01</td>
+      <td>OutCampus</td>
+      <td>Anantapur</td>
+      <td>Andhra Pradesh</td>
+      <td>2020-01-23 00:00:00</td>
+      <td>2020-05-22 00:00:00</td>
+      <td>37016</td>
+      <td>Create_Update_Event</td>
+      <td>38825</td>
+      <td>A. J. Institute of Management Mangalore,A.D.Patel Institute of Technology (ADPIT)-Ahmedabad,SVCE Chennai-Sri Venkateswara College of Engineering, Chennai</td>
+      <td>HirePro Consulting Pvt. Ltd.</td>
+      <td>Open</td>
+    </tr>
+    <tr>
+      <td>Output</td>
+      <td>Pass</td>
+      <td>32821</td>
+      <td>Auto_OffCampus_01</td>
+      <td>OutCampus</td>
+      <td>Anantapur</td>
+      <td>Andhra Pradesh</td>
+      <td>2020-01-23T00:00:00</td>
+      <td>2020-05-22T00:00:00</td>
+      <td>37016</td>
+      <td>Create_Update_Event</td>
+      <td>38825</td>
+      <td>A. J. Institute of Management Mangalore,A.D.Patel Institute of Technology (ADPIT)-Ahmedabad,SVCE Chennai-Sri Venkateswara College of Engineering, Chennai</td>
+      <td>HirePro Consulting Pvt. Ltd.</td>
+      <td>Open</td>
+    </tr>
+    <tr>
+      <td>Input</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>Auto_PoolCampus_01</td>
+      <td>PoolCampus</td>
+      <td>Bengaluru</td>
+      <td>Karnataka</td>
+      <td>2020-01-23 00:00:00</td>
+      <td>2020-05-22 00:00:00</td>
+      <td>37016</td>
+      <td>Create_Update_Event</td>
+      <td>38825</td>
+      <td>Aardhays Brilliant Centre Vijayanagr,Baptala Engineering College (BPE)-Baptala,Chaudhary Devi Lal Memorial Government Engineering College - Haryana</td>
+      <td>NA</td>
+      <td>Open</td>
+    </tr>
+    <tr>
+      <td>Output</td>
+      <td>Pass</td>
+      <td>32825</td>
+      <td>Auto_PoolCampus_01</td>
+      <td>PoolCampus</td>
+      <td>Bengaluru</td>
+      <td>Karnataka</td>
+      <td>2020-01-23T00:00:00</td>
+      <td>2020-05-22T00:00:00</td>
+      <td>37016</td>
+      <td>Create_Update_Event</td>
+      <td>38825</td>
+      <td>Aardhays Brilliant Centre Vijayanagr,Baptala Engineering College (BPE)-Baptala,Chaudhary Devi Lal Memorial Government Engineering College - Haryana</td>
+      <td>NA</td>
+      <td>Open</td>
+    </tr>
+    <tr>
+      <td>Input</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>Auto_InCampus_01</td>
+      <td>InCampus</td>
+      <td>Ahmedabad</td>
+      <td>Gujarat</td>
+      <td>2020-01-23 00:00:00</td>
+      <td>2020-05-22 00:00:00</td>
+      <td>37016</td>
+      <td>Create_Update_Event</td>
+      <td>38825</td>
+      <td>A.D.Patel Institute of Technology (ADPIT)-Ahmedabad</td>
+      <td>NA</td>
+      <td>Open</td>
+    </tr>
+    <tr>
+      <td>Output</td>
+      <td>Pass</td>
+      <td>32829</td>
+      <td>Auto_InCampus_01</td>
+      <td>InCampus</td>
+      <td>Ahmedabad</td>
+      <td>Gujarat</td>
+      <td>2020-01-23T00:00:00</td>
+      <td>2020-05-22T00:00:00</td>
+      <td>37016</td>
+      <td>Create_Update_Event</td>
+      <td>38825</td>
+      <td>A.D.Patel Institute of Technology (ADPIT)-Ahmedabad</td>
+      <td>NA</td>
+      <td>Open</td>
+    </tr>
+    <tr>
+      <td>Input</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>Auto_WalkIn_02</td>
+      <td>Walkin</td>
+      <td>Dwarka</td>
+      <td>Delhi</td>
+      <td>2020-01-23 00:00:00</td>
+      <td>2020-05-22 00:00:00</td>
+      <td>37016</td>
+      <td>Create_Update_Event</td>
+      <td>38825</td>
+      <td>NA</td>
+      <td>HirePro Consulting Pvt. Ltd.</td>
+      <td>Open</td>
+    </tr>
+    <tr>
+      <td>Output</td>
+      <td>Pass</td>
+      <td>32833</td>
+      <td>Auto_WalkIn_02</td>
+      <td>Walkin</td>
+      <td>Dwarka</td>
+      <td>Delhi</td>
+      <td>2020-01-23T00:00:00</td>
+      <td>2020-05-22T00:00:00</td>
+      <td>37016</td>
+      <td>Create_Update_Event</td>
+      <td>38825</td>
+      <td>NA</td>
+      <td>HirePro Consulting Pvt. Ltd.</td>
+      <td>Open</td>
+    </tr>
+    <tr>
+      <td>Input</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>Auto_OffCampus_02</td>
+      <td>OutCampus</td>
+      <td>Anantapur</td>
+      <td>Andhra Pradesh</td>
+      <td>2020-01-23 00:00:00</td>
+      <td>2020-05-22 00:00:00</td>
+      <td>37016</td>
+      <td>Create_Update_Event</td>
+      <td>38825</td>
+      <td>A. J. Institute of Management Mangalore,A.D.Patel Institute of Technology (ADPIT)-Ahmedabad,SVCE Chennai-Sri Venkateswara College of Engineering, Chennai</td>
+      <td>HirePro Consulting Pvt. Ltd.</td>
+      <td>Open</td>
+    </tr>
+    <tr>
+      <td>Output</td>
+      <td>Pass</td>
+      <td>32835</td>
+      <td>Auto_OffCampus_02</td>
+      <td>OutCampus</td>
+      <td>Anantapur</td>
+      <td>Andhra Pradesh</td>
+      <td>2020-01-23T00:00:00</td>
+      <td>2020-05-22T00:00:00</td>
+      <td>37016</td>
+      <td>Create_Update_Event</td>
+      <td>38825</td>
+      <td>A. J. Institute of Management Mangalore,A.D.Patel Institute of Technology (ADPIT)-Ahmedabad,SVCE Chennai-Sri Venkateswara College of Engineering, Chennai</td>
+      <td>HirePro Consulting Pvt. Ltd.</td>
+      <td>Open</td>
+    </tr>
+    <tr>
+      <td>Input</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>Auto_PoolCampus_02</td>
+      <td>PoolCampus</td>
+      <td>Bengaluru</td>
+      <td>Karnataka</td>
+      <td>2020-01-23 00:00:00</td>
+      <td>2020-05-22 00:00:00</td>
+      <td>37016</td>
+      <td>Create_Update_Event</td>
+      <td>38825</td>
+      <td>Aardhays Brilliant Centre Vijayanagr,Baptala Engineering College (BPE)-Baptala</td>
+      <td>NA</td>
+      <td>Open</td>
+    </tr>
+    <tr>
+      <td>Output</td>
+      <td>Pass</td>
+      <td>32837</td>
+      <td>Auto_PoolCampus_02</td>
+      <td>PoolCampus</td>
+      <td>Bengaluru</td>
+      <td>Karnataka</td>
+      <td>2020-01-23T00:00:00</td>
+      <td>2020-05-22T00:00:00</td>
+      <td>37016</td>
+      <td>Create_Update_Event</td>
+      <td>38825</td>
+      <td>Aardhays Brilliant Centre Vijayanagr,Baptala Engineering College (BPE)-Baptala</td>
+      <td>NA</td>
+      <td>Open</td>
+    </tr>
+    <tr>
+      <td>Input</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>Auto_InCampus_02</td>
+      <td>InCampus</td>
+      <td>Ahmedabad</td>
+      <td>Gujarat</td>
+      <td>2020-01-23 00:00:00</td>
+      <td>2020-05-22 00:00:00</td>
+      <td>37016</td>
+      <td>Create_Update_Event</td>
+      <td>38825</td>
+      <td>A.D.Patel Institute of Technology (ADPIT)-Ahmedabad</td>
+      <td>NA</td>
+      <td>Open</td>
+    </tr>
+    <tr>
+      <td>Output</td>
+      <td>Pass</td>
+      <td>32839</td>
+      <td>Auto_InCampus_02</td>
+      <td>InCampus</td>
+      <td>Ahmedabad</td>
+      <td>Gujarat</td>
+      <td>2020-01-23T00:00:00</td>
+      <td>2020-05-22T00:00:00</td>
+      <td>37016</td>
+      <td>Create_Update_Event</td>
+      <td>38825</td>
+      <td>A.D.Patel Institute of Technology (ADPIT)-Ahmedabad</td>
+      <td>NA</td>
+      <td>Open</td>
+    </tr>
+    <tr>
+      <td>Input</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>Auto_WalkIn_03</td>
+      <td>Walkin</td>
+      <td>Dwarka</td>
+      <td>Delhi</td>
+      <td>2020-01-23 00:00:00</td>
+      <td>2020-05-22 00:00:00</td>
+      <td>37016</td>
+      <td>Create_Update_Event</td>
+      <td>38825</td>
+      <td>NA</td>
+      <td>HirePro Consulting Pvt. Ltd.</td>
+      <td>Open</td>
+    </tr>
+    <tr>
+      <td>Output</td>
+      <td>Pass</td>
+      <td>32841</td>
+      <td>Auto_WalkIn_03</td>
+      <td>Walkin</td>
+      <td>Dwarka</td>
+      <td>Delhi</td>
+      <td>2020-01-23T00:00:00</td>
+      <td>2020-05-22T00:00:00</td>
+      <td>37016</td>
+      <td>Create_Update_Event</td>
+      <td>38825</td>
+      <td>NA</td>
+      <td>HirePro Consulting Pvt. Ltd.</td>
+      <td>Open</td>
+    </tr>
+    <tr>
+      <td>Input</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>Auto_OffCampus_03</td>
+      <td>OutCampus</td>
+      <td>Anantapur</td>
+      <td>Andhra Pradesh</td>
+      <td>2020-01-23 00:00:00</td>
+      <td>2020-05-22 00:00:00</td>
+      <td>37016</td>
+      <td>Create_Update_Event</td>
+      <td>38825</td>
+      <td>A. J. Institute of Management Mangalore,SVCE Chennai-Sri Venkateswara College of Engineering, Chennai</td>
+      <td>HirePro Consulting Pvt. Ltd.</td>
+      <td>Open</td>
+    </tr>
+    <tr>
+      <td>Output</td>
+      <td>Pass</td>
+      <td>32843</td>
+      <td>Auto_OffCampus_03</td>
+      <td>OutCampus</td>
+      <td>Anantapur</td>
+      <td>Andhra Pradesh</td>
+      <td>2020-01-23T00:00:00</td>
+      <td>2020-05-22T00:00:00</td>
+      <td>37016</td>
+      <td>Create_Update_Event</td>
+      <td>38825</td>
+      <td>A. J. Institute of Management Mangalore,SVCE Chennai-Sri Venkateswara College of Engineering, Chennai</td>
+      <td>HirePro Consulting Pvt. Ltd.</td>
+      <td>Open</td>
+    </tr>
+    <tr>
+      <td>Input</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>Auto_PoolCampus_03</td>
+      <td>PoolCampus</td>
+      <td>Bengaluru</td>
+      <td>Karnataka</td>
+      <td>2020-01-23 00:00:00</td>
+      <td>2020-05-22 00:00:00</td>
+      <td>37016</td>
+      <td>Create_Update_Event</td>
+      <td>38825</td>
+      <td>Aardhays Brilliant Centre Vijayanagr,Baptala Engineering College (BPE)-Baptala,Chaudhary Devi Lal Memorial Government Engineering College - Haryana</td>
+      <td>NA</td>
+      <td>Open</td>
+    </tr>
+    <tr>
+      <td>Output</td>
+      <td>Pass</td>
+      <td>32845</td>
+      <td>Auto_PoolCampus_03</td>
+      <td>PoolCampus</td>
+      <td>Bengaluru</td>
+      <td>Karnataka</td>
+      <td>2020-01-23T00:00:00</td>
+      <td>2020-05-22T00:00:00</td>
+      <td>37016</td>
+      <td>Create_Update_Event</td>
+      <td>38825</td>
+      <td>Aardhays Brilliant Centre Vijayanagr,Baptala Engineering College (BPE)-Baptala,Chaudhary Devi Lal Memorial Government Engineering College - Haryana</td>
+      <td>NA</td>
+      <td>Open</td>
+    </tr>
+    <tr>
+      <td>Input</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>Auto_InCampus_03</td>
+      <td>InCampus</td>
+      <td>Ahmedabad</td>
+      <td>Gujarat</td>
+      <td>2020-01-23 00:00:00</td>
+      <td>2020-05-22 00:00:00</td>
+      <td>37016</td>
+      <td>Create_Update_Event</td>
+      <td>38825</td>
+      <td>A.D.Patel Institute of Technology (ADPIT)-Ahmedabad</td>
+      <td>NA</td>
+      <td>Open</td>
+    </tr>
+    <tr>
+      <td>Output</td>
+      <td>Pass</td>
+      <td>32847</td>
+      <td>Auto_InCampus_03</td>
+      <td>InCampus</td>
+      <td>Ahmedabad</td>
+      <td>Gujarat</td>
+      <td>2020-01-23T00:00:00</td>
+      <td>2020-05-22T00:00:00</td>
+      <td>37016</td>
+      <td>Create_Update_Event</td>
+      <td>38825</td>
+      <td>A.D.Patel Institute of Technology (ADPIT)-Ahmedabad</td>
+      <td>NA</td>
+      <td>Open</td>
+    </tr>
+    <tr>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>***</td>
+      <td>***</td>
+      <td>***</td>
+      <td>***</td>
+      <td>***</td>
+      <td>Event</td>
+      <td>Updated</td>
+      <td>Details</td>
+      <td>***</td>
+      <td>***</td>
+      <td>***</td>
+      <td>***</td>
+      <td>***</td>
+      <td>***</td>
+      <td>***</td>
+    </tr>
+    <tr>
+      <td>Input</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>WalkIn_To_OffCampus</td>
+      <td>OutCampus</td>
+      <td>Sancoale</td>
+      <td>Goa</td>
+      <td>2020-05-22 00:00:00</td>
+      <td>2021-01-23 00:00:01</td>
+      <td>37018</td>
+      <td>Create_Update_Event</td>
+      <td>43125</td>
+      <td>GIM Goa - Goa Institute of Management, Goa,Giani Zail Singh Punjab Technical University Campus - Bhatinda - Punjab,GITAM University (GU) - Bangalore</td>
+      <td>CareerNet Consulting Pvt. Ltd.</td>
+      <td>Open</td>
+    </tr>
+    <tr>
+      <td>Output</td>
+      <td>Pass</td>
+      <td>32817</td>
+      <td>WalkIn_To_OffCampus</td>
+      <td>OutCampus</td>
+      <td>Sancoale</td>
+      <td>Goa</td>
+      <td>2020-05-22T00:00:00</td>
+      <td>2021-01-23T00:00:01</td>
+      <td>37018</td>
+      <td>Create_Update_Event</td>
+      <td>43125</td>
+      <td>GIM Goa - Goa Institute of Management, Goa,Giani Zail Singh Punjab Technical University Campus - Bhatinda - Punjab,GITAM University (GU) - Bangalore</td>
+      <td>CareerNet Consulting Pvt. Ltd.</td>
+      <td>Open</td>
+    </tr>
+    <tr>
+      <td>Input</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>WalkIn_To_PoolCampus</td>
+      <td>PoolCampus</td>
+      <td>Bankura</td>
+      <td>West Bengal</td>
+      <td>2020-05-22 00:00:00</td>
+      <td>2021-01-23 00:00:01</td>
+      <td>37018</td>
+      <td>Create_Update_Event</td>
+      <td>43125</td>
+      <td>Bansal College Of Engineering (BCOE) - Bhopal,Banasthali Univ. Jaipur - Banasthali University, Jaipur,BankuraUnnayaniInstituteOfEngineeringCollege(BUIE)-Bankura</td>
+      <td>NA</td>
+      <td>Open</td>
+    </tr>
+    <tr>
+      <td>Output</td>
+      <td>Pass</td>
+      <td>32821</td>
+      <td>WalkIn_To_PoolCampus</td>
+      <td>PoolCampus</td>
+      <td>Bankura</td>
+      <td>West Bengal</td>
+      <td>2020-05-22T00:00:00</td>
+      <td>2021-01-23T00:00:01</td>
+      <td>37018</td>
+      <td>Create_Update_Event</td>
+      <td>43125</td>
+      <td>Bansal College Of Engineering (BCOE) - Bhopal,Banasthali Univ. Jaipur - Banasthali University, Jaipur,BankuraUnnayaniInstituteOfEngineeringCollege(BUIE)-Bankura</td>
+      <td>NA</td>
+      <td>Open</td>
+    </tr>
+    <tr>
+      <td>Input</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>WalkIn_To_InCampus</td>
+      <td>InCampus</td>
+      <td>Bengaluru</td>
+      <td>Karnataka</td>
+      <td>2020-05-22 00:00:00</td>
+      <td>2021-01-23 00:00:01</td>
+      <td>37018</td>
+      <td>Create_Update_Event</td>
+      <td>43125</td>
+      <td>Cambridge Institute of Technology (CIT)- Bangalore</td>
+      <td>NA</td>
+      <td>Open</td>
+    </tr>
+    <tr>
+      <td>Output</td>
+      <td>Pass</td>
+      <td>32825</td>
+      <td>WalkIn_To_InCampus</td>
+      <td>InCampus</td>
+      <td>Bengaluru</td>
+      <td>Karnataka</td>
+      <td>2020-05-22T00:00:00</td>
+      <td>2021-01-23T00:00:01</td>
+      <td>37018</td>
+      <td>Create_Update_Event</td>
+      <td>43125</td>
+      <td>Cambridge Institute of Technology (CIT)- Bangalore</td>
+      <td>NA</td>
+      <td>Open</td>
+    </tr>
+    <tr>
+      <td>Input</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>OffCampus_To_WalkIn</td>
+      <td>Walkin</td>
+      <td>Sancoale</td>
+      <td>Goa</td>
+      <td>2020-05-22 00:00:00</td>
+      <td>2021-01-23 00:00:01</td>
+      <td>37018</td>
+      <td>Create_Update_Event</td>
+      <td>43125</td>
+      <td>NA</td>
+      <td>CareerNet Consulting Pvt. Ltd.</td>
+      <td>Open</td>
+    </tr>
+    <tr>
+      <td>Output</td>
+      <td>Pass</td>
+      <td>32829</td>
+      <td>OffCampus_To_WalkIn</td>
+      <td>Walkin</td>
+      <td>Sancoale</td>
+      <td>Goa</td>
+      <td>2020-05-22T00:00:00</td>
+      <td>2021-01-23T00:00:01</td>
+      <td>37018</td>
+      <td>Create_Update_Event</td>
+      <td>43125</td>
+      <td>NA</td>
+      <td>CareerNet Consulting Pvt. Ltd.</td>
+      <td>Open</td>
+    </tr>
+    <tr>
+      <td>Input</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>OffCampus_To_PoolCampus</td>
+      <td>PoolCampus</td>
+      <td>Raipur</td>
+      <td>Chhattisgarh</td>
+      <td>2020-05-22 00:00:00</td>
+      <td>2021-01-23 00:00:01</td>
+      <td>37018</td>
+      <td>Create_Update_Event</td>
+      <td>43125</td>
+      <td>Giani Zail Singh Punjab Technical University Campus - Bhatinda - Punjab,Ghousia College of Engineering-Bangalore,Gf institute of management and technology - Bareilly - Uttar Pradesh,GEC Raipur (GEC) - Raipur,Dronacharya College of Engineering - Gurgaon - Haryana,DTU Delhi - Delhi Technological University (formerly DCE), Delhi</td>
+      <td>NA</td>
+      <td>Open</td>
+    </tr>
+    <tr>
+      <td>Output</td>
+      <td>Pass</td>
+      <td>32833</td>
+      <td>OffCampus_To_PoolCampus</td>
+      <td>PoolCampus</td>
+      <td>Raipur</td>
+      <td>Chhattisgarh</td>
+      <td>2020-05-22T00:00:00</td>
+      <td>2021-01-23T00:00:01</td>
+      <td>37018</td>
+      <td>Create_Update_Event</td>
+      <td>43125</td>
+      <td>Giani Zail Singh Punjab Technical University Campus - Bhatinda - Punjab,Ghousia College of Engineering-Bangalore,Gf institute of management and technology - Bareilly - Uttar Pradesh,GEC Raipur (GEC) - Raipur,Dronacharya College of Engineering - Gurgaon - Haryana,DTU Delhi - Delhi Technological University (formerly DCE), Delhi</td>
+      <td>NA</td>
+      <td>Open</td>
+    </tr>
+    <tr>
+      <td>Input</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>OffCampus_To_InCampus</td>
+      <td>InCampus</td>
+      <td>Noida</td>
+      <td>Uttar Pradesh</td>
+      <td>2020-05-22 00:00:00</td>
+      <td>2021-01-23 00:00:01</td>
+      <td>37018</td>
+      <td>Create_Update_Event</td>
+      <td>43125</td>
+      <td>AMITY SCHOOL OF INSURANCE, BANKING &amp; ACTUARIAL SCIENCE,&nbsp;&nbsp;NOIDA</td>
+      <td>NA</td>
+      <td>Open</td>
+    </tr>
+    <tr>
+      <td>Output</td>
+      <td>Pass</td>
+      <td>32835</td>
+      <td>OffCampus_To_InCampus</td>
+      <td>InCampus</td>
+      <td>Noida</td>
+      <td>Uttar Pradesh</td>
+      <td>2020-05-22T00:00:00</td>
+      <td>2021-01-23T00:00:01</td>
+      <td>37018</td>
+      <td>Create_Update_Event</td>
+      <td>43125</td>
+      <td>AMITY SCHOOL OF INSURANCE, BANKING &amp; ACTUARIAL SCIENCE,&nbsp;&nbsp;NOIDA</td>
+      <td>NA</td>
+      <td>Open</td>
+    </tr>
+    <tr>
+      <td>Input</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>PoolCampus_To_WalkIn</td>
+      <td>Walkin</td>
+      <td>Mohali</td>
+      <td>Punjab</td>
+      <td>2020-05-22 00:00:00</td>
+      <td>2021-01-23 00:00:01</td>
+      <td>37018</td>
+      <td>Create_Update_Event</td>
+      <td>43125</td>
+      <td>NA</td>
+      <td>CareerNet Consulting Pvt. Ltd.</td>
+      <td>Open</td>
+    </tr>
+    <tr>
+      <td>Output</td>
+      <td>Pass</td>
+      <td>32837</td>
+      <td>PoolCampus_To_WalkIn</td>
+      <td>Walkin</td>
+      <td>Mohali</td>
+      <td>Punjab</td>
+      <td>2020-05-22T00:00:00</td>
+      <td>2021-01-23T00:00:01</td>
+      <td>37018</td>
+      <td>Create_Update_Event</td>
+      <td>43125</td>
+      <td>NA</td>
+      <td>CareerNet Consulting Pvt. Ltd.</td>
+      <td>Open</td>
+    </tr>
+    <tr>
+      <td>Input</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>PoolCampus_To_OffCampus</td>
+      <td>OutCampus</td>
+      <td>Nellore</td>
+      <td>Andhra Pradesh</td>
+      <td>2020-05-22 00:00:00</td>
+      <td>2021-01-23 00:00:01</td>
+      <td>37018</td>
+      <td>Create_Update_Event</td>
+      <td>43125</td>
+      <td>Aurora Scientific Technological and Research Institute (ASTRI) - Hyderabad,Atria Institute of Technology-Bangalore,Audisankara college of engineering and technology (ACET) - Nellore</td>
+      <td>CareerNet Consulting Pvt. Ltd.</td>
+      <td>Open</td>
+    </tr>
+    <tr>
+      <td>Output</td>
+      <td>Pass</td>
+      <td>32839</td>
+      <td>PoolCampus_To_OffCampus</td>
+      <td>OutCampus</td>
+      <td>Nellore</td>
+      <td>Andhra Pradesh</td>
+      <td>2020-05-22T00:00:00</td>
+      <td>2021-01-23T00:00:01</td>
+      <td>37018</td>
+      <td>Create_Update_Event</td>
+      <td>43125</td>
+      <td>Aurora Scientific Technological and Research Institute (ASTRI) - Hyderabad,Atria Institute of Technology-Bangalore,Audisankara college of engineering and technology (ACET) - Nellore</td>
+      <td>CareerNet Consulting Pvt. Ltd.</td>
+      <td>Open</td>
+    </tr>
+    <tr>
+      <td>Input</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>PoolCampus_To_InCampus</td>
+      <td>InCampus</td>
+      <td>Mohali</td>
+      <td>Punjab</td>
+      <td>2020-05-22 00:00:00</td>
+      <td>2021-01-23 00:00:01</td>
+      <td>37018</td>
+      <td>Create_Update_Event</td>
+      <td>43125</td>
+      <td>Army Institute of Law (AIL) - Mohali</td>
+      <td>NA</td>
+      <td>Open</td>
+    </tr>
+    <tr>
+      <td>Output</td>
+      <td>Pass</td>
+      <td>32841</td>
+      <td>PoolCampus_To_InCampus</td>
+      <td>InCampus</td>
+      <td>Mohali</td>
+      <td>Punjab</td>
+      <td>2020-05-22T00:00:00</td>
+      <td>2021-01-23T00:00:01</td>
+      <td>37018</td>
+      <td>Create_Update_Event</td>
+      <td>43125</td>
+      <td>Army Institute of Law (AIL) - Mohali</td>
+      <td>NA</td>
+      <td>Open</td>
+    </tr>
+    <tr>
+      <td>Input</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>InCampus_To_WalkIn</td>
+      <td>Walkin</td>
+      <td>Noida</td>
+      <td>Uttar Pradesh</td>
+      <td>2020-05-22 00:00:00</td>
+      <td>2021-01-23 00:00:01</td>
+      <td>37018</td>
+      <td>Create_Update_Event</td>
+      <td>43125</td>
+      <td>NA</td>
+      <td>CareerNet Consulting Pvt. Ltd.</td>
+      <td>Open</td>
+    </tr>
+    <tr>
+      <td>Output</td>
+      <td>Pass</td>
+      <td>32843</td>
+      <td>InCampus_To_WalkIn</td>
+      <td>Walkin</td>
+      <td>Noida</td>
+      <td>Uttar Pradesh</td>
+      <td>2020-05-22T00:00:00</td>
+      <td>2021-01-23T00:00:01</td>
+      <td>37018</td>
+      <td>Create_Update_Event</td>
+      <td>43125</td>
+      <td>NA</td>
+      <td>CareerNet Consulting Pvt. Ltd.</td>
+      <td>Open</td>
+    </tr>
+    <tr>
+      <td>Input</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>InCampus_To_OffCampus</td>
+      <td>OutCampus</td>
+      <td>Kadapa</td>
+      <td>Andhra Pradesh</td>
+      <td>2020-05-22 00:00:00</td>
+      <td>2021-01-23 00:00:01</td>
+      <td>37018</td>
+      <td>Create_Update_Event</td>
+      <td>43125</td>
+      <td>Arya College of Engineering and Research Centre (ACERC) - Jaipur,Bharat Institute of Technology - Meerut - Uttar Pradesh,Audisankara college of engineering and technology (ACET) - Nellore</td>
+      <td>CareerNet Consulting Pvt. Ltd.</td>
+      <td>Open</td>
+    </tr>
+    <tr>
+      <td>Output</td>
+      <td>Pass</td>
+      <td>32845</td>
+      <td>InCampus_To_OffCampus</td>
+      <td>OutCampus</td>
+      <td>Kadapa</td>
+      <td>Andhra Pradesh</td>
+      <td>2020-05-22T00:00:00</td>
+      <td>2021-01-23T00:00:01</td>
+      <td>37018</td>
+      <td>Create_Update_Event</td>
+      <td>43125</td>
+      <td>Arya College of Engineering and Research Centre (ACERC) - Jaipur,Bharat Institute of Technology - Meerut - Uttar Pradesh,Audisankara college of engineering and technology (ACET) - Nellore</td>
+      <td>CareerNet Consulting Pvt. Ltd.</td>
+      <td>Open</td>
+    </tr>
+    <tr>
+      <td>Input</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>InCampus_To_PoolCampus</td>
+      <td>PoolCampus</td>
+      <td>Raipur</td>
+      <td>Chhattisgarh</td>
+      <td>2020-05-22 00:00:00</td>
+      <td>2021-01-23 00:00:01</td>
+      <td>37018</td>
+      <td>Create_Update_Event</td>
+      <td>43125</td>
+      <td>GEC Raipur (GEC) - Raipur,DTU Delhi - Delhi Technological University (formerly DCE), Delhi,Ghousia College of Engineering-Bangalore,Dronacharya College of Engineering - Gurgaon - Haryana,Gf institute of management and technology - Bareilly - Uttar Pradesh,Giani Zail Singh Punjab Technical University Campus - Bhatinda - Punjab</td>
+      <td>NA</td>
+      <td>Open</td>
+    </tr>
+    <tr>
+      <td>Output</td>
+      <td>Pass</td>
+      <td>32847</td>
+      <td>InCampus_To_PoolCampus</td>
+      <td>PoolCampus</td>
+      <td>Raipur</td>
+      <td>Chhattisgarh</td>
+      <td>2020-05-22T00:00:00</td>
+      <td>2021-01-23T00:00:01</td>
+      <td>37018</td>
+      <td>Create_Update_Event</td>
+      <td>43125</td>
+      <td>GEC Raipur (GEC) - Raipur,DTU Delhi - Delhi Technological University (formerly DCE), Delhi,Ghousia College of Engineering-Bangalore,Dronacharya College of Engineering - Gurgaon - Haryana,Gf institute of management and technology - Bareilly - Uttar Pradesh,Giani Zail Singh Punjab Technical University Campus - Bhatinda - Punjab</td>
+      <td>NA</td>
+      <td>Open</td>
+    </tr>
+  </tbody>
+</table>
+        </div>
+    </div>
+    <script>
+        document.querySelectorAll('.preview-table tr').forEach((tr, rowIndex) => {
+            let statusCount = 0;
+            const cells = tr.querySelectorAll('td');
+            
+            cells.forEach(td => {
+                const text = td.innerText.trim().toUpperCase();
+                
+                // Highlight Pass/Fail
+                if (['PASS', 'SUCCESS', 'PASSED'].includes(text)) {
+                    td.classList.add('status-pass');
+                } else if (['FAIL', 'FAILURE', 'FAILED', 'ERROR'].includes(text)) {
+                    td.classList.add('status-fail');
+                } else if (text === 'NA') {
+                    td.classList.add('status-na');
+                }
+                
+                // Header detection keywords
+                if (['STATUS', 'IDENTITY', 'ID'].includes(text)) {
+                    statusCount++;
+                }
+            });
+            
+            // If row has multiple 'Status' labels, it's a sub-header
+            if (statusCount >= 2 && rowIndex > 0) {
+                tr.classList.add('sub-header');
+            }
+        });
+    </script>
+</body>
+</html>

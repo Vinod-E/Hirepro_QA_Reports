@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preview: API_Upload_Real_Attachment_claude.xlsx</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --primary: #4f46e5; --bg: #f8fafc; --text: #1e293b; --border: #e2e8f0; --success: #10b981; --danger: #ef4444; }
+        body { font-family: 'Outfit', sans-serif; background-color: var(--bg); color: var(--text); padding: 2rem; margin: 0; }
+        .container { max-width: 1400px; margin: 0 auto; background: white; padding: 2.5rem; border-radius: 1.5rem; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05); border: 1px solid var(--border); }
+        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 2px solid var(--bg); }
+        .title-area { display: flex; align-items: center; gap: 1rem; }
+        .title-area i { font-size: 2rem; color: var(--primary); }
+        h1 { font-size: 1.5rem; font-weight: 800; margin: 0; }
+        .actions { display: flex; gap: 1rem; }
+        .btn { text-decoration: none; padding: 0.6rem 1.25rem; border-radius: 10px; font-weight: 700; font-size: 0.85rem; display: flex; align-items: center; gap: 0.5rem; transition: all 0.2s; border: none; cursor: pointer; }
+        .btn-download { background: var(--primary); color: white; }
+        .btn-download:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3); }
+        .btn-back { background: #f1f5f9; color: var(--text); }
+        .btn-back:hover { background: #e2e8f0; }
+        .table-wrapper { overflow-x: auto; border-radius: 12px; border: 1px solid var(--border); background: white; }
+        .preview-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; border-spacing: 0; }
+        .preview-table td { padding: 0.85rem 1.15rem; border-bottom: 1px solid var(--border); border-right: 1px solid var(--border); white-space: nowrap; color: var(--text); }
+        .preview-table tr:hover { background: #f1f5f9 !important; }
+        
+        /* Header & Sub-header Styling */
+        .preview-table tr:first-child td,
+        .preview-table tr.sub-header td { 
+            background: #f1f5f9 !important; 
+            font-weight: 800 !important; 
+            color: #475569 !important; 
+            text-transform: uppercase; 
+            font-size: 0.75rem; 
+            letter-spacing: 0.025em;
+            border-bottom: 2px solid #cbd5e1 !important;
+        }
+        
+        .preview-table tr:nth-child(even) { background: #fafbfc; }
+        .preview-table tr:hover { background: #f1f5f9 !important; }
+        
+        /* Status Colors */
+        .status-pass { color: var(--success) !important; font-weight: 800; background: #ecfdf5 !important; }
+        .status-fail { color: var(--danger) !important; font-weight: 800; background: #fef2f2 !important; }
+        .status-na { color: #94a3b8; font-style: italic; opacity: 0.5; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="title-area">
+                <i class="fas fa-file-excel"></i>
+                <div>
+                    <h1>API_Upload_Real_Attachment_claude.xlsx</h1>
+                    <div style="font-size: 0.75rem; color: #64748b; font-weight: 600; margin-top: 0.2rem; text-transform: uppercase;">Spreadsheet Preview (All Rows)</div>
+                </div>
+            </div>
+            <div class="actions">
+                <button onclick="window.close()" class="btn btn-back"><i class="fas fa-times"></i> Close Tab</button>
+                <a href="API_Upload_Real_Attachment_claude.xlsx" download="API_Upload_Real_Attachment_claude.xlsx" class="btn btn-download"><i class="fas fa-download"></i> Download Excel</a>
+            </div>
+        </header>
+        <div class="table-wrapper">
+            <table border="1" class="dataframe preview-table">
+  <tbody>
+    <tr>
+      <td>TC ID</td>
+      <td>Group</td>
+      <td>Priority</td>
+      <td>Title / Description</td>
+      <td>Steps / Details</td>
+      <td>Expected Result</td>
+      <td>Pass Criteria</td>
+      <td>Status</td>
+      <td>Actual Result</td>
+    </tr>
+    <tr>
+      <td>TC-00-1</td>
+      <td>Setup</td>
+      <td>High</td>
+      <td>Create candidate 1</td>
+      <td>Create fresh candidate.</td>
+      <td>Success/Validation</td>
+      <td>Status OK / Code Match</td>
+      <td>PASS</td>
+      <td>candidateId=1549</td>
+    </tr>
+    <tr>
+      <td>TC-00-2</td>
+      <td>Setup</td>
+      <td>High</td>
+      <td>Create candidate 2</td>
+      <td>Create fresh candidate.</td>
+      <td>Success/Validation</td>
+      <td>Status OK / Code Match</td>
+      <td>PASS</td>
+      <td>candidateId=1553</td>
+    </tr>
+    <tr>
+      <td>TC-00-3</td>
+      <td>Setup</td>
+      <td>High</td>
+      <td>Tag candidates to event+job</td>
+      <td>Tag to event+job.</td>
+      <td>Success/Validation</td>
+      <td>Status OK / Code Match</td>
+      <td>PASS</td>
+      <td>2/2 tagged</td>
+    </tr>
+    <tr>
+      <td>TC-01</td>
+      <td>Happy Path - Upload</td>
+      <td>High</td>
+      <td>upload PDF via v4</td>
+      <td>Upload PDF → AV scan → get S3 URL. Expect isSafe=true.</td>
+      <td>Success/Validation</td>
+      <td>Status OK / Code Match</td>
+      <td>PASS</td>
+      <td>is_safe=True, url=obtained, error=None</td>
+    </tr>
+    <tr>
+      <td>TC-02</td>
+      <td>Happy Path - Upload</td>
+      <td>High</td>
+      <td>upload JPG via v4</td>
+      <td>Upload JPG → AV scan → get S3 URL. Expect isSafe=true.</td>
+      <td>Success/Validation</td>
+      <td>Status OK / Code Match</td>
+      <td>PASS</td>
+      <td>is_safe=True, url=obtained, error=None</td>
+    </tr>
+    <tr>
+      <td>TC-03</td>
+      <td>Happy Path - Upload</td>
+      <td>High</td>
+      <td>upload PNG via v4</td>
+      <td>Upload PNG → AV scan → get S3 URL. Expect isSafe=true.</td>
+      <td>Success/Validation</td>
+      <td>Status OK / Code Match</td>
+      <td>PASS</td>
+      <td>is_safe=True, url=obtained, error=None</td>
+    </tr>
+    <tr>
+      <td>TC-F01</td>
+      <td>Format Validation - Supported</td>
+      <td>High</td>
+      <td>upload GIF</td>
+      <td>GIF upload. Expect isSafe=true, S3 URL returned.</td>
+      <td>Success/Validation</td>
+      <td>Status OK / Code Match</td>
+      <td>PASS</td>
+      <td>is_safe=True, url=obtained, error=None</td>
+    </tr>
+    <tr>
+      <td>TC-F02</td>
+      <td>Format Validation - Supported</td>
+      <td>High</td>
+      <td>upload TXT</td>
+      <td>TXT upload. Expect isSafe=true, S3 URL returned.</td>
+      <td>Success/Validation</td>
+      <td>Status OK / Code Match</td>
+      <td>PASS</td>
+      <td>is_safe=True, url=obtained, error=None</td>
+    </tr>
+    <tr>
+      <td>TC-F03</td>
+      <td>Format Validation - Supported</td>
+      <td>High</td>
+      <td>upload JSON</td>
+      <td>JSON upload. Expect isSafe=true, S3 URL returned.</td>
+      <td>Success/Validation</td>
+      <td>Status OK / Code Match</td>
+      <td>PASS</td>
+      <td>is_safe=True, url=obtained, error=None</td>
+    </tr>
+    <tr>
+      <td>TC-F04</td>
+      <td>Format Validation - Supported</td>
+      <td>High</td>
+      <td>upload CSV</td>
+      <td>CSV upload. Expect isSafe=true, S3 URL returned.</td>
+      <td>Success/Validation</td>
+      <td>Status OK / Code Match</td>
+      <td>FAIL</td>
+      <td>is_safe=False, url=NONE, error=No contextId returned (file rejected silently)</td>
+    </tr>
+    <tr>
+      <td>TC-F05</td>
+      <td>Format Validation - Rejected</td>
+      <td>High</td>
+      <td>upload EXE rejected</td>
+      <td>EXE with extensions=pdf. Expect no contextId (silently rejected).</td>
+      <td>Success/Validation</td>
+      <td>Status OK / Code Match</td>
+      <td>PASS</td>
+      <td>status=OK, contextId=NONE, error=</td>
+    </tr>
+    <tr>
+      <td>TC-F06</td>
+      <td>Format Validation - Rejected</td>
+      <td>High</td>
+      <td>upload .sh rejected</td>
+      <td>Shell script with extensions=pdf. Expect no contextId.</td>
+      <td>Success/Validation</td>
+      <td>Status OK / Code Match</td>
+      <td>PASS</td>
+      <td>status=OK, contextId=NONE</td>
+    </tr>
+    <tr>
+      <td>TC-F07</td>
+      <td>Format Validation - Rejected</td>
+      <td>High</td>
+      <td>upload .php rejected</td>
+      <td>PHP script with extensions=pdf. Expect no contextId.</td>
+      <td>Success/Validation</td>
+      <td>Status OK / Code Match</td>
+      <td>PASS</td>
+      <td>status=OK, contextId=NONE</td>
+    </tr>
+    <tr>
+      <td>TC-F08</td>
+      <td>Format Validation - Accepted</td>
+      <td>High</td>
+      <td>upload .html accepted by v4</td>
+      <td>HTML upload. v4 accepts all matching extensions, AV scan runs.</td>
+      <td>Success/Validation</td>
+      <td>Status OK / Code Match</td>
+      <td>PASS</td>
+      <td>is_safe=True, url=obtained, error=None</td>
+    </tr>
+    <tr>
+      <td>TC-F09</td>
+      <td>Format Validation - Rejected</td>
+      <td>High</td>
+      <td>upload empty file rejected</td>
+      <td>0-byte file. Expect no contextId (nothing to scan).</td>
+      <td>Success/Validation</td>
+      <td>Status OK / Code Match</td>
+      <td>PASS</td>
+      <td>status=OK, contextId=NONE</td>
+    </tr>
+    <tr>
+      <td>TC-F10</td>
+      <td>Format Validation - Rejected</td>
+      <td>High</td>
+      <td>upload no-extension rejected</td>
+      <td>No file extension. Expect no contextId.</td>
+      <td>Success/Validation</td>
+      <td>Status OK / Code Match</td>
+      <td>PASS</td>
+      <td>status=OK, contextId=NONE</td>
+    </tr>
+    <tr>
+      <td>TC-F11</td>
+      <td>Format Validation - Mismatch</td>
+      <td>High</td>
+      <td>upload ext mismatch behavior</td>
+      <td>JPG file with extensions=pdf. v4 returns OK regardless; file may or may not process.</td>
+      <td>Success/Validation</td>
+      <td>Status OK / Code Match</td>
+      <td>PASS</td>
+      <td>status=OK, contextId=obtained</td>
+    </tr>
+    <tr>
+      <td>TC-F12</td>
+      <td>Format Validation - Size</td>
+      <td>High</td>
+      <td>upload oversized rejected</td>
+      <td>5MB file with 4MB limit. Expect rejection or no contextId.</td>
+      <td>Success/Validation</td>
+      <td>Status OK / Code Match</td>
+      <td>PASS</td>
+      <td>status=OK, contextId=NONE, error=</td>
+    </tr>
+    <tr>
+      <td>TC-F13</td>
+      <td>Format Validation - Size</td>
+      <td>High</td>
+      <td>upload within size limit</td>
+      <td>100KB file under 4MB limit. Expect isSafe=true.</td>
+      <td>Success/Validation</td>
+      <td>Status OK / Code Match</td>
+      <td>PASS</td>
+      <td>is_safe=True, url=obtained, error=None</td>
+    </tr>
+    <tr>
+      <td>TC-04</td>
+      <td>Happy Path - Attachment CRUD</td>
+      <td>High</td>
+      <td>create attachment (PDF)</td>
+      <td>Create attachment with real S3 URL. Expect OK + AttachmentId.</td>
+      <td>Success/Validation</td>
+      <td>Status OK / Code Match</td>
+      <td>PASS</td>
+      <td>status=OK, code=None, AttachmentId=383</td>
+    </tr>
+    <tr>
+      <td>TC-05</td>
+      <td>Happy Path - Attachment CRUD</td>
+      <td>High</td>
+      <td>create attachment (JPG)</td>
+      <td>Create attachment with JPG URL + LabelOther. Expect OK + AttachmentId.</td>
+      <td>Success/Validation</td>
+      <td>Status OK / Code Match</td>
+      <td>PASS</td>
+      <td>status=OK, AttachmentId=385</td>
+    </tr>
+    <tr>
+      <td>TC-06</td>
+      <td>Happy Path - Attachment CRUD</td>
+      <td>High</td>
+      <td>get attachments for candidate</td>
+      <td>Retrieve all attachments. Count must match created count.</td>
+      <td>Success/Validation</td>
+      <td>Status OK / Code Match</td>
+      <td>PASS</td>
+      <td>status=OK, status_code=200, count=2, expected&gt;=2</td>
+    </tr>
+    <tr>
+      <td>TC-07</td>
+      <td>Happy Path - Attachment CRUD</td>
+      <td>High</td>
+      <td>delete attachments</td>
+      <td>Soft-delete all created attachments. Expect OK.</td>
+      <td>Success/Validation</td>
+      <td>Status OK / Code Match</td>
+      <td>PASS</td>
+      <td>status=OK, deleted=[383, 385]</td>
+    </tr>
+    <tr>
+      <td>TC-08</td>
+      <td>Happy Path - Attachment CRUD</td>
+      <td>High</td>
+      <td>verify attachments deleted</td>
+      <td>After deletion, count must be 0.</td>
+      <td>Success/Validation</td>
+      <td>Status OK / Code Match</td>
+      <td>PASS</td>
+      <td>status=OK, remaining_count=0</td>
+    </tr>
+    <tr>
+      <td>TC-M01</td>
+      <td>Microsite Upload</td>
+      <td>High</td>
+      <td>microsite upload PDF</td>
+      <td>Upload PDF via microsite with C-Token. Expect OK + S3 fileUrl.</td>
+      <td>Success/Validation</td>
+      <td>Status OK / Code Match</td>
+      <td>PASS</td>
+      <td>status=OK, fileUrl=obtained</td>
+    </tr>
+    <tr>
+      <td>TC-M02</td>
+      <td>Microsite Upload</td>
+      <td>High</td>
+      <td>microsite upload JPG</td>
+      <td>Upload JPG via microsite. Expect OK + S3 fileUrl.</td>
+      <td>Success/Validation</td>
+      <td>Status OK / Code Match</td>
+      <td>PASS</td>
+      <td>status=OK, fileUrl=obtained</td>
+    </tr>
+    <tr>
+      <td>TC-M03</td>
+      <td>Microsite Upload</td>
+      <td>High</td>
+      <td>microsite upload wrong ext</td>
+      <td>EXE with extensions=.pdf. Expect KO, errorCode=701.</td>
+      <td>Success/Validation</td>
+      <td>Status OK / Code Match</td>
+      <td>PASS</td>
+      <td>status=KO, errorCode=701, message=DisAllowed fileExtension of file hack.exe</td>
+    </tr>
+    <tr>
+      <td>TC-P01</td>
+      <td>Persistent Save + File Ops</td>
+      <td>High</td>
+      <td>persistent save (v2)</td>
+      <td>Convert temp S3 URL to permanent via v2. Expect OK, statusCode=207, SuccessList.</td>
+      <td>Success/Validation</td>
+      <td>Status OK / Code Match</td>
+      <td>PASS</td>
+      <td>status=OK, statusCode=207, persistentUrl=obtained</td>
+    </tr>
+    <tr>
+      <td>TC-P02</td>
+      <td>Persistent Save + File Ops</td>
+      <td>High</td>
+      <td>get file URL by IDs</td>
+      <td>Retrieve file URL by ID. Expect OK, statusCode=207, successList.</td>
+      <td>Success/Validation</td>
+      <td>Status OK / Code Match</td>
+      <td>PASS</td>
+      <td>status=OK, statusCode=207, successCount=1</td>
+    </tr>
+    <tr>
+      <td>TC-P03</td>
+      <td>Persistent Save + File Ops</td>
+      <td>High</td>
+      <td>scan file on-demand</td>
+      <td>On-demand scan of uploaded PDF. Expect OK, isSafe=true.</td>
+      <td>Success/Validation</td>
+      <td>Status OK / Code Match</td>
+      <td>PASS</td>
+      <td>status=OK, isSafe=True</td>
+    </tr>
+    <tr>
+      <td>TC-P04</td>
+      <td>Persistent Save + File Ops</td>
+      <td>High</td>
+      <td>get candidate docs</td>
+      <td>Get candidate docs by type. Expect OK (may have empty docs for fresh candidate).</td>
+      <td>Success/Validation</td>
+      <td>Status OK / Code Match</td>
+      <td>PASS</td>
+      <td>status=OK</td>
+    </tr>
+    <tr>
+      <td>TC-P05</td>
+      <td>Persistent Save + File Ops</td>
+      <td>High</td>
+      <td>delete persistent file</td>
+      <td>Delete file by ref ID. Expect OK, statusCode=200.</td>
+      <td>Success/Validation</td>
+      <td>Status OK / Code Match</td>
+      <td>PASS</td>
+      <td>status=OK, statusCode=200</td>
+    </tr>
+    <tr>
+      <td>TC-N01</td>
+      <td>Negative Tests</td>
+      <td>High</td>
+      <td>upload .exe rejected</td>
+      <td>Extension mismatch (exe vs pdf). Expect rejection.</td>
+      <td>Success/Validation</td>
+      <td>Status OK / Code Match</td>
+      <td>PASS</td>
+      <td>url=None, error=No contextId returned (file rejected silently)</td>
+    </tr>
+    <tr>
+      <td>TC-N02</td>
+      <td>Negative Tests</td>
+      <td>High</td>
+      <td>upload oversized rejected</td>
+      <td>File exceeds 4MB max_size. Expect rejection.</td>
+      <td>Success/Validation</td>
+      <td>Status OK / Code Match</td>
+      <td>PASS</td>
+      <td>url=None, error=No contextId returned (file rejected silently)</td>
+    </tr>
+    <tr>
+      <td>TC-N03</td>
+      <td>Negative Tests</td>
+      <td>High</td>
+      <td>create attachment - no Entity</td>
+      <td>Missing Entity. Expect KO — either errorCode=422 or SSRF violation on fake Url.</td>
+      <td>Success/Validation</td>
+      <td>Status OK / Code Match</td>
+      <td>PASS</td>
+      <td>status=KO, errorCode=None, ssrf=True, message=Unauthorized</td>
+    </tr>
+    <tr>
+      <td>TC-N04</td>
+      <td>Negative Tests</td>
+      <td>High</td>
+      <td>create attachment - no Url</td>
+      <td>Missing Url. Expect KO, errorCode=422.</td>
+      <td>Success/Validation</td>
+      <td>Status OK / Code Match</td>
+      <td>PASS</td>
+      <td>status=KO, errorCode=422, message=Missing mandatory JSON Params(Url,)</td>
+    </tr>
+    <tr>
+      <td>TC-N05</td>
+      <td>Negative Tests</td>
+      <td>High</td>
+      <td>delete non-existent attachment</td>
+      <td>Non-existent ID. Expect OK (no-op) or KO.</td>
+      <td>Success/Validation</td>
+      <td>Status OK / Code Match</td>
+      <td>PASS</td>
+      <td>status=OK, message=</td>
+    </tr>
+    <tr>
+      <td>TC-N06</td>
+      <td>Negative Tests</td>
+      <td>High</td>
+      <td>get attachments - no Entity</td>
+      <td>Missing Entity. Expect KO, errorCode=422.</td>
+      <td>Success/Validation</td>
+      <td>Status OK / Code Match</td>
+      <td>PASS</td>
+      <td>status=KO, errorCode=422, message=Missing mandatory JSON Params(Entity,)</td>
+    </tr>
+    <tr>
+      <td>TC-E01</td>
+      <td>Edge Cases</td>
+      <td>High</td>
+      <td>attachment on second candidate</td>
+      <td>Same file URL on different candidate. Expect OK.</td>
+      <td>Success/Validation</td>
+      <td>Status OK / Code Match</td>
+      <td>PASS</td>
+      <td>status=OK, AttachmentId=387</td>
+    </tr>
+    <tr>
+      <td>TC-E02</td>
+      <td>Edge Cases</td>
+      <td>High</td>
+      <td>duplicate attachment</td>
+      <td>Same file on same candidate twice. Expect OK (new record) or KO.</td>
+      <td>Success/Validation</td>
+      <td>Status OK / Code Match</td>
+      <td>PASS</td>
+      <td>1st=OK/id=389, 2nd=OK/id=391</td>
+    </tr>
+    <tr>
+      <td>TC-E03</td>
+      <td>Edge Cases</td>
+      <td>High</td>
+      <td>get attachments with paging</td>
+      <td>Paging with MaxResults=1. Expect OK + totalItemCount.</td>
+      <td>Success/Validation</td>
+      <td>Status OK / Code Match</td>
+      <td>PASS</td>
+      <td>status=OK, totalItemCount=2</td>
+    </tr>
+    <tr>
+      <td>TC-E04</td>
+      <td>Edge Cases</td>
+      <td>High</td>
+      <td>attachment with labels</td>
+      <td>Attachment with LabelOther. Expect OK.</td>
+      <td>Success/Validation</td>
+      <td>Status OK / Code Match</td>
+      <td>PASS</td>
+      <td>status=OK, AttachmentId=393</td>
+    </tr>
+    <tr>
+      <td>TC-S01</td>
+      <td>Security Tests</td>
+      <td>High</td>
+      <td>upload without auth</td>
+      <td>Expect KO. Upload endpoint returns KO without processing.</td>
+      <td>Success/Validation</td>
+      <td>Status OK / Code Match</td>
+      <td>PASS</td>
+      <td>status=KO, errorCode=None, error=</td>
+    </tr>
+    <tr>
+      <td>TC-S02</td>
+      <td>Security Tests</td>
+      <td>High</td>
+      <td>create attachment without auth</td>
+      <td>Expect KO, errorCode=400, Missing X-AUTH-TOKEN.</td>
+      <td>Success/Validation</td>
+      <td>Status OK / Code Match</td>
+      <td>PASS</td>
+      <td>status=KO, errorCode=400, error=Missing X-AUTH-TOKEN</td>
+    </tr>
+    <tr>
+      <td>TC-S03</td>
+      <td>Security Tests</td>
+      <td>High</td>
+      <td>SQL injection in EntityId</td>
+      <td>String EntityId must not execute SQL. Expect KO or empty result.</td>
+      <td>Success/Validation</td>
+      <td>Status OK / Code Match</td>
+      <td>PASS</td>
+      <td>status=KO, injection_leaked=False</td>
+    </tr>
+    <tr>
+      <td>TC-S04</td>
+      <td>Security Tests</td>
+      <td>High</td>
+      <td>IDOR cross-candidate</td>
+      <td>CandidateId=1 (other tenant). Expect empty data.</td>
+      <td>Success/Validation</td>
+      <td>Status OK / Code Match</td>
+      <td>PASS</td>
+      <td>status=OK, data_count=0</td>
+    </tr>
+    <tr>
+      <td>TC-CL</td>
+      <td>Cleanup</td>
+      <td>High</td>
+      <td>cleanup attachments</td>
+      <td>Soft-delete all remaining test attachments.</td>
+      <td>Success/Validation</td>
+      <td>Status OK / Code Match</td>
+      <td>PASS</td>
+      <td>status=OK, deleted=[387, 389, 391, 393]</td>
+    </tr>
+  </tbody>
+</table>
+        </div>
+    </div>
+    <script>
+        document.querySelectorAll('.preview-table tr').forEach((tr, rowIndex) => {
+            let statusCount = 0;
+            const cells = tr.querySelectorAll('td');
+            
+            cells.forEach(td => {
+                const text = td.innerText.trim().toUpperCase();
+                
+                // Highlight Pass/Fail
+                if (['PASS', 'SUCCESS', 'PASSED'].includes(text)) {
+                    td.classList.add('status-pass');
+                } else if (['FAIL', 'FAILURE', 'FAILED', 'ERROR'].includes(text)) {
+                    td.classList.add('status-fail');
+                } else if (text === 'NA') {
+                    td.classList.add('status-na');
+                }
+                
+                // Header detection keywords
+                if (['STATUS', 'IDENTITY', 'ID'].includes(text)) {
+                    statusCount++;
+                }
+            });
+            
+            // If row has multiple 'Status' labels, it's a sub-header
+            if (statusCount >= 2 && rowIndex > 0) {
+                tr.classList.add('sub-header');
+            }
+        });
+    </script>
+</body>
+</html>

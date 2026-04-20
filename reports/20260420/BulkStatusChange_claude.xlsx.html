@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preview: BulkStatusChange_claude.xlsx</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --primary: #4f46e5; --bg: #f8fafc; --text: #1e293b; --border: #e2e8f0; --success: #10b981; --danger: #ef4444; }
+        body { font-family: 'Outfit', sans-serif; background-color: var(--bg); color: var(--text); padding: 2rem; margin: 0; }
+        .container { max-width: 1400px; margin: 0 auto; background: white; padding: 2.5rem; border-radius: 1.5rem; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05); border: 1px solid var(--border); }
+        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 2px solid var(--bg); }
+        .title-area { display: flex; align-items: center; gap: 1rem; }
+        .title-area i { font-size: 2rem; color: var(--primary); }
+        h1 { font-size: 1.5rem; font-weight: 800; margin: 0; }
+        .actions { display: flex; gap: 1rem; }
+        .btn { text-decoration: none; padding: 0.6rem 1.25rem; border-radius: 10px; font-weight: 700; font-size: 0.85rem; display: flex; align-items: center; gap: 0.5rem; transition: all 0.2s; border: none; cursor: pointer; }
+        .btn-download { background: var(--primary); color: white; }
+        .btn-download:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3); }
+        .btn-back { background: #f1f5f9; color: var(--text); }
+        .btn-back:hover { background: #e2e8f0; }
+        .table-wrapper { overflow-x: auto; border-radius: 12px; border: 1px solid var(--border); background: white; }
+        .preview-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; border-spacing: 0; }
+        .preview-table td { padding: 0.85rem 1.15rem; border-bottom: 1px solid var(--border); border-right: 1px solid var(--border); white-space: nowrap; color: var(--text); }
+        .preview-table tr:hover { background: #f1f5f9 !important; }
+        
+        /* Header & Sub-header Styling */
+        .preview-table tr:first-child td,
+        .preview-table tr.sub-header td { 
+            background: #f1f5f9 !important; 
+            font-weight: 800 !important; 
+            color: #475569 !important; 
+            text-transform: uppercase; 
+            font-size: 0.75rem; 
+            letter-spacing: 0.025em;
+            border-bottom: 2px solid #cbd5e1 !important;
+        }
+        
+        .preview-table tr:nth-child(even) { background: #fafbfc; }
+        .preview-table tr:hover { background: #f1f5f9 !important; }
+        
+        /* Status Colors */
+        .status-pass { color: var(--success) !important; font-weight: 800; background: #ecfdf5 !important; }
+        .status-fail { color: var(--danger) !important; font-weight: 800; background: #fef2f2 !important; }
+        .status-na { color: #94a3b8; font-style: italic; opacity: 0.5; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="title-area">
+                <i class="fas fa-file-excel"></i>
+                <div>
+                    <h1>BulkStatusChange_claude.xlsx</h1>
+                    <div style="font-size: 0.75rem; color: #64748b; font-weight: 600; margin-top: 0.2rem; text-transform: uppercase;">Spreadsheet Preview (All Rows)</div>
+                </div>
+            </div>
+            <div class="actions">
+                <button onclick="window.close()" class="btn btn-back"><i class="fas fa-times"></i> Close Tab</button>
+                <a href="BulkStatusChange_claude.xlsx" download="BulkStatusChange_claude.xlsx" class="btn btn-download"><i class="fas fa-download"></i> Download Excel</a>
+            </div>
+        </header>
+        <div class="table-wrapper">
+            <table border="1" class="dataframe preview-table">
+  <tbody>
+    <tr>
+      <td>TC ID</td>
+      <td>Group</td>
+      <td>Priority</td>
+      <td>Title / Description</td>
+      <td>Steps</td>
+      <td>Expected Result</td>
+      <td>Pass Criteria</td>
+      <td>Status</td>
+      <td>Actual Result</td>
+    </tr>
+    <tr>
+      <td>TC-01-1: Create candidate 1</td>
+      <td>Setup</td>
+      <td>Critical</td>
+      <td>Create candidate 1 for bulk status change test.</td>
+      <td>Call /py/rpo/create_candidate/ with unique email/USN for candidate 1.</td>
+      <td>Candidate 1 created successfully.</td>
+      <td>API returns status OK and a valid CandidateId.</td>
+      <td>PASS</td>
+      <td>candidateId=1631</td>
+    </tr>
+    <tr>
+      <td>TC-01-2: Create candidate 2</td>
+      <td>Setup</td>
+      <td>Critical</td>
+      <td>Create candidate 2 for bulk status change test.</td>
+      <td>Call /py/rpo/create_candidate/ with unique email/USN for candidate 2.</td>
+      <td>Candidate 2 created successfully.</td>
+      <td>API returns status OK and a valid CandidateId.</td>
+      <td>PASS</td>
+      <td>candidateId=1633</td>
+    </tr>
+    <tr>
+      <td>TC-01-3: Create candidate 3</td>
+      <td>Setup</td>
+      <td>Critical</td>
+      <td>Create candidate 3 for bulk status change test.</td>
+      <td>Call /py/rpo/create_candidate/ with unique email/USN for candidate 3.</td>
+      <td>Candidate 3 created successfully.</td>
+      <td>API returns status OK and a valid CandidateId.</td>
+      <td>PASS</td>
+      <td>candidateId=1635</td>
+    </tr>
+    <tr>
+      <td>TC-01-4: Tag candidates to event+job</td>
+      <td>Setup</td>
+      <td>Critical</td>
+      <td>Tag created candidates to event and job to create applicants.</td>
+      <td>Call /py/crpo/applicant/api/v1/tagCandidatesToEventJobRoleTests/ for all 3 candidates (Event 17, Job 21).</td>
+      <td>Applicants created for all candidates.</td>
+      <td>3 candidates successfully tagged.</td>
+      <td>PASS</td>
+      <td>3/3 tagged</td>
+    </tr>
+    <tr>
+      <td>TC-02: Sync status change</td>
+      <td>Happy Path</td>
+      <td>Critical</td>
+      <td>Verify synchronous bulk status change for 3 candidates.</td>
+      <td>Call bulkStatusChangeForCandidates with invokeSync=True for status 237.</td>
+      <td>All applicants move to the target status immediately.</td>
+      <td>status=OK, all candidate IDs in success list with 0 failures.</td>
+      <td>PASS</td>
+      <td>status=OK, success=3/3, failure=0</td>
+    </tr>
+    <tr>
+      <td>TC-03a: Async returns ContextId</td>
+      <td>Happy Path</td>
+      <td>High</td>
+      <td>Verify immediate response for async request.</td>
+      <td>Check for ContextId in the API response data.</td>
+      <td>ContextId is returned immediately for tracking.</td>
+      <td>ContextId string length &gt; 0.</td>
+      <td>PASS</td>
+      <td>ContextId=09c719ad-87f3-4257-8c56-2fe611a2dfc9</td>
+    </tr>
+    <tr>
+      <td>TC-03b: Async task completes</td>
+      <td>Happy Path</td>
+      <td>High</td>
+      <td>Verify the background task completes successfully.</td>
+      <td>Poll /py/crpo/api/v1/getStatusOfAsyncAPI with ContextId 09c719ad-87f3-4257-8c56-2fe611a2dfc9.</td>
+      <td>JobState reaches SUCCESS or OK.</td>
+      <td>JobState matches 'SUCCESS' or 'OK' within 60 seconds.</td>
+      <td>PASS</td>
+      <td>final state=SUCCESS</td>
+    </tr>
+    <tr>
+      <td>TC-04: Invalid candidateIds → No data</td>
+      <td>Negative Tests</td>
+      <td>Medium</td>
+      <td>Verify API behavior with non-existent candidate IDs.</td>
+      <td>Call bulk status change with IDs [99999998, 99999999].</td>
+      <td>API returns KO with 'No data.' message.</td>
+      <td>status=KO and 'No data' in message.</td>
+      <td>PASS</td>
+      <td>status=KO, message='No data.'</td>
+    </tr>
+    <tr>
+      <td>TC-05: Missing jobId → validation error</td>
+      <td>Negative Tests</td>
+      <td>Medium</td>
+      <td>Verify mandatory field validation for jobId.</td>
+      <td>Call API without providing the 'jobId' field.</td>
+      <td>API rejects the request with a validation error.</td>
+      <td>status=KO and message mentions missing job/mandatory field.</td>
+      <td>PASS</td>
+      <td>status=KO, message='Please specify job.'</td>
+    </tr>
+    <tr>
+      <td>TC-06: Empty candidateIds → graceful reject</td>
+      <td>Edge Cases</td>
+      <td>Low</td>
+      <td>Verify behavior with empty candidate list.</td>
+      <td>Call API with 'candidateIds': [].</td>
+      <td>API handles empty list gracefully (no 500).</td>
+      <td>status=KO or OK, and no server error in response.</td>
+      <td>PASS</td>
+      <td>status=KO, message='Please specify candidate(s).'</td>
+    </tr>
+    <tr>
+      <td>TC-07: Missing eventId → validation error</td>
+      <td>Edge Cases</td>
+      <td>Medium</td>
+      <td>Verify mandatory field validation for eventId.</td>
+      <td>Call API without providing the 'eventId' field.</td>
+      <td>API rejects the request with a validation error.</td>
+      <td>status=KO and message mentions missing event/mandatory field.</td>
+      <td>PASS</td>
+      <td>status=KO, message='Please specify event.'</td>
+    </tr>
+    <tr>
+      <td>TC-08: Missing toStatusId → validation error</td>
+      <td>Edge Cases</td>
+      <td>Medium</td>
+      <td>Verify mandatory field validation for toStatusId.</td>
+      <td>Call API without providing the 'toStatusId' field.</td>
+      <td>API rejects the request with a validation error.</td>
+      <td>status=KO and no silent default/crash occurs.</td>
+      <td>PASS</td>
+      <td>status=KO, message='Please specify job.'</td>
+    </tr>
+    <tr>
+      <td>TC-09: Invalid toStatusId=99999</td>
+      <td>Edge Cases</td>
+      <td>Medium</td>
+      <td>Verify behavior with non-existent status ID.</td>
+      <td>Call bulk status change with toStatusId=99999.</td>
+      <td>API rejects invalid status ID gracefully.</td>
+      <td>status=KO OR zero successes returned.</td>
+      <td>PASS</td>
+      <td>status=None, successes=0, message="{'statusCode': 1000, 'message': 'Resume status not exists'}"</td>
+    </tr>
+    <tr>
+      <td>TC-10: Negative/zero candidateIds → KO</td>
+      <td>Edge Cases</td>
+      <td>Low</td>
+      <td>Verify behavior with negative or zero IDs.</td>
+      <td>Call API with candidateIds=[0, -1, -99].</td>
+      <td>API rejects invalid integer IDs.</td>
+      <td>status=KO and no 500 error.</td>
+      <td>PASS</td>
+      <td>status=KO, message='No data.'</td>
+    </tr>
+    <tr>
+      <td>TC-11: String candidateIds → no 500</td>
+      <td>Edge Cases</td>
+      <td>Low</td>
+      <td>Verify behavior with non-integer candidate IDs.</td>
+      <td>Call API with candidateIds=['abc', 'xyz'].</td>
+      <td>API rejects string-typed IDs gracefully.</td>
+      <td>status is KO or OK without server error.</td>
+      <td>PASS</td>
+      <td>status=KO, message='Please specify job.'</td>
+    </tr>
+    <tr>
+      <td>TC-12: Duplicate candidateIds deduplicated</td>
+      <td>Edge Cases</td>
+      <td>Low</td>
+      <td>Verify API deduplicates candidateIds before processing.</td>
+      <td>Send list with duplicate IDs of the same candidate.</td>
+      <td>API processes each unique candidate only once.</td>
+      <td>success count &lt;= unique candidate count.</td>
+      <td>PASS</td>
+      <td>status=OK, sent=4 (unique=2), successes=2</td>
+    </tr>
+    <tr>
+      <td>TC-13: Idempotency — same status twice</td>
+      <td>Edge Cases</td>
+      <td>Low</td>
+      <td>Verify status change is idempotent for same status.</td>
+      <td>Call bulk status change twice for the same set of candidates to the same target status.</td>
+      <td>Second call succeeds or remains neutral (no crash).</td>
+      <td>status is OK or KO (graceful) on second call.</td>
+      <td>PASS</td>
+      <td>1st=OK, 2nd=OK</td>
+    </tr>
+    <tr>
+      <td>TC-14: invokeSync='maybe' → no 500</td>
+      <td>Edge Cases</td>
+      <td>Low</td>
+      <td>Verify boolean coercion for invokeSync field.</td>
+      <td>Call API with invokeSync='maybe' (string instead of bool).</td>
+      <td>API handles unexpected type/value without 500.</td>
+      <td>status is OK or KO and no server error occurs.</td>
+      <td>PASS</td>
+      <td>status=KO, message='Please specify job.'</td>
+    </tr>
+    <tr>
+      <td>TC-S1: No auth token → 401/403</td>
+      <td>Security Tests</td>
+      <td>Critical</td>
+      <td>Verify that unauthenticated requests are rejected.</td>
+      <td>Call bulk status change API without the X-Auth-Token header.</td>
+      <td>API returns 401 Unauthorized or 403 Forbidden.</td>
+      <td>HTTP status code is 401 or 403.</td>
+      <td>PASS</td>
+      <td>HTTP 200, status=KO, message='Please specify job.'</td>
+    </tr>
+    <tr>
+      <td>TC-S2: Forged token → 401/403</td>
+      <td>Security Tests</td>
+      <td>Critical</td>
+      <td>Verify that forged/invalid tokens are rejected.</td>
+      <td>Call API with a manually crafted/fake X-Auth-Token.</td>
+      <td>API rejects the request as unauthorized.</td>
+      <td>HTTP status code is 401 or 403.</td>
+      <td>PASS</td>
+      <td>HTTP 200, status=KO, message=''</td>
+    </tr>
+    <tr>
+      <td>TC-S3: SQL injection in candidateIds</td>
+      <td>Security Tests</td>
+      <td>High</td>
+      <td>Verify immunity to SQL injection in candidateIds.</td>
+      <td>Pass common SQL injection strings as candidate IDs.</td>
+      <td>Server sanitizes input; no database error or data leak.</td>
+      <td>HTTP 500 is not returned and success list is empty.</td>
+      <td>PASS</td>
+      <td>HTTP 200, status=KO, successes=0</td>
+    </tr>
+    <tr>
+      <td>TC-S4: SQL injection in eventId</td>
+      <td>Security Tests</td>
+      <td>High</td>
+      <td>Verify immunity to SQL injection in eventId.</td>
+      <td>Pass SQL injection payload in eventId field.</td>
+      <td>API does not execute payload; no 500 or data exposure.</td>
+      <td>HTTP 500 is not returned and success list is empty.</td>
+      <td>PASS</td>
+      <td>HTTP 200, status=KO, successes=0</td>
+    </tr>
+    <tr>
+      <td>TC-S5: XSS in eventId not reflected</td>
+      <td>Security Tests</td>
+      <td>Medium</td>
+      <td>Verify immunity to XSS reflections in error messages.</td>
+      <td>Pass a &lt;script&gt; tag in the eventId field.</td>
+      <td>Response does not contain the unescaped script tag.</td>
+      <td>JSON response does not contain the raw '&lt;script&gt;' string.</td>
+      <td>PASS</td>
+      <td>HTTP 200, xss_reflected=False</td>
+    </tr>
+    <tr>
+      <td>TC-S6: Oversized list (1000 IDs) → no crash</td>
+      <td>Security Tests</td>
+      <td>Medium</td>
+      <td>Verify server stability with large payload.</td>
+      <td>Call bulk status change with 1000 candidate IDs.</td>
+      <td>Server processes the request within reasonable time limits.</td>
+      <td>Elapsed time &lt; 30s and no HTTP 500.</td>
+      <td>PASS</td>
+      <td>HTTP 200, status=KO, elapsed=0.2s</td>
+    </tr>
+    <tr>
+      <td>TC-S7: IDOR wrong eventId → no data returned</td>
+      <td>Security Tests</td>
+      <td>High</td>
+      <td>Verify cross-event IDOR protection.</td>
+      <td>Pass candidate IDs belonging to event A with eventId of event B.</td>
+      <td>API does not allow status change across different events.</td>
+      <td>No candidates are successfully processed (success list empty).</td>
+      <td>PASS</td>
+      <td>status=KO, successes=0, message='No data.'</td>
+    </tr>
+  </tbody>
+</table>
+        </div>
+    </div>
+    <script>
+        document.querySelectorAll('.preview-table tr').forEach((tr, rowIndex) => {
+            let statusCount = 0;
+            const cells = tr.querySelectorAll('td');
+            
+            cells.forEach(td => {
+                const text = td.innerText.trim().toUpperCase();
+                
+                // Highlight Pass/Fail
+                if (['PASS', 'SUCCESS', 'PASSED'].includes(text)) {
+                    td.classList.add('status-pass');
+                } else if (['FAIL', 'FAILURE', 'FAILED', 'ERROR'].includes(text)) {
+                    td.classList.add('status-fail');
+                } else if (text === 'NA') {
+                    td.classList.add('status-na');
+                }
+                
+                // Header detection keywords
+                if (['STATUS', 'IDENTITY', 'ID'].includes(text)) {
+                    statusCount++;
+                }
+            });
+            
+            // If row has multiple 'Status' labels, it's a sub-header
+            if (statusCount >= 2 && rowIndex > 0) {
+                tr.classList.add('sub-header');
+            }
+        });
+    </script>
+</body>
+</html>
