@@ -11,6 +11,7 @@ from openpyxl import load_workbook
 import pandas as pd
 
 from Config import configfile
+from DashboardReport.utils import sanitize_content
 
 # Config from central source
 REPORTS_DIR = Path(configfile.REPORT_DIR)
@@ -19,42 +20,7 @@ MASTER_LIST_FILE = Path(configfile.MASTER_REPORTS_LIST)
 TARGET_EXECUTION_GOAL = configfile.TARGET_EXECUTION_GOAL
 EXPECTED_REPORT_COUNT = configfile.EXPECTED_REPORT_COUNT
 
-def sanitize_content(text):
-    """Sanitize sensitive information from report content."""
-    if not isinstance(text, str): return text
-    
-    # Mask amsin domains and subdomains
-    text = re.sub(r'https?://[a-zA-Z0-9.-]*amsin\.hirepro\.in[^\s"\'<>]*', 'https://[MASKED_INTERNAL_URL]', text, flags=re.IGNORECASE)
-    
-    # Mask hirepro internal links that might look like /test-all-hirepro-files/
-    text = re.sub(r'/(?:test-all-hirepro-files|zwayam|hirepro-reports)/[a-zA-Z0-9._/-]*', '/[MASKED_PATH]/', text, flags=re.IGNORECASE)
-    
-    # Mask AWS Access Keys
-    text = re.sub(r'AKIA[A-Z0-9]{16}', 'AKIA[MASKED_AWS_KEY]', text)
-    
-    # Mask potential tokens in URLs (Base64 patterns)
-    text = re.sub(r'/(?:home|token|interview)/[a-zA-Z0-9+/=]{30,}', '/[MASKED_TOKEN]/', text)
-    
-    # Mask S3 signed URL components (Signature, Expires, AWSAccessKeyId, etc.)
-    text = re.sub(r'(Signature|Expires|AWSAccessKeyId|X-Amz-Signature|X-Amz-Algorithm|X-Amz-Credential|X-Amz-Date|X-Amz-SignedHeaders|X-Amz-Expires)=[^&\s"\'<>]+', r'\1=[MASKED]', text, flags=re.IGNORECASE)
-    
-    # Mask internal emails
-    text = re.sub(r'[a-zA-Z0-9._%+-]+@hirepro\.in', '[USER]@hirepro.in', text, flags=re.IGNORECASE)
-    
-    # Mask other emails (PII)
-    text = re.sub(r'[a-zA-Z0-9._%+-]+@(?!hirepro\.in)[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}', '[MASKED_EMAIL]', text, flags=re.IGNORECASE)
-    
-    # Mask Indian phone numbers
-    text = re.sub(r'\b(?:(?:\+91|0)?[6-9]\d{9})\b', '[MASKED_PHONE]', text)
-    
-    # Mask PanNo and AadhaarNo patterns
-    text = re.sub(r'\b[A-Z]{5}\d{4}[A-Z]\b', '[MASKED_PAN]', text)
-    text = re.sub(r'\b\d{12}\b', '[MASKED_AADHAAR]', text)
-    
-    # Specific amsin without full URL if in a table cell or similar
-    text = re.sub(r'\bamsin\b', '[MASKED_REF]', text, flags=re.IGNORECASE)
-    
-    return text
+
 
 def get_report_folders(base_dir, limit=5):
     """Find the last 'limit' date folders (YYYYMMDD) in reverse chronological order."""
@@ -687,6 +653,7 @@ def generate_landing_page():
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="https://lh3.googleusercontent.com/proxy/98it6d0vGqaPttxE8ImrHhVvaz5XpPeZ7qiXHcnm9PiPrwTBGvZcWp2vdQVdgZt5b7Vfu7kXnkh6mrKs_q_JIE5GGlw8uRAOeSvJOEtgNXWrXgOoGjGFCnKCA1gITLLZKNxv1mV6szDHEnNLK7RbJnfk-eFMZPlGXRpU2iKeBGr2Gm3-i_Lnv-IVisLlJwRR55nNMx9HndfYnmLOlraDHGgp9Rc7V4pNO1N8S1ZugYR5SUVMi8K_WGFwvYWsEh2cEnW6x-Zw-ncSM27yX509d6pmuUvfohenPAxHMNORCeWO">
     <title>QAInsights | Report Selection</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -864,84 +831,6 @@ def generate_landing_page():
     (Path(__file__).parent.parent / "dashboard.html").write_text(html_content, encoding='utf-8')
     print(f"Landing page generated at {Path(__file__).parent.parent / 'dashboard.html'}")
 
-def generate_performance_page():
-    html_content = f"""<!DOCTYPE html>
-<html lang="en" class="dark">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Performance Report | In-Progress</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <script>
-        tailwind.config = {{
-            darkMode: 'class',
-            theme: {{
-                extend: {{
-                    colors: {{
-                        darkBg: '#0f172a',
-                        lightBg: '#f1f5f9',
-                    }}
-                }}
-            }}
-        }}
-    </script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
-        body {{ font-family: 'Outfit', sans-serif; }}
-        .spin-slow {{ animation: spin 3s linear infinite; }}
-        @keyframes spin {{ from {{ transform: rotate(0deg); }} to {{ transform: rotate(360deg); }} }}
-    </style>
-</head>
-<body class="bg-lightBg dark:bg-darkBg text-slate-900 dark:text-slate-100 min-h-screen flex flex-col items-center justify-center p-6 transition-colors duration-500">
-    
-    <div class="fixed top-6 left-6 z-50">
-        <a href="dashboard.html" class="flex items-center gap-2 p-3 rounded-xl bg-white dark:bg-slate-800 shadow-xl border border-slate-200 dark:border-slate-700 hover:scale-105 active:scale-95 transition-all">
-            <i data-lucide="home" class="w-5 h-5 text-blue-500"></i>
-            <span class="text-xs font-bold uppercase tracking-widest pr-2">Home</span>
-        </a>
-    </div>
-
-    <div class="max-w-md w-full text-center space-y-8">
-        <div class="relative inline-block">
-            <div class="w-32 h-32 rounded-full border-4 border-orange-500/20 border-t-orange-500 animate-spin flex items-center justify-center">
-                <i data-lucide="timer" class="w-12 h-12 text-orange-500"></i>
-            </div>
-            <div class="absolute -bottom-2 -right-2 bg-blue-500 text-white p-2 rounded-lg shadow-lg">
-                <i data-lucide="hammer" class="w-4 h-4"></i>
-            </div>
-        </div>
-
-        <div class="space-y-4">
-            <h2 class="text-4xl font-extrabold tracking-tight">System <span class="text-orange-500 italic">Evolution</span></h2>
-            <div class="flex flex-col items-center gap-2">
-                <span class="px-4 py-1.5 rounded-full bg-orange-500/10 text-orange-600 dark:text-orange-400 text-xs font-black uppercase tracking-[0.2em] animate-pulse">
-                    Module In-Progress
-                </span>
-            </div>
-            <p class="text-slate-500 dark:text-slate-400 text-sm leading-relaxed max-w-sm mx-auto">
-                We are currently engineering the high-frequency performance monitoring engine. Real-time API analytics will be available soon.
-            </p>
-        </div>
-
-        <div class="flex gap-4 justify-center">
-            <div class="w-1.5 h-1.5 rounded-full bg-orange-500 animate-bounce" style="animation-delay: 0s"></div>
-            <div class="w-1.5 h-1.5 rounded-full bg-orange-500 animate-bounce" style="animation-delay: 0.1s"></div>
-            <div class="w-1.5 h-1.5 rounded-full bg-orange-500 animate-bounce" style="animation-delay: 0.2s"></div>
-        </div>
-    </div>
-
-    <footer class="fixed bottom-8 text-slate-400 dark:text-slate-600 text-[10px] uppercase tracking-widest">
-        &copy; 2026 HirePro Technologies Pvt. Ltd.
-    </footer>
-
-    <script>
-        lucide.createIcons();
-    </script>
-</body>
-</html>"""
-    (Path(__file__).parent.parent / "performance.html").write_text(html_content, encoding='utf-8')
-    print(f"Performance page generated at {Path(__file__).parent.parent / 'performance.html'}")
 
 def generate():
     if not REPORTS_DIR.exists(): return
@@ -1259,7 +1148,6 @@ def generate():
         }});
     </script><div class="container"><footer><div style="display: flex; align-items: center; gap: 0.75rem;"><span style="text-transform: uppercase; font-size: 0.7rem; letter-spacing: 0.05em; font-weight: 700;">Build ID:</span><span class="commit-badge"><i class="fas fa-code-branch" style="margin-right:0.4rem; opacity:0.5;"></i>{commit_id}</span></div><div>&copy; 2026 HirePro . All rights reserved.</div></footer></div></body></html>""")
     OUTPUT_FILE.write_text("".join(html_parts), encoding='utf-8'); 
-    generate_performance_page()
     generate_landing_page()
     print(f"Dashboard generated at {OUTPUT_FILE}")
 

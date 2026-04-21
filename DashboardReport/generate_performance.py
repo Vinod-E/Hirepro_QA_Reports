@@ -1,4 +1,78 @@
+import pandas as pd
+import json
+import os
+import subprocess
+from datetime import datetime
+from Config import configfile
 
+def process_report(file_path):
+    if not os.path.exists(file_path):
+        return []
+    
+    df = pd.read_excel(file_path)
+    # Take last 5 results based on index (assuming they are chronological) or sorted by Sprint
+    # Sort by 'Sprint' might be tricky if it's string 'Sprint_196', 'Sprint_200'
+    # Let's try to extract numeric part for sorting if needed, but tail(5) usually works for these reports.
+    df_last_5 = df.tail(5).copy()
+    
+    report_data = []
+    
+    for _, row in df_last_5.iterrows():
+        row_entry = {
+            "sprint": str(row.get("Sprint", "")),
+            "run_date": str(row.get("Run Date", "")),
+            "hits": int(row.get("Number of hits", 0)) if pd.notnull(row.get("Number of hits")) else 0,
+            "apis": []
+        }
+        
+        # Filter out "Unnamed" columns
+        cols = [c for c in df.columns if not str(c).startswith("Unnamed")]
+        
+        # Only take data columns (starting from index 5)
+        for i in range(5, len(cols) - 2, 3):
+            threshold_col = cols[i]
+            current_col = cols[i+1]
+            variation_col = cols[i+2]
+            
+            # Skip if any of these columns are beyond index or headers are missing
+            if any(pd.isnull(c) for c in [threshold_col, current_col, variation_col]):
+                continue
+
+            # API name from current column header
+            api_name = str(current_col).replace(" Previous sprint(%)", "").replace(" Threshold", "").strip()
+            
+            # Map values, handling potential non-numeric data
+            try:
+                thresh_val = float(row[threshold_col]) if pd.notnull(row[threshold_col]) else 0
+                curr_val = float(row[current_col]) if pd.notnull(row[current_col]) else 0
+                var_val = float(row[variation_col]) if pd.notnull(row[variation_col]) else 0
+                
+                row_entry["apis"].append({
+                    "name": api_name,
+                    "threshold": thresh_val,
+                    "current": curr_val,
+                    "variation": var_val
+                })
+            except (ValueError, TypeError):
+                continue
+        
+        report_data.append(row_entry)
+    
+    report_data.reverse() # Make latest sprint first
+    return report_data
+
+get_report = process_report(configfile.GET_PERFORMANCE_REPORT)
+set_report = process_report(configfile.SET_PERFORMANCE_REPORT)
+
+final_data = {
+    "get_report": get_report,
+    "set_report": set_report
+}
+
+# Write data to a JSON for the HTML to consume or just generate the HTML directly
+# I will generate the HTML directly with the data embedded.
+
+html_template = """
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -315,7 +389,7 @@
         .content-inner { overflow: hidden; }
 
         summary::after { 
-            content: '078'; 
+            content: '\f078'; 
             font-family: "Font Awesome 6 Free"; 
             font-weight: 900; 
             transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1); 
@@ -565,7 +639,7 @@
             </div>
             <div class="audit-section" style="text-align: right;">
                 <div style="font-size: 0.8rem; color: #64748b; font-weight: 600; margin-bottom: 0.25rem;">LATEST AUDIT</div>
-                <div style="font-weight: 800; font-size: 1rem;"><i class="fas fa-sync-alt" style="color:var(--success); margin-right: 0.5rem;"></i> 2026-04-21 09:06:33</div>
+                <div style="font-weight: 800; font-size: 1rem;"><i class="fas fa-sync-alt" style="color:var(--success); margin-right: 0.5rem;"></i> __LATEST_DATE__</div>
             </div>
         </div>
     </header>
@@ -640,14 +714,14 @@
         <footer>
             <div style="display: flex; align-items: center; gap: 0.75rem;">
                 <span style="text-transform: uppercase; font-size: 0.7rem; letter-spacing: 0.05em; font-weight: 700;">Build ID:</span>
-                <span class="commit-badge"><i class="fas fa-code-branch" style="margin-right:0.4rem; opacity:0.5;"></i>535c406</span>
+                <span class="commit-badge"><i class="fas fa-code-branch" style="margin-right:0.4rem; opacity:0.5;"></i>__BUILD_ID__</span>
             </div>
             <div>&copy; 2026 HirePro . All rights reserved.</div>
         </footer>
     </div>
 
     <script>
-        const data = {"get_report": [{"sprint": "Sprint_216", "run_date": "2026-03-18", "hits": 100, "apis": [{"name": "Get_tenant_details", "threshold": 0.49, "current": 0.18, "variation": 0.0}, {"name": "Get_all_entity_properties", "threshold": 0.48, "current": 0.27, "variation": 8.0}, {"name": "Group_by_catalog_masters", "threshold": 0.53, "current": 0.27, "variation": 0.0}, {"name": "Get_all_candidates", "threshold": 0.75, "current": 0.39, "variation": -11.36}, {"name": "GetTestUsersForTest", "threshold": 0.44, "current": 0.33, "variation": 0.0}, {"name": "Get_catalog_values_for_masters", "threshold": 0.67, "current": 0.37, "variation": 0.0}, {"name": "Get_Applicant_custom", "threshold": 0.5, "current": 0.24, "variation": 4.35}, {"name": "get_candidate_attachments", "threshold": 0.5, "current": 0.29, "variation": -9.38}, {"name": "Get_Candidate_GetById", "threshold": 0.66, "current": 0.35, "variation": -5.41}, {"name": "Get_Login_Stats", "threshold": 0.5, "current": 0.24, "variation": -7.69}, {"name": "Get_Test_Info", "threshold": 0.5, "current": 0.2, "variation": -4.76}, {"name": "Get_initiate_tua", "threshold": 0.5, "current": 0.22, "variation": -8.33}, {"name": "Get_load_test", "threshold": 0.5, "current": 0.22, "variation": 4.76}, {"name": "Get_test_result", "threshold": 0.5, "current": 0.27, "variation": 8.0}, {"name": "Get_Screen_Data", "threshold": 0.78, "current": 0.59, "variation": 7.27}, {"name": "Get_ReqId", "threshold": 0.81, "current": 0.18, "variation": 0.0}, {"name": "Get_Applicants_Info", "threshold": 0.61, "current": 0.18, "variation": 0.0}, {"name": "Get_View_offer", "threshold": 0.58, "current": 0.19, "variation": 0.0}, {"name": "Get_embrace_candidate", "threshold": 2.0, "current": 2.5, "variation": 10.13}, {"name": "Get_Activity", "threshold": 0.8, "current": 0.7, "variation": 0.0}, {"name": "Get_Task", "threshold": 0.6, "current": 0.66, "variation": -9.59}, {"name": "Get_Form", "threshold": 0.8, "current": 0.55, "variation": 0.0}, {"name": "Get_my_info", "threshold": 0.48, "current": 0.11, "variation": -60.71}, {"name": "Get_my_room", "threshold": 0.5, "current": 0.1, "variation": -71.43}, {"name": "Join", "threshold": 0.4, "current": 0.08, "variation": -73.33}, {"name": "Save_Participant", "threshold": 0.2, "current": 0.09, "variation": -59.09}]}, {"sprint": "Sprint_215", "run_date": "2026-02-10", "hits": 100, "apis": [{"name": "Get_tenant_details", "threshold": 0.49, "current": 0.18, "variation": 0.0}, {"name": "Get_all_entity_properties", "threshold": 0.48, "current": 0.25, "variation": 0.0}, {"name": "Group_by_catalog_masters", "threshold": 0.53, "current": 0.27, "variation": 0.0}, {"name": "Get_all_candidates", "threshold": 0.75, "current": 0.44, "variation": 7.32}, {"name": "GetTestUsersForTest", "threshold": 0.44, "current": 0.33, "variation": 0.0}, {"name": "Get_catalog_values_for_masters", "threshold": 0.67, "current": 0.37, "variation": 0.0}, {"name": "Get_Applicant_custom", "threshold": 0.5, "current": 0.23, "variation": 15.0}, {"name": "get_candidate_attachments", "threshold": 0.5, "current": 0.32, "variation": 10.34}, {"name": "Get_Candidate_GetById", "threshold": 0.66, "current": 0.37, "variation": 2.78}, {"name": "Get_Login_Stats", "threshold": 0.5, "current": 0.26, "variation": 8.33}, {"name": "Get_Test_Info", "threshold": 0.5, "current": 0.21, "variation": 5.0}, {"name": "Get_initiate_tua", "threshold": 0.5, "current": 0.24, "variation": 9.09}, {"name": "Get_load_test", "threshold": 0.5, "current": 0.21, "variation": 5.0}, {"name": "Get_test_result", "threshold": 0.5, "current": 0.25, "variation": -3.85}, {"name": "Get_Screen_Data", "threshold": 0.78, "current": 0.55, "variation": -3.51}, {"name": "Get_ReqId", "threshold": 0.81, "current": 0.18, "variation": 0.0}, {"name": "Get_Applicants_Info", "threshold": 0.61, "current": 0.18, "variation": 0.0}, {"name": "Get_View_offer", "threshold": 0.58, "current": 0.19, "variation": 5.56}, {"name": "Get_embrace_candidate", "threshold": 2.0, "current": 2.27, "variation": -9.56}, {"name": "Get_Activity", "threshold": 0.8, "current": 0.7, "variation": -2.78}, {"name": "Get_Task", "threshold": 0.6, "current": 0.73, "variation": 2.82}, {"name": "Get_Form", "threshold": 0.8, "current": 0.55, "variation": -29.49}, {"name": "Get_my_info", "threshold": 0.48, "current": 0.28, "variation": 0.0}, {"name": "Get_my_room", "threshold": 0.5, "current": 0.35, "variation": 6.06}, {"name": "Join", "threshold": 0.4, "current": 0.3, "variation": 11.11}, {"name": "Save_Participant", "threshold": 0.2, "current": 0.22, "variation": 4.76}]}, {"sprint": "Sprint_214", "run_date": "2026-01-13", "hits": 100, "apis": [{"name": "Get_tenant_details", "threshold": 0.49, "current": 0.18, "variation": -10.0}, {"name": "Get_all_entity_properties", "threshold": 0.48, "current": 0.25, "variation": -3.85}, {"name": "Group_by_catalog_masters", "threshold": 0.53, "current": 0.27, "variation": -3.57}, {"name": "Get_all_candidates", "threshold": 0.75, "current": 0.41, "variation": -2.38}, {"name": "GetTestUsersForTest", "threshold": 0.44, "current": 0.33, "variation": -2.94}, {"name": "Get_catalog_values_for_masters", "threshold": 0.67, "current": 0.37, "variation": 5.71}, {"name": "Get_Applicant_custom", "threshold": 0.5, "current": 0.2, "variation": -4.76}, {"name": "get_candidate_attachments", "threshold": 0.5, "current": 0.29, "variation": -3.33}, {"name": "Get_Candidate_GetById", "threshold": 0.66, "current": 0.36, "variation": 0.0}, {"name": "Get_Login_Stats", "threshold": 0.5, "current": 0.24, "variation": 4.35}, {"name": "Get_Test_Info", "threshold": 0.5, "current": 0.2, "variation": 5.26}, {"name": "Get_initiate_tua", "threshold": 0.5, "current": 0.22, "variation": 0.0}, {"name": "Get_load_test", "threshold": 0.5, "current": 0.2, "variation": 0.0}, {"name": "Get_test_result", "threshold": 0.5, "current": 0.26, "variation": -3.7}, {"name": "Get_Screen_Data", "threshold": 0.78, "current": 0.57, "variation": 16.33}, {"name": "Get_ReqId", "threshold": 0.81, "current": 0.18, "variation": 5.88}, {"name": "Get_Applicants_Info", "threshold": 0.61, "current": 0.18, "variation": 0.0}, {"name": "Get_View_offer", "threshold": 0.58, "current": 0.18, "variation": 0.0}, {"name": "Get_embrace_candidate", "threshold": 2.0, "current": 2.51, "variation": 1.21}, {"name": "Get_Activity", "threshold": 0.8, "current": 0.72, "variation": -4.0}, {"name": "Get_Task", "threshold": 0.6, "current": 0.71, "variation": 1.43}, {"name": "Get_Form", "threshold": 0.8, "current": 0.78, "variation": -9.3}, {"name": "Get_my_info", "threshold": 0.48, "current": 0.28, "variation": -3.45}, {"name": "Get_my_room", "threshold": 0.5, "current": 0.33, "variation": -5.71}, {"name": "Join", "threshold": 0.4, "current": 0.27, "variation": 0.0}, {"name": "Save_Participant", "threshold": 0.2, "current": 0.21, "variation": 5.0}]}, {"sprint": "Sprint_213", "run_date": "2025-12-03", "hits": 100, "apis": [{"name": "Get_tenant_details", "threshold": 0.49, "current": 0.2, "variation": -4.76}, {"name": "Get_all_entity_properties", "threshold": 0.48, "current": 0.26, "variation": -3.7}, {"name": "Group_by_catalog_masters", "threshold": 0.53, "current": 0.28, "variation": 0.0}, {"name": "Get_all_candidates", "threshold": 0.75, "current": 0.42, "variation": 13.51}, {"name": "GetTestUsersForTest", "threshold": 0.44, "current": 0.34, "variation": 3.03}, {"name": "Get_catalog_values_for_masters", "threshold": 0.67, "current": 0.35, "variation": 2.94}, {"name": "Get_Applicant_custom", "threshold": 0.5, "current": 0.21, "variation": 0.0}, {"name": "get_candidate_attachments", "threshold": 0.5, "current": 0.3, "variation": -3.23}, {"name": "Get_Candidate_GetById", "threshold": 0.66, "current": 0.36, "variation": -7.69}, {"name": "Get_Login_Stats", "threshold": 0.5, "current": 0.23, "variation": -11.54}, {"name": "Get_Test_Info", "threshold": 0.5, "current": 0.19, "variation": -9.52}, {"name": "Get_initiate_tua", "threshold": 0.5, "current": 0.22, "variation": -8.33}, {"name": "Get_load_test", "threshold": 0.5, "current": 0.2, "variation": -9.09}, {"name": "Get_test_result", "threshold": 0.5, "current": 0.27, "variation": 0.0}, {"name": "Get_Screen_Data", "threshold": 0.78, "current": 0.49, "variation": -15.52}, {"name": "Get_ReqId", "threshold": 0.81, "current": 0.17, "variation": -10.53}, {"name": "Get_Applicants_Info", "threshold": 0.61, "current": 0.18, "variation": -5.26}, {"name": "Get_View_offer", "threshold": 0.58, "current": 0.18, "variation": -5.26}, {"name": "Get_embrace_candidate", "threshold": 1.5, "current": 2.48, "variation": 3.33}, {"name": "Get_Activity", "threshold": 0.8, "current": 0.75, "variation": 7.14}, {"name": "Get_Task", "threshold": 0.6, "current": 0.7, "variation": 0.0}, {"name": "Get_Form", "threshold": 0.8, "current": 0.86, "variation": 7.5}, {"name": "Get_my_info", "threshold": 0.48, "current": 0.29, "variation": -3.33}, {"name": "Get_my_room", "threshold": 0.5, "current": 0.35, "variation": 0.0}, {"name": "Join", "threshold": 0.4, "current": 0.27, "variation": -10.0}, {"name": "Save_Participant", "threshold": 0.2, "current": 0.2, "variation": -13.04}]}, {"sprint": "Sprint_212", "run_date": "2025-11-06", "hits": 100, "apis": [{"name": "Get_tenant_details", "threshold": 0.49, "current": 0.21, "variation": 16.67}, {"name": "Get_all_entity_properties", "threshold": 0.48, "current": 0.27, "variation": 17.39}, {"name": "Group_by_catalog_masters", "threshold": 0.53, "current": 0.28, "variation": 7.69}, {"name": "Get_all_candidates", "threshold": 0.75, "current": 0.37, "variation": -7.5}, {"name": "GetTestUsersForTest", "threshold": 0.44, "current": 0.33, "variation": -2.94}, {"name": "Get_catalog_values_for_masters", "threshold": 0.67, "current": 0.34, "variation": -5.56}, {"name": "Get_Applicant_custom", "threshold": 0.5, "current": 0.21, "variation": -4.55}, {"name": "get_candidate_attachments", "threshold": 0.5, "current": 0.31, "variation": 3.33}, {"name": "Get_Candidate_GetById", "threshold": 0.66, "current": 0.39, "variation": 8.33}, {"name": "Get_Login_Stats", "threshold": 0.5, "current": 0.26, "variation": 4.0}, {"name": "Get_Test_Info", "threshold": 0.5, "current": 0.21, "variation": 0.0}, {"name": "Get_initiate_tua", "threshold": 0.5, "current": 0.24, "variation": 4.35}, {"name": "Get_load_test", "threshold": 0.5, "current": 0.22, "variation": 4.76}, {"name": "Get_test_result", "threshold": 0.5, "current": 0.27, "variation": 0.0}, {"name": "Get_Screen_Data", "threshold": 0.78, "current": 0.58, "variation": 0.0}, {"name": "Get_ReqId", "threshold": 0.81, "current": 0.19, "variation": 0.0}, {"name": "Get_Applicants_Info", "threshold": 0.61, "current": 0.19, "variation": 5.56}, {"name": "Get_View_offer", "threshold": 0.58, "current": 0.19, "variation": 0.0}, {"name": "Get_embrace_candidate", "threshold": 1.5, "current": 2.4, "variation": 22.45}, {"name": "Get_Activity", "threshold": 0.8, "current": 0.7, "variation": -2.78}, {"name": "Get_Task", "threshold": 0.6, "current": 0.7, "variation": 7.69}, {"name": "Get_Form", "threshold": 0.8, "current": 0.8, "variation": 9.59}, {"name": "Get_my_info", "threshold": 0.48, "current": 0.3, "variation": -3.23}, {"name": "Get_my_room", "threshold": 0.5, "current": 0.35, "variation": -5.41}, {"name": "Join", "threshold": 0.4, "current": 0.3, "variation": -3.23}, {"name": "Save_Participant", "threshold": 0.2, "current": 0.23, "variation": -4.17}]}], "set_report": [{"sprint": "Sprint_216", "run_date": "2026-03-18", "hits": 100, "apis": [{"name": "Create candidate chaining", "threshold": 2.0, "current": 0.46, "variation": -70.89}, {"name": "Create candidate", "threshold": 1.5, "current": 0.46, "variation": -61.67}, {"name": "Status_Change", "threshold": 0.5, "current": 0.22, "variation": -4.35}, {"name": "Create Job", "threshold": 1.0, "current": 1.0, "variation": 0}, {"name": "candidate Create", "threshold": 1.0, "current": 1.0, "variation": 0}]}, {"sprint": "Sprint_215", "run_date": "2026-02-10", "hits": 100, "apis": [{"name": "Create candidate chaining", "threshold": 2.0, "current": 1.58, "variation": -16.4}, {"name": "Create candidate", "threshold": 1.5, "current": 1.2, "variation": 4.35}, {"name": "Status_Change", "threshold": 0.5, "current": 0.23, "variation": 0.0}, {"name": "Create Job", "threshold": 1.0, "current": 1.0, "variation": 0}, {"name": "candidate Create", "threshold": 1.0, "current": 1.0, "variation": 0}]}, {"sprint": "Sprint_214", "run_date": "2026-01-13", "hits": 100, "apis": [{"name": "Create candidate chaining", "threshold": 2.0, "current": 1.89, "variation": -18.18}, {"name": "Create candidate", "threshold": 1.5, "current": 1.15, "variation": 1.77}, {"name": "Status_Change", "threshold": 0.5, "current": 0.23, "variation": 4.55}, {"name": "Create Job", "threshold": 1.0, "current": 1.0, "variation": 0}, {"name": "candidate Create", "threshold": 1.0, "current": 1.0, "variation": 0}]}, {"sprint": "Sprint_213", "run_date": "2025-12-03", "hits": 100, "apis": [{"name": "Create candidate chaining", "threshold": 2.0, "current": 2.31, "variation": 8.96}, {"name": "Create candidate", "threshold": 1.5, "current": 1.13, "variation": -29.81}, {"name": "Status_Change", "threshold": 0.5, "current": 0.22, "variation": -8.33}, {"name": "Create Job", "threshold": 0, "current": 0, "variation": 0}, {"name": "candidate Create", "threshold": 0, "current": 0, "variation": 0}]}, {"sprint": "Sprint_212", "run_date": "2025-11-06", "hits": 100, "apis": [{"name": "Create candidate chaining", "threshold": 2.0, "current": 2.12, "variation": 58.21}, {"name": "Create candidate", "threshold": 1.5, "current": 1.61, "variation": 62.63}, {"name": "Status_Change", "threshold": 0.5, "current": 0.24, "variation": 4.35}, {"name": "Create Job", "threshold": 0, "current": 0, "variation": 0}, {"name": "candidate Create", "threshold": 0, "current": 0, "variation": 0}]}]};
+        const data = __DATA_JSON__;
 
         function updateIndicator(btn) {
             const indicator = document.querySelector('.nav-indicator');
@@ -843,3 +917,22 @@
     </script>
 </body>
 </html>
+"""
+
+# Get Build ID
+try:
+    build_id = subprocess.check_output(['git', 'rev-parse', '--short', 'HEAD']).decode('ascii').strip()
+except:
+    build_id = "LOCAL_BUILD"
+
+latest_display = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+full_html = html_template.replace("__DATA_JSON__", json.dumps(final_data))
+full_html = full_html.replace("__BUILD_ID__", build_id)
+full_html = full_html.replace("__LATEST_DATE__", latest_display)
+
+output_file = configfile.PERFORMANCE_HTML
+with open(output_file, "w") as f:
+    f.write(full_html)
+
+print("Performance HTML generated successfully.")

@@ -52,6 +52,11 @@ jobs:
           export PYTHONPATH=$BASE_DIR
           python3 DashboardReport/generate_dashboard.py 
 
+      - name: Generate Performance Report
+        run: |
+          cd $BASE_DIR
+          export PYTHONPATH=$BASE_DIR
+          python3 DashboardReport/generate_performance.py
       - name: Send Google Chat Notification
         run: |
           cd $BASE_DIR
@@ -65,7 +70,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           
-          git add dashboard.html
+          git add dashboard.html automationreports.html performance.html
           
           git commit -m "Update Dashboard HTML report [skip ci]" || echo "No changes"
           git push origin HEAD:master

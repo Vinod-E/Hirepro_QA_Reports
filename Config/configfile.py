@@ -21,6 +21,10 @@ AUTOMATION_PATH = os.path.join(HOME_PATH, "hirepro_automation", "Hirepro_QA_Repo
 REPORT_DIR = os.path.join(AUTOMATION_PATH, "reports")
 CONFIG_DIR = os.path.join(AUTOMATION_PATH, "Config", "secrets_config.ini")
 DASHBOARD_REPORT = os.path.join(AUTOMATION_PATH, "automationreports.html")
+PERFORMANCE_DIR = os.path.join(AUTOMATION_PATH, "PerformanceReports")
+GET_PERFORMANCE_REPORT = os.path.join(PERFORMANCE_DIR, "GET_PERFORMANCE_API_REPORT.xlsx")
+SET_PERFORMANCE_REPORT = os.path.join(PERFORMANCE_DIR, "SET_PERFORMANCE_API_REPORT.xlsx")
+PERFORMANCE_HTML = os.path.join(AUTOMATION_PATH, "performance.html")
 
 # Ensure report directory exists
 os.makedirs(REPORT_DIR, exist_ok=True)

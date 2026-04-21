@@ -57,7 +57,10 @@ def read_pytest_report(file_path):
             print(f"  - {case}")
 
 if __name__ == "__main__":
-    report_file = "/home/vinod-kumar/hirepro_automation/Hirepro_QA_Reports/reports/20260414/report.html"
+    report_file = ""
     if len(sys.argv) > 1:
         report_file = sys.argv[1]
+    else:
+        print("Please provide a report file path as an argument.")
+        sys.exit(1)
     read_pytest_report(report_file)
