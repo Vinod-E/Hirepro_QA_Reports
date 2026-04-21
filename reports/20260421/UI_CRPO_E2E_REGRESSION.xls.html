@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preview: UI_CRPO_E2E_REGRESSION.xls</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --primary: #4f46e5; --bg: #f8fafc; --text: #1e293b; --border: #e2e8f0; --success: #10b981; --danger: #ef4444; }
+        body { font-family: 'Outfit', sans-serif; background-color: var(--bg); color: var(--text); padding: 2rem; margin: 0; }
+        .container { max-width: 1400px; margin: 0 auto; background: white; padding: 2.5rem; border-radius: 1.5rem; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05); border: 1px solid var(--border); }
+        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 2px solid var(--bg); }
+        .title-area { display: flex; align-items: center; gap: 1rem; }
+        .title-area i { font-size: 2rem; color: var(--primary); }
+        h1 { font-size: 1.5rem; font-weight: 800; margin: 0; }
+        .actions { display: flex; gap: 1rem; }
+        .btn { text-decoration: none; padding: 0.6rem 1.25rem; border-radius: 10px; font-weight: 700; font-size: 0.85rem; display: flex; align-items: center; gap: 0.5rem; transition: all 0.2s; border: none; cursor: pointer; }
+        .btn-download { background: var(--primary); color: white; }
+        .btn-download:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3); }
+        .btn-back { background: #f1f5f9; color: var(--text); }
+        .btn-back:hover { background: #e2e8f0; }
+        .table-wrapper { overflow-x: auto; border-radius: 12px; border: 1px solid var(--border); background: white; }
+        .preview-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; border-spacing: 0; }
+        .preview-table td { padding: 0.85rem 1.15rem; border-bottom: 1px solid var(--border); border-right: 1px solid var(--border); white-space: nowrap; color: var(--text); }
+        .preview-table tr:hover { background: #f1f5f9 !important; }
+        
+        /* Header & Sub-header Styling */
+        .preview-table tr:first-child td,
+        .preview-table tr.sub-header td { 
+            background: #f1f5f9 !important; 
+            font-weight: 800 !important; 
+            color: #475569 !important; 
+            text-transform: uppercase; 
+            font-size: 0.75rem; 
+            letter-spacing: 0.025em;
+            border-bottom: 2px solid #cbd5e1 !important;
+        }
+        
+        .preview-table tr:nth-child(even) { background: #fafbfc; }
+        .preview-table tr:hover { background: #f1f5f9 !important; }
+        
+        /* Status Colors */
+        .status-pass { color: var(--success) !important; font-weight: 800; background: #ecfdf5 !important; }
+        .status-fail { color: var(--danger) !important; font-weight: 800; background: #fef2f2 !important; }
+        .status-na { color: #94a3b8; font-style: italic; opacity: 0.5; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="title-area">
+                <i class="fas fa-file-excel"></i>
+                <div>
+                    <h1>UI_CRPO_E2E_REGRESSION.xls</h1>
+                    <div style="font-size: 0.75rem; color: #64748b; font-weight: 600; margin-top: 0.2rem; text-transform: uppercase;">Spreadsheet Preview (All Rows)</div>
+                </div>
+            </div>
+            <div class="actions">
+                <button onclick="window.close()" class="btn btn-back"><i class="fas fa-times"></i> Close Tab</button>
+                <a href="UI_CRPO_E2E_REGRESSION.xls" download="UI_CRPO_E2E_REGRESSION.xls" class="btn btn-download"><i class="fas fa-download"></i> Download Excel</a>
+            </div>
+        </header>
+        <div class="table-wrapper">
+            <table border="1" class="dataframe preview-table">
+  <tbody>
+    <tr>
+      <td>E2E REGRESSION FLOW</td>
+      <td>Fail</td>
+      <td>SPRINT VERSION</td>
+      <td>Sprint_216</td>
+      <td>SPRINT DATE</td>
+      <td>2026-04-21</td>
+      <td>SERVER</td>
+      <td>[MASKED_REF]</td>
+      <td>Success Cases</td>
+      <td>247</td>
+      <td>Failure Cases</td>
+      <td>2</td>
+      <td>Success %</td>
+      <td>99.2</td>
+      <td>Time Taken (min)</td>
+      <td>7.91</td>
+    </tr>
+    <tr>
+      <td>Create Job</td>
+      <td>Status</td>
+      <td>Job (SP / EC)</td>
+      <td>Status</td>
+      <td>Job (Task)</td>
+      <td>Status</td>
+      <td>Job Interviewers</td>
+      <td>Status</td>
+      <td>Job Automations(1)</td>
+      <td>Status</td>
+      <td>Job Automations(2)</td>
+      <td>Status</td>
+      <td>Job Feedback Form</td>
+      <td>Status</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Job Tab</td>
+      <td>Pass</td>
+      <td>Job Actions</td>
+      <td>Pass</td>
+      <td>Task Configure</td>
+      <td>Pass</td>
+      <td>Job Actions</td>
+      <td>Pass</td>
+      <td>Automations Tab</td>
+      <td>Pass</td>
+      <td>Select Aptitude stage</td>
+      <td>Pass</td>
+      <td>Job Actions</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Job Create Button</td>
+      <td>Pass</td>
+      <td>Tag Selection Process Action</td>
+      <td>Pass</td>
+      <td>Task New Row</td>
+      <td>Pass</td>
+      <td>Tag Interviewers Action</td>
+      <td>Pass</td>
+      <td>Select Registration stage</td>
+      <td>Pass</td>
+      <td>Select Pending status</td>
+      <td>Pass</td>
+      <td>Configure Feedback Action</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Job Name</td>
+      <td>Pass</td>
+      <td>Select Selection Process</td>
+      <td>Pass</td>
+      <td>Assign Stage_Status</td>
+      <td>Pass</td>
+      <td>Interviewer Panel selection</td>
+      <td>Pass</td>
+      <td>Select register status</td>
+      <td>Pass</td>
+      <td>Enable-Assessment Automation</td>
+      <td>Pass</td>
+      <td>Select Interview Stage</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Job Attachment</td>
+      <td>Pass</td>
+      <td>Save</td>
+      <td>Pass</td>
+      <td>Positive Stage_Status</td>
+      <td>Pass</td>
+      <td>Interviewer Panel Add</td>
+      <td>Pass</td>
+      <td>Select Hopping</td>
+      <td>Pass</td>
+      <td>Close Aptitude stage</td>
+      <td>Pass</td>
+      <td>Enter Form name</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Job Notifier</td>
+      <td>Pass</td>
+      <td>Validate Notifier</td>
+      <td>Pass</td>
+      <td>Negative Stage_Status</td>
+      <td>Pass</td>
+      <td>Interviewer Panel Save</td>
+      <td>Pass</td>
+      <td>Stage-Eligibility check</td>
+      <td>Pass</td>
+      <td>Select Offer stage</td>
+      <td>Pass</td>
+      <td>Search for form</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Description</td>
+      <td>Pass</td>
+      <td>Page Refresh</td>
+      <td>Pass</td>
+      <td>Activity Field Enter</td>
+      <td>Pass</td>
+      <td>Notifier Validate</td>
+      <td>Pass</td>
+      <td>Status-Pending</td>
+      <td>Pass</td>
+      <td>Select accepted status</td>
+      <td>Pass</td>
+      <td>Use Form</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Location Field</td>
+      <td>Pass</td>
+      <td>Configuration Tab</td>
+      <td>Pass</td>
+      <td>Task Field</td>
+      <td>Pass</td>
+      <td>Notifier Dismiss</td>
+      <td>Pass</td>
+      <td>Close Registration stage</td>
+      <td>Pass</td>
+      <td>Select Hopping</td>
+      <td>Pass</td>
+      <td>Edit Form</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Hiring Manager Field</td>
+      <td>Pass</td>
+      <td>Ec Configure</td>
+      <td>Pass</td>
+      <td>Search Task</td>
+      <td>Pass</td>
+      <td>Owner Tab</td>
+      <td>Pass</td>
+      <td>Select Eligibility stage</td>
+      <td>Pass</td>
+      <td>Stage-First Interview</td>
+      <td>Pass</td>
+      <td>Overall Mandatory</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Business Unit Field</td>
+      <td>Pass</td>
+      <td>Enter EC</td>
+      <td>Pass</td>
+      <td>Move all Items</td>
+      <td>Pass</td>
+      <td>Validate owners count</td>
+      <td>Pass</td>
+      <td>Select eligible status</td>
+      <td>Pass</td>
+      <td>Status-SelfSchedule</td>
+      <td>Pass</td>
+      <td>Reject Overall</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Opening Field</td>
+      <td>Pass</td>
+      <td>Enter Positive stage</td>
+      <td>Pass</td>
+      <td>Done</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>Select Hopping</td>
+      <td>Pass</td>
+      <td>Close Offer stage</td>
+      <td>Pass</td>
+      <td>Update Form</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Male Diversity Field</td>
+      <td>Pass</td>
+      <td>Enter Positive status</td>
+      <td>Pass</td>
+      <td>Task Save</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>Stage-Aptitude check</td>
+      <td>Pass</td>
+      <td>Stage-First Interview</td>
+      <td>Pass</td>
+      <td>Notifier</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Female Diversity Field</td>
+      <td>Pass</td>
+      <td>Enter Negative stage</td>
+      <td>Pass</td>
+      <td>Task Notifier Validate</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>Status-Pending</td>
+      <td>Pass</td>
+      <td>Stage-ReadyToSelfSchedule</td>
+      <td>Pass</td>
+      <td>Notifier Dismiss</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Job created Button</td>
+      <td>Pass</td>
+      <td>Enter Negative status</td>
+      <td>Pass</td>
+      <td>Task Notifier Dismissed</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>Close eligible status</td>
+      <td>Pass</td>
+      <td>Enable-Self Schedule</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Job Name Validation</td>
+      <td>Pass</td>
+      <td>Save EC</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>Select Pending status</td>
+      <td>Pass</td>
+      <td>Automations - Save</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>NA</td>
+      <td>NA</td>
+      <td>EC Notifier validate</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>Enable-Eligibility Check</td>
+      <td>Pass</td>
+      <td>Save - Notifier</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>NA</td>
+      <td>NA</td>
+      <td>EC Notifier Dismissed</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>Close Eligibility stage</td>
+      <td>Pass</td>
+      <td>Notifier - Dismiss</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Create Requirement</td>
+      <td>Status</td>
+      <td>Clone Assessment</td>
+      <td>Status</td>
+      <td>Create Event</td>
+      <td>Status</td>
+      <td>Configuration (Task)</td>
+      <td>Status</td>
+      <td>Configuration (Tag Test / Owners)</td>
+      <td>Status</td>
+      <td>Event Upload Candidates</td>
+      <td>Status</td>
+      <td>Applicant (hopping status)</td>
+      <td>Status</td>
+      <td>Applicant Status Change</td>
+      <td>Status</td>
+    </tr>
+    <tr>
+      <td>Requirement Tab</td>
+      <td>Pass</td>
+      <td>Assessment Tab</td>
+      <td>Pass</td>
+      <td>Event Tab</td>
+      <td>Pass</td>
+      <td>Event Name Validation</td>
+      <td>Pass</td>
+      <td>Test Configure</td>
+      <td>Pass</td>
+      <td>Event Actions</td>
+      <td>Pass</td>
+      <td>Event Tab</td>
+      <td>Pass</td>
+      <td>Applicant select</td>
+      <td>Pass</td>
+    </tr>
+    <tr>
+      <td>Requirement Create Button</td>
+      <td>Pass</td>
+      <td>Advance search</td>
+      <td>Pass</td>
+      <td>New Event Create</td>
+      <td>Pass</td>
+      <td>Configurations Tab</td>
+      <td>Pass</td>
+      <td>Test Job Name</td>
+      <td>Pass</td>
+      <td>Upload Candidate Action</td>
+      <td>Pass</td>
+      <td>Advance Search</td>
+      <td>Pass</td>
+      <td>Applicant Change Status</td>
+      <td>Pass</td>
+    </tr>
+    <tr>
+      <td>Requirement Name</td>
+      <td>Pass</td>
+      <td>Old Test name Enter</td>
+      <td>Pass</td>
+      <td>New Event Name</td>
+      <td>Pass</td>
+      <td>Task Configure</td>
+      <td>Pass</td>
+      <td>Test Stage</td>
+      <td>Pass</td>
+      <td>Upload Candidate File</td>
+      <td>Pass</td>
+      <td>Event Name Enter</td>
+      <td>Pass</td>
+      <td>Applicant stage Entry</td>
+      <td>Pass</td>
+    </tr>
+    <tr>
+      <td>Requirement Job Name</td>
+      <td>Pass</td>
+      <td>Search Button</td>
+      <td>Pass</td>
+      <td>Requirement Name</td>
+      <td>Pass</td>
+      <td>Task New Row</td>
+      <td>Pass</td>
+      <td>Test Assessment</td>
+      <td>Pass</td>
+      <td>Next Button</td>
+      <td>Pass</td>
+      <td>Search Button</td>
+      <td>Pass</td>
+      <td>Applicant status Entry</td>
+      <td>Pass</td>
+    </tr>
+    <tr>
+      <td>Job Search</td>
+      <td>Pass</td>
+      <td>Name Click</td>
+      <td>Pass</td>
+      <td>Job Name Click</td>
+      <td>Pass</td>
+      <td>Task Job Name</td>
+      <td>Pass</td>
+      <td>Test Active</td>
+      <td>Pass</td>
+      <td>Declare Check</td>
+      <td>Pass</td>
+      <td>Event GetBy Name</td>
+      <td>Pass</td>
+      <td>Comment</td>
+      <td>Pass</td>
+    </tr>
+    <tr>
+      <td>Move All Items</td>
+      <td>Pass</td>
+      <td>Assessment Name validation</td>
+      <td>Pass</td>
+      <td>Job Name search</td>
+      <td>Pass</td>
+      <td>Assign Stage_Status</td>
+      <td>Pass</td>
+      <td>Save Test Config</td>
+      <td>Pass</td>
+      <td>Signature Entry</td>
+      <td>Pass</td>
+      <td>Event Name Validation</td>
+      <td>Pass</td>
+      <td>Change Button</td>
+      <td>Pass</td>
+    </tr>
+    <tr>
+      <td>Done</td>
+      <td>Pass</td>
+      <td>Assessment Actions</td>
+      <td>Pass</td>
+      <td>Event job selected</td>
+      <td>Pass</td>
+      <td>Positive Stage_Status</td>
+      <td>Pass</td>
+      <td>Test Config Notifier</td>
+      <td>Pass</td>
+      <td>Agree Button</td>
+      <td>Pass</td>
+      <td>Event Actions</td>
+      <td>Pass</td>
+      <td>Change Notifier</td>
+      <td>Pass</td>
+    </tr>
+    <tr>
+      <td>Hiring Track</td>
+      <td>Pass</td>
+      <td>Clone Assessment Action</td>
+      <td>Pass</td>
+      <td>Selection Done</td>
+      <td>Pass</td>
+      <td>Negative Stage_Status</td>
+      <td>Pass</td>
+      <td>Test Config&nbsp;&nbsp;Notifier Dismiss</td>
+      <td>Pass</td>
+      <td>Edit information</td>
+      <td>Pass</td>
+      <td>View Candidates</td>
+      <td>Pass</td>
+      <td>Change Notifier Dismiss</td>
+      <td>Pass</td>
+    </tr>
+    <tr>
+      <td>College Type</td>
+      <td>Pass</td>
+      <td>New Test NAME</td>
+      <td>Pass</td>
+      <td>Event Slot</td>
+      <td>Pass</td>
+      <td>Activity Field Enter</td>
+      <td>Pass</td>
+      <td>Cancel Test Config</td>
+      <td>Pass</td>
+      <td>Name Edit</td>
+      <td>Pass</td>
+      <td>Advance Search</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Requirement created Button</td>
+      <td>Pass</td>
+      <td>From Date</td>
+      <td>Pass</td>
+      <td>Event From Date</td>
+      <td>Pass</td>
+      <td>Task Field</td>
+      <td>Pass</td>
+      <td>Event Actions</td>
+      <td>Pass</td>
+      <td>Email Edit</td>
+      <td>Pass</td>
+      <td>Applicant Name Enter</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Requirement created Notifier</td>
+      <td>Pass</td>
+      <td>To Date</td>
+      <td>Pass</td>
+      <td>Event To Date</td>
+      <td>Pass</td>
+      <td>Move all Items</td>
+      <td>Pass</td>
+      <td>Manage Event Owners Action</td>
+      <td>Pass</td>
+      <td>USN Edit</td>
+      <td>Pass</td>
+      <td>Search Button</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Requirement Notifier Dismiss</td>
+      <td>Pass</td>
+      <td>Clone Button Click</td>
+      <td>Pass</td>
+      <td>Event Reporting Date</td>
+      <td>Pass</td>
+      <td>Done</td>
+      <td>Pass</td>
+      <td>Move all Owners</td>
+      <td>Pass</td>
+      <td>Save Information</td>
+      <td>Pass</td>
+      <td>Applicant Name Click</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Configurations Tab</td>
+      <td>Pass</td>
+      <td>Clone Assessment Notifier</td>
+      <td>Pass</td>
+      <td>Event manager selected</td>
+      <td>Pass</td>
+      <td>Task Save</td>
+      <td>Pass</td>
+      <td>Owners Update</td>
+      <td>Pass</td>
+      <td>Save Candidate</td>
+      <td>Pass</td>
+      <td>Candidate Hop status</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Duplicity Check tab</td>
+      <td>Pass</td>
+      <td>Clone Notifier Dismiss</td>
+      <td>Pass</td>
+      <td>Event College Selected</td>
+      <td>Pass</td>
+      <td>Task Notifier Validate</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>Upload Count Validate</td>
+      <td>Pass</td>
+      <td>Close Window</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Duplicity - Do not Allow</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>Event EC enabled</td>
+      <td>Pass</td>
+      <td>Task Notifier Dismissed</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>Close Upload screen</td>
+      <td>Pass</td>
+      <td>Switch To Old window</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Duplicity Notifier</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>Event Created</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>Close Main Screen</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Duplicity Notifier Dismiss</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>Event create Notifier</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>Confirm - OK</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>Event create&nbsp;&nbsp;Notifier Dismiss</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Candidate (Manage Task)</td>
+      <td>Status</td>
+      <td>Embrace (Behalf Of Submission)</td>
+      <td>Status</td>
+      <td>Candidate (After Submission status)</td>
+      <td>Status</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Applicant Name click</td>
+      <td>Pass</td>
+      <td>More Tab</td>
+      <td>Pass</td>
+      <td>Applicant Name click</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Status Validate</td>
+      <td>Pass</td>
+      <td>Embrace Tab</td>
+      <td>Pass</td>
+      <td>Status Validate</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Candidate Floating Actions</td>
+      <td>Pass</td>
+      <td>Switch To New Window</td>
+      <td>Pass</td>
+      <td>Candidate Floating Actions</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Manage Task Action</td>
+      <td>Pass</td>
+      <td>Candidate Module</td>
+      <td>Pass</td>
+      <td>Manage Task Action</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Candidate Name Validate</td>
+      <td>Pass</td>
+      <td>Advance Search</td>
+      <td>Pass</td>
+      <td>Candidate Name Validate</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Submitted - 0</td>
+      <td>Pass</td>
+      <td>Candidate name field</td>
+      <td>Pass</td>
+      <td>Submitted - 1</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Pending - 1</td>
+      <td>Pass</td>
+      <td>Search Button</td>
+      <td>Pass</td>
+      <td>Pending - 12</td>
+      <td>Fail</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Rejected - 0</td>
+      <td>Pass</td>
+      <td>Candidate Behalf of action</td>
+      <td>Pass</td>
+      <td>Rejected - 0</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Approved - 0</td>
+      <td>Pass</td>
+      <td>Candidate acceptance - Yes</td>
+      <td>Pass</td>
+      <td>Approved - 1</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Total - 1</td>
+      <td>Pass</td>
+      <td>Submit Task</td>
+      <td>Pass</td>
+      <td>Total - 13</td>
+      <td>Fail</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Switch Back Old Window</td>
+      <td>Pass</td>
+      <td>Task Notifier</td>
+      <td>Pass</td>
+      <td>Switch Back Old Window</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>NA</td>
+      <td>NA</td>
+      <td>Task Notifier Dismiss</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>NA</td>
+      <td>NA</td>
+      <td>Close Window</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>NA</td>
+      <td>NA</td>
+      <td>Switch To Old Window</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+  </tbody>
+</table>
+        </div>
+    </div>
+    <script>
+        document.querySelectorAll('.preview-table tr').forEach((tr, rowIndex) => {
+            let statusCount = 0;
+            const cells = tr.querySelectorAll('td');
+            
+            cells.forEach(td => {
+                const text = td.innerText.trim().toUpperCase();
+                
+                // Highlight Pass/Fail
+                if (['PASS', 'SUCCESS', 'PASSED'].includes(text)) {
+                    td.classList.add('status-pass');
+                } else if (['FAIL', 'FAILURE', 'FAILED', 'ERROR'].includes(text)) {
+                    td.classList.add('status-fail');
+                } else if (text === 'NA') {
+                    td.classList.add('status-na');
+                }
+                
+                // Header detection keywords
+                if (['STATUS', 'IDENTITY', 'ID'].includes(text)) {
+                    statusCount++;
+                }
+            });
+            
+            // If row has multiple 'Status' labels, it's a sub-header
+            if (statusCount >= 2 && rowIndex > 0) {
+                tr.classList.add('sub-header');
+            }
+        });
+    </script>
+</body>
+</html>

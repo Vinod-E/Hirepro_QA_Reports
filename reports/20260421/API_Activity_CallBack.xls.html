@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preview: API_Activity_CallBack.xls</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --primary: #4f46e5; --bg: #f8fafc; --text: #1e293b; --border: #e2e8f0; --success: #10b981; --danger: #ef4444; }
+        body { font-family: 'Outfit', sans-serif; background-color: var(--bg); color: var(--text); padding: 2rem; margin: 0; }
+        .container { max-width: 1400px; margin: 0 auto; background: white; padding: 2.5rem; border-radius: 1.5rem; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05); border: 1px solid var(--border); }
+        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 2px solid var(--bg); }
+        .title-area { display: flex; align-items: center; gap: 1rem; }
+        .title-area i { font-size: 2rem; color: var(--primary); }
+        h1 { font-size: 1.5rem; font-weight: 800; margin: 0; }
+        .actions { display: flex; gap: 1rem; }
+        .btn { text-decoration: none; padding: 0.6rem 1.25rem; border-radius: 10px; font-weight: 700; font-size: 0.85rem; display: flex; align-items: center; gap: 0.5rem; transition: all 0.2s; border: none; cursor: pointer; }
+        .btn-download { background: var(--primary); color: white; }
+        .btn-download:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3); }
+        .btn-back { background: #f1f5f9; color: var(--text); }
+        .btn-back:hover { background: #e2e8f0; }
+        .table-wrapper { overflow-x: auto; border-radius: 12px; border: 1px solid var(--border); background: white; }
+        .preview-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; border-spacing: 0; }
+        .preview-table td { padding: 0.85rem 1.15rem; border-bottom: 1px solid var(--border); border-right: 1px solid var(--border); white-space: nowrap; color: var(--text); }
+        .preview-table tr:hover { background: #f1f5f9 !important; }
+        
+        /* Header & Sub-header Styling */
+        .preview-table tr:first-child td,
+        .preview-table tr.sub-header td { 
+            background: #f1f5f9 !important; 
+            font-weight: 800 !important; 
+            color: #475569 !important; 
+            text-transform: uppercase; 
+            font-size: 0.75rem; 
+            letter-spacing: 0.025em;
+            border-bottom: 2px solid #cbd5e1 !important;
+        }
+        
+        .preview-table tr:nth-child(even) { background: #fafbfc; }
+        .preview-table tr:hover { background: #f1f5f9 !important; }
+        
+        /* Status Colors */
+        .status-pass { color: var(--success) !important; font-weight: 800; background: #ecfdf5 !important; }
+        .status-fail { color: var(--danger) !important; font-weight: 800; background: #fef2f2 !important; }
+        .status-na { color: #94a3b8; font-style: italic; opacity: 0.5; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="title-area">
+                <i class="fas fa-file-excel"></i>
+                <div>
+                    <h1>API_Activity_CallBack.xls</h1>
+                    <div style="font-size: 0.75rem; color: #64748b; font-weight: 600; margin-top: 0.2rem; text-transform: uppercase;">Spreadsheet Preview (All Rows)</div>
+                </div>
+            </div>
+            <div class="actions">
+                <button onclick="window.close()" class="btn btn-back"><i class="fas fa-times"></i> Close Tab</button>
+                <a href="API_Activity_CallBack.xls" download="API_Activity_CallBack.xls" class="btn btn-download"><i class="fas fa-download"></i> Download Excel</a>
+            </div>
+        </header>
+        <div class="table-wrapper">
+            <table border="1" class="dataframe preview-table">
+  <tbody>
+    <tr>
+      <td>Activity CallBack</td>
+      <td>Pass</td>
+      <td>Login Server</td>
+      <td>[MASKED_REF]</td>
+      <td>Lambda</td>
+      <td>On</td>
+      <td>APP Name</td>
+      <td>crpo</td>
+      <td>No.of Test cases</td>
+      <td>14</td>
+      <td>Start Time</td>
+      <td>2026-04-21 10:42:25.137722</td>
+      <td>Failed Test cases</td>
+      <td>0</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Comparision</td>
+      <td>Expected_Status</td>
+      <td>candidateId</td>
+      <td>ApplicantId</td>
+      <td>Current_stage</td>
+      <td>Current_Status</td>
+      <td>A1_T1</td>
+      <td>A1_T1_Status</td>
+      <td>A2_T1</td>
+      <td>A2_T1_Status</td>
+      <td>A2_T2</td>
+      <td>A2_T2_Status</td>
+      <td>A2_T3(OT)</td>
+      <td>A2_T3_Status</td>
+      <td>A3_T1</td>
+      <td>A3_T1_Status</td>
+      <td>A3_T2</td>
+      <td>A3_T2_Status</td>
+      <td>Task_IDs</td>
+    </tr>
+    <tr>
+      <td>Input</td>
+      <td>NA</td>
+      <td>1267280</td>
+      <td>841751</td>
+      <td>Offer</td>
+      <td>Dropped -Offer Decline</td>
+      <td>1270</td>
+      <td>Rejected</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>1270</td>
+    </tr>
+    <tr>
+      <td>Output</td>
+      <td>Pass</td>
+      <td>1267280</td>
+      <td>841751</td>
+      <td>Offer</td>
+      <td>Dropped -Offer Decline</td>
+      <td>1270</td>
+      <td>Rejected</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>1270</td>
+    </tr>
+    <tr>
+      <td>Input</td>
+      <td>NA</td>
+      <td>1267281</td>
+      <td>841752</td>
+      <td>Offer</td>
+      <td>Offer Released</td>
+      <td>1270</td>
+      <td>NotBegun</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>1270</td>
+    </tr>
+    <tr>
+      <td>Output</td>
+      <td>Pass</td>
+      <td>1267281</td>
+      <td>841752</td>
+      <td>Offer</td>
+      <td>Offer Released</td>
+      <td>1270</td>
+      <td>NotBegun</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>1270</td>
+    </tr>
+    <tr>
+      <td>Input</td>
+      <td>NA</td>
+      <td>1267282</td>
+      <td>841753</td>
+      <td>Offer</td>
+      <td>Offer Accepted</td>
+      <td>1270</td>
+      <td>Approved</td>
+      <td>1362</td>
+      <td>NotBegun</td>
+      <td>1363</td>
+      <td>NotBegun</td>
+      <td>1364</td>
+      <td>NotBegun</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>1270,1362,1363,1364</td>
+    </tr>
+    <tr>
+      <td>Output</td>
+      <td>Pass</td>
+      <td>1267282</td>
+      <td>841753</td>
+      <td>Offer</td>
+      <td>Offer Accepted</td>
+      <td>1270</td>
+      <td>Approved</td>
+      <td>1362</td>
+      <td>NotBegun</td>
+      <td>1363</td>
+      <td>NotBegun</td>
+      <td>1364</td>
+      <td>NotBegun</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>1270,1362,1363,1364</td>
+    </tr>
+    <tr>
+      <td>Input</td>
+      <td>NA</td>
+      <td>1267283</td>
+      <td>841754</td>
+      <td>Offer</td>
+      <td>Offer Accepted</td>
+      <td>1270</td>
+      <td>Approved</td>
+      <td>1362</td>
+      <td>Submitted</td>
+      <td>1363</td>
+      <td>NotBegun</td>
+      <td>1364</td>
+      <td>NotBegun</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>1270,1362,1363,1364</td>
+    </tr>
+    <tr>
+      <td>Output</td>
+      <td>Pass</td>
+      <td>1267283</td>
+      <td>841754</td>
+      <td>Offer</td>
+      <td>Offer Accepted</td>
+      <td>1270</td>
+      <td>Approved</td>
+      <td>1362</td>
+      <td>Submitted</td>
+      <td>1363</td>
+      <td>NotBegun</td>
+      <td>1364</td>
+      <td>NotBegun</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>1270,1362,1363,1364</td>
+    </tr>
+    <tr>
+      <td>Input</td>
+      <td>NA</td>
+      <td>1267284</td>
+      <td>841755</td>
+      <td>Offer</td>
+      <td>Offer Accepted</td>
+      <td>1270</td>
+      <td>Approved</td>
+      <td>1362</td>
+      <td>Approved</td>
+      <td>1363</td>
+      <td>NotBegun</td>
+      <td>1364</td>
+      <td>NotBegun</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>1270,1362,1363,1364</td>
+    </tr>
+    <tr>
+      <td>Output</td>
+      <td>Pass</td>
+      <td>1267284</td>
+      <td>841755</td>
+      <td>Offer</td>
+      <td>Offer Accepted</td>
+      <td>1270</td>
+      <td>Approved</td>
+      <td>1362</td>
+      <td>Approved</td>
+      <td>1363</td>
+      <td>NotBegun</td>
+      <td>1364</td>
+      <td>NotBegun</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>1270,1362,1363,1364</td>
+    </tr>
+    <tr>
+      <td>Input</td>
+      <td>NA</td>
+      <td>1267285</td>
+      <td>841756</td>
+      <td>Offer</td>
+      <td>Offer Accepted</td>
+      <td>1270</td>
+      <td>Approved</td>
+      <td>1362</td>
+      <td>Approved</td>
+      <td>1363</td>
+      <td>Rejected</td>
+      <td>1364</td>
+      <td>NotBegun</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>1270,1362,1363,1364</td>
+    </tr>
+    <tr>
+      <td>Output</td>
+      <td>Pass</td>
+      <td>1267285</td>
+      <td>841756</td>
+      <td>Offer</td>
+      <td>Offer Accepted</td>
+      <td>1270</td>
+      <td>Approved</td>
+      <td>1362</td>
+      <td>Approved</td>
+      <td>1363</td>
+      <td>Rejected</td>
+      <td>1364</td>
+      <td>NotBegun</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>1270,1362,1363,1364</td>
+    </tr>
+    <tr>
+      <td>Input</td>
+      <td>NA</td>
+      <td>1267286</td>
+      <td>841757</td>
+      <td>Offer</td>
+      <td>OfferPending</td>
+      <td>1270</td>
+      <td>Approved</td>
+      <td>1362</td>
+      <td>Approved</td>
+      <td>1363</td>
+      <td>Approved</td>
+      <td>1364</td>
+      <td>NotBegun</td>
+      <td>1365</td>
+      <td>NotBegun</td>
+      <td>1366</td>
+      <td>NotBegun</td>
+      <td>1270,1362,1365,1363,1366,1364</td>
+    </tr>
+    <tr>
+      <td>Output</td>
+      <td>Pass</td>
+      <td>1267286</td>
+      <td>841757</td>
+      <td>Offer</td>
+      <td>OfferPending</td>
+      <td>1270</td>
+      <td>Approved</td>
+      <td>1362</td>
+      <td>Approved</td>
+      <td>1363</td>
+      <td>Approved</td>
+      <td>1364</td>
+      <td>NotBegun</td>
+      <td>1365</td>
+      <td>NotBegun</td>
+      <td>1366</td>
+      <td>NotBegun</td>
+      <td>1270,1362,1365,1363,1366,1364</td>
+    </tr>
+    <tr>
+      <td>Input</td>
+      <td>NA</td>
+      <td>1267287</td>
+      <td>841758</td>
+      <td>Offer</td>
+      <td>OfferPending</td>
+      <td>1270</td>
+      <td>Approved</td>
+      <td>1362</td>
+      <td>Approved</td>
+      <td>1363</td>
+      <td>Approved</td>
+      <td>1364</td>
+      <td>Submitted</td>
+      <td>1365</td>
+      <td>NotBegun</td>
+      <td>1366</td>
+      <td>NotBegun</td>
+      <td>1270,1362,1365,1363,1366,1364</td>
+    </tr>
+    <tr>
+      <td>Output</td>
+      <td>Pass</td>
+      <td>1267287</td>
+      <td>841758</td>
+      <td>Offer</td>
+      <td>OfferPending</td>
+      <td>1270</td>
+      <td>Approved</td>
+      <td>1362</td>
+      <td>Approved</td>
+      <td>1363</td>
+      <td>Approved</td>
+      <td>1364</td>
+      <td>Submitted</td>
+      <td>1365</td>
+      <td>NotBegun</td>
+      <td>1366</td>
+      <td>NotBegun</td>
+      <td>1270,1362,1365,1363,1366,1364</td>
+    </tr>
+    <tr>
+      <td>Input</td>
+      <td>NA</td>
+      <td>1267288</td>
+      <td>841759</td>
+      <td>Offer</td>
+      <td>OfferPending</td>
+      <td>1270</td>
+      <td>Approved</td>
+      <td>1362</td>
+      <td>Approved</td>
+      <td>1363</td>
+      <td>Approved</td>
+      <td>1364</td>
+      <td>Rejected</td>
+      <td>1365</td>
+      <td>NotBegun</td>
+      <td>1366</td>
+      <td>NotBegun</td>
+      <td>1270,1362,1365,1363,1366,1364</td>
+    </tr>
+    <tr>
+      <td>Output</td>
+      <td>Pass</td>
+      <td>1267288</td>
+      <td>841759</td>
+      <td>Offer</td>
+      <td>OfferPending</td>
+      <td>1270</td>
+      <td>Approved</td>
+      <td>1362</td>
+      <td>Approved</td>
+      <td>1363</td>
+      <td>Approved</td>
+      <td>1364</td>
+      <td>Rejected</td>
+      <td>1365</td>
+      <td>NotBegun</td>
+      <td>1366</td>
+      <td>NotBegun</td>
+      <td>1270,1362,1365,1363,1366,1364</td>
+    </tr>
+    <tr>
+      <td>Input</td>
+      <td>NA</td>
+      <td>1267289</td>
+      <td>841760</td>
+      <td>Offer</td>
+      <td>OfferPending</td>
+      <td>1270</td>
+      <td>Approved</td>
+      <td>1362</td>
+      <td>Approved</td>
+      <td>1363</td>
+      <td>Approved</td>
+      <td>1364</td>
+      <td>Approved</td>
+      <td>1365</td>
+      <td>NotBegun</td>
+      <td>1366</td>
+      <td>NotBegun</td>
+      <td>1270,1362,1365,1363,1366,1364</td>
+    </tr>
+    <tr>
+      <td>Output</td>
+      <td>Pass</td>
+      <td>1267289</td>
+      <td>841760</td>
+      <td>Offer</td>
+      <td>OfferPending</td>
+      <td>1270</td>
+      <td>Approved</td>
+      <td>1362</td>
+      <td>Approved</td>
+      <td>1363</td>
+      <td>Approved</td>
+      <td>1364</td>
+      <td>Approved</td>
+      <td>1365</td>
+      <td>NotBegun</td>
+      <td>1366</td>
+      <td>NotBegun</td>
+      <td>1270,1362,1365,1363,1366,1364</td>
+    </tr>
+    <tr>
+      <td>Input</td>
+      <td>NA</td>
+      <td>1267290</td>
+      <td>841761</td>
+      <td>Offer</td>
+      <td>OfferPending</td>
+      <td>1270</td>
+      <td>Approved</td>
+      <td>1362</td>
+      <td>Approved</td>
+      <td>1363</td>
+      <td>Approved</td>
+      <td>1364</td>
+      <td>Approved</td>
+      <td>1365</td>
+      <td>Approved</td>
+      <td>1366</td>
+      <td>NotBegun</td>
+      <td>1270,1362,1365,1363,1366,1364</td>
+    </tr>
+    <tr>
+      <td>Output</td>
+      <td>Pass</td>
+      <td>1267290</td>
+      <td>841761</td>
+      <td>Offer</td>
+      <td>OfferPending</td>
+      <td>1270</td>
+      <td>Approved</td>
+      <td>1362</td>
+      <td>Approved</td>
+      <td>1363</td>
+      <td>Approved</td>
+      <td>1364</td>
+      <td>Approved</td>
+      <td>1365</td>
+      <td>Approved</td>
+      <td>1366</td>
+      <td>NotBegun</td>
+      <td>1270,1362,1365,1363,1366,1364</td>
+    </tr>
+    <tr>
+      <td>Input</td>
+      <td>NA</td>
+      <td>1267291</td>
+      <td>841762</td>
+      <td>Offer</td>
+      <td>OfferPending</td>
+      <td>1270</td>
+      <td>Approved</td>
+      <td>1362</td>
+      <td>Approved</td>
+      <td>1363</td>
+      <td>Approved</td>
+      <td>1364</td>
+      <td>Approved</td>
+      <td>1365</td>
+      <td>Approved</td>
+      <td>1366</td>
+      <td>Submitted</td>
+      <td>1270,1362,1365,1363,1366,1364</td>
+    </tr>
+    <tr>
+      <td>Output</td>
+      <td>Pass</td>
+      <td>1267291</td>
+      <td>841762</td>
+      <td>Offer</td>
+      <td>OfferPending</td>
+      <td>1270</td>
+      <td>Approved</td>
+      <td>1362</td>
+      <td>Approved</td>
+      <td>1363</td>
+      <td>Approved</td>
+      <td>1364</td>
+      <td>Approved</td>
+      <td>1365</td>
+      <td>Approved</td>
+      <td>1366</td>
+      <td>Submitted</td>
+      <td>1270,1362,1365,1363,1366,1364</td>
+    </tr>
+    <tr>
+      <td>Input</td>
+      <td>NA</td>
+      <td>1267292</td>
+      <td>841763</td>
+      <td>Offer</td>
+      <td>OfferPending</td>
+      <td>1270</td>
+      <td>Approved</td>
+      <td>1362</td>
+      <td>Approved</td>
+      <td>1363</td>
+      <td>Approved</td>
+      <td>1364</td>
+      <td>Approved</td>
+      <td>1365</td>
+      <td>Approved</td>
+      <td>1366</td>
+      <td>Rejected</td>
+      <td>1270,1362,1365,1363,1366,1364</td>
+    </tr>
+    <tr>
+      <td>Output</td>
+      <td>Pass</td>
+      <td>1267292</td>
+      <td>841763</td>
+      <td>Offer</td>
+      <td>OfferPending</td>
+      <td>1270</td>
+      <td>Approved</td>
+      <td>1362</td>
+      <td>Approved</td>
+      <td>1363</td>
+      <td>Approved</td>
+      <td>1364</td>
+      <td>Approved</td>
+      <td>1365</td>
+      <td>Approved</td>
+      <td>1366</td>
+      <td>Rejected</td>
+      <td>1270,1362,1365,1363,1366,1364</td>
+    </tr>
+    <tr>
+      <td>Input</td>
+      <td>NA</td>
+      <td>1267293</td>
+      <td>841764</td>
+      <td>Offer</td>
+      <td>Joined</td>
+      <td>1270</td>
+      <td>Approved</td>
+      <td>1362</td>
+      <td>Approved</td>
+      <td>1363</td>
+      <td>Approved</td>
+      <td>1364</td>
+      <td>Approved</td>
+      <td>1365</td>
+      <td>Approved</td>
+      <td>1366</td>
+      <td>Approved</td>
+      <td>1270,1362,1365,1363,1366,1364</td>
+    </tr>
+    <tr>
+      <td>Output</td>
+      <td>Pass</td>
+      <td>1267293</td>
+      <td>841764</td>
+      <td>Offer</td>
+      <td>Joined</td>
+      <td>1270</td>
+      <td>Approved</td>
+      <td>1362</td>
+      <td>Approved</td>
+      <td>1363</td>
+      <td>Approved</td>
+      <td>1364</td>
+      <td>Approved</td>
+      <td>1365</td>
+      <td>Approved</td>
+      <td>1366</td>
+      <td>Approved</td>
+      <td>1270,1362,1365,1363,1366,1364</td>
+    </tr>
+  </tbody>
+</table>
+        </div>
+    </div>
+    <script>
+        document.querySelectorAll('.preview-table tr').forEach((tr, rowIndex) => {
+            let statusCount = 0;
+            const cells = tr.querySelectorAll('td');
+            
+            cells.forEach(td => {
+                const text = td.innerText.trim().toUpperCase();
+                
+                // Highlight Pass/Fail
+                if (['PASS', 'SUCCESS', 'PASSED'].includes(text)) {
+                    td.classList.add('status-pass');
+                } else if (['FAIL', 'FAILURE', 'FAILED', 'ERROR'].includes(text)) {
+                    td.classList.add('status-fail');
+                } else if (text === 'NA') {
+                    td.classList.add('status-na');
+                }
+                
+                // Header detection keywords
+                if (['STATUS', 'IDENTITY', 'ID'].includes(text)) {
+                    statusCount++;
+                }
+            });
+            
+            // If row has multiple 'Status' labels, it's a sub-header
+            if (statusCount >= 2 && rowIndex > 0) {
+                tr.classList.add('sub-header');
+            }
+        });
+    </script>
+</body>
+</html>
