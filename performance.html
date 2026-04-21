@@ -35,10 +35,7 @@
         }
 
         body {
-            background-color: #f8fafc;
-            background-image: 
-                radial-gradient(at 0% 0%, rgba(255, 107, 0, 0.05) 0px, transparent 50%),
-                radial-gradient(at 100% 0%, rgba(99, 102, 241, 0.05) 0px, transparent 50%);
+            background-color: #ffffff;
             color: var(--text-main);
             min-height: 100vh;
             padding-bottom: 40px;
@@ -104,6 +101,9 @@
             height: 32px;
             width: auto;
         }
+
+        .header-home-btn { display: none; text-decoration: none; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 12px; background: rgba(255, 107, 0, 0.1); color: #FF6B00; transition: all 0.2s; margin: 0 auto 0.25rem auto; border: 1px solid rgba(255, 107, 0, 0.2); }
+        .header-home-btn:active { background: rgba(255, 107, 0, 0.2); transform: scale(0.95); }
 
         .title-section h1 {
             font-size: 1.6rem;
@@ -389,14 +389,16 @@
 
         /* Mobile Responsiveness */
         @media (max-width: 768px) {
-            header { margin: 15px 3% 20px 3%; }
+            .container { padding: 0 15px; }
+            header { margin: 5px 3% 20px 3%; }
             .header-container { grid-template-columns: 1fr; gap: 1rem; text-align: center; }
-            .nav-section { justify-content: center; }
+            .nav-section { justify-content: center; flex-direction: column; align-items: center; }
             .audit-section { text-align: center; }
             .audit-time { justify-content: center; }
+            .header-home-btn { display: flex !important; }
 
             .main-nav { 
-                width: 94%; padding: 0.35rem; margin-bottom: 2rem; 
+                width: 94%; padding: 0.35rem; margin: 0 auto 2.5rem auto; 
                 flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch;
             }
             .nav-btn { padding: 0.6rem 1.25rem; font-size: 0.75rem; flex-shrink: 0; }
@@ -404,7 +406,7 @@
             .chart-card { padding: 1rem; border-radius: 20px; margin-bottom: 1.5rem; }
             .chart-container { height: 260px !important; }
 
-            .section-title { font-size: 1rem; padding-left: 0; border-left: none; border-bottom: 2px solid var(--primary); width: fit-content; margin-bottom: 1.25rem; }
+            .section-title { font-size: 1.1rem; padding-left: 0; border: none; margin-bottom: 1.25rem; }
 
             /* Refined Table to Card Transformation */
             .table-wrapper { padding: 0; overflow-x: hidden; }
@@ -444,7 +446,7 @@
             .sprint-meta { flex-direction: column; gap: 2px; }
             .meta-item { font-size: 0.6rem; }
             
-            .floating-home, .api-icon { display: none !important; }
+            .api-icon { display: none !important; }
         }
 
         /* Column Widths */
@@ -462,15 +464,7 @@
         .chip-danger { background: #fee2e2; color: #991b1b; }
         .chip-neutral { background: #f1f5f9; color: #475569; }
 
-        .floating-home {
-            position: fixed; bottom: 2rem; right: 2rem; width: 56px; height: 56px; 
-            background: var(--primary); color: white; border-radius: 50%; 
-            display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 8px 25px rgba(255, 107, 0, 0.35); cursor: pointer;
-            z-index: 9999; border: none; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            text-decoration: none; font-size: 1.2rem;
-        }
-        .floating-home:hover { transform: scale(1.1) translateY(-5px); box-shadow: 0 12px 30px rgba(255, 107, 0, 0.45); }
+
 
         footer { 
             margin-top: 8rem; padding: 2rem 0; border-top: 1px solid #D9D7D7; 
@@ -497,7 +491,7 @@
         .floating-home:hover i { transform: rotate(-10deg); }
 
         @media (max-width: 768px) {
-            header { padding: 25px 0; margin-bottom: 10px; }
+            header { padding: 10px 0 20px 0; margin-bottom: 10px; }
             .header-container { grid-template-columns: 1fr; gap: 15px; text-align: center; }
             .logo-img { height: 35px; }
             .nav-section { justify-content: center; }
@@ -512,26 +506,36 @@
             .chart-container { height: 260px !important; }
             .section-title { font-size: 1rem; justify-content: center; margin-bottom: 1.25rem; text-align: center; }
 
-            summary { padding: 1.25rem; align-items: center; border-radius: 16px !important; }
-            .sprint-label { align-items: flex-start; width: 100%; gap: 10px; }
-            .sprint-meta { flex-direction: column; gap: 4px; }
-            .sprint-id { font-size: 0.95rem; }
-            .meta-item { font-size: 0.75rem; }
-            summary::after { width: 32px; height: 32px; top: 1.25rem; right: 1.25rem; }
+            summary { padding: 1.25rem 1rem; display: flex !important; flex-direction: column !important; align-items: center !important; gap: 10px; border-radius: 16px !important; position: relative; }
+            .sprint-label { display: contents !important; }
+            .sprint-id { font-size: 1.1rem; font-weight: 800; color: #1e293b; margin-bottom: 2px; text-align: center; }
+            .sprint-meta { display: flex; gap: 15px; flex-direction: row !important; align-items: center; justify-content: center; flex-wrap: wrap; }
+            .meta-item { font-size: 0.7rem; gap: 5px; font-weight: 700; justify-content: center; }
+            summary > div:last-child { margin-top: 0; display: flex; justify-content: center; width: 100%; } /* Endpoints alignment */
+            summary::after { position: absolute; right: 1rem; top: 1.25rem; width: 32px; height: 32px; transform: none; }
+            details[open] summary::after { transform: rotate(180deg); }
 
             .api-row td { padding: 0.8rem 1rem !important; }
             .stat-value { font-size: 0.8rem; }
             
             /* Compact Mobile Adjustments */
-            .custom-legend { padding: 1rem; gap: 8px; border-radius: 20px; }
-            .legend-item { padding: 4px 10px; border-radius: 12px; }
-            .legend-dot { width: 8px; height: 8px; }
-            .legend-text { font-size: 0.65rem; }
+            .custom-legend { 
+                padding: 0.75rem; gap: 8px; border-radius: 20px; 
+                display: grid; grid-template-columns: 1fr 1fr; 
+            }
+            .legend-item { 
+                width: 100%; 
+                min-width: 0;
+                justify-content: flex-start; 
+                padding: 6px 10px;
+                gap: 6px;
+            }
+            .legend-text { font-size: 0.65rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
             
             .legend-header { flex-direction: column; align-items: flex-start; gap: 12px; }
             .legend-controls { width: 100%; justify-content: space-between; }
             .legend-btn { flex: 1; justify-content: center; padding: 0.6rem; font-size: 0.6rem; }
-            .floating-home { width: 48px; height: 48px; bottom: 20px; right: 20px; font-size: 1.2rem; }
+            .floating-home { display: none !important; }
 
             footer { 
                 flex-direction: column; gap: 1.5rem; margin-top: 4rem; 
@@ -557,15 +561,18 @@
     <header>
         <div class="header-container">
             <div class="nav-section">
+                <a href="dashboard.html" class="header-home-btn">
+                    <i class="fas fa-home"></i>
+                </a>
                 <img src="https://hirepro.in/wp-content/uploads/2025/05/HirePro-logo.svg" alt="HirePro Logo" class="logo-img">
             </div>
             <div class="title-section">
                 <h1>Performance Analytics</h1>
                 <div class="subtitle">API Response Time Trends & Historical Audit</div>
             </div>
-            <div class="audit-section" style="text-align: right;">
+            <div class="audit-section">
                 <div style="font-size: 0.8rem; color: #64748b; font-weight: 600; margin-bottom: 0.25rem;">LATEST AUDIT</div>
-                <div style="font-weight: 800; font-size: 1rem;"><i class="fas fa-sync-alt" style="color:var(--success); margin-right: 0.5rem;"></i> 2026-04-21 14:21:26</div>
+                <div style="font-weight: 800; font-size: 1rem;"><i class="fas fa-sync-alt" style="color:var(--success); margin-right: 0.5rem;"></i> 2026-04-21 18:58:09</div>
             </div>
         </div>
     </header>
@@ -640,7 +647,7 @@
         <footer>
             <div style="display: flex; align-items: center; gap: 0.75rem;">
                 <span style="text-transform: uppercase; font-size: 0.7rem; letter-spacing: 0.05em; font-weight: 700;">Build ID:</span>
-                <span class="commit-badge"><i class="fas fa-code-branch" style="margin-right:0.4rem; opacity:0.5;"></i>584117d</span>
+                <span class="commit-badge"><i class="fas fa-code-branch" style="margin-right:0.4rem; opacity:0.5;"></i>276ee58</span>
             </div>
             <div>&copy; 2026 HirePro . All rights reserved.</div>
         </footer>
@@ -801,7 +808,11 @@
                     maintainAspectRatio: false,
                     plugins: { 
                         legend: { display: false },
-                        tooltip: { mode: 'index', intersect: false }
+                        tooltip: { 
+                            enabled: window.innerWidth > 768,
+                            mode: 'index', 
+                            intersect: false 
+                        }
                     },
                     scales: {
                         y: { 
