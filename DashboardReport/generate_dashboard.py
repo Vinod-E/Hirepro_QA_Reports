@@ -336,6 +336,9 @@ def generate_styles():
         h1 { font-size: 1.4rem; font-weight: 800; color: var(--text); line-height: 1.2; }
         .subtitle { color: var(--text-muted); font-size: 0.75rem; margin-top: 0.25rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
         
+        .header-home-btn { display: none; text-decoration: none; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 12px; background: #f1f5f9; color: var(--primary); transition: all 0.2s; margin-bottom: 0.5rem; }
+        .header-home-btn:active { background: #e2e8f0; transform: scale(0.95); }
+        
         .hero-banner { 
             background: var(--card-bg); border: 1px solid var(--border); padding: 2.5rem; border-radius: 2rem; 
             margin-bottom: 2.5rem; box-shadow: var(--shadow); display: flex; align-items: center; gap: 3rem; 
@@ -489,18 +492,17 @@ def generate_styles():
         /* Custom Tooltip Styles - Bottom Placement */
         [data-tooltip] { position: relative; cursor: pointer; }
         [data-tooltip]::before {
-            content: attr(data-tooltip); position: absolute; top: 120%; left: 50%;
-            transform: translateX(-50%) translateY(-5px);
-            padding: 0.35rem 0.75rem; background: #f8fafc; color: #64748b;
-            font-size: 0.65rem; font-weight: 700; border-radius: 99px; white-space: nowrap;
-            opacity: 0; visibility: hidden; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            pointer-events: none; box-shadow: 0 4px 12px rgba(0,0,0,0.06); z-index: 1000;
-            border: 1px solid #e2e8f0; text-transform: uppercase; letter-spacing: 0.05em;
+            content: attr(data-tooltip); position: absolute; bottom: 120%; left: 50%;
+            transform: translateX(-50%) translateY(5px);
+            padding: 0.5rem 0.85rem; background: #1e293b; color: #ffffff;
+            font-size: 0.7rem; font-weight: 700; border-radius: 12px; white-space: nowrap;
+            opacity: 0; visibility: hidden; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: none; box-shadow: 0 10px 20px rgba(0,0,0,0.2); z-index: 10000;
+            border: 1px solid rgba(255,255,255,0.1); text-transform: uppercase; letter-spacing: 0.05em;
         }
         [data-tooltip]:hover::before { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
         
-        .floating-reset[data-tooltip]::before { top: auto; bottom: 100%; left: auto; right: 0; transform: translateY(5px); }
-        .floating-reset[data-tooltip]:hover::before { transform: translateY(0); }
+        .floating-reset[data-tooltip]::before, .floating-home[data-tooltip]::before { bottom: 125%; }
 
         @keyframes attentionBlink { 0% { opacity: 1; transform: scale(1); } 50% { opacity: 0.7; transform: scale(0.95); } 100% { opacity: 1; transform: scale(1); } }
         .badge-urgent { animation: attentionBlink 1.5s infinite ease-in-out; background: white; color: var(--danger); padding: 0.35rem 0.85rem; border-radius: 99px; font-weight: 800; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.02em; box-shadow: 0 2px 4px rgba(239, 68, 68, 0.2); }
@@ -518,20 +520,35 @@ def generate_styles():
         .history-table td { padding: 0.75rem; border-bottom: 1px solid var(--border); vertical-align: middle; }
         .history-date { font-weight: 700; color: var(--text); white-space: nowrap; }
 
-        .floating-reset {
+        .floating-home {
             position: fixed; bottom: 2rem; right: 2rem; width: 56px; height: 56px; 
-            background: var(--primary); color: white; border-radius: 50%; 
+            background: var(--primary); color: white; border-radius: 20px; 
             display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.4); cursor: pointer;
-            z-index: 9999; border: none; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            text-decoration: none; font-size: 1.2rem;
+            box-shadow: 0 10px 30px rgba(79, 70, 229, 0.3);
+            z-index: 9999; border: 1px solid rgba(255,255,255,0.2);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-decoration: none; font-size: 1.4rem;
+            backdrop-filter: blur(8px);
         }
-        .floating-reset:hover { transform: scale(1.1); box-shadow: 0 6px 16px rgba(79, 70, 229, 0.6); }
+        .floating-home:hover { transform: scale(1.1) translateY(-5px); box-shadow: 0 15px 40px rgba(79, 70, 229, 0.45); background: var(--primary-dark); }
+        .floating-home i { transition: transform 0.3s ease; }
+        .floating-home:hover i { transform: rotate(-10deg); }
+        .floating-home[data-tooltip]:hover::before { transform: translateX(-50%) translateY(0); }
+
+        .floating-reset {
+            position: fixed; bottom: 2rem; right: 6.5rem; width: 56px; height: 56px; 
+            background: var(--primary); color: white; border-radius: 20px; 
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 10px 30px rgba(79, 70, 229, 0.3); cursor: pointer;
+            z-index: 9999; border: 1px solid rgba(255,255,255,0.2); transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-decoration: none; font-size: 1.2rem;
+            backdrop-filter: blur(8px);
+        }
+        .floating-reset:hover { transform: scale(1.1) translateY(-5px); box-shadow: 0 15px 40px rgba(79, 70, 229, 0.45); }
         .floating-reset:hover i { transform: rotate(45deg); }
         .floating-reset i { transition: transform 0.3s; }
         .floating-reset:active { transform: scale(0.9); }
-        .floating-reset[data-tooltip]::before { top: auto; bottom: 125%; }
-        .floating-reset[data-tooltip]:hover::before { transform: translateX(-50%) translateY(0) rotate(0); }
+        .floating-reset[data-tooltip]:hover::before { transform: translateX(-50%) translateY(0); }
 
         @media (max-width: 768px) {
             body { padding: 1rem 0.5rem; overflow-x: hidden; }
@@ -602,7 +619,8 @@ def generate_styles():
             .view-btn { padding: 0.35rem 0.8rem; font-size: 0.65rem; }
             
             footer { flex-direction: column; gap: 1rem; text-align: center; font-size: 0.75rem; }
-            .floating-reset { display: none; }
+            .header-home-btn { display: flex !important; }
+            .floating-home, .floating-reset { display: none !important; }
             [data-tooltip]::before { display: none !important; }
         }
         .loader-overlay {
@@ -996,10 +1014,12 @@ def generate():
     <div class="container">
     <header>
         <div style="display: flex; align-items: center; gap: 1rem;">
-            <a href="dashboard.html" style="text-decoration: none; display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 12px; background: #f1f5f9; color: var(--primary); transition: all 0.2s;" onmouseover="this.style.background='#e2e8f0'" onmouseout="this.style.background='#f1f5f9'">
+            <a href="dashboard.html" class="header-home-btn">
                 <i class="fas fa-home"></i>
             </a>
-            <img src="https://hirepro.in/wp-content/uploads/2025/05/HirePro-logo.svg" alt="HirePro Logo" style="height: 32px; width: auto;">
+            <a href="dashboard.html" style="text-decoration: none;">
+                <img src="https://hirepro.in/wp-content/uploads/2025/05/HirePro-logo.svg" alt="HirePro Logo" style="height: 32px; width: auto;">
+            </a>
         </div>
         <div style="text-align: center;"><h1>Quality Dashboard</h1><p class="subtitle">Unified Test Lifecycle Monitoring</p></div>
         <div style="text-align: right;">
@@ -1048,6 +1068,9 @@ def generate():
     """]
 
     html_parts.append(f"""
+    <a href="dashboard.html" class="floating-home" data-tooltip="Return to Menu">
+        <i class="fas fa-home"></i>
+    </a>
     <button class="floating-reset" onclick="switchDate('{current_day['raw_date']}', true)" data-tooltip="Reset to Live Audit">
         <i class="fas fa-rotate-left"></i>
     </button>
