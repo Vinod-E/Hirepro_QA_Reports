@@ -703,8 +703,30 @@ def generate_landing_page():
             -webkit-backdrop-filter: blur(20px) saturate(180%);
         }
 
-        .bg-lightBg { background-image: radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.03) 0, transparent 50%), radial-gradient(at 50% 0%, rgba(168, 85, 247, 0.03) 0, transparent 50%); background-attachment: fixed; }
-        .bg-darkBg { background-image: radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.1) 0, transparent 50%), radial-gradient(at 50% 0%, rgba(168, 85, 247, 0.1) 0, transparent 50%); background-attachment: fixed; }
+        html, body { background-color: #f8fafc; transition: background-color 0.5s ease; }
+        html.dark, html.dark body { background-color: #0f172a; }
+
+        .bg-lightBg { background-color: #f8fafc; }
+        .bg-darkBg { background-color: #0f172a; }
+        
+        .liquid-bg {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            pointer-events: none;
+        }
+        .dark .liquid-bg {
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.1) 0, transparent 50%),
+                radial-gradient(at 50% 0%, rgba(168, 85, 247, 0.1) 0, transparent 50%),
+                radial-gradient(at 50% 50%, rgba(99, 102, 241, 0.08) 0, transparent 60%);
+        }
+        .light .liquid-bg {
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.03) 0, transparent 50%),
+                radial-gradient(at 50% 0%, rgba(168, 85, 247, 0.03) 0, transparent 50%),
+                radial-gradient(at 50% 50%, rgba(99, 102, 241, 0.03) 0, transparent 60%);
+        }
         
         /* Glassmorphism & Gradients */
         .perf-card { 
@@ -750,7 +772,8 @@ def generate_landing_page():
         }
     </style>
 </head>
-<body class="bg-lightBg dark:bg-darkBg text-slate-900 dark:text-slate-100 min-h-screen transition-colors duration-500 overflow-x-hidden">
+<body class="text-slate-900 dark:text-slate-100 min-h-screen overflow-x-hidden">
+    <div class="liquid-bg"></div>
 
     <!-- Liquid Background Blobs -->
     <div class="liquid-blob bg-blue-400 w-96 h-96 -top-20 -left-20 opacity-10 dark:opacity-20"></div>
@@ -784,9 +807,9 @@ def generate_landing_page():
 
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-8">
                     <section onclick="window.location.href='automationreports.html'" 
-                             class="ui-card glass-card card-transition rounded-3xl p-4 lg:p-8 shadow-sm hover:shadow-2xl hover:-translate-y-2 cursor-pointer flex flex-col h-full relative overflow-hidden group">
+                             class="ui-card glass-card card-transition rounded-3xl p-4 lg:p-8 shadow-sm lg:hover:shadow-2xl lg:hover:-translate-y-2 cursor-pointer flex flex-col h-full relative overflow-hidden group">
                         <!-- Card Inner Glow -->
-                        <div class="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
+                        <div class="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-0 lg:group-hover:opacity-100 transition-opacity pointer-events-none"></div>
                         
                         <div class="flex justify-center mb-4 lg:mb-8 relative z-10">
                             <h3 class="text-[10px] lg:text-xs font-bold tracking-widest text-slate-500 dark:text-slate-400 uppercase">Automation Test Report</h3>
@@ -822,9 +845,9 @@ def generate_landing_page():
                     </section>
 
                     <section onclick="window.location.href='performance_daily.html'"
-                             class="perf-card glass-card card-transition rounded-3xl p-4 lg:p-8 shadow-sm hover:shadow-2xl hover:-translate-y-2 cursor-pointer flex flex-col h-full relative overflow-hidden group">
+                             class="perf-card glass-card card-transition rounded-3xl p-4 lg:p-8 shadow-sm lg:hover:shadow-2xl lg:hover:-translate-y-2 cursor-pointer flex flex-col h-full relative overflow-hidden group">
                         <!-- Card Inner Glow -->
-                        <div class="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
+                        <div class="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-0 lg:group-hover:opacity-100 transition-opacity pointer-events-none"></div>
 
                         <div class="flex justify-center mb-4 lg:mb-8 relative z-10">
                             <h3 class="text-[10px] lg:text-xs font-bold tracking-widest text-slate-500 dark:text-slate-400 uppercase">Performance Report - Daily</h3>
@@ -874,9 +897,9 @@ def generate_landing_page():
 
                 <div class="flex justify-center">
                     <section onclick="window.location.href='performance.html'" 
-                             class="sprint-card glass-card card-transition rounded-3xl p-4 lg:p-8 shadow-sm hover:shadow-2xl hover:-translate-y-2 cursor-pointer w-full lg:max-w-lg relative overflow-hidden group">
+                             class="sprint-card glass-card card-transition rounded-3xl p-4 lg:p-8 shadow-sm lg:hover:shadow-2xl lg:hover:-translate-y-2 cursor-pointer w-full lg:max-w-lg relative overflow-hidden group">
                         <!-- Card Inner Glow -->
-                        <div class="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
+                        <div class="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-0 lg:group-hover:opacity-100 transition-opacity pointer-events-none"></div>
 
                         <div class="flex justify-center mb-4 lg:mb-8 relative z-10">
                             <h3 class="text-[10px] lg:text-xs font-bold tracking-widest text-slate-500 dark:text-slate-400 uppercase">Performance Report - SPRINT</h3>
