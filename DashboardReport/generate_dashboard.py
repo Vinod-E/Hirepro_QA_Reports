@@ -682,7 +682,7 @@ def generate_landing_page():
                 extend: {
                     colors: {
                         darkBg: '#0f172a',
-                        lightBg: '#f1f5f9',
+                        lightBg: '#f8fafc',
                     }
                 }
             }
@@ -692,26 +692,51 @@ def generate_landing_page():
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
         body { font-family: 'Inter', sans-serif; }
         
-        .card-transition { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .card-transition { transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        
+        /* Glassmorphism & Liquid UI */
+        .glass-card {
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+        }
+
+        .bg-lightBg { background-image: radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.03) 0, transparent 50%), radial-gradient(at 50% 0%, rgba(168, 85, 247, 0.03) 0, transparent 50%); }
+        .bg-darkBg { background-image: radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.1) 0, transparent 50%), radial-gradient(at 50% 0%, rgba(168, 85, 247, 0.1) 0, transparent 50%); }
         
         /* Glassmorphism & Gradients */
         .perf-card { 
-            background: linear-gradient(135deg, rgba(59, 130, 246, 0.05), rgba(234, 179, 8, 0.05));
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.08), rgba(234, 179, 8, 0.08));
             border: 1px solid rgba(234, 179, 8, 0.2);
         }
-        .light .perf-card { background: white; border: 1px solid rgba(234, 179, 8, 0.3); }
+        .light .perf-card { background: rgba(255, 255, 255, 0.6); border: 1px solid rgba(234, 179, 8, 0.25); }
 
         .ui-card { 
-            background: linear-gradient(135deg, rgba(34, 197, 94, 0.05), rgba(59, 130, 246, 0.05));
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.08), rgba(59, 130, 246, 0.08));
             border: 1px solid rgba(34, 197, 94, 0.2);
         }
-        .light .ui-card { background: white; border: 1px solid rgba(34, 197, 94, 0.3); }
+        .light .ui-card { background: rgba(255, 255, 255, 0.6); border: 1px solid rgba(34, 197, 94, 0.25); }
 
         .sprint-card { 
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.05), rgba(168, 85, 247, 0.05));
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.08), rgba(168, 85, 247, 0.08));
             border: 1px solid rgba(99, 102, 241, 0.2);
         }
-        .light .sprint-card { background: white; border: 1px solid rgba(99, 102, 241, 0.3); }
+        .light .sprint-card { background: rgba(255, 255, 255, 0.6); border: 1px solid rgba(99, 102, 241, 0.25); }
+        
+        .liquid-blob {
+            position: fixed;
+            z-index: -1;
+            filter: blur(80px);
+            opacity: 0.15;
+            border-radius: 50%;
+            animation: float 20s infinite alternate ease-in-out;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -50px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+            100% { transform: translate(0, 0) scale(1); }
+        }
         
         @keyframes spin-slow {
             from { transform: rotate(0deg); }
@@ -722,7 +747,12 @@ def generate_landing_page():
         }
     </style>
 </head>
-<body class="bg-lightBg dark:bg-darkBg text-slate-900 dark:text-slate-100 min-h-screen transition-colors duration-500">
+<body class="bg-lightBg dark:bg-darkBg text-slate-900 dark:text-slate-100 min-h-screen transition-colors duration-500 overflow-x-hidden">
+
+    <!-- Liquid Background Blobs -->
+    <div class="liquid-blob bg-blue-400 w-96 h-96 -top-20 -left-20 opacity-10 dark:opacity-20"></div>
+    <div class="liquid-blob bg-purple-400 w-[30rem] h-[30rem] top-1/2 -right-20 opacity-10 dark:opacity-20" style="animation-delay: -5s;"></div>
+    <div class="liquid-blob bg-orange-300 w-80 h-80 bottom-0 left-1/4 opacity-10 dark:opacity-20" style="animation-delay: -10s;"></div>
 
     <div class="fixed top-4 right-4 lg:top-6 lg:right-6 z-50">
         <button onclick="toggleTheme()" class="p-3 rounded-full bg-white dark:bg-slate-800 shadow-xl border border-slate-200 dark:border-slate-700 hover:scale-110 active:scale-95 transition-all">
@@ -730,7 +760,7 @@ def generate_landing_page():
         </button>
     </div>
 
-    <div class="flex flex-col items-center justify-start lg:justify-center min-h-screen p-4 lg:p-6 py-8 lg:py-12 overflow-x-hidden">
+    <div class="flex flex-col items-center justify-start lg:justify-center min-h-screen p-4 lg:p-6 py-8 lg:py-12 relative z-10">
         
         <header class="w-full max-w-md lg:max-w-6xl text-center mb-4 lg:mb-10">
             <div class="flex flex-col items-center justify-center gap-4 mb-6">
@@ -751,26 +781,29 @@ def generate_landing_page():
 
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-8">
                     <section onclick="window.location.href='automationreports.html'" 
-                             class="ui-card card-transition rounded-3xl p-4 lg:p-8 shadow-sm hover:shadow-xl hover:-translate-y-1 cursor-pointer flex flex-col h-full">
-                        <div class="flex justify-center mb-4 lg:mb-8">
+                             class="ui-card glass-card card-transition rounded-3xl p-4 lg:p-8 shadow-sm hover:shadow-2xl hover:-translate-y-2 cursor-pointer flex flex-col h-full relative overflow-hidden group">
+                        <!-- Card Inner Glow -->
+                        <div class="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
+                        
+                        <div class="flex justify-center mb-4 lg:mb-8 relative z-10">
                             <h3 class="text-[10px] lg:text-xs font-bold tracking-widest text-slate-500 dark:text-slate-400 uppercase">Automation Test Report</h3>
                         </div>
                         
-                        <div class="grid grid-cols-3 gap-2 lg:gap-4 mb-6 lg:mb-10 flex-1">
-                            <div class="flex flex-col items-center text-center group">
-                                <div class="p-2 lg:p-3 rounded-xl lg:rounded-2xl bg-green-500/10 mb-2 lg:mb-3 group-hover:scale-110 transition-transform">
+                        <div class="grid grid-cols-3 gap-2 lg:gap-4 mb-6 lg:mb-10 flex-1 relative z-10">
+                            <div class="flex flex-col items-center text-center group/item">
+                                <div class="p-2 lg:p-3 rounded-xl lg:rounded-2xl bg-green-500/10 mb-2 lg:mb-3 group-hover/item:scale-110 transition-transform">
                                     <i data-lucide="check-circle" class="w-5 h-5 lg:w-8 lg:h-8 text-green-600 dark:text-green-500"></i>
                                 </div>
                                 <span class="text-[8px] lg:text-[11px] font-semibold text-slate-500 dark:text-slate-400 leading-tight">Success Rate</span>
                             </div>
-                            <div class="flex flex-col items-center text-center group">
-                                <div class="p-2 lg:p-3 rounded-xl lg:rounded-2xl bg-orange-500/10 mb-2 lg:mb-3 group-hover:scale-110 transition-transform">
+                            <div class="flex flex-col items-center text-center group/item">
+                                <div class="p-2 lg:p-3 rounded-xl lg:rounded-2xl bg-orange-500/10 mb-2 lg:mb-3 group-hover/item:scale-110 transition-transform">
                                     <i data-lucide="play-circle" class="w-5 h-5 lg:w-8 lg:h-8 text-orange-500 dark:text-orange-400"></i>
                                 </div>
                                 <span class="text-[8px] lg:text-[11px] font-semibold text-slate-500 dark:text-slate-400 leading-tight">Total Tests</span>
                             </div>
-                            <div class="flex flex-col items-center text-center group">
-                                <div class="p-2 lg:p-3 rounded-xl lg:rounded-2xl bg-blue-500/10 mb-2 lg:mb-3 group-hover:scale-110 transition-transform">
+                            <div class="flex flex-col items-center text-center group/item">
+                                <div class="p-2 lg:p-3 rounded-xl lg:rounded-2xl bg-blue-500/10 mb-2 lg:mb-3 group-hover/item:scale-110 transition-transform">
                                     <i data-lucide="monitor" class="w-5 h-5 lg:w-8 lg:h-8 text-blue-600 dark:text-blue-400"></i>
                                 </div>
                                 <span class="text-[8px] lg:text-[11px] font-semibold text-slate-500 dark:text-slate-400 leading-tight">Browser(Chrome)<br>Coverage</span>
@@ -779,33 +812,36 @@ def generate_landing_page():
 
                         <a href="automationreports.html" 
                            onclick="event.stopPropagation();"
-                           class="flex items-center justify-center gap-2 w-full bg-green-600 dark:bg-green-500 text-white font-bold py-3 lg:py-4 rounded-xl lg:rounded-2xl text-[10px] lg:text-xs tracking-widest hover:bg-green-700 dark:hover:bg-green-400 transition-all shadow-lg uppercase mt-auto">
+                           class="flex items-center justify-center gap-2 w-full bg-green-600/90 dark:bg-green-500/90 text-white font-bold py-3 lg:py-4 rounded-xl lg:rounded-2xl text-[10px] lg:text-xs tracking-widest hover:bg-green-700 dark:hover:bg-green-400 transition-all shadow-lg uppercase mt-auto relative z-10">
                             View Automation Test Report
                             <i data-lucide="external-link" class="w-4 h-4"></i>
                         </a>
                     </section>
 
                     <section onclick="window.location.href='performance_daily.html'"
-                             class="perf-card card-transition rounded-3xl p-4 lg:p-8 shadow-sm hover:shadow-xl hover:-translate-y-1 cursor-pointer flex flex-col h-full">
-                        <div class="flex justify-center mb-4 lg:mb-8">
+                             class="perf-card glass-card card-transition rounded-3xl p-4 lg:p-8 shadow-sm hover:shadow-2xl hover:-translate-y-2 cursor-pointer flex flex-col h-full relative overflow-hidden group">
+                        <!-- Card Inner Glow -->
+                        <div class="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
+
+                        <div class="flex justify-center mb-4 lg:mb-8 relative z-10">
                             <h3 class="text-[10px] lg:text-xs font-bold tracking-widest text-slate-500 dark:text-slate-400 uppercase">Performance Report - Daily</h3>
                         </div>
                         
-                        <div class="grid grid-cols-3 gap-2 lg:gap-4 mb-6 lg:mb-10 flex-1">
-                            <div class="flex flex-col items-center text-center group">
-                                <div class="p-2 lg:p-3 rounded-xl lg:rounded-2xl bg-yellow-500/10 mb-2 lg:mb-3 group-hover:scale-110 transition-transform">
+                        <div class="grid grid-cols-3 gap-2 lg:gap-4 mb-6 lg:mb-10 flex-1 relative z-10">
+                            <div class="flex flex-col items-center text-center group/item">
+                                <div class="p-2 lg:p-3 rounded-xl lg:rounded-2xl bg-yellow-500/10 mb-2 lg:mb-3 group-hover/item:scale-110 transition-transform">
                                     <i data-lucide="timer" class="w-5 h-5 lg:w-8 lg:h-8 text-yellow-600 dark:text-yellow-500"></i>
                                 </div>
                                 <span class="text-[8px] lg:text-[11px] font-semibold text-slate-500 dark:text-slate-400 leading-tight">Analyze API<br>Performance</span>
                             </div>
-                            <div class="flex flex-col items-center text-center group">
-                                <div class="p-2 lg:p-3 rounded-xl lg:rounded-2xl bg-blue-500/10 mb-2 lg:mb-3 group-hover:scale-110 transition-transform">
+                            <div class="flex flex-col items-center text-center group/item">
+                                <div class="p-2 lg:p-3 rounded-xl lg:rounded-2xl bg-blue-500/10 mb-2 lg:mb-3 group-hover/item:scale-110 transition-transform">
                                     <i data-lucide="gauge" class="w-5 h-5 lg:w-8 lg:h-8 text-blue-600 dark:text-blue-400"></i>
                                 </div>
                                 <span class="text-[8px] lg:text-[11px] font-semibold text-slate-500 dark:text-slate-400 leading-tight">Track<br>Response Times</span>
                             </div>
-                            <div class="flex flex-col items-center text-center group">
-                                <div class="p-2 lg:p-3 rounded-xl lg:rounded-2xl bg-red-500/10 mb-2 lg:mb-3 group-hover:scale-110 transition-transform relative">
+                            <div class="flex flex-col items-center text-center group/item">
+                                <div class="p-2 lg:p-3 rounded-xl lg:rounded-2xl bg-red-500/10 mb-2 lg:mb-3 group-hover/item:scale-110 transition-transform relative">
                                     <i data-lucide="globe" class="w-5 h-5 lg:w-8 lg:h-8 text-blue-500 dark:text-blue-300"></i>
                                     <span class="absolute top-1 lg:top-2 right-1 lg:right-2 flex h-2 lg:h-3 w-2 lg:w-3">
                                         <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
@@ -818,7 +854,7 @@ def generate_landing_page():
 
                         <a href="performance_daily.html" 
                            onclick="event.stopPropagation();"
-                           class="flex items-center justify-center gap-2 w-full bg-orange-500 hover:bg-orange-600 dark:bg-orange-600 dark:hover:bg-orange-500 text-white font-bold py-3 lg:py-4 rounded-xl lg:rounded-2xl text-[10px] lg:text-xs tracking-widest transition-all shadow-lg uppercase mt-auto">
+                           class="flex items-center justify-center gap-2 w-full bg-orange-500/90 dark:bg-orange-600/90 text-white font-bold py-3 lg:py-4 rounded-xl lg:rounded-2xl text-[10px] lg:text-xs tracking-widest transition-all shadow-lg uppercase mt-auto relative z-10">
                             View Performance Report
                             <i data-lucide="external-link" class="w-4 h-4"></i>
                         </a>
@@ -835,26 +871,29 @@ def generate_landing_page():
 
                 <div class="flex justify-center">
                     <section onclick="window.location.href='performance.html'" 
-                             class="sprint-card card-transition rounded-3xl p-4 lg:p-8 shadow-sm hover:shadow-xl hover:-translate-y-1 cursor-pointer w-full lg:max-w-lg">
-                        <div class="flex justify-center mb-4 lg:mb-8">
+                             class="sprint-card glass-card card-transition rounded-3xl p-4 lg:p-8 shadow-sm hover:shadow-2xl hover:-translate-y-2 cursor-pointer w-full lg:max-w-lg relative overflow-hidden group">
+                        <!-- Card Inner Glow -->
+                        <div class="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
+
+                        <div class="flex justify-center mb-4 lg:mb-8 relative z-10">
                             <h3 class="text-[10px] lg:text-xs font-bold tracking-widest text-slate-500 dark:text-slate-400 uppercase">Performance Report - SPRINT</h3>
                         </div>
                         
-                        <div class="grid grid-cols-3 gap-2 lg:gap-4 mb-6 lg:mb-10">
-                            <div class="flex flex-col items-center text-center group">
-                                <div class="p-2 lg:p-3 rounded-xl lg:rounded-2xl bg-indigo-500/10 mb-2 lg:mb-3 group-hover:scale-110 transition-transform">
+                        <div class="grid grid-cols-3 gap-2 lg:gap-4 mb-6 lg:mb-10 relative z-10">
+                            <div class="flex flex-col items-center text-center group/item">
+                                <div class="p-2 lg:p-3 rounded-xl lg:rounded-2xl bg-indigo-500/10 mb-2 lg:mb-3 group-hover/item:scale-110 transition-transform">
                                     <i data-lucide="layers" class="w-5 h-5 lg:w-8 lg:h-8 text-indigo-600 dark:text-indigo-400"></i>
                                 </div>
                                 <span class="text-[8px] lg:text-[11px] font-semibold text-slate-500 dark:text-slate-400 leading-tight">Sprint<br>Analytics</span>
                             </div>
-                            <div class="flex flex-col items-center text-center group">
-                                <div class="p-2 lg:p-3 rounded-xl lg:rounded-2xl bg-purple-500/10 mb-2 lg:mb-3 group-hover:scale-110 transition-transform">
+                            <div class="flex flex-col items-center text-center group/item">
+                                <div class="p-2 lg:p-3 rounded-xl lg:rounded-2xl bg-purple-500/10 mb-2 lg:mb-3 group-hover/item:scale-110 transition-transform">
                                     <i data-lucide="zap" class="w-5 h-5 lg:w-8 lg:h-8 text-purple-600 dark:text-purple-400"></i>
                                 </div>
                                 <span class="text-[8px] lg:text-[11px] font-semibold text-slate-500 dark:text-slate-400 leading-tight">Threshold<br>Analysis</span>
                             </div>
-                            <div class="flex flex-col items-center text-center group">
-                                <div class="p-2 lg:p-3 rounded-xl lg:rounded-2xl bg-fuchsia-500/10 mb-2 lg:mb-3 group-hover:scale-110 transition-transform">
+                            <div class="flex flex-col items-center text-center group/item">
+                                <div class="p-2 lg:p-3 rounded-xl lg:rounded-2xl bg-fuchsia-500/10 mb-2 lg:mb-3 group-hover/item:scale-110 transition-transform">
                                     <i data-lucide="bar-chart-3" class="w-5 h-5 lg:w-8 lg:h-8 text-fuchsia-600 dark:text-fuchsia-400"></i>
                                 </div>
                                 <span class="text-[8px] lg:text-[11px] font-semibold text-slate-500 dark:text-slate-400 leading-tight">Benchmarking<br>Insight</span>
@@ -863,7 +902,7 @@ def generate_landing_page():
 
                         <a href="performance.html" 
                            onclick="event.stopPropagation();"
-                           class="flex items-center justify-center gap-2 w-full bg-indigo-600 dark:bg-indigo-500 text-white font-bold py-3 lg:py-4 rounded-xl lg:rounded-2xl text-[10px] lg:text-xs tracking-widest hover:bg-indigo-700 dark:hover:bg-indigo-400 transition-all shadow-lg uppercase">
+                           class="flex items-center justify-center gap-2 w-full bg-indigo-600/90 dark:bg-indigo-500/90 text-white font-bold py-3 lg:py-4 rounded-xl lg:rounded-2xl text-[10px] lg:text-xs tracking-widest hover:bg-indigo-700 dark:hover:bg-indigo-400 transition-all shadow-lg uppercase relative z-10">
                             View Sprint Performance
                             <i data-lucide="external-link" class="w-4 h-4"></i>
                         </a>
