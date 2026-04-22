@@ -24,7 +24,7 @@
         .preview-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; border-spacing: 0; }
         .preview-table td { padding: 0.85rem 1.15rem; border-bottom: 1px solid var(--border); border-right: 1px solid var(--border); white-space: nowrap; color: var(--text); }
         .preview-table tr:hover { background: #f1f5f9 !important; }
-        
+
         /* Header & Sub-header Styling */
         .preview-table tr:first-child td,
         .preview-table tr.sub-header td { 
@@ -36,10 +36,10 @@
             letter-spacing: 0.025em;
             border-bottom: 2px solid #cbd5e1 !important;
         }
-        
+
         .preview-table tr:nth-child(even) { background: #fafbfc; }
         .preview-table tr:hover { background: #f1f5f9 !important; }
-        
+
         /* Status Colors */
         .status-pass { color: var(--success) !important; font-weight: 800; background: #ecfdf5 !important; }
         .status-fail { color: var(--danger) !important; font-weight: 800; background: #fef2f2 !important; }
@@ -378,10 +378,10 @@
         document.querySelectorAll('.preview-table tr').forEach((tr, rowIndex) => {
             let statusCount = 0;
             const cells = tr.querySelectorAll('td');
-            
+
             cells.forEach(td => {
                 const text = td.innerText.trim().toUpperCase();
-                
+
                 // Highlight Pass/Fail
                 if (['PASS', 'SUCCESS', 'PASSED'].includes(text)) {
                     td.classList.add('status-pass');
@@ -390,13 +390,13 @@
                 } else if (text === 'NA') {
                     td.classList.add('status-na');
                 }
-                
+
                 // Header detection keywords
                 if (['STATUS', 'IDENTITY', 'ID'].includes(text)) {
                     statusCount++;
                 }
             });
-            
+
             // If row has multiple 'Status' labels, it's a sub-header
             if (statusCount >= 2 && rowIndex > 0) {
                 tr.classList.add('sub-header');

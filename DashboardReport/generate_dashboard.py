@@ -21,7 +21,6 @@ TARGET_EXECUTION_GOAL = configfile.TARGET_EXECUTION_GOAL
 EXPECTED_REPORT_COUNT = configfile.EXPECTED_REPORT_COUNT
 
 
-
 def get_report_folders(base_dir, limit=5):
     """Find the last 'limit' date folders (YYYYMMDD) in reverse chronological order."""
     if not base_dir.exists(): return []
@@ -32,6 +31,7 @@ def get_report_folders(base_dir, limit=5):
     folders.sort(reverse=True)
     return folders[:limit]
 
+
 def create_excel_preview(filepath):
     """Generate a clean HTML preview of an Excel file."""
     try:
@@ -41,9 +41,9 @@ def create_excel_preview(filepath):
         # Fill NA values with 'NA' string
         df = df.fillna('NA')
         table_html = df.to_html(classes='preview-table', index=False, header=False)
-        
+
         table_html = sanitize_content(table_html)
-        
+
         filename = filepath.name
         html_content = f"""<!DOCTYPE html>
 <html lang="en">
@@ -71,7 +71,7 @@ def create_excel_preview(filepath):
         .preview-table {{ width: 100%; border-collapse: collapse; font-size: 0.85rem; border-spacing: 0; }}
         .preview-table td {{ padding: 0.85rem 1.15rem; border-bottom: 1px solid var(--border); border-right: 1px solid var(--border); white-space: nowrap; color: var(--text); }}
         .preview-table tr:hover {{ background: #f1f5f9 !important; }}
-        
+
         /* Header & Sub-header Styling */
         .preview-table tr:first-child td,
         .preview-table tr.sub-header td {{ 
@@ -83,10 +83,10 @@ def create_excel_preview(filepath):
             letter-spacing: 0.025em;
             border-bottom: 2px solid #cbd5e1 !important;
         }}
-        
+
         .preview-table tr:nth-child(even) {{ background: #fafbfc; }}
         .preview-table tr:hover {{ background: #f1f5f9 !important; }}
-        
+
         /* Status Colors */
         .status-pass {{ color: var(--success) !important; font-weight: 800; background: #ecfdf5 !important; }}
         .status-fail {{ color: var(--danger) !important; font-weight: 800; background: #fef2f2 !important; }}
@@ -116,10 +116,10 @@ def create_excel_preview(filepath):
         document.querySelectorAll('.preview-table tr').forEach((tr, rowIndex) => {{
             let statusCount = 0;
             const cells = tr.querySelectorAll('td');
-            
+
             cells.forEach(td => {{
                 const text = td.innerText.trim().toUpperCase();
-                
+
                 // Highlight Pass/Fail
                 if (['PASS', 'SUCCESS', 'PASSED'].includes(text)) {{
                     td.classList.add('status-pass');
@@ -128,13 +128,13 @@ def create_excel_preview(filepath):
                 }} else if (text === 'NA') {{
                     td.classList.add('status-na');
                 }}
-                
+
                 // Header detection keywords
                 if (['STATUS', 'IDENTITY', 'ID'].includes(text)) {{
                     statusCount++;
                 }}
             }});
-            
+
             // If row has multiple 'Status' labels, it's a sub-header
             if (statusCount >= 2 && rowIndex > 0) {{
                 tr.classList.add('sub-header');
@@ -149,6 +149,7 @@ def create_excel_preview(filepath):
         print(f"Error creating preview for {filepath}: {e}")
         return None
 
+
 def scan_folder(folder_path, date_str):
     """Scan a specific folder for report files and extract metrics."""
     reports = []
@@ -156,27 +157,27 @@ def scan_folder(folder_path, date_str):
         if not f.is_file(): continue
         if f.suffix not in ('.html', '.xls', '.xlsx'): continue
         if f.name.endswith('.xls.html') or f.name.endswith('.xlsx.html'): continue
-        
+
         mod_ts = f.stat().st_mtime
         entry = {
-            "name": f.name, 
-            "path": f"reports/{date_str}/{f.name}", 
+            "name": f.name,
+            "path": f"reports/{date_str}/{f.name}",
             "type": "HTML" if f.suffix == '.html' else "Excel",
             "mod_time": datetime.datetime.fromtimestamp(mod_ts).strftime('%Y-%m-%d %H:%M:%S'),
-            "mod_time_ts": mod_ts, 
+            "mod_time_ts": mod_ts,
             "summary": {}
         }
         if f.suffix == '.html':
-            with f.open('r', encoding='utf-8', errors='ignore') as file: 
+            with f.open('r', encoding='utf-8', errors='ignore') as file:
                 original_content = file.read()
                 entry["summary"] = extract_counts(original_content[:1000000], f.name)
-            
+
             # Sanitize original HTML report in-place
             sanitized_content = sanitize_content(original_content)
             if sanitized_content != original_content:
                 with f.open('w', encoding='utf-8') as file:
                     file.write(sanitized_content)
-            
+
             entry["view_path"] = entry["path"]
         else:
             entry["summary"] = extract_excel_counts(f)
@@ -184,6 +185,7 @@ def scan_folder(folder_path, date_str):
             entry["view_path"] = f"reports/{date_str}/{preview_file}" if preview_file else entry["path"]
         reports.append(entry)
     return reports
+
 
 # Pre-compiled regex patterns for speed
 NEWMAN_REQUESTS_RE = re.compile(r'Total Requests <span class="badge badge-light">(\d+)</span>')
@@ -193,11 +195,12 @@ MOCHAWESOME_RE = re.compile(r'data-raw="(.*?)"')
 TITLE_RE = re.compile(r'<title>(.*?)</title>')
 PYTEST_HTML_RE = re.compile(r'id="data-container"\s+data-jsonblob="(.*?)"')
 
+
 def extract_counts(html_content, filename):
     """Extract test metrics from HTML reports (Newman, Mochawesome, or Pytest)."""
     data = {"requests": 0, "failed": 0, "skipped": 0, "collection": "Unknown", "pass_percent": 0, "failed_cases": []}
     clean_html = lambda text: html.unescape(text).strip() if text else ""
-    
+
     if "pytest-html" in html_content:
         m_pytest = PYTEST_HTML_RE.search(html_content)
         if m_pytest:
@@ -205,7 +208,7 @@ def extract_counts(html_content, filename):
                 json_str = html.unescape(m_pytest.group(1))
                 report_data = json.loads(json_str)
                 tests = report_data.get("tests", {})
-                
+
                 total = 0
                 failed = 0
                 failed_cases = []
@@ -216,7 +219,7 @@ def extract_counts(html_content, filename):
                         if result.get("result") in ["Failed", "Error"]:
                             failed += 1
                             failed_cases.append(test_id.split('::')[-1])
-                
+
                 data["requests"] = total
                 data["failed"] = failed
                 data["failed_cases"] = failed_cases
@@ -224,26 +227,34 @@ def extract_counts(html_content, filename):
                 if total > 0:
                     data["pass_percent"] = round(((total - failed) / total) * 100, 1)
                 return data
-            except: pass
+            except:
+                pass
 
     if "Newman Run Dashboard" in html_content or "newman-report" in html_content:
-        m_req = NEWMAN_REQUESTS_RE.search(html_content); m_fail = NEWMAN_FAILED_RE.search(html_content); m_coll = NEWMAN_COLLECTION_RE.search(html_content)
+        m_req = NEWMAN_REQUESTS_RE.search(html_content);
+        m_fail = NEWMAN_FAILED_RE.search(html_content);
+        m_coll = NEWMAN_COLLECTION_RE.search(html_content)
         if m_req: data["requests"] = int(m_req.group(1))
         if m_fail: data["failed"] = int(m_fail.group(1))
         if m_coll: data["collection"] = sanitize_content(clean_html(m_coll.group(1)))
-        if data["requests"] > 0: data["pass_percent"] = round(((data["requests"] - data["failed"]) / data["requests"]) * 100, 1)
+        if data["requests"] > 0: data["pass_percent"] = round(
+            ((data["requests"] - data["failed"]) / data["requests"]) * 100, 1)
         return data
     if "mochawesome" in html_content:
         m_raw = MOCHAWESOME_RE.search(html_content)
         if m_raw:
             try:
                 stats = json.loads(html.unescape(m_raw.group(1))).get('stats', {})
-                data["requests"], data["failed"], data["pass_percent"] = stats.get('tests', 0), stats.get('failures', 0), stats.get('passPercent', 0)
+                data["requests"], data["failed"], data["pass_percent"] = stats.get('tests', 0), stats.get('failures',
+                                                                                                          0), stats.get(
+                    'passPercent', 0)
                 m_title = TITLE_RE.search(html_content)
                 if m_title: data["collection"] = sanitize_content(clean_html(m_title.group(1)))
                 return data
-            except: pass
+            except:
+                pass
     return data
+
 
 def extract_excel_counts(filepath):
     """Extract test metrics from Excel reports (.xls or .xlsx)."""
@@ -263,19 +274,21 @@ def extract_excel_counts(filepath):
         if not all_rows: return data
         row_values = all_rows[0]
         p_val, f_val = 0, 0
-        pass_headers = {"no.of test cases", "success cases", "passed cases", "total pass steps", "sessions pass", "total pass"}
-        fail_headers = {"failed test cases", "failure cases", "failed cases", "total fail steps", "failed count", "total fail"}
-        
+        pass_headers = {"no.of test cases", "success cases", "passed cases", "total pass steps", "sessions pass",
+                        "total pass"}
+        fail_headers = {"failed test cases", "failure cases", "failed cases", "total fail steps", "failed count",
+                        "total fail"}
+
         found_summary = False
         for i, val in enumerate(row_values):
             s = str(val).strip().lower() if val is not None else ""
             if any(h in s for h in pass_headers):
-                if i + 1 < len(row_values) and isinstance(row_values[i+1], (int, float)):
-                    p_val = int(row_values[i+1])
+                if i + 1 < len(row_values) and isinstance(row_values[i + 1], (int, float)):
+                    p_val = int(row_values[i + 1])
                     found_summary = True
             elif any(h in s for h in fail_headers):
-                if i + 1 < len(row_values) and isinstance(row_values[i+1], (int, float)):
-                    f_val = int(row_values[i+1])
+                if i + 1 < len(row_values) and isinstance(row_values[i + 1], (int, float)):
+                    f_val = int(row_values[i + 1])
                     found_summary = True
 
         if not found_summary:
@@ -284,25 +297,33 @@ def extract_excel_counts(filepath):
                 if str(val).strip().lower() == 'status':
                     status_idx = i
                     break
-            
+
             if status_idx != -1:
                 for row in all_rows[1:]:
                     if status_idx < len(row):
                         status_val = str(row[status_idx]).strip().upper()
-                        if status_val == 'PASS': p_val += 1
-                        elif status_val == 'FAIL': f_val += 1
+                        if status_val == 'PASS':
+                            p_val += 1
+                        elif status_val == 'FAIL':
+                            f_val += 1
 
         total = p_val + f_val
         data["requests"], data["failed"] = total, f_val
         if total > 0: data["pass_percent"] = round(((total - f_val) / total) * 100, 1)
         if row_values and isinstance(row_values[0], str): data["collection"] = sanitize_content(row_values[0])
-    except Exception as e: print(f"Error reading Excel {filepath}: {e}")
+    except Exception as e:
+        print(f"Error reading Excel {filepath}: {e}")
     return data
+
 
 def get_git_commit():
     """Retrieve current Git commit hash."""
-    try: return subprocess.check_output(['git', 'rev-parse', '--short', 'HEAD'], stderr=subprocess.DEVNULL).decode('ascii').strip()
-    except: return "Unknown"
+    try:
+        return subprocess.check_output(['git', 'rev-parse', '--short', 'HEAD'], stderr=subprocess.DEVNULL).decode(
+            'ascii').strip()
+    except:
+        return "Unknown"
+
 
 def classify_report(filename):
     """Determine the group category for a report based on its filename."""
@@ -316,6 +337,7 @@ def classify_report(filename):
     if upper_name.startswith('UI_'): return "CRPO Reports"
     if upper_name.startswith('SPRINT_'): return "ATS Reports"
     return "Cypress Reports"
+
 
 def generate_styles():
     """Return the CSS style block."""
@@ -335,10 +357,10 @@ def generate_styles():
         header { margin-bottom: 1.5rem; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
         h1 { font-size: 1.4rem; font-weight: 800; color: var(--text); line-height: 1.2; }
         .subtitle { color: var(--text-muted); font-size: 0.75rem; margin-top: 0.25rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
-        
+
         .header-home-btn { display: none; text-decoration: none; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 12px; background: #f1f5f9; color: var(--primary); transition: all 0.2s; margin-bottom: 0.5rem; }
         .header-home-btn:active { background: #e2e8f0; transform: scale(0.95); }
-        
+
         .hero-banner { 
             background: var(--card-bg); border: 1px solid var(--border); padding: 2.5rem; border-radius: 2rem; 
             margin-bottom: 2.5rem; box-shadow: var(--shadow); display: flex; align-items: center; gap: 3rem; 
@@ -386,11 +408,11 @@ def generate_styles():
         summary::after { content: '\\f078'; font-family: "Font Awesome 6 Free"; font-weight: 900; transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); margin-left: 1rem; color: var(--text-muted); font-size: 0.9rem; }
         details[open] summary::after { transform: rotate(180deg); color: var(--primary); }
         details[open] summary { border-bottom: 1px solid var(--border); margin-bottom: 0; }
-        
+
         .content-wrapper { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
         details[open] .content-wrapper { grid-template-rows: 1fr; }
         .content-inner { overflow: hidden; }
-        
+
         summary:hover { background: #f1f5f9 !important; }
         summary span { transition: transform 0.2s; }
         summary:hover span { transform: translateX(5px); }
@@ -404,7 +426,7 @@ def generate_styles():
         .chip { font-size: 0.8rem; padding: 6px 16px; border-radius: 20px; font-weight: 900; background: #f1f5f9; white-space: nowrap; display: inline-flex; align-items: center; justify-content: center; min-width: 70px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
         .chip.success { background: #d1fae5; color: #065f46; } .chip.danger { background: #fee2e2; color: #991b1b; }
         .chip i { margin-right: 0.35rem; font-size: 0.7rem; opacity: 0.7; }
-        
+
         .search-area { margin-bottom: 2rem; position: relative; }
         .search-area input { 
             width: 100%; padding: 1rem 3.5rem; border-radius: 14px; border: 1.5px solid var(--border); 
@@ -414,10 +436,10 @@ def generate_styles():
         .search-area input:focus { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1); }
         .search-area i { position: absolute; left: 1.4rem; top: 50%; transform: translateY(-50%); color: var(--text-muted); z-index: 10; pointer-events: none; transition: color 0.3s; }
         .search-area input:focus + i { color: var(--primary); }
-        
+
         footer { margin-top: 4rem; padding: 2rem 0; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; color: var(--text-muted); font-size: 0.85rem; font-weight: 500; }
         .commit-badge { background: #f1f5f9; padding: 0.25rem 0.6rem; border-radius: 6px; font-family: monospace; font-weight: 700; color: var(--text); border: 1px solid var(--border); font-size: 0.75rem; }
-        
+
         /* Liquid Glass Navigation */
         .main-nav { 
             display: flex; position: relative; justify-content: center; gap: 0; 
@@ -445,10 +467,10 @@ def generate_styles():
             width: 0;
             pointer-events: none;
         }
-        
+
         .tab-content { display: none; }
         .tab-content.active { display: block; }
-        
+
         /* Date Switching Styles */
         .day-view { display: none; transform: translateY(10px); opacity: 0; transition: all 0.3s ease; }
         .day-view.active { display: block; transform: translateY(0); opacity: 1; }
@@ -488,7 +510,7 @@ def generate_styles():
         .date-select-input { padding: 0.6rem 1rem; border-radius: 12px; border: 1px solid var(--border); font-weight: 600; font-family: 'Outfit'; color: var(--text); outline: none; background: white; cursor: pointer; }
         .health-index { font-size: 0.7rem; font-weight: 800; padding: 2px 8px; border-radius: 4px; margin-left: 8px; }
         .health-good { background: #d1fae5; color: #065f46; } .health-fair { background: #fffbeb; color: #92400e; } .health-bad { background: #fee2e2; color: #991b1b; }
-        
+
         /* Custom Tooltip Styles - Bottom Placement */
         [data-tooltip] { position: relative; cursor: pointer; }
         [data-tooltip]::before {
@@ -501,7 +523,7 @@ def generate_styles():
             border: 1px solid rgba(255,255,255,0.1); text-transform: uppercase; letter-spacing: 0.05em;
         }
         [data-tooltip]:hover::before { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
-        
+
         .floating-reset[data-tooltip]::before, .floating-home[data-tooltip]::before { bottom: 125%; }
 
         @keyframes attentionBlink { 0% { opacity: 1; transform: scale(1); } 50% { opacity: 0.7; transform: scale(0.95); } 100% { opacity: 1; transform: scale(1); } }
@@ -513,7 +535,7 @@ def generate_styles():
         .history-section { background: var(--card-bg); border: 1px solid var(--border); border-radius: 1.5rem; padding: 1.5rem; box-shadow: var(--shadow); margin-bottom: 2.5rem; overflow: hidden; }
         .trend-title { font-size: 1rem; font-weight: 800; margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.75rem; color: var(--text); }
         .trend-title i { color: var(--primary); }
-        
+
         .history-table-wrapper { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 0 -1.5rem; padding: 0 1.5rem; width: calc(100% + 3rem); }
         .history-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; min-width: 580px; }
         .history-table th { padding: 0.75rem; text-align: left; color: var(--text-muted); border-bottom: 1px solid var(--border); background: transparent; white-space: nowrap; }
@@ -557,7 +579,7 @@ def generate_styles():
             header > div { width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center !important; }
             h1 { font-size: 1.2rem; }
             .subtitle { font-size: 0.65rem; }
-            
+
             .hero-banner { flex-direction: column; gap: 1.5rem; text-align: center; padding: 1.5rem 1.25rem; margin: 0 auto 1.5rem auto; align-items: center !important; }
             .hero-main { width: 100%; display: flex; flex-direction: column; align-items: center; }
             .hero-label { font-size: 0.75rem; justify-content: center !important; width: 100%; }
@@ -566,7 +588,7 @@ def generate_styles():
             .progress-container { width: 100%; }
             .progress-header { font-size: 0.8rem; justify-content: space-between !important; }
             .hero-banner.stale-banner { text-align: center !important; }
-            
+
             .alert-card { flex-direction: column; text-align: center; gap: 1rem; padding: 1.25rem 1rem; }
             .alert-card span { font-size: 0.85rem; line-height: 1.4; }
             .badge-urgent { font-size: 0.65rem; padding: 0.3rem 0.6rem; }
@@ -593,7 +615,7 @@ def generate_styles():
             .stat-info .label { font-size: 0.6rem; }
             .stat-card:nth-child(1), .stat-card:nth-child(2) { border-bottom: 1px solid #f1f5f9 !important; }
             .stat-card:nth-child(1), .stat-card:nth-child(3) { border-right: 1px solid #f1f5f9 !important; }
-            
+
             .main-nav { padding: 0.35rem; width: 95%; max-width: 400px; margin-bottom: 1.5rem; gap: 0.2rem; }
             .nav-btn { padding: 0.75rem 0.5rem; font-size: 0.8rem; flex: 1; justify-content: center; gap: 0.5rem; }
             .nav-indicator { height: calc(100% - 0.7rem); top: 0.35rem; }
@@ -601,9 +623,9 @@ def generate_styles():
             .history-section { padding: 0.75rem; border-radius: 1rem; overflow: visible; }
             .history-table-wrapper { margin: 0; padding: 0; width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
             .history-table { font-size: 0.7rem; }
-            
+
             .search-area input { font-size: 0.9rem; padding: 0.85rem 1rem 0.85rem 3.25rem; }
-            
+
             .report-group { width: 100%; border-radius: 14px; }
             summary { padding: 1.25rem 3rem 1.25rem 1.25rem; position: relative; }
             summary::after { position: absolute; right: 1.25rem; top: 50%; transform: translateY(-50%); }
@@ -612,12 +634,12 @@ def generate_styles():
             summary span { font-size: 0.95rem !important; font-weight: 800; margin-right: 0; display: block; width: 100%; }
             summary div .chip { font-size: 0.75rem; min-width: 60px; padding: 6px 12px; }
             summary div div { justify-content: center !important; width: 100% !important; margin: 0 !important; }
-            
+
             .content-inner { overflow-x: auto; width: 100%; }
             table { min-width: 550px; }
             td, th { padding: 0.75rem 0.5rem; font-size: 0.75rem; }
             .view-btn { padding: 0.35rem 0.8rem; font-size: 0.65rem; }
-            
+
             footer { flex-direction: column; gap: 1rem; text-align: center; font-size: 0.75rem; }
             .header-home-btn { display: flex !important; }
             .floating-home, .floating-reset { display: none !important; }
@@ -663,19 +685,35 @@ def generate_styles():
     </style>
     """
 
+
 def generate_landing_page():
     """Generate the dashboard.html landing page for report type selection."""
     index_path = Path(configfile.DASHBOARD_REPORT).parent / "dashboard.html"
     html_content = """<!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+        // Immediate theme detection to prevent flash
+        (function() {
+            const savedTheme = localStorage.getItem('theme');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const isMobile = window.innerWidth < 768;
+            
+            // If saved theme exists, use it. Otherwise, follow system preference.
+            // On mobile, we default to Light if no specific preference is found.
+            if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+                document.documentElement.classList.add('dark');
+                document.documentElement.classList.remove('light');
+            } else {
+                document.documentElement.classList.remove('dark');
+                document.documentElement.classList.add('light');
+            }
+        })();
+    </script>
     <link rel="icon" type="image/png" href="https://lh3.googleusercontent.com/proxy/98it6d0vGqaPttxE8ImrHhVvaz5XpPeZ7qiXHcnm9PiPrwTBGvZcWp2vdQVdgZt5b7Vfu7kXnkh6mrKs_q_JIE5GGlw8uRAOeSvJOEtgNXWrXgOoGjGFCnKCA1gITLLZKNxv1mV6szDHEnNLK7RbJnfk-eFMZPlGXRpU2iKeBGr2Gm3-i_Lnv-IVisLlJwRR55nNMx9HndfYnmLOlraDHGgp9Rc7V4pNO1N8S1ZugYR5SUVMi8K_WGFwvYWsEh2cEnW6x-Zw-ncSM27yX509d6pmuUvfohenPAxHMNORCeWO">
     <title>QAInsights | Report Selection</title>
-    <meta id="theme-color-meta" name="theme-color" content="#0f172a">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script>
@@ -694,40 +732,18 @@ def generate_landing_page():
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
         body { font-family: 'Inter', sans-serif; }
-        
+
         .card-transition { transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        
+
         /* Glassmorphism & Liquid UI */
         .glass-card {
             backdrop-filter: blur(20px) saturate(180%);
             -webkit-backdrop-filter: blur(20px) saturate(180%);
         }
 
-        html, body { background-color: #f8fafc; transition: background-color 0.5s ease; }
-        html.dark, html.dark body { background-color: #0f172a; }
+        .bg-lightBg { background-image: radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.03) 0, transparent 50%), radial-gradient(at 50% 0%, rgba(168, 85, 247, 0.03) 0, transparent 50%); }
+        .bg-darkBg { background-image: radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.1) 0, transparent 50%), radial-gradient(at 50% 0%, rgba(168, 85, 247, 0.1) 0, transparent 50%); }
 
-        .bg-lightBg { background-color: #f8fafc; }
-        .bg-darkBg { background-color: #0f172a; }
-        
-        .liquid-bg {
-            position: fixed;
-            inset: 0;
-            z-index: -1;
-            pointer-events: none;
-        }
-        .dark .liquid-bg {
-            background-image: 
-                radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.1) 0, transparent 50%),
-                radial-gradient(at 50% 0%, rgba(168, 85, 247, 0.1) 0, transparent 50%),
-                radial-gradient(at 50% 50%, rgba(99, 102, 241, 0.08) 0, transparent 60%);
-        }
-        .light .liquid-bg {
-            background-image: 
-                radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.03) 0, transparent 50%),
-                radial-gradient(at 50% 0%, rgba(168, 85, 247, 0.03) 0, transparent 50%),
-                radial-gradient(at 50% 50%, rgba(99, 102, 241, 0.03) 0, transparent 60%);
-        }
-        
         /* Glassmorphism & Gradients */
         .perf-card { 
             background: linear-gradient(135deg, rgba(59, 130, 246, 0.08), rgba(234, 179, 8, 0.08));
@@ -746,7 +762,7 @@ def generate_landing_page():
             border: 1px solid rgba(99, 102, 241, 0.2);
         }
         .light .sprint-card { background: rgba(255, 255, 255, 0.6); border: 1px solid rgba(99, 102, 241, 0.25); }
-        
+
         .liquid-blob {
             position: fixed;
             z-index: -1;
@@ -762,7 +778,7 @@ def generate_landing_page():
             66% { transform: translate(-20px, 20px) scale(0.9); }
             100% { transform: translate(0, 0) scale(1); }
         }
-        
+
         @keyframes spin-slow {
             from { transform: rotate(0deg); }
             to { transform: rotate(360deg); }
@@ -772,8 +788,7 @@ def generate_landing_page():
         }
     </style>
 </head>
-<body class="text-slate-900 dark:text-slate-100 min-h-screen overflow-x-hidden">
-    <div class="liquid-bg"></div>
+<body class="bg-lightBg dark:bg-darkBg text-slate-900 dark:text-slate-100 min-h-screen transition-colors duration-500 overflow-x-hidden">
 
     <!-- Liquid Background Blobs -->
     <div class="liquid-blob bg-blue-400 w-96 h-96 -top-20 -left-20 opacity-10 dark:opacity-20"></div>
@@ -786,101 +801,101 @@ def generate_landing_page():
         </button>
     </div>
 
-    <div class="flex flex-col items-center justify-start lg:justify-center min-h-screen p-4 lg:p-6 py-8 lg:py-12 relative z-10" style="padding-top: calc(env(safe-area-inset-top) + 2rem); padding-bottom: calc(env(safe-area-inset-bottom) + 2rem);">
-        
-        <header class="w-full max-w-md lg:max-w-6xl text-center mb-4 lg:mb-10">
-            <div class="flex flex-col items-center justify-center gap-4 mb-6">
-                <img src="https://hirepro.in/wp-content/uploads/2025/05/HirePro-logo.svg" alt="HirePro Logo" class="h-12 w-auto dark:brightness-200">
-                <h1 class="text-2xl lg:text-5xl font-black tracking-tighter text-slate-900 dark:text-white">QA<span class="font-extralight text-slate-500">Insights</span></h1>
+    <div class="flex flex-col items-center justify-between min-h-screen p-2 lg:p-6 py-4 lg:py-12 relative z-10">
+
+        <header class="w-full max-w-full lg:max-w-6xl text-center mb-2 lg:mb-10 px-4">
+            <div class="flex flex-col items-center justify-center gap-2 lg:gap-4 mb-2 lg:mb-6">
+                <img src="https://hirepro.in/wp-content/uploads/2025/05/HirePro-logo.svg" alt="HirePro Logo" class="h-8 lg:h-12 w-auto dark:brightness-200">
+                <h1 class="text-xl lg:text-5xl font-black tracking-tighter text-slate-900 dark:text-white">QA<span class="font-extralight text-slate-500">Insights</span></h1>
             </div>
         </header>
 
 
-        <main class="w-full max-w-md lg:max-w-5xl space-y-8 lg:space-y-12">
-            
-            <div class="space-y-6 lg:space-y-8">
+        <main class="w-full max-w-full lg:max-w-5xl space-y-3 lg:space-y-12 px-2 lg:px-0 flex-1">
+
+            <div class="space-y-3 lg:space-y-8">
                 <div class="flex items-center gap-4 lg:gap-6">
                     <div class="h-px flex-1 bg-slate-300 dark:bg-slate-700"></div>
                     <h2 class="text-[8px] lg:text-xs font-black uppercase tracking-[0.3em] lg:tracking-[0.4em] text-slate-900 dark:text-slate-100 text-center">Daily Execution Results</h2>
                     <div class="h-px flex-1 bg-slate-300 dark:bg-slate-700"></div>
                 </div>
 
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-8">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-3 lg:gap-8">
                     <section onclick="window.location.href='automationreports.html'" 
-                             class="ui-card glass-card card-transition rounded-3xl p-4 lg:p-8 shadow-sm lg:hover:shadow-2xl lg:hover:-translate-y-2 cursor-pointer flex flex-col h-full relative overflow-hidden group">
+                             class="ui-card glass-card card-transition rounded-2xl lg:rounded-3xl p-3 lg:p-8 shadow-sm hover:shadow-2xl hover:-translate-y-2 cursor-pointer flex flex-col h-full relative overflow-hidden group">
                         <!-- Card Inner Glow -->
-                        <div class="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-0 lg:group-hover:opacity-100 transition-opacity pointer-events-none"></div>
-                        
-                        <div class="flex justify-center mb-4 lg:mb-8 relative z-10">
-                            <h3 class="text-[10px] lg:text-xs font-bold tracking-widest text-slate-500 dark:text-slate-400 uppercase">Automation Test Report</h3>
+                        <div class="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
+
+                        <div class="flex justify-center mb-1 lg:mb-8 relative z-10">
+                            <h3 class="text-[9px] lg:text-xs font-bold tracking-widest text-slate-500 dark:text-slate-400 uppercase">Automation Test Report</h3>
                         </div>
-                        
-                        <div class="grid grid-cols-3 gap-2 lg:gap-4 mb-6 lg:mb-10 flex-1 relative z-10">
+
+                        <div class="grid grid-cols-3 gap-2 lg:gap-4 mb-2 lg:mb-10 flex-1 relative z-10">
                             <div class="flex flex-col items-center text-center group/item">
-                                <div class="p-2 lg:p-3 rounded-xl lg:rounded-2xl bg-green-500/10 mb-2 lg:mb-3 group-hover/item:scale-110 transition-transform">
-                                    <i data-lucide="check-circle" class="w-5 h-5 lg:w-8 lg:h-8 text-green-600 dark:text-green-500"></i>
+                                <div class="p-1.5 lg:p-3 rounded-lg lg:rounded-2xl bg-green-500/10 mb-1 lg:mb-3 group-hover/item:scale-110 transition-transform">
+                                    <i data-lucide="check-circle" class="w-4 h-4 lg:w-8 lg:h-8 text-green-600 dark:text-green-500"></i>
                                 </div>
-                                <span class="text-[8px] lg:text-[11px] font-semibold text-slate-500 dark:text-slate-400 leading-tight">Success Rate</span>
+                                <span class="text-[7px] lg:text-[11px] font-semibold text-slate-500 dark:text-slate-400 leading-tight">Success Rate</span>
                             </div>
                             <div class="flex flex-col items-center text-center group/item">
-                                <div class="p-2 lg:p-3 rounded-xl lg:rounded-2xl bg-orange-500/10 mb-2 lg:mb-3 group-hover/item:scale-110 transition-transform">
-                                    <i data-lucide="play-circle" class="w-5 h-5 lg:w-8 lg:h-8 text-orange-500 dark:text-orange-400"></i>
+                                <div class="p-1.5 lg:p-3 rounded-lg lg:rounded-2xl bg-orange-500/10 mb-1 lg:mb-3 group-hover/item:scale-110 transition-transform">
+                                    <i data-lucide="play-circle" class="w-4 h-4 lg:w-8 lg:h-8 text-orange-500 dark:text-orange-400"></i>
                                 </div>
-                                <span class="text-[8px] lg:text-[11px] font-semibold text-slate-500 dark:text-slate-400 leading-tight">Total Tests</span>
+                                <span class="text-[7px] lg:text-[11px] font-semibold text-slate-500 dark:text-slate-400 leading-tight">Total Tests</span>
                             </div>
                             <div class="flex flex-col items-center text-center group/item">
-                                <div class="p-2 lg:p-3 rounded-xl lg:rounded-2xl bg-blue-500/10 mb-2 lg:mb-3 group-hover/item:scale-110 transition-transform">
-                                    <i data-lucide="monitor" class="w-5 h-5 lg:w-8 lg:h-8 text-blue-600 dark:text-blue-400"></i>
+                                <div class="p-1.5 lg:p-3 rounded-lg lg:rounded-2xl bg-blue-500/10 mb-1 lg:mb-3 group-hover/item:scale-110 transition-transform">
+                                    <i data-lucide="monitor" class="w-4 h-4 lg:w-8 lg:h-8 text-blue-600 dark:text-blue-400"></i>
                                 </div>
-                                <span class="text-[8px] lg:text-[11px] font-semibold text-slate-500 dark:text-slate-400 leading-tight">Browser(Chrome)<br>Coverage</span>
+                                <span class="text-[7px] lg:text-[11px] font-semibold text-slate-500 dark:text-slate-400 leading-tight">Browser(Chrome)<br>Coverage</span>
                             </div>
                         </div>
 
                         <a href="automationreports.html" 
                            onclick="event.stopPropagation();"
-                           class="flex items-center justify-center gap-2 w-full bg-emerald-500/10 dark:bg-emerald-500/20 backdrop-blur-md text-emerald-700 dark:text-emerald-400 font-bold py-3 lg:py-4 rounded-xl lg:rounded-2xl text-[10px] lg:text-xs tracking-widest hover:bg-emerald-500/20 dark:hover:bg-emerald-500/30 transition-all uppercase mt-auto relative z-10 border border-emerald-500/20 dark:border-emerald-500/30 shadow-sm">
+                           class="flex items-center justify-center gap-2 w-full bg-green-500/10 dark:bg-green-400/10 text-green-600 dark:text-green-400 font-bold py-2.5 lg:py-4 rounded-xl lg:rounded-2xl text-[9px] lg:text-xs tracking-widest hover:bg-green-500/20 dark:hover:bg-green-400/20 border border-green-500/20 transition-all uppercase mt-auto relative z-10">
                             View Automation Test Report
                             <i data-lucide="external-link" class="w-4 h-4"></i>
                         </a>
                     </section>
 
                     <section onclick="window.location.href='performance_daily.html'"
-                             class="perf-card glass-card card-transition rounded-3xl p-4 lg:p-8 shadow-sm lg:hover:shadow-2xl lg:hover:-translate-y-2 cursor-pointer flex flex-col h-full relative overflow-hidden group">
+                             class="perf-card glass-card card-transition rounded-2xl lg:rounded-3xl p-3 lg:p-8 shadow-sm hover:shadow-2xl hover:-translate-y-2 cursor-pointer flex flex-col h-full relative overflow-hidden group">
                         <!-- Card Inner Glow -->
-                        <div class="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-0 lg:group-hover:opacity-100 transition-opacity pointer-events-none"></div>
+                        <div class="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
 
-                        <div class="flex justify-center mb-4 lg:mb-8 relative z-10">
-                            <h3 class="text-[10px] lg:text-xs font-bold tracking-widest text-slate-500 dark:text-slate-400 uppercase">Performance Report - Daily</h3>
+                        <div class="flex justify-center mb-1 lg:mb-8 relative z-10">
+                            <h3 class="text-[9px] lg:text-xs font-bold tracking-widest text-slate-500 dark:text-slate-400 uppercase">Performance Report - Daily</h3>
                         </div>
-                        
-                        <div class="grid grid-cols-3 gap-2 lg:gap-4 mb-6 lg:mb-10 flex-1 relative z-10">
+
+                        <div class="grid grid-cols-3 gap-2 lg:gap-4 mb-2 lg:mb-10 flex-1 relative z-10">
                             <div class="flex flex-col items-center text-center group/item">
-                                <div class="p-2 lg:p-3 rounded-xl lg:rounded-2xl bg-yellow-500/10 mb-2 lg:mb-3 group-hover/item:scale-110 transition-transform">
-                                    <i data-lucide="timer" class="w-5 h-5 lg:w-8 lg:h-8 text-yellow-600 dark:text-yellow-500"></i>
+                                <div class="p-1.5 lg:p-3 rounded-lg lg:rounded-2xl bg-yellow-500/10 mb-1 lg:mb-3 group-hover/item:scale-110 transition-transform">
+                                    <i data-lucide="timer" class="w-4 h-4 lg:w-8 lg:h-8 text-yellow-600 dark:text-yellow-500"></i>
                                 </div>
-                                <span class="text-[8px] lg:text-[11px] font-semibold text-slate-500 dark:text-slate-400 leading-tight">Analyze API<br>Performance</span>
+                                <span class="text-[7px] lg:text-[11px] font-semibold text-slate-500 dark:text-slate-400 leading-tight">Analyze API<br>Performance</span>
                             </div>
                             <div class="flex flex-col items-center text-center group/item">
-                                <div class="p-2 lg:p-3 rounded-xl lg:rounded-2xl bg-blue-500/10 mb-2 lg:mb-3 group-hover/item:scale-110 transition-transform">
-                                    <i data-lucide="gauge" class="w-5 h-5 lg:w-8 lg:h-8 text-blue-600 dark:text-blue-400"></i>
+                                <div class="p-1.5 lg:p-3 rounded-lg lg:rounded-2xl bg-blue-500/10 mb-1 lg:mb-3 group-hover/item:scale-110 transition-transform">
+                                    <i data-lucide="gauge" class="w-4 h-4 lg:w-8 lg:h-8 text-blue-600 dark:text-blue-400"></i>
                                 </div>
-                                <span class="text-[8px] lg:text-[11px] font-semibold text-slate-500 dark:text-slate-400 leading-tight">Track<br>Response Times</span>
+                                <span class="text-[7px] lg:text-[11px] font-semibold text-slate-500 dark:text-slate-400 leading-tight">Track<br>Response Times</span>
                             </div>
                             <div class="flex flex-col items-center text-center group/item">
-                                <div class="p-2 lg:p-3 rounded-xl lg:rounded-2xl bg-red-500/10 mb-2 lg:mb-3 group-hover/item:scale-110 transition-transform relative">
-                                    <i data-lucide="globe" class="w-5 h-5 lg:w-8 lg:h-8 text-blue-500 dark:text-blue-300"></i>
+                                <div class="p-1.5 lg:p-3 rounded-lg lg:rounded-2xl bg-red-500/10 mb-1 lg:mb-3 group-hover/item:scale-110 transition-transform relative">
+                                    <i data-lucide="globe" class="w-4 h-4 lg:w-8 lg:h-8 text-blue-500 dark:text-blue-300"></i>
                                     <span class="absolute top-1 lg:top-2 right-1 lg:right-2 flex h-2 lg:h-3 w-2 lg:w-3">
                                         <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
                                         <span class="relative inline-flex rounded-full h-2 lg:h-3 w-2 lg:w-3 bg-red-500"></span>
                                     </span>
                                 </div>
-                                <span class="text-[8px] lg:text-[11px] font-semibold text-slate-500 dark:text-slate-400 leading-tight">Error Rates</span>
+                                <span class="text-[7px] lg:text-[11px] font-semibold text-slate-500 dark:text-slate-400 leading-tight">Error Rates</span>
                             </div>
                         </div>
 
                         <a href="performance_daily.html" 
                            onclick="event.stopPropagation();"
-                           class="flex items-center justify-center gap-2 w-full bg-orange-500/10 dark:bg-orange-500/20 backdrop-blur-md text-orange-700 dark:text-orange-400 font-bold py-3 lg:py-4 rounded-xl lg:rounded-2xl text-[10px] lg:text-xs tracking-widest hover:bg-orange-500/20 dark:hover:bg-orange-500/30 transition-all uppercase mt-auto relative z-10 border border-orange-500/20 dark:border-orange-500/30 shadow-sm">
+                           class="flex items-center justify-center gap-2 w-full bg-orange-500/10 dark:bg-orange-400/10 text-orange-600 dark:text-orange-400 font-bold py-2 lg:py-4 rounded-lg lg:rounded-2xl text-[9px] lg:text-xs tracking-widest hover:bg-orange-500/20 dark:hover:bg-orange-400/20 border border-orange-500/20 transition-all uppercase mt-auto relative z-10">
                             View Performance Report
                             <i data-lucide="external-link" class="w-4 h-4"></i>
                         </a>
@@ -888,7 +903,7 @@ def generate_landing_page():
                 </div>
             </div>
 
-            <div class="space-y-6 lg:space-y-8">
+            <div class="space-y-2 lg:space-y-8">
                 <div class="flex items-center gap-4 lg:gap-6">
                     <div class="h-px flex-1 bg-slate-300 dark:bg-slate-700"></div>
                     <h2 class="text-[8px] lg:text-xs font-black uppercase tracking-[0.3em] lg:tracking-[0.4em] text-slate-900 dark:text-slate-100 text-center">SPRINT Execution Results</h2>
@@ -897,38 +912,38 @@ def generate_landing_page():
 
                 <div class="flex justify-center">
                     <section onclick="window.location.href='performance.html'" 
-                             class="sprint-card glass-card card-transition rounded-3xl p-4 lg:p-8 shadow-sm lg:hover:shadow-2xl lg:hover:-translate-y-2 cursor-pointer w-full lg:max-w-lg relative overflow-hidden group">
+                             class="sprint-card glass-card card-transition rounded-xl lg:rounded-3xl p-3 lg:p-8 shadow-sm hover:shadow-2xl hover:-translate-y-2 cursor-pointer w-full lg:max-w-lg relative overflow-hidden group">
                         <!-- Card Inner Glow -->
-                        <div class="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-0 lg:group-hover:opacity-100 transition-opacity pointer-events-none"></div>
+                        <div class="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
 
-                        <div class="flex justify-center mb-4 lg:mb-8 relative z-10">
-                            <h3 class="text-[10px] lg:text-xs font-bold tracking-widest text-slate-500 dark:text-slate-400 uppercase">Performance Report - SPRINT</h3>
+                        <div class="flex justify-center mb-1 lg:mb-8 relative z-10">
+                            <h3 class="text-[9px] lg:text-xs font-bold tracking-widest text-slate-500 dark:text-slate-400 uppercase">Performance Report - SPRINT</h3>
                         </div>
-                        
-                        <div class="grid grid-cols-3 gap-2 lg:gap-4 mb-6 lg:mb-10 relative z-10">
+
+                        <div class="grid grid-cols-3 gap-2 lg:gap-4 mb-2 lg:mb-10 relative z-10">
                             <div class="flex flex-col items-center text-center group/item">
-                                <div class="p-2 lg:p-3 rounded-xl lg:rounded-2xl bg-indigo-500/10 mb-2 lg:mb-3 group-hover/item:scale-110 transition-transform">
-                                    <i data-lucide="layers" class="w-5 h-5 lg:w-8 lg:h-8 text-indigo-600 dark:text-indigo-400"></i>
+                                <div class="p-1.5 lg:p-3 rounded-lg lg:rounded-2xl bg-indigo-500/10 mb-1 lg:mb-3 group-hover/item:scale-110 transition-transform">
+                                    <i data-lucide="layers" class="w-4 h-4 lg:w-8 lg:h-8 text-indigo-600 dark:text-indigo-400"></i>
                                 </div>
-                                <span class="text-[8px] lg:text-[11px] font-semibold text-slate-500 dark:text-slate-400 leading-tight">Sprint<br>Analytics</span>
+                                <span class="text-[7px] lg:text-[11px] font-semibold text-slate-500 dark:text-slate-400 leading-tight">Sprint<br>Analytics</span>
                             </div>
                             <div class="flex flex-col items-center text-center group/item">
-                                <div class="p-2 lg:p-3 rounded-xl lg:rounded-2xl bg-purple-500/10 mb-2 lg:mb-3 group-hover/item:scale-110 transition-transform">
-                                    <i data-lucide="zap" class="w-5 h-5 lg:w-8 lg:h-8 text-purple-600 dark:text-purple-400"></i>
+                                <div class="p-1.5 lg:p-3 rounded-lg lg:rounded-2xl bg-purple-500/10 mb-1 lg:mb-3 group-hover/item:scale-110 transition-transform">
+                                    <i data-lucide="zap" class="w-4 h-4 lg:w-8 lg:h-8 text-purple-600 dark:text-purple-400"></i>
                                 </div>
-                                <span class="text-[8px] lg:text-[11px] font-semibold text-slate-500 dark:text-slate-400 leading-tight">Threshold<br>Analysis</span>
+                                <span class="text-[7px] lg:text-[11px] font-semibold text-slate-500 dark:text-slate-400 leading-tight">Threshold<br>Analysis</span>
                             </div>
                             <div class="flex flex-col items-center text-center group/item">
-                                <div class="p-2 lg:p-3 rounded-xl lg:rounded-2xl bg-fuchsia-500/10 mb-2 lg:mb-3 group-hover/item:scale-110 transition-transform">
-                                    <i data-lucide="bar-chart-3" class="w-5 h-5 lg:w-8 lg:h-8 text-fuchsia-600 dark:text-fuchsia-400"></i>
+                                <div class="p-1.5 lg:p-3 rounded-lg lg:rounded-2xl bg-fuchsia-500/10 mb-1 lg:mb-3 group-hover/item:scale-110 transition-transform">
+                                    <i data-lucide="bar-chart-3" class="w-4 h-4 lg:w-8 lg:h-8 text-fuchsia-600 dark:text-fuchsia-400"></i>
                                 </div>
-                                <span class="text-[8px] lg:text-[11px] font-semibold text-slate-500 dark:text-slate-400 leading-tight">Benchmarking<br>Insight</span>
+                                <span class="text-[7px] lg:text-[11px] font-semibold text-slate-500 dark:text-slate-400 leading-tight">Benchmarking<br>Insight</span>
                             </div>
                         </div>
 
                         <a href="performance.html" 
                            onclick="event.stopPropagation();"
-                           class="flex items-center justify-center gap-2 w-full bg-indigo-500/10 dark:bg-indigo-500/20 backdrop-blur-md text-indigo-700 dark:text-indigo-400 font-bold py-3 lg:py-4 rounded-xl lg:rounded-2xl text-[10px] lg:text-xs tracking-widest hover:bg-indigo-500/20 dark:hover:bg-indigo-500/30 transition-all uppercase relative z-10 border border-indigo-500/20 dark:border-indigo-500/30 shadow-sm">
+                           class="flex items-center justify-center gap-2 w-full bg-indigo-500/10 dark:bg-indigo-400/10 text-indigo-600 dark:text-indigo-400 font-bold py-2 lg:py-4 rounded-lg lg:rounded-2xl text-[9px] lg:text-xs tracking-widest hover:bg-indigo-500/20 dark:hover:bg-indigo-400/20 border border-indigo-500/20 transition-all uppercase relative z-10">
                             View Sprint Performance
                             <i data-lucide="external-link" class="w-4 h-4"></i>
                         </a>
@@ -938,7 +953,7 @@ def generate_landing_page():
 
         </main>
 
-        <footer class="mt-12 text-slate-400 dark:text-slate-600 text-[10px] uppercase tracking-widest text-center">
+        <footer class="mt-auto py-4 text-slate-400 dark:text-slate-600 text-[8px] lg:text-[10px] uppercase tracking-widest text-center w-full">
             &copy; 2026 HirePro Technologies Pvt. Ltd.
         </footer>
     </div>
@@ -947,47 +962,41 @@ def generate_landing_page():
         // Initialize Lucide Icons
         lucide.createIcons();
 
-        function updateThemeColor(isDark) {
-            const meta = document.getElementById('theme-color-meta');
-            if (meta) {
-                meta.setAttribute('content', isDark ? '#0f172a' : '#f8fafc');
-            }
-        }
-
-        // Theme Toggle Functionality
+        // Theme Toggle Functionality with Persistence
         function toggleTheme() {
             const html = document.documentElement;
             const icon = document.getElementById('theme-icon');
             const isDark = html.classList.contains('dark');
-            
+
             if (isDark) {
                 html.classList.remove('dark');
                 html.classList.add('light');
+                localStorage.setItem('theme', 'light');
                 icon.setAttribute('data-lucide', 'moon');
                 icon.classList.replace('text-yellow-500', 'text-slate-600');
-                updateThemeColor(false);
             } else {
                 html.classList.remove('light');
                 html.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
                 icon.setAttribute('data-lucide', 'sun');
                 icon.classList.replace('text-slate-600', 'text-yellow-500');
-                updateThemeColor(true);
             }
             lucide.createIcons();
         }
 
-        // Auto-detect system preference on load
-        if (window.matchMedia && !window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            document.documentElement.classList.remove('dark');
-            document.documentElement.classList.add('light');
+        // Sync UI state with detected theme on load
+        (function initThemeUI() {
+            const html = document.documentElement;
             const icon = document.getElementById('theme-icon');
-            icon.setAttribute('data-lucide', 'moon');
-            icon.classList.replace('text-yellow-500', 'text-slate-600');
-            updateThemeColor(false);
+            if (html.classList.contains('dark')) {
+                icon.setAttribute('data-lucide', 'sun');
+                icon.classList.add('text-yellow-500');
+            } else {
+                icon.setAttribute('data-lucide', 'moon');
+                icon.classList.add('text-slate-600');
+            }
             lucide.createIcons();
-        } else {
-            updateThemeColor(true);
-        }
+        })();
     </script>
 </body>
 </html>"""
@@ -997,10 +1006,10 @@ def generate_landing_page():
 
 def generate():
     if not REPORTS_DIR.exists(): return
-    
+
     # Identify Date Folders
     date_folders = get_report_folders(REPORTS_DIR, limit=5)
-    if not date_folders: 
+    if not date_folders:
         print("No date folders found in reports directory.")
         return
 
@@ -1008,47 +1017,53 @@ def generate():
     expected_files = []
     if MASTER_LIST_FILE.exists():
         with MASTER_LIST_FILE.open('r') as f: expected_files = [line.strip() for line in f if line.strip()]
-    
-    history_data = [] # List of {date, total, passed, failed, reports, missing, no_result, groups}
-    
+
+    history_data = []  # List of {date, total, passed, failed, reports, missing, no_result, groups}
+
     # Process Folders (Latest first)
     for i, date_str in enumerate(date_folders):
         folder_path = REPORTS_DIR / date_str
         folder_reports = scan_folder(folder_path, date_str)
-        
+
         found_filenames = {r['name'] for r in folder_reports}
         missing = [name for name in expected_files if name not in found_filenames]
         new_files = [name for name in found_filenames if name not in expected_files]
-        
-        
-        groups = {cat: [] for cat in ["AI - Playwright Reports", "AI - Claude Reports", "API Reports", "CRPO Reports", "ATS Reports", "SSO Reports", "SLOTS Reports", "Microsite Reports", "Cypress Reports"]}
+
+        groups = {cat: [] for cat in
+                  ["AI - Playwright Reports", "AI - Claude Reports", "API Reports", "CRPO Reports", "ATS Reports",
+                   "SSO Reports", "SLOTS Reports", "Microsite Reports", "Cypress Reports"]}
         no_result = []
         for r in folder_reports:
-            if r["summary"].get("requests", 0) == 0: no_result.append(r)
-            else: groups[classify_report(r['name'])].append(r)
+            if r["summary"].get("requests", 0) == 0:
+                no_result.append(r)
+            else:
+                groups[classify_report(r['name'])].append(r)
 
         # Aggregate metrics (actual individual test case results)
         total = sum(r['summary'].get('requests', 0) for r in folder_reports)
         failed = sum(r['summary'].get('failed', 0) for r in folder_reports)
         passed = total - failed
         pp = round((passed / total * 100), 1) if total > 0 else 0
-        
+
         history_data.append({
             "date": datetime.datetime.strptime(date_str, '%Y%m%d').strftime('%b %d, %Y'),
             "raw_date": date_str,
             "total": total, "passed": passed, "failed": failed, "pass_percent": pp,
-            "reports": folder_reports, "missing": missing, "new_files": new_files, "no_result": no_result, "groups": groups
+            "reports": folder_reports, "missing": missing, "new_files": new_files, "no_result": no_result,
+            "groups": groups
         })
 
     current_day = history_data[0]
-    current_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'); commit_id = get_git_commit()
+    current_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S');
+    commit_id = get_git_commit()
 
     # Generate History UI Components
     history_table_rows = []
     date_options = []
-    
+
     for h in history_data:
-        health_cls = "health-good" if h["pass_percent"] > 95 else ("health-fair" if h["pass_percent"] > 85 else "health-bad")
+        health_cls = "health-good" if h["pass_percent"] > 95 else (
+            "health-fair" if h["pass_percent"] > 85 else "health-bad")
         history_table_rows.append(f"""
             <tr id="row-{h['raw_date']}">
                 <td class="history-date">{h['date']}</td>
@@ -1066,21 +1081,21 @@ def generate():
     for idx, h in enumerate(history_data):
         is_active = "active" if h == current_day else ""
         cov = round((h["total"] / TARGET_EXECUTION_GOAL) * 100, 1) if TARGET_EXECUTION_GOAL > 0 else 0
-        
+
         # Only show the red stale alert for the VERY LATEST report if it's not today
         # We don't want history reports to show red just because they are in the past
         is_stale = (idx == 0 and h['raw_date'] != today_str)
         stale_cls = "hero-stale" if is_stale else ""
-        
+
         view_parts = [f"""<div id="view-{h['raw_date']}" class="day-view {is_active}">"""]
-        
+
         # Hero Banner
         view_parts.append(f"""
-        <div class="hero-banner { 'stale-banner' if is_stale else '' }">
+        <div class="hero-banner {'stale-banner' if is_stale else ''}">
             <div class="hero-main">
                 <div class="hero-label">
                     Execution Goal ({h['date']})
-                    { '<span class="sync-badge"><i class="fas fa-clock-rotate-left"></i> OUT OF SYNC</span>' if is_stale else '' }
+                    {'<span class="sync-badge"><i class="fas fa-clock-rotate-left"></i> OUT OF SYNC</span>' if is_stale else ''}
                 </div>
                 <div class="hero-value">{h['total']} <span class="hero-target">/ {TARGET_EXECUTION_GOAL} Test Cases</span></div>
                 {f'<span class="fail-badge">{len(h["no_result"]) + len(h["missing"])} Failed Test (s)</span>' if (h["no_result"] or h["missing"]) else ""}
@@ -1101,53 +1116,66 @@ def generate():
                 </div>
             </div>
         </div>
-        
+
         <div class="search-area">
             <i class="fas fa-search"></i>
             <input type="text" placeholder="Search tests for {h['date']}..." onkeyup="searchInside(this)">
         </div>
-        
+
         """)
         if h["no_result"]:
-            view_parts.append(f"""<div class="alert-row"><div class="alert-card"><div style="display:flex; align-items:center;"><i class="fas fa-exclamation-triangle"></i><span style="font-weight:700;">{len(h['no_result'])} Critical: Report(s) found with Zero results (Possible execution stall or crash) | {h['date']}</span></div><span class="badge-urgent">Action Required</span></div></div>""")
+            view_parts.append(
+                f"""<div class="alert-row"><div class="alert-card"><div style="display:flex; align-items:center;"><i class="fas fa-exclamation-triangle"></i><span style="font-weight:700;">{len(h['no_result'])} Critical: Report(s) found with Zero results (Possible execution stall or crash) | {h['date']}</span></div><span class="badge-urgent">Action Required</span></div></div>""")
 
         # Zero Result Reports
         if h["no_result"]:
             h["no_result"].sort(key=lambda x: x['mod_time_ts'], reverse=True)
-            view_parts.append(f"""<details class="report-group" style="border-color: #feb2b2; margin-bottom: 2.5rem;"><summary style="background: #fff5f5; color: #c53030; display:flex; align-items:center;"><div class="collapsible-loader"></div><span><i class="fas fa-bug"></i>Critical: Incomplete Executions ({len(h['no_result'])})</span></summary><div class="content-wrapper"><div class="content-inner"><table><thead><tr><th>Identity</th><th>Format</th><th>Check Time</th><th>Status</th></tr></thead><tbody>""")
-            for r in h["no_result"]: view_parts.append(f"""<tr class="report-row"><td><a href="{r.get('view_path', r['path'])}" class="report-link" target="_blank" style="color:#c53030;"><i class="fas fa-exclamation-circle"></i> <span>{r['name']}</span></a></td><td><span class="badge badge-html">{r['type']}</span></td><td style="font-size: 0.85rem; color: var(--text-muted); font-weight: 500;">{r['mod_time']}</td><td style="color: #c53030; font-style: italic; font-weight: 700;">No metrics found</td></tr>""")
+            view_parts.append(
+                f"""<details class="report-group" style="border-color: #feb2b2; margin-bottom: 2.5rem;"><summary style="background: #fff5f5; color: #c53030; display:flex; align-items:center;"><div class="collapsible-loader"></div><span><i class="fas fa-bug"></i>Critical: Incomplete Executions ({len(h['no_result'])})</span></summary><div class="content-wrapper"><div class="content-inner"><table><thead><tr><th>Identity</th><th>Format</th><th>Check Time</th><th>Status</th></tr></thead><tbody>""")
+            for r in h["no_result"]: view_parts.append(
+                f"""<tr class="report-row"><td><a href="{r.get('view_path', r['path'])}" class="report-link" target="_blank" style="color:#c53030;"><i class="fas fa-exclamation-circle"></i> <span>{r['name']}</span></a></td><td><span class="badge badge-html">{r['type']}</span></td><td style="font-size: 0.85rem; color: var(--text-muted); font-weight: 500;">{r['mod_time']}</td><td style="color: #c53030; font-style: italic; font-weight: 700;">No metrics found</td></tr>""")
             view_parts.append("</tbody></table></div></div></details>")
 
         # Missing Reports
         if h["missing"]:
-            view_parts.append(f"""<details class="report-group" style="border-color: #f59e0b; margin-bottom: 2.5rem;"><summary style="background: #fffbeb; color: #d97706; display:flex; align-items:center;"><div class="collapsible-loader"></div><span><i class="fas fa-file-circle-exclamation"></i> Identity Integrity Check: Missing ({len(h['missing'])})</span></summary><div class="content-wrapper"><div class="content-inner"><table><thead><tr><th>Expected Filename</th><th>Status</th></tr></thead><tbody>""")
-            for name in h["missing"]: view_parts.append(f"""<tr class="report-row"><td><span class="report-link" style="color:#d97706;"><i class="fas fa-file-circle-xmark"></i> <span>{name}</span></span></td><td style="color: #d97706; font-style: italic; font-weight: 700;">Missing from manifest</td></tr>""")
+            view_parts.append(
+                f"""<details class="report-group" style="border-color: #f59e0b; margin-bottom: 2.5rem;"><summary style="background: #fffbeb; color: #d97706; display:flex; align-items:center;"><div class="collapsible-loader"></div><span><i class="fas fa-file-circle-exclamation"></i> Identity Integrity Check: Missing ({len(h['missing'])})</span></summary><div class="content-wrapper"><div class="content-inner"><table><thead><tr><th>Expected Filename</th><th>Status</th></tr></thead><tbody>""")
+            for name in h["missing"]: view_parts.append(
+                f"""<tr class="report-row"><td><span class="report-link" style="color:#d97706;"><i class="fas fa-file-circle-xmark"></i> <span>{name}</span></span></td><td style="color: #d97706; font-style: italic; font-weight: 700;">Missing from manifest</td></tr>""")
             view_parts.append("</tbody></table></div></div></details>")
 
         # New Reports (Not in Master List)
         if h.get("new_files"):
-            view_parts.append(f"""<details class="report-group" style="border-color: #10b981; margin-bottom: 2.5rem;"><summary style="background: #ecfdf5; color: #059669; display:flex; align-items:center;"><div class="collapsible-loader"></div><span><i class="fas fa-file-circle-plus"></i> Integrity Insight: Newly Detected Reports ({len(h['new_files'])})</span></summary><div class="content-wrapper"><div class="content-inner"><table><thead><tr><th>Detected Filename</th><th>Status</th></tr></thead><tbody>""")
-            for name in h["new_files"]: 
-                view_parts.append(f"""<tr class="report-row"><td><span class="report-link" style="color:#059669;"><i class="fas fa-plus-circle"></i> <span>{name}</span></span></td><td style="color: #059669; font-style: italic; font-weight: 700;">New report added</td></tr>""")
+            view_parts.append(
+                f"""<details class="report-group" style="border-color: #10b981; margin-bottom: 2.5rem;"><summary style="background: #ecfdf5; color: #059669; display:flex; align-items:center;"><div class="collapsible-loader"></div><span><i class="fas fa-file-circle-plus"></i> Integrity Insight: Newly Detected Reports ({len(h['new_files'])})</span></summary><div class="content-wrapper"><div class="content-inner"><table><thead><tr><th>Detected Filename</th><th>Status</th></tr></thead><tbody>""")
+            for name in h["new_files"]:
+                view_parts.append(
+                    f"""<tr class="report-row"><td><span class="report-link" style="color:#059669;"><i class="fas fa-plus-circle"></i> <span>{name}</span></span></td><td style="color: #059669; font-style: italic; font-weight: 700;">New report added</td></tr>""")
             view_parts.append("</tbody></table></div></div></details>")
 
         # Normal Groups
         for group, items in h["groups"].items():
             if not items: continue
             items.sort(key=lambda x: x['mod_time_ts'], reverse=True)
-            g_total = sum(i['summary'].get('requests', 0) for i in items); g_failed = sum(i['summary'].get('failed', 0) for i in items); g_passed = g_total - g_failed
-            view_parts.append(f"""<details class="report-group"><summary style="background: #f8fafc; display:flex; align-items:center;"><div class="collapsible-loader"></div><div style="display:flex; align-items:center; flex:1; width:100%;"><span style="font-weight:800; color:var(--text);">{group} ({len(items)})</span><div style="display:flex; gap:1.25rem; font-size:0.75rem; margin-left:auto; margin-right: 1.5rem;"><span class="chip" data-tooltip="TOTAL">{g_total} T</span><span class="chip success" data-tooltip="PASSED">{g_passed} P</span><span class="chip danger" data-tooltip="FAILED" style="{'background:#ef4444; color:white;' if g_failed > 0 else ''}">{g_failed} F</span></div></div></summary><div class="content-wrapper"><div class="content-inner"><table><thead><tr><th>Suite Identity</th><th>Format</th><th>Verification</th><th>Quality Insight</th></tr></thead><tbody>""")
+            g_total = sum(i['summary'].get('requests', 0) for i in items);
+            g_failed = sum(i['summary'].get('failed', 0) for i in items);
+            g_passed = g_total - g_failed
+            view_parts.append(
+                f"""<details class="report-group"><summary style="background: #f8fafc; display:flex; align-items:center;"><div class="collapsible-loader"></div><div style="display:flex; align-items:center; flex:1; width:100%;"><span style="font-weight:800; color:var(--text);">{group} ({len(items)})</span><div style="display:flex; gap:1.25rem; font-size:0.75rem; margin-left:auto; margin-right: 1.5rem;"><span class="chip" data-tooltip="TOTAL">{g_total} T</span><span class="chip success" data-tooltip="PASSED">{g_passed} P</span><span class="chip danger" data-tooltip="FAILED" style="{'background:#ef4444; color:white;' if g_failed > 0 else ''}">{g_failed} F</span></div></div></summary><div class="content-wrapper"><div class="content-inner"><table><thead><tr><th>Suite Identity</th><th>Format</th><th>Verification</th><th>Quality Insight</th></tr></thead><tbody>""")
             for r in items:
-                s = r['summary']; pas, fld, pct = s['requests']-s['failed'], s['failed'], s['pass_percent']; clr = "#10b981" if pct > 90 else ("#f59e0b" if pct > 70 else "#ef4444")
+                s = r['summary'];
+                pas, fld, pct = s['requests'] - s['failed'], s['failed'], s['pass_percent'];
+                clr = "#10b981" if pct > 90 else ("#f59e0b" if pct > 70 else "#ef4444")
                 failed_list = ""
                 if s.get("failed_cases"):
                     cases_str = ", ".join(s["failed_cases"][:5])
                     if len(s["failed_cases"]) > 5: cases_str += "..."
                     failed_list = f'<div style="font-size:0.65rem; color:#ef4444; margin-top:4px; font-weight:600;"><i class="fas fa-bug"></i> {cases_str}</div>'
-                
-                view_parts.append(f"""<tr class="report-row"><td><a href="{r.get('view_path', r['path'])}" class="report-link" target="_blank"><i class="fas {'fa-file-lines' if r['type'] == 'HTML' else 'fa-file-excel'}" style="color:var(--primary)"></i> <span>{r['name']}</span></a></td><td><span class="badge {'badge-html' if r['type'] == 'HTML' else 'badge-excel'}">{r['type']}</span></td><td style="font-size: 0.85rem; color: var(--text-muted); font-weight: 500;">{r['mod_time']}</td><td><div style="display:flex;gap:4px;margin-bottom:6px;"><span class="chip">{s['requests']} T</span><span class="chip success">{pas} P</span><span class="chip danger">{fld} F</span></div><div style="display:flex; align-items:center; gap:8px;"><div style="height:6px;width:100px;background:#f1f5f9;border-radius:3px;overflow:hidden;"><div style="height:100%;width:{pct}%;background:{clr}"></div></div><span style="font-size:0.75rem;font-weight:700;color:{clr}">{pct}%</span></div>{failed_list}</td></tr>""")
+
+                view_parts.append(
+                    f"""<tr class="report-row"><td><a href="{r.get('view_path', r['path'])}" class="report-link" target="_blank"><i class="fas {'fa-file-lines' if r['type'] == 'HTML' else 'fa-file-excel'}" style="color:var(--primary)"></i> <span>{r['name']}</span></a></td><td><span class="badge {'badge-html' if r['type'] == 'HTML' else 'badge-excel'}">{r['type']}</span></td><td style="font-size: 0.85rem; color: var(--text-muted); font-weight: 500;">{r['mod_time']}</td><td><div style="display:flex;gap:4px;margin-bottom:6px;"><span class="chip">{s['requests']} T</span><span class="chip success">{pas} P</span><span class="chip danger">{fld} F</span></div><div style="display:flex; align-items:center; gap:8px;"><div style="height:6px;width:100px;background:#f1f5f9;border-radius:3px;overflow:hidden;"><div style="height:100%;width:{pct}%;background:{clr}"></div></div><span style="font-size:0.75rem;font-weight:700;color:{clr}">{pct}%</span></div>{failed_list}</td></tr>""")
             view_parts.append("</tbody></table></div></div></details>")
-        
+
         view_parts.append("</div>")
         day_views_html.append("".join(view_parts))
 
@@ -1172,13 +1200,13 @@ def generate():
             <div style="font-weight: 700;"><i class="fas fa-sync-alt" style="color:var(--success); margin-right: 0.5rem;"></i> {current_time}</div>
         </div>
     </header>
-    
+
     <div class="main-nav">
         <div class="nav-indicator"></div>
         <button class="nav-btn active" id="btn-current" onclick="showTab('current')"><i class="fas fa-satellite-dish"></i> Live Audit</button>
         <button class="nav-btn" id="btn-history" onclick="showTab('history')"><i class="fas fa-clock-rotate-left"></i> Quality History</button>
     </div>
-    
+
     <div id="dashboard-main" style="position: relative;">
         <div id="loader" class="loader-overlay">
             <div style="text-align: center;">
@@ -1223,7 +1251,7 @@ def generate():
         function showTab(tabId) {{
             const indicator = document.querySelector('.nav-indicator');
             const targetBtn = document.getElementById('btn-' + tabId);
-            
+
             if (targetBtn && indicator) {{
                 indicator.style.width = targetBtn.offsetWidth + 'px';
                 indicator.style.left = targetBtn.offsetLeft + 'px';
@@ -1256,7 +1284,7 @@ def generate():
         function switchDate(dateStr, toTop) {{
             document.querySelectorAll('.day-view').forEach(v => v.classList.remove('active'));
             document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
-            
+
             const targetView = document.getElementById('view-' + dateStr);
             if (targetView) {{
                 targetView.classList.add('active');
@@ -1267,7 +1295,7 @@ def generate():
                     if(w) w.style.gridTemplateRows = '';
                 }});
             }}
-            
+
             let btn = document.querySelector('#row-' + dateStr + ' .view-btn');
             if(btn) btn.classList.add('active');
             document.getElementById('dateSelector').value = dateStr;
@@ -1288,9 +1316,9 @@ def generate():
             summary.addEventListener('click', e => {{
                 e.preventDefault();
                 if (summary.classList.contains('loading')) return;
-                
+
                 const isOpening = !details.open;
-                
+
                 if (!isOpening) {{
                     summary.classList.add('loading');
                     wrapper.style.gridTemplateRows = '0fr';
@@ -1315,8 +1343,9 @@ def generate():
             }});
         }});
     </script><div class="container"><footer><div style="display: flex; align-items: center; gap: 0.75rem;"><span style="text-transform: uppercase; font-size: 0.7rem; letter-spacing: 0.05em; font-weight: 700;">Build ID:</span><span class="commit-badge"><i class="fas fa-code-branch" style="margin-right:0.4rem; opacity:0.5;"></i>{commit_id}</span></div><div>&copy; 2026 HirePro . All rights reserved.</div></footer></div></body></html>""")
-    OUTPUT_FILE.write_text("".join(html_parts), encoding='utf-8'); 
+    OUTPUT_FILE.write_text("".join(html_parts), encoding='utf-8');
     generate_landing_page()
     print(f"Dashboard generated at {OUTPUT_FILE}")
+
 
 if __name__ == "__main__": generate()
