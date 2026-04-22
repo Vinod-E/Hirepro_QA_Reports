@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preview: API_CreateUser.xls</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --primary: #4f46e5; --bg: #f8fafc; --text: #1e293b; --border: #e2e8f0; --success: #10b981; --danger: #ef4444; }
+        body { font-family: 'Outfit', sans-serif; background-color: var(--bg); color: var(--text); padding: 2rem; margin: 0; }
+        .container { max-width: 1400px; margin: 0 auto; background: white; padding: 2.5rem; border-radius: 1.5rem; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05); border: 1px solid var(--border); }
+        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 2px solid var(--bg); }
+        .title-area { display: flex; align-items: center; gap: 1rem; }
+        .title-area i { font-size: 2rem; color: var(--primary); }
+        h1 { font-size: 1.5rem; font-weight: 800; margin: 0; }
+        .actions { display: flex; gap: 1rem; }
+        .btn { text-decoration: none; padding: 0.6rem 1.25rem; border-radius: 10px; font-weight: 700; font-size: 0.85rem; display: flex; align-items: center; gap: 0.5rem; transition: all 0.2s; border: none; cursor: pointer; }
+        .btn-download { background: var(--primary); color: white; }
+        .btn-download:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3); }
+        .btn-back { background: #f1f5f9; color: var(--text); }
+        .btn-back:hover { background: #e2e8f0; }
+        .table-wrapper { overflow-x: auto; border-radius: 12px; border: 1px solid var(--border); background: white; }
+        .preview-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; border-spacing: 0; }
+        .preview-table td { padding: 0.85rem 1.15rem; border-bottom: 1px solid var(--border); border-right: 1px solid var(--border); white-space: nowrap; color: var(--text); }
+        .preview-table tr:hover { background: #f1f5f9 !important; }
+        
+        /* Header & Sub-header Styling */
+        .preview-table tr:first-child td,
+        .preview-table tr.sub-header td { 
+            background: #f1f5f9 !important; 
+            font-weight: 800 !important; 
+            color: #475569 !important; 
+            text-transform: uppercase; 
+            font-size: 0.75rem; 
+            letter-spacing: 0.025em;
+            border-bottom: 2px solid #cbd5e1 !important;
+        }
+        
+        .preview-table tr:nth-child(even) { background: #fafbfc; }
+        .preview-table tr:hover { background: #f1f5f9 !important; }
+        
+        /* Status Colors */
+        .status-pass { color: var(--success) !important; font-weight: 800; background: #ecfdf5 !important; }
+        .status-fail { color: var(--danger) !important; font-weight: 800; background: #fef2f2 !important; }
+        .status-na { color: #94a3b8; font-style: italic; opacity: 0.5; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="title-area">
+                <i class="fas fa-file-excel"></i>
+                <div>
+                    <h1>API_CreateUser.xls</h1>
+                    <div style="font-size: 0.75rem; color: #64748b; font-weight: 600; margin-top: 0.2rem; text-transform: uppercase;">Spreadsheet Preview (All Rows)</div>
+                </div>
+            </div>
+            <div class="actions">
+                <button onclick="window.close()" class="btn btn-back"><i class="fas fa-times"></i> Close Tab</button>
+                <a href="API_CreateUser.xls" download="API_CreateUser.xls" class="btn btn-download"><i class="fas fa-download"></i> Download Excel</a>
+            </div>
+        </header>
+        <div class="table-wrapper">
+            <table border="1" class="dataframe preview-table">
+  <tbody>
+    <tr>
+      <td>Create User</td>
+      <td>Pass</td>
+      <td>Login Server</td>
+      <td>[MASKED_REF]</td>
+      <td>Lambda</td>
+      <td>On</td>
+      <td>APP Name</td>
+      <td>crpo</td>
+      <td>No.of Test cases</td>
+      <td>23</td>
+      <td>Start Time</td>
+      <td>2026-04-22 08:56:26.215301</td>
+      <td>Failed Test cases</td>
+      <td>0</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Comparison</td>
+      <td>Actual_status</td>
+      <td>User Id</td>
+      <td>TypeofUser</td>
+      <td>Name</td>
+      <td>Login_name</td>
+      <td>Email</td>
+      <td>Location</td>
+      <td>Mobile</td>
+      <td>Roles</td>
+      <td>Department</td>
+      <td>TypeofUserId</td>
+      <td>UserBelongs_Id</td>
+      <td>BD_Salt_Password</td>
+      <td>Expected_message</td>
+    </tr>
+    <tr>
+      <td>Input</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>User_API_1</td>
+      <td>User_API_1</td>
+      <td>[MASKED_EMAIL]</td>
+      <td>25084</td>
+      <td>[MASKED_PHONE]</td>
+      <td>14496,14510,14497</td>
+      <td>4527</td>
+      <td>1</td>
+      <td>Empty</td>
+      <td>D@3my</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Output</td>
+      <td>Pass</td>
+      <td>71529</td>
+      <td>Ams</td>
+      <td>User_API_1</td>
+      <td>User_API_1</td>
+      <td>[MASKED_EMAIL]</td>
+      <td>25084</td>
+      <td>[MASKED_PHONE]</td>
+      <td>14496,14497,14510</td>
+      <td>4527</td>
+      <td>1</td>
+      <td>Empty</td>
+      <td>$2a$12$Xre9CdiyrKA/OzDbtkvS0uC6YHzBYhfZoylFHOU.LZhuz0W1ObDaC</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Input</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>User_API_2</td>
+      <td>User_API_2</td>
+      <td>[MASKED_EMAIL]</td>
+      <td>25085</td>
+      <td>[MASKED_PHONE]</td>
+      <td>14500</td>
+      <td>4527</td>
+      <td>4</td>
+      <td>Empty</td>
+      <td>D@3my</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Output</td>
+      <td>Pass</td>
+      <td>71531</td>
+      <td>Referral</td>
+      <td>User_API_2</td>
+      <td>User_API_2</td>
+      <td>[MASKED_EMAIL]</td>
+      <td>25085</td>
+      <td>[MASKED_PHONE]</td>
+      <td>14500</td>
+      <td>4527</td>
+      <td>4</td>
+      <td>10615</td>
+      <td>$2a$12$pHzjVT.WwpYMIj.k6udMPeXgX0RsBicmxv95/2G7OjnbeNbu9NuOe</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Input</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>User_API_3</td>
+      <td>User_API_3</td>
+      <td>[MASKED_EMAIL]</td>
+      <td>25151</td>
+      <td>[MASKED_PHONE]</td>
+      <td>14496,14510</td>
+      <td>4527</td>
+      <td>3</td>
+      <td>8570</td>
+      <td>D@3my</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Output</td>
+      <td>Pass</td>
+      <td>71533</td>
+      <td>Source</td>
+      <td>User_API_3</td>
+      <td>User_API_3</td>
+      <td>[MASKED_EMAIL]</td>
+      <td>25151</td>
+      <td>[MASKED_PHONE]</td>
+      <td>14496,14510</td>
+      <td>4527</td>
+      <td>3</td>
+      <td>8570</td>
+      <td>$2a$12$TLFIM.nVybiZQsDbWtZW4ulzXgFDIXry0GdCAKEy070g2E3f7g3s.</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Input</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>User_API_4</td>
+      <td>User_API_4</td>
+      <td>[MASKED_EMAIL]</td>
+      <td>25084</td>
+      <td>[MASKED_PHONE]</td>
+      <td>14549</td>
+      <td>4527</td>
+      <td>10</td>
+      <td>5</td>
+      <td>D@3my</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Output</td>
+      <td>Pass</td>
+      <td>71535</td>
+      <td>Tpo</td>
+      <td>User_API_4</td>
+      <td>User_API_4</td>
+      <td>[MASKED_EMAIL]</td>
+      <td>25084</td>
+      <td>[MASKED_PHONE]</td>
+      <td>14549</td>
+      <td>4527</td>
+      <td>10</td>
+      <td>5</td>
+      <td>$2a$12$Bl4nEEMZ1ks0O0XBei3IIOi4gqOcAFzsYGs6dJVIEgOmFgEUC9VUu</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Input</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>User_API_11</td>
+      <td>User_API_11</td>
+      <td>[MASKED_EMAIL]</td>
+      <td>25084</td>
+      <td>[MASKED_PHONE]</td>
+      <td>14496</td>
+      <td>4527</td>
+      <td>Empty</td>
+      <td>Empty</td>
+      <td>D@3my</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Output</td>
+      <td>Pass</td>
+      <td>71537</td>
+      <td>Ams</td>
+      <td>User_API_11</td>
+      <td>User_API_11</td>
+      <td>[MASKED_EMAIL]</td>
+      <td>25084</td>
+      <td>[MASKED_PHONE]</td>
+      <td>14496</td>
+      <td>4527</td>
+      <td>1</td>
+      <td>Empty</td>
+      <td>$2a$12$tO/b76JFRuAZFNclwxJsnu4DEDEGv6PXYAvS1uHhw4uREjZPFrEkO</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Input</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>User_API_12</td>
+      <td>User_API_12</td>
+      <td>[MASKED_EMAIL]</td>
+      <td>25084</td>
+      <td>Empty</td>
+      <td>14496,14510,14497</td>
+      <td>4527</td>
+      <td>1</td>
+      <td>Empty</td>
+      <td>D@3my</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Output</td>
+      <td>Pass</td>
+      <td>71539</td>
+      <td>Ams</td>
+      <td>User_API_12</td>
+      <td>User_API_12</td>
+      <td>[MASKED_EMAIL]</td>
+      <td>25084</td>
+      <td>NA</td>
+      <td>14496,14497,14510</td>
+      <td>4527</td>
+      <td>1</td>
+      <td>Empty</td>
+      <td>$2a$12$/dofrz9vc4pBNvJHnXAsv.aW5isEyrGKpGVINAxOsry5aLXeKXpFG</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Input</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>User_API_13</td>
+      <td>User_API_13</td>
+      <td>[MASKED_EMAIL]</td>
+      <td>25084</td>
+      <td>[MASKED_PHONE]</td>
+      <td>14500</td>
+      <td>Empty</td>
+      <td>4</td>
+      <td>Empty</td>
+      <td>D@3my</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Output</td>
+      <td>Pass</td>
+      <td>71541</td>
+      <td>Referral</td>
+      <td>User_API_13</td>
+      <td>User_API_13</td>
+      <td>[MASKED_EMAIL]</td>
+      <td>25084</td>
+      <td>[MASKED_PHONE]</td>
+      <td>14500</td>
+      <td>Empty</td>
+      <td>4</td>
+      <td>10617</td>
+      <td>$2a$12$ebeBhmwi5/rqq79EXULp1eo8xYog9P4vflQ8SVjum2eGVUJCTju5C</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Input</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>User_API_14</td>
+      <td>User_API_14</td>
+      <td>[MASKED_EMAIL]</td>
+      <td>Empty</td>
+      <td>[MASKED_PHONE]</td>
+      <td>14510</td>
+      <td>4527</td>
+      <td>3</td>
+      <td>8570</td>
+      <td>D@3my</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Output</td>
+      <td>Pass</td>
+      <td>71543</td>
+      <td>Source</td>
+      <td>User_API_14</td>
+      <td>User_API_14</td>
+      <td>[MASKED_EMAIL]</td>
+      <td>Empty</td>
+      <td>[MASKED_PHONE]</td>
+      <td>14510</td>
+      <td>4527</td>
+      <td>3</td>
+      <td>8570</td>
+      <td>$2a$12$2POKW4p9LjQGuRKOlhrvv./ud1qcNFptt2JM9l0a8DL76u7/mwMmm</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Input</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>User_API_23</td>
+      <td>User_API_23</td>
+      <td>[MASKED_EMAIL]</td>
+      <td>25084</td>
+      <td>[MASKED_PHONE]</td>
+      <td>14510</td>
+      <td>4527</td>
+      <td>1</td>
+      <td>Empty</td>
+      <td>Empty</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Output</td>
+      <td>Pass</td>
+      <td>71545</td>
+      <td>Ams</td>
+      <td>User_API_23</td>
+      <td>User_API_23</td>
+      <td>[MASKED_EMAIL]</td>
+      <td>25084</td>
+      <td>[MASKED_PHONE]</td>
+      <td>14510</td>
+      <td>4527</td>
+      <td>1</td>
+      <td>Empty</td>
+      <td>$2a$12$M9g2Lo955pI7lm4f2Wsfn.Ea6xjyqzEwFPjykn09d9JXpdVbOO3AG</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Input</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>User_API_5</td>
+      <td>Empty</td>
+      <td>Empty</td>
+      <td>25084</td>
+      <td>[MASKED_PHONE]</td>
+      <td>14500</td>
+      <td>4527</td>
+      <td>4</td>
+      <td>Empty</td>
+      <td>D@3my</td>
+      <td>Please specify the LoginName/email id</td>
+    </tr>
+    <tr>
+      <td>Output</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>Please specify the LoginName/email id</td>
+    </tr>
+    <tr>
+      <td>Input</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>User_API_6</td>
+      <td>Empty</td>
+      <td>[MASKED_EMAIL]</td>
+      <td>25084</td>
+      <td>[MASKED_PHONE]</td>
+      <td>14496,14510</td>
+      <td>4527</td>
+      <td>3</td>
+      <td>8570</td>
+      <td>D@3my</td>
+      <td>Please specify the LoginName/email id</td>
+    </tr>
+    <tr>
+      <td>Output</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>Please specify the LoginName/email id</td>
+    </tr>
+    <tr>
+      <td>Input</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>User_API_7</td>
+      <td>User_API_7</td>
+      <td>Empty</td>
+      <td>25084</td>
+      <td>[MASKED_PHONE]</td>
+      <td>14549</td>
+      <td>4527</td>
+      <td>10</td>
+      <td>5</td>
+      <td>D@3my</td>
+      <td>Please specify the Email</td>
+    </tr>
+    <tr>
+      <td>Output</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>Please specify the Email</td>
+    </tr>
+    <tr>
+      <td>Input</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>User_API_8</td>
+      <td>User_API_8</td>
+      <td>[MASKED_EMAIL]</td>
+      <td>25084</td>
+      <td>[MASKED_PHONE]</td>
+      <td>14549</td>
+      <td>4527</td>
+      <td>10</td>
+      <td>5</td>
+      <td>Empty</td>
+      <td>Please specify the Password</td>
+    </tr>
+    <tr>
+      <td>Output</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>Please specify the Password</td>
+    </tr>
+    <tr>
+      <td>Input</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>User_API_9</td>
+      <td>User_API_1</td>
+      <td>[MASKED_EMAIL]</td>
+      <td>25084</td>
+      <td>[MASKED_PHONE]</td>
+      <td>14496,14510</td>
+      <td>4527</td>
+      <td>1</td>
+      <td>Empty</td>
+      <td>D@3my</td>
+      <td>User name already exist</td>
+    </tr>
+    <tr>
+      <td>Output</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>User name already exist</td>
+    </tr>
+    <tr>
+      <td>Input</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>User_API_10</td>
+      <td>User_API_10</td>
+      <td>[MASKED_EMAIL]</td>
+      <td>25084</td>
+      <td>[MASKED_PHONE]</td>
+      <td>14500</td>
+      <td>4527</td>
+      <td>4</td>
+      <td>Empty</td>
+      <td>D@3my</td>
+      <td>Email already exist</td>
+    </tr>
+    <tr>
+      <td>Output</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>Email already exist</td>
+    </tr>
+    <tr>
+      <td>Input</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>User_API_15</td>
+      <td>User_API_15</td>
+      <td>[MASKED_EMAIL]</td>
+      <td>25084</td>
+      <td>[MASKED_PHONE]</td>
+      <td>14510</td>
+      <td>4527</td>
+      <td>1</td>
+      <td>Empty</td>
+      <td>dummy</td>
+      <td>Password doesn't match to policy, please verify</td>
+    </tr>
+    <tr>
+      <td>Output</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>Password doesn't match to policy, please verify</td>
+    </tr>
+    <tr>
+      <td>Input</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>User_API_16</td>
+      <td>User_API_16</td>
+      <td>[MASKED_EMAIL]</td>
+      <td>25084</td>
+      <td>[MASKED_PHONE]</td>
+      <td>14510</td>
+      <td>4527</td>
+      <td>1</td>
+      <td>Empty</td>
+      <td>12345a</td>
+      <td>Password doesn't match to policy, please verify</td>
+    </tr>
+    <tr>
+      <td>Output</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>Password doesn't match to policy, please verify</td>
+    </tr>
+    <tr>
+      <td>Input</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>User_API_17</td>
+      <td>User_API_17</td>
+      <td>[MASKED_EMAIL]</td>
+      <td>25084</td>
+      <td>[MASKED_PHONE]</td>
+      <td>14510</td>
+      <td>4527</td>
+      <td>1</td>
+      <td>Empty</td>
+      <td>@!#$%^</td>
+      <td>Password doesn't match to policy, please verify</td>
+    </tr>
+    <tr>
+      <td>Output</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>Password doesn't match to policy, please verify</td>
+    </tr>
+    <tr>
+      <td>Input</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>User_API_18</td>
+      <td>User_API_18</td>
+      <td>[MASKED_EMAIL]</td>
+      <td>25084</td>
+      <td>[MASKED_PHONE]</td>
+      <td>14510</td>
+      <td>4527</td>
+      <td>1</td>
+      <td>Empty</td>
+      <td>DUMMY</td>
+      <td>Password doesn't match to policy, please verify</td>
+    </tr>
+    <tr>
+      <td>Output</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>Password doesn't match to policy, please verify</td>
+    </tr>
+    <tr>
+      <td>Input</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>User_API_19</td>
+      <td>User_API_19</td>
+      <td>[MASKED_EMAIL]</td>
+      <td>25084</td>
+      <td>[MASKED_PHONE]</td>
+      <td>14510</td>
+      <td>4527</td>
+      <td>1</td>
+      <td>Empty</td>
+      <td>d@3my</td>
+      <td>Password doesn't match to policy, please verify</td>
+    </tr>
+    <tr>
+      <td>Output</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>Password doesn't match to policy, please verify</td>
+    </tr>
+    <tr>
+      <td>Input</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>User_API_20</td>
+      <td>User_API_20</td>
+      <td>[MASKED_EMAIL]</td>
+      <td>25084</td>
+      <td>[MASKED_PHONE]</td>
+      <td>14510</td>
+      <td>4527</td>
+      <td>1</td>
+      <td>Empty</td>
+      <td>Du3my</td>
+      <td>Password doesn't match to policy, please verify</td>
+    </tr>
+    <tr>
+      <td>Output</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>Password doesn't match to policy, please verify</td>
+    </tr>
+    <tr>
+      <td>Input</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>User_API_21</td>
+      <td>User_API_21</td>
+      <td>[MASKED_EMAIL]</td>
+      <td>25084</td>
+      <td>[MASKED_PHONE]</td>
+      <td>14510</td>
+      <td>4527</td>
+      <td>1</td>
+      <td>Empty</td>
+      <td>D@mmy</td>
+      <td>Password doesn't match to policy, please verify</td>
+    </tr>
+    <tr>
+      <td>Output</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>Password doesn't match to policy, please verify</td>
+    </tr>
+    <tr>
+      <td>Input</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>User_API_22</td>
+      <td>User_API_22</td>
+      <td>[MASKED_EMAIL]</td>
+      <td>25084</td>
+      <td>[MASKED_PHONE]</td>
+      <td>14510</td>
+      <td>4527</td>
+      <td>1</td>
+      <td>Empty</td>
+      <td>D@3MY</td>
+      <td>Password doesn't match to policy, please verify</td>
+    </tr>
+    <tr>
+      <td>Output</td>
+      <td>Pass</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>Password doesn't match to policy, please verify</td>
+    </tr>
+  </tbody>
+</table>
+        </div>
+    </div>
+    <script>
+        document.querySelectorAll('.preview-table tr').forEach((tr, rowIndex) => {
+            let statusCount = 0;
+            const cells = tr.querySelectorAll('td');
+            
+            cells.forEach(td => {
+                const text = td.innerText.trim().toUpperCase();
+                
+                // Highlight Pass/Fail
+                if (['PASS', 'SUCCESS', 'PASSED'].includes(text)) {
+                    td.classList.add('status-pass');
+                } else if (['FAIL', 'FAILURE', 'FAILED', 'ERROR'].includes(text)) {
+                    td.classList.add('status-fail');
+                } else if (text === 'NA') {
+                    td.classList.add('status-na');
+                }
+                
+                // Header detection keywords
+                if (['STATUS', 'IDENTITY', 'ID'].includes(text)) {
+                    statusCount++;
+                }
+            });
+            
+            // If row has multiple 'Status' labels, it's a sub-header
+            if (statusCount >= 2 && rowIndex > 0) {
+                tr.classList.add('sub-header');
+            }
+        });
+    </script>
+</body>
+</html>

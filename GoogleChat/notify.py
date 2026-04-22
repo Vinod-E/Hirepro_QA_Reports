@@ -69,6 +69,14 @@ def send_google_chat_report(env, sprint, suite_name, total_suites, expected_suit
                             "buttonList": {
                                 "buttons": [{
                                     "text": "View Full Report",
+                                    "type": "FILLED",
+                                    "color": {
+                                        "red": 0.56,
+                                        "green": 0.93,
+                                        "blue": 0.56,
+                                        "alpha": 1.0
+
+                                    },
                                     "onClick": { "openLink": { "url": REPORT_DRIVE_URL } }
                                 }]
                             }
