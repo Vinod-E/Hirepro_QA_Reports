@@ -108,13 +108,24 @@ html_template = """
             -webkit-tap-highlight-color: transparent;
         }
 
+        html, body {
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+        html::-webkit-scrollbar, body::-webkit-scrollbar {
+            display: none;
+        }
+
         body {
             background-color: #ffffff;
             color: var(--text-main);
             min-height: 100vh;
             padding-bottom: 40px;
-            overflow-x: hidden;
+            overflow-y: auto;
             width: 100vw;
+            font-family: 'Outfit', sans-serif;
         }
 
         /* Premium Loader */
@@ -242,27 +253,29 @@ html_template = """
         /* Liquid Glass Navigation */
         .main-nav { 
             display: flex; position: relative; justify-content: center; gap: 0; 
-            margin-bottom: 2.5rem; background: rgba(241, 245, 249, 0.75); 
-            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-            padding: 0.45rem; border-radius: 99px; width: fit-content; margin: 0 auto 2.5rem auto;
-            border: 1px solid rgba(255,255,255,0.6); box-shadow: 0 8px 32px rgba(0,0,0,0.06);
+            margin-bottom: 2.5rem; background: rgba(241, 245, 249, 0.7); 
+            backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+            padding: 0.5rem; border-radius: 99px; width: fit-content; margin: 0 auto 2.5rem auto;
+            border: 1px solid rgba(255,255,255,0.8); box-shadow: 0 12px 40px rgba(0,0,0,0.06);
             overflow: hidden;
         }
         .nav-btn { 
-            position: relative; z-index: 2; padding: 0.75rem 2.8rem; border-radius: 99px; 
-            border: none; background: transparent; color: var(--text-dim); 
-            font-weight: 700; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
-            display: flex; align-items: center; gap: 0.75rem; font-size: 0.9rem; 
-            text-transform: uppercase; letter-spacing: 0.05em;
+            position: relative; z-index: 2; padding: 0.8rem 3rem; border-radius: 99px; 
+            border: none; background: transparent; color: #64748b; 
+            font-weight: 800; cursor: pointer; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); 
+            display: flex; align-items: center; gap: 0.85rem; font-size: 0.95rem; 
+            text-transform: uppercase; letter-spacing: 0.08em;
             user-select: none; -webkit-user-select: none; white-space: nowrap;
         }
         .nav-btn:hover { color: var(--text-main); }
         .nav-btn.active { color: var(--primary); }
+        .nav-btn i { font-size: 1.1rem; transition: transform 0.3s; }
+        .nav-btn.active i { transform: scale(1.15); }
         .nav-indicator {
-            position: absolute; height: calc(100% - 0.9rem); top: 0.45rem; left: 0.45rem;
+            position: absolute; height: calc(100% - 1rem); top: 0.5rem; left: 0.5rem;
             background: white; border-radius: 99px; z-index: 1;
-            transition: all 0.45s cubic-bezier(0.23, 1, 0.32, 1.2);
-            box-shadow: 0 4px 15px rgba(255, 107, 0, 0.15);
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            box-shadow: 0 8px 25px rgba(255, 107, 0, 0.12);
             width: 0; pointer-events: none;
         }
 
@@ -483,36 +496,78 @@ html_template = """
             .section-title { font-size: 1.1rem; padding-left: 0; border: none; margin-bottom: 1.25rem; }
 
             /* Refined Table to Card Transformation */
-            .table-wrapper { padding: 0; overflow-x: hidden; }
+            .table-wrapper { 
+                padding: 0; 
+                overflow-x: auto !important; 
+                scrollbar-width: thin; 
+                -ms-overflow-style: auto;
+                -webkit-overflow-scrolling: touch;
+                margin: 0 -3%;
+                padding: 0 3%;
+            }
+            .table-wrapper::-webkit-scrollbar {
+                height: 4px;
+                display: block;
+            }
+            .table-wrapper::-webkit-scrollbar-thumb {
+                background: rgba(255, 107, 0, 0.2);
+                border-radius: 10px;
+            }
+            
             table, thead, tbody, th, td, tr { display: block; width: 100%; }
             thead { display: none; }
             
             .api-row { 
-                margin-bottom: 1.25rem; border: 1px solid var(--border); 
-                border-radius: 16px !important; background: white;
-                box-shadow: 0 4px 12px rgba(0,0,0,0.03); overflow: hidden;
+                margin-bottom: 1rem; border: 1px solid var(--border); 
+                border-radius: 18px !important; background: white;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.03); 
+                display: flex !important; flex-direction: row !important;
+                width: max-content !important;
+                min-width: 100% !important;
             }
-            .api-row td { 
-                border: none !important; padding: 0.85rem 1rem !important; 
-                display: flex; justify-content: space-between; align-items: center;
-                background: transparent !important; min-height: 50px;
-            }
-            .api-row td:not(:last-child) { border-bottom: 1px dashed #f1f5f9 !important; }
             
-            .api-row td:first-child { 
-                background: #f8fafc !important; border-radius: 0 !important;
-                padding: 1.15rem 1rem !important; flex-direction: column; align-items: flex-start; gap: 4px;
+            .api-row td { 
+                border: none !important; padding: 1.15rem 1rem !important; 
+                display: flex !important; flex-direction: column !important; 
+                align-items: center !important; justify-content: center !important;
+                background: transparent !important; text-align: center !important;
+                flex-shrink: 0 !important; scroll-snap-align: start;
             }
-            .api-row td:last-child { border-radius: 0 !important; padding: 1rem !important; }
+            
+            /* Identity Column */
+            .api-row td:nth-child(1) { 
+                width: 190px !important; background: #f8fafc !important; 
+                align-items: flex-start !important; text-align: left !important;
+                border-right: 1px solid #f1f5f9 !important;
+                position: sticky; left: 0; z-index: 5;
+                padding-left: 1.25rem !important;
+            }
+            
+            /* Stats Columns */
+            .api-row td:nth-child(2) { width: 95px !important; border-right: 1px dashed #f1f5f9 !important; }
+            .api-row td:nth-child(3) { width: 105px !important; border-right: 1px dashed #f1f5f9 !important; }
+            .api-row td:nth-child(4) { width: 115px !important; padding-right: 1.25rem !important; }
+            
+            .api-info { width: 100%; }
+            .api-details h4 { font-size: 0.85rem; word-break: break-all; width: 100%; white-space: normal; line-height: 1.3; }
+            .api-details p { font-size: 0.6rem; opacity: 0.7; font-weight: 700; text-transform: uppercase; margin-top: 2px; }
+            
+            .stat-value { font-size: 0.9rem; font-weight: 800; }
+            .stat-label { font-size: 0.55rem; font-weight: 700; color: #64748b; text-transform: uppercase; margin-top: 2px; }
+            
+            .variation-badge { padding: 4px 10px; font-size: 0.7rem; border-radius: 8px; font-weight: 900; }
+            
+            summary { padding: 1.25rem 1rem; }
+            .sprint-id { font-size: 1rem; }
             
             .api-info { width: 100%; }
             .api-details h4 { font-size: 0.85rem; word-break: break-all; width: 100%; white-space: normal; }
             .api-details p { font-size: 0.6rem; opacity: 0.8; }
             
-            .stat-value { font-size: 0.9rem; }
-            .stat-label { font-size: 0.55rem; }
+            .stat-value { font-size: 0.85rem; }
+            .stat-label { font-size: 0.5rem; }
             
-            .variation-badge { padding: 4px 10px; font-size: 0.75rem; }
+            .variation-badge { padding: 4px 8px; font-size: 0.7rem; border-radius: 8px; }
             
             summary { padding: 1.15rem 1rem; }
             .sprint-id { font-size: 1rem; }
