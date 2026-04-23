@@ -40,7 +40,14 @@
     </script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
-        body { font-family: 'Inter', sans-serif; }
+        body { 
+            font-family: 'Inter', sans-serif; 
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        body::-webkit-scrollbar {
+            display: none;
+        }
 
         .card-transition { transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
 
@@ -97,7 +104,7 @@
         }
     </style>
 </head>
-<body class="bg-lightBg dark:bg-darkBg text-slate-900 dark:text-slate-100 min-h-screen transition-colors duration-500 overflow-x-hidden">
+<body class="bg-lightBg dark:bg-darkBg text-slate-900 dark:text-slate-100 min-h-screen transition-colors duration-500 overflow-hidden">
 
     <!-- Liquid Background Blobs -->
     <div class="liquid-blob bg-blue-400 w-96 h-96 -top-20 -left-20 opacity-10 dark:opacity-20"></div>
