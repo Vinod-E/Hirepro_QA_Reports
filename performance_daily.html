@@ -1,60 +1,467 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daily Performance Report | Under Process</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="https://lh3.googleusercontent.com/proxy/98it6d0vGqaPttxE8ImrHhVvaz5XpPeZ7qiXHcnm9PiPrwTBGvZcWp2vdQVdgZt5b7Vfu7kXnkh6mrKs_q_JIE5GGlw8uRAOeSvJOEtgNXWrXgOoGjGFCnKCA1gITLLZKNxv1mV6szDHEnNLK7RbJnfk-eFMZPlGXRpU2iKeBGr2Gm3-i_Lnv-IVisLlJwRR55nNMx9HndfYnmLOlraDHGgp9Rc7V4pNO1N8S1ZugYR5SUVMi8K_WGFwvYWsEh2cEnW6x-Zw-ncSM27yX509d6pmuUvfohenPAxHMNORCeWO">
+    <title>Daily Performance Analytics</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body { font-family: 'Inter', sans-serif; background: #f8fafc; }
-        .glass-card {
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
+        
+        :root {
+            --primary: #FF6B00;
+            --primary-gradient: linear-gradient(135deg, #FF6B00 0%, #FF9E00 100%);
+            --bg: #fdfdfd;
+            --card-bg: #ffffff;
+            --text: #000000;
+            --text-main: #000000;
+            --text-dim: #1a1a1a;
+            --border: #f1f5f9;
+            --success: #10b981;
+            --danger: #ef4444;
+            --glass: rgba(255, 255, 255, 0.8);
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.02);
+            --shadow-md: 0 10px 15px -3px rgba(0,0,0,0.05);
+            --shadow-lg: 0 20px 25px -5px rgba(0,0,0,0.05);
         }
-        @keyframes pulse-soft {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.8; transform: scale(1.05); }
+
+        * { 
+            margin: 0; padding: 0; box-sizing: border-box; 
+            font-family: 'Outfit', sans-serif; 
+            -webkit-tap-highlight-color: transparent;
         }
-        .pulse { animation: pulse-soft 3s infinite ease-in-out; }
+
+        body {
+            background-color: #ffffff;
+            color: var(--text-main);
+            min-height: 100vh;
+            padding-bottom: 40px;
+            overflow-x: hidden;
+        }
+
+        header {
+            padding: 20px 0;
+            border-bottom: 1px solid #D9D7D7;
+            background: white;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .logo-section { display: flex; align-items: center; gap: 1rem; }
+        .logo-img { height: 32px; }
+        
+        .title-section { text-align: center; }
+        .title-section h1 { font-size: 1.5rem; font-weight: 800; }
+        .subtitle { font-size: 0.8rem; color: #64748b; font-weight: 600; text-transform: uppercase; }
+
+        .audit-section { text-align: right; }
+        .audit-label { font-size: 0.7rem; color: #64748b; font-weight: 700; }
+        .audit-time { font-weight: 800; font-size: 0.9rem; color: var(--success); }
+
+        main { max-width: 1400px; margin: 30px auto; padding: 0 20px; }
+
+        /* Multi-level Navigation */
+        .nav-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-bottom: 30px;
+            align-items: center;
+        }
+
+        .glass-nav {
+            display: flex;
+            background: rgba(241, 245, 249, 0.7);
+            backdrop-filter: blur(16px);
+            padding: 6px;
+            border-radius: 99px;
+            border: 1px solid rgba(255,255,255,0.8);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.04);
+            position: relative;
+        }
+
+        .nav-btn {
+            padding: 14px 40px;
+            border-radius: 99px;
+            border: none;
+            background: transparent;
+            color: #64748b;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            white-space: nowrap;
+        }
+
+        .nav-btn.active {
+            background: white;
+            color: var(--primary);
+            box-shadow: 0 4px 12px rgba(255, 107, 0, 0.1);
+        }
+
+        .env-nav .nav-btn {
+            padding: 8px 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .env-nav .nav-btn.active {
+            color: #2563eb;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.1);
+        }
+
+        /* Content Sections */
+        .report-section { display: none; animation: fadeIn 0.4s ease; }
+        .report-section.active { display: block; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: 800;
+            margin: 30px 0 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .chart-card {
+            background: white;
+            border-radius: 24px;
+            padding: 24px;
+            border: 1px solid var(--border);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.02);
+            margin-bottom: 30px;
+        }
+
+        .chart-container { height: 400px; position: relative; }
+
+        /* Custom Legend */
+        .custom-legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8fafc;
+            border-radius: 16px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 12px;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 99px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .legend-item.hidden { opacity: 0.5; grayscale: 1; }
+
+        .legend-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+        /* Table Styles */
+        .data-table-container { overflow-x: auto; margin-top: 20px; }
+        table { width: 100%; border-collapse: separate; border-spacing: 0 8px; }
+        th { text-align: left; padding: 12px 15px; font-size: 0.7rem; text-transform: uppercase; color: #64748b; font-weight: 800; }
+        td { padding: 15px; background: #fff; border-top: 1px solid #f1f5f9; border-bottom: 1px solid #f1f5f9; }
+        tr td:first-child { border-left: 1px solid #f1f5f9; border-radius: 12px 0 0 12px; }
+        tr td:last-child { border-right: 1px solid #f1f5f9; border-radius: 0 12px 12px 0; }
+        
+        tr:hover td { background: #fffcf9; border-color: #fee2e2; }
+
+        .api-name { font-weight: 700; font-size: 0.9rem; }
+        .val-badge { 
+            padding: 4px 10px; border-radius: 8px; font-size: 0.75rem; font-weight: 800;
+            display: inline-block;
+        }
+        .val-pass { background: #d1fae5; color: #065f46; }
+        .val-fail { background: #fee2e2; color: #991b1b; }
+
+        .variation { font-weight: 700; font-size: 0.8rem; }
+        .var-up { color: #ef4444; }
+        .var-down { color: #10b981; }
+
+        /* Environment Cards */
+        .env-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        .env-card {
+            padding: 20px;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .env-card.active {
+            border-color: #2563eb;
+            background: #eff6ff;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.1);
+        }
+        .env-card h3 { font-size: 1rem; font-weight: 800; margin-bottom: 5px; }
+        .env-card p { font-size: 0.7rem; color: #64748b; font-weight: 600; }
+
+        footer {
+            max-width: 1400px;
+            margin: 60px auto 0;
+            padding: 30px 20px;
+            border-top: 1px solid #D9D7D7;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #64748b;
+            font-size: 0.8rem;
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            .header-container { flex-direction: column; gap: 15px; text-align: center; }
+            .audit-section { text-align: center; }
+            .nav-container { overflow-x: auto; width: 100%; padding-bottom: 10px; }
+            .glass-nav { width: max-content; }
+            .section-title { font-size: 1.1rem; }
+            .chart-container { height: 300px; }
+        }
     </style>
 </head>
-<body class="min-h-screen flex items-center justify-center p-6">
-    <div class="max-w-md w-full glass-card rounded-[2.5rem] p-10 text-center">
-        <div class="flex flex-col items-center gap-6 mb-8">
-            <img src="https://hirepro.in/wp-content/uploads/2025/05/HirePro-logo.svg" alt="HirePro Logo" class="h-10 w-auto">
-            <div class="h-px w-12 bg-slate-200"></div>
-            <h1 class="text-3xl font-black tracking-tighter text-slate-900">QA<span class="font-extralight text-slate-500">Insights</span></h1>
+<body>
+
+    <header>
+        <div class="header-container">
+            <div class="logo-section">
+                <a href="dashboard.html" style="color: var(--primary); font-size: 1.2rem;"><i class="fas fa-arrow-left"></i></a>
+                <img src="https://hirepro.in/wp-content/uploads/2025/05/HirePro-logo.svg" alt="HirePro Logo" class="logo-img">
+            </div>
+            <div class="title-section">
+                <h1>Daily Performance</h1>
+                <div class="subtitle">Multi-Environment API Audit</div>
+            </div>
+            <div class="audit-section">
+                <div class="audit-label">LATEST SYNC</div>
+                <div class="audit-time">2026-04-22</div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="nav-container">
+            <!-- Operation Selector -->
+            <div class="glass-nav op-nav">
+                <button class="nav-btn active" onclick="switchOp('GET', this)">GET APIs</button>
+                <button class="nav-btn" onclick="switchOp('SET', this)">SET APIs</button>
+            </div>
+
+            <!-- Environment Selector -->
+            <div class="glass-nav env-nav">
+                <button class="nav-btn active" onclick="switchEnv('AMSIN_MU', this)">AMSIN_MU</button>
+<button class="nav-btn " onclick="switchEnv('AMSIN_EU', this)">AMSIN_EU</button>
+<button class="nav-btn " onclick="switchEnv('BETA_SG', this)">BETA_SG</button>
+<button class="nav-btn " onclick="switchEnv('BETA_EU', this)">BETA_EU</button>
+<button class="nav-btn " onclick="switchEnv('AMS_SG', this)">AMS_SG</button>
+<button class="nav-btn " onclick="switchEnv('AMS_EU', this)">AMS_EU</button>
+
+            </div>
         </div>
 
-        <div class="relative inline-block mb-8">
-            <div class="p-6 rounded-full bg-orange-500/10 pulse">
-                <i data-lucide="construction" class="w-12 h-12 text-orange-500"></i>
-            </div>
-            <div class="absolute -top-1 -right-1 flex h-4 w-4">
-                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
-                <span class="relative inline-flex rounded-full h-4 w-4 bg-orange-500"></span>
-            </div>
+        <div id="report-content">
+            <!-- Dynamic Content -->
         </div>
+    </main>
 
-        <h2 class="text-xl font-bold text-slate-800 mb-2 uppercase tracking-tight">Performance Report - Daily</h2>
-        <p class="text-slate-500 text-sm font-medium mb-10 leading-relaxed uppercase tracking-widest opacity-80">
-            This module is currently<br>
-            <span class="text-orange-600 font-extrabold">Under Process</span>
-        </p>
-
-        <a href="dashboard.html" 
-           class="flex items-center justify-center gap-2 w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-4 rounded-2xl text-xs tracking-widest transition-all shadow-lg uppercase group">
-            <i data-lucide="arrow-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i>
-            Back to Dashboard
-        </a>
-    </div>
+    <footer>
+        <div>&copy; 2026 HirePro Analytics . Confidential</div>
+        <div>v2.4.0-daily</div>
+    </footer>
 
     <script>
-        lucide.createIcons();
+        const rawData = {"GET": {"AMSIN_MU": [{"sprint": "Sprint_217", "run_date": "2026-04-22", "hits": 100, "apis": [{"name": "Get_tenant_details", "threshold": 0.49, "current": 0.19, "variation": 5.56}, {"name": "Get_all_entity_properties", "threshold": 0.48, "current": 0.24, "variation": -11.11}, {"name": "Group_by_catalog_masters", "threshold": 0.53, "current": 0.26, "variation": -3.7}, {"name": "Get_all_candidates", "threshold": 0.75, "current": 0.4, "variation": 2.56}, {"name": "GetTestUsersForTest", "threshold": 0.44, "current": 0.33, "variation": 0.0}, {"name": "Get_catalog_values_for_masters", "threshold": 0.67, "current": 0.34, "variation": -8.11}, {"name": "Get_Applicant_custom", "threshold": 0.5, "current": 0.21, "variation": -12.5}, {"name": "get_candidate_attachments", "threshold": 0.5, "current": 0.29, "variation": 0.0}, {"name": "Get_Candidate_GetById", "threshold": 0.66, "current": 0.35, "variation": 0.0}, {"name": "Get_Login_Stats", "threshold": 0.5, "current": 0.23, "variation": -4.17}, {"name": "Get_Test_Info", "threshold": 0.5, "current": 0.19, "variation": -5.0}, {"name": "Get_initiate_tua", "threshold": 0.5, "current": 0.22, "variation": 0.0}, {"name": "Get_load_test", "threshold": 0.5, "current": 0.21, "variation": -4.55}, {"name": "Get_test_result", "threshold": 0.5, "current": 0.27, "variation": 0.0}, {"name": "Get_Screen_Data", "threshold": 0.78, "current": 0.58, "variation": -1.69}, {"name": "Get_ReqId", "threshold": 0.81, "current": 0.19, "variation": 5.56}, {"name": "Get_Applicants_Info", "threshold": 0.61, "current": 0.18, "variation": 0.0}, {"name": "Get_View_offer", "threshold": 0.58, "current": 0.18, "variation": -5.26}, {"name": "Get_embrace_candidate", "threshold": 2.0, "current": 2.43, "variation": -2.8}, {"name": "Get_Activity", "threshold": 0.8, "current": 0.71, "variation": 1.43}, {"name": "Get_Task", "threshold": 0.6, "current": 0.74, "variation": 12.12}, {"name": "Get_Form", "threshold": 0.8, "current": 0.57, "variation": 3.64}, {"name": "Get_my_info", "threshold": 0.48, "current": 0.1, "variation": -9.09}, {"name": "Get_my_room", "threshold": 0.5, "current": 0.09, "variation": -10.0}, {"name": "Join", "threshold": 0.4, "current": 0.09, "variation": 12.5}, {"name": "Save_Participant", "threshold": 0.2, "current": 0.1, "variation": 11.11}]}, {"sprint": "Sprint_216", "run_date": "2026-03-18", "hits": 100, "apis": [{"name": "Get_tenant_details", "threshold": 0.49, "current": 0.18, "variation": 0.0}, {"name": "Get_all_entity_properties", "threshold": 0.48, "current": 0.27, "variation": 8.0}, {"name": "Group_by_catalog_masters", "threshold": 0.53, "current": 0.27, "variation": 0.0}, {"name": "Get_all_candidates", "threshold": 0.75, "current": 0.39, "variation": -11.36}, {"name": "GetTestUsersForTest", "threshold": 0.44, "current": 0.33, "variation": 0.0}, {"name": "Get_catalog_values_for_masters", "threshold": 0.67, "current": 0.37, "variation": 0.0}, {"name": "Get_Applicant_custom", "threshold": 0.5, "current": 0.24, "variation": 4.35}, {"name": "get_candidate_attachments", "threshold": 0.5, "current": 0.29, "variation": -9.38}, {"name": "Get_Candidate_GetById", "threshold": 0.66, "current": 0.35, "variation": -5.41}, {"name": "Get_Login_Stats", "threshold": 0.5, "current": 0.24, "variation": -7.69}, {"name": "Get_Test_Info", "threshold": 0.5, "current": 0.2, "variation": -4.76}, {"name": "Get_initiate_tua", "threshold": 0.5, "current": 0.22, "variation": -8.33}, {"name": "Get_load_test", "threshold": 0.5, "current": 0.22, "variation": 4.76}, {"name": "Get_test_result", "threshold": 0.5, "current": 0.27, "variation": 8.0}, {"name": "Get_Screen_Data", "threshold": 0.78, "current": 0.59, "variation": 7.27}, {"name": "Get_ReqId", "threshold": 0.81, "current": 0.18, "variation": 0.0}, {"name": "Get_Applicants_Info", "threshold": 0.61, "current": 0.18, "variation": 0.0}, {"name": "Get_View_offer", "threshold": 0.58, "current": 0.19, "variation": 0.0}, {"name": "Get_embrace_candidate", "threshold": 2.0, "current": 2.5, "variation": 10.13}, {"name": "Get_Activity", "threshold": 0.8, "current": 0.7, "variation": 0.0}, {"name": "Get_Task", "threshold": 0.6, "current": 0.66, "variation": -9.59}, {"name": "Get_Form", "threshold": 0.8, "current": 0.55, "variation": 0.0}, {"name": "Get_my_info", "threshold": 0.48, "current": 0.11, "variation": -60.71}, {"name": "Get_my_room", "threshold": 0.5, "current": 0.1, "variation": -71.43}, {"name": "Join", "threshold": 0.4, "current": 0.08, "variation": -73.33}, {"name": "Save_Participant", "threshold": 0.2, "current": 0.09, "variation": -59.09}]}, {"sprint": "Sprint_215", "run_date": "2026-02-10", "hits": 100, "apis": [{"name": "Get_tenant_details", "threshold": 0.49, "current": 0.18, "variation": 0.0}, {"name": "Get_all_entity_properties", "threshold": 0.48, "current": 0.25, "variation": 0.0}, {"name": "Group_by_catalog_masters", "threshold": 0.53, "current": 0.27, "variation": 0.0}, {"name": "Get_all_candidates", "threshold": 0.75, "current": 0.44, "variation": 7.32}, {"name": "GetTestUsersForTest", "threshold": 0.44, "current": 0.33, "variation": 0.0}, {"name": "Get_catalog_values_for_masters", "threshold": 0.67, "current": 0.37, "variation": 0.0}, {"name": "Get_Applicant_custom", "threshold": 0.5, "current": 0.23, "variation": 15.0}, {"name": "get_candidate_attachments", "threshold": 0.5, "current": 0.32, "variation": 10.34}, {"name": "Get_Candidate_GetById", "threshold": 0.66, "current": 0.37, "variation": 2.78}, {"name": "Get_Login_Stats", "threshold": 0.5, "current": 0.26, "variation": 8.33}, {"name": "Get_Test_Info", "threshold": 0.5, "current": 0.21, "variation": 5.0}, {"name": "Get_initiate_tua", "threshold": 0.5, "current": 0.24, "variation": 9.09}, {"name": "Get_load_test", "threshold": 0.5, "current": 0.21, "variation": 5.0}, {"name": "Get_test_result", "threshold": 0.5, "current": 0.25, "variation": -3.85}, {"name": "Get_Screen_Data", "threshold": 0.78, "current": 0.55, "variation": -3.51}, {"name": "Get_ReqId", "threshold": 0.81, "current": 0.18, "variation": 0.0}, {"name": "Get_Applicants_Info", "threshold": 0.61, "current": 0.18, "variation": 0.0}, {"name": "Get_View_offer", "threshold": 0.58, "current": 0.19, "variation": 5.56}, {"name": "Get_embrace_candidate", "threshold": 2.0, "current": 2.27, "variation": -9.56}, {"name": "Get_Activity", "threshold": 0.8, "current": 0.7, "variation": -2.78}, {"name": "Get_Task", "threshold": 0.6, "current": 0.73, "variation": 2.82}, {"name": "Get_Form", "threshold": 0.8, "current": 0.55, "variation": -29.49}, {"name": "Get_my_info", "threshold": 0.48, "current": 0.28, "variation": 0.0}, {"name": "Get_my_room", "threshold": 0.5, "current": 0.35, "variation": 6.06}, {"name": "Join", "threshold": 0.4, "current": 0.3, "variation": 11.11}, {"name": "Save_Participant", "threshold": 0.2, "current": 0.22, "variation": 4.76}]}, {"sprint": "Sprint_214", "run_date": "2026-01-13", "hits": 100, "apis": [{"name": "Get_tenant_details", "threshold": 0.49, "current": 0.18, "variation": -10.0}, {"name": "Get_all_entity_properties", "threshold": 0.48, "current": 0.25, "variation": -3.85}, {"name": "Group_by_catalog_masters", "threshold": 0.53, "current": 0.27, "variation": -3.57}, {"name": "Get_all_candidates", "threshold": 0.75, "current": 0.41, "variation": -2.38}, {"name": "GetTestUsersForTest", "threshold": 0.44, "current": 0.33, "variation": -2.94}, {"name": "Get_catalog_values_for_masters", "threshold": 0.67, "current": 0.37, "variation": 5.71}, {"name": "Get_Applicant_custom", "threshold": 0.5, "current": 0.2, "variation": -4.76}, {"name": "get_candidate_attachments", "threshold": 0.5, "current": 0.29, "variation": -3.33}, {"name": "Get_Candidate_GetById", "threshold": 0.66, "current": 0.36, "variation": 0.0}, {"name": "Get_Login_Stats", "threshold": 0.5, "current": 0.24, "variation": 4.35}, {"name": "Get_Test_Info", "threshold": 0.5, "current": 0.2, "variation": 5.26}, {"name": "Get_initiate_tua", "threshold": 0.5, "current": 0.22, "variation": 0.0}, {"name": "Get_load_test", "threshold": 0.5, "current": 0.2, "variation": 0.0}, {"name": "Get_test_result", "threshold": 0.5, "current": 0.26, "variation": -3.7}, {"name": "Get_Screen_Data", "threshold": 0.78, "current": 0.57, "variation": 16.33}, {"name": "Get_ReqId", "threshold": 0.81, "current": 0.18, "variation": 5.88}, {"name": "Get_Applicants_Info", "threshold": 0.61, "current": 0.18, "variation": 0.0}, {"name": "Get_View_offer", "threshold": 0.58, "current": 0.18, "variation": 0.0}, {"name": "Get_embrace_candidate", "threshold": 2.0, "current": 2.51, "variation": 1.21}, {"name": "Get_Activity", "threshold": 0.8, "current": 0.72, "variation": -4.0}, {"name": "Get_Task", "threshold": 0.6, "current": 0.71, "variation": 1.43}, {"name": "Get_Form", "threshold": 0.8, "current": 0.78, "variation": -9.3}, {"name": "Get_my_info", "threshold": 0.48, "current": 0.28, "variation": -3.45}, {"name": "Get_my_room", "threshold": 0.5, "current": 0.33, "variation": -5.71}, {"name": "Join", "threshold": 0.4, "current": 0.27, "variation": 0.0}, {"name": "Save_Participant", "threshold": 0.2, "current": 0.21, "variation": 5.0}]}, {"sprint": "Sprint_213", "run_date": "2025-12-03", "hits": 100, "apis": [{"name": "Get_tenant_details", "threshold": 0.49, "current": 0.2, "variation": -4.76}, {"name": "Get_all_entity_properties", "threshold": 0.48, "current": 0.26, "variation": -3.7}, {"name": "Group_by_catalog_masters", "threshold": 0.53, "current": 0.28, "variation": 0.0}, {"name": "Get_all_candidates", "threshold": 0.75, "current": 0.42, "variation": 13.51}, {"name": "GetTestUsersForTest", "threshold": 0.44, "current": 0.34, "variation": 3.03}, {"name": "Get_catalog_values_for_masters", "threshold": 0.67, "current": 0.35, "variation": 2.94}, {"name": "Get_Applicant_custom", "threshold": 0.5, "current": 0.21, "variation": 0.0}, {"name": "get_candidate_attachments", "threshold": 0.5, "current": 0.3, "variation": -3.23}, {"name": "Get_Candidate_GetById", "threshold": 0.66, "current": 0.36, "variation": -7.69}, {"name": "Get_Login_Stats", "threshold": 0.5, "current": 0.23, "variation": -11.54}, {"name": "Get_Test_Info", "threshold": 0.5, "current": 0.19, "variation": -9.52}, {"name": "Get_initiate_tua", "threshold": 0.5, "current": 0.22, "variation": -8.33}, {"name": "Get_load_test", "threshold": 0.5, "current": 0.2, "variation": -9.09}, {"name": "Get_test_result", "threshold": 0.5, "current": 0.27, "variation": 0.0}, {"name": "Get_Screen_Data", "threshold": 0.78, "current": 0.49, "variation": -15.52}, {"name": "Get_ReqId", "threshold": 0.81, "current": 0.17, "variation": -10.53}, {"name": "Get_Applicants_Info", "threshold": 0.61, "current": 0.18, "variation": -5.26}, {"name": "Get_View_offer", "threshold": 0.58, "current": 0.18, "variation": -5.26}, {"name": "Get_embrace_candidate", "threshold": 1.5, "current": 2.48, "variation": 3.33}, {"name": "Get_Activity", "threshold": 0.8, "current": 0.75, "variation": 7.14}, {"name": "Get_Task", "threshold": 0.6, "current": 0.7, "variation": 0.0}, {"name": "Get_Form", "threshold": 0.8, "current": 0.86, "variation": 7.5}, {"name": "Get_my_info", "threshold": 0.48, "current": 0.29, "variation": -3.33}, {"name": "Get_my_room", "threshold": 0.5, "current": 0.35, "variation": 0.0}, {"name": "Join", "threshold": 0.4, "current": 0.27, "variation": -10.0}, {"name": "Save_Participant", "threshold": 0.2, "current": 0.2, "variation": -13.04}]}], "AMSIN_EU": [{"sprint": "Sprint_217", "run_date": "2026-04-22", "hits": 100, "apis": [{"name": "Get_tenant_details", "threshold": 1.55, "current": 0.38, "variation": 18.75}, {"name": "Get_all_entity_properties", "threshold": 1.6, "current": 0.55, "variation": 17.02}, {"name": "Group_by_catalog_masters", "threshold": 1.73, "current": 0.39, "variation": 11.43}, {"name": "Get_all_candidates", "threshold": 1.99, "current": 0.7, "variation": 100.0}, {"name": "GetTestUsersForTest", "threshold": 1.8, "current": 0.38, "variation": -25.49}, {"name": "Get_catalog_values_for_masters", "threshold": 1.67, "current": 0.5, "variation": 2.04}, {"name": "Get_Applicant_custom", "threshold": 1.13, "current": 0.45, "variation": 32.35}, {"name": "get_candidate_attachments", "threshold": 1.14, "current": 0.4, "variation": 14.29}, {"name": "Get_Candidate_GetById", "threshold": 1.26, "current": 0.43, "variation": -14.0}, {"name": "Get_Login_Stats", "threshold": 1.14, "current": 0.39, "variation": 5.41}, {"name": "Get_Test_Info", "threshold": 1.08, "current": 0.37, "variation": 15.62}, {"name": "Get_initiate_tua", "threshold": 1.14, "current": 0.41, "variation": 20.59}, {"name": "Get_load_test", "threshold": 1.17, "current": 0.36, "variation": 0.0}, {"name": "Get_test_result", "threshold": 1.29, "current": 0.39, "variation": 18.18}, {"name": "Get_Screen_Data", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_ReqId", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_Applicants_Info", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_View_offer", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_embrace_candidate", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_Activity", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_Task", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_Form", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_my_info", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_my_room", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Join", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Save_Participant", "threshold": 0.0, "current": 0.0, "variation": 0}]}, {"sprint": "Sprint_216", "run_date": "2026-03-18", "hits": 100, "apis": [{"name": "Get_tenant_details", "threshold": 1.55, "current": 0.32, "variation": -3.03}, {"name": "Get_all_entity_properties", "threshold": 1.6, "current": 0.47, "variation": 20.51}, {"name": "Group_by_catalog_masters", "threshold": 1.73, "current": 0.35, "variation": 2.94}, {"name": "Get_all_candidates", "threshold": 1.99, "current": 0.35, "variation": 6.06}, {"name": "GetTestUsersForTest", "threshold": 1.8, "current": 0.51, "variation": 8.51}, {"name": "Get_catalog_values_for_masters", "threshold": 1.67, "current": 0.49, "variation": -9.26}, {"name": "Get_Applicant_custom", "threshold": 1.13, "current": 0.34, "variation": 0.0}, {"name": "get_candidate_attachments", "threshold": 1.14, "current": 0.35, "variation": 6.06}, {"name": "Get_Candidate_GetById", "threshold": 1.26, "current": 0.5, "variation": 11.11}, {"name": "Get_Login_Stats", "threshold": 1.14, "current": 0.37, "variation": 2.78}, {"name": "Get_Test_Info", "threshold": 1.08, "current": 0.32, "variation": 3.23}, {"name": "Get_initiate_tua", "threshold": 1.14, "current": 0.34, "variation": 9.68}, {"name": "Get_load_test", "threshold": 1.17, "current": 0.36, "variation": -7.69}, {"name": "Get_test_result", "threshold": 1.29, "current": 0.33, "variation": 3.12}, {"name": "Get_Screen_Data", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_ReqId", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_Applicants_Info", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_View_offer", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_embrace_candidate", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_Activity", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_Task", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_Form", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_my_info", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_my_room", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Join", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Save_Participant", "threshold": 0.0, "current": 0.0, "variation": 0}]}, {"sprint": "Sprint_215", "run_date": "2026-02-10", "hits": 100, "apis": [{"name": "Get_tenant_details", "threshold": 1.55, "current": 0.33, "variation": 3.12}, {"name": "Get_all_entity_properties", "threshold": 1.6, "current": 0.39, "variation": -18.75}, {"name": "Group_by_catalog_masters", "threshold": 1.73, "current": 0.34, "variation": -8.11}, {"name": "Get_all_candidates", "threshold": 1.99, "current": 0.33, "variation": -5.71}, {"name": "GetTestUsersForTest", "threshold": 1.8, "current": 0.47, "variation": -6.0}, {"name": "Get_catalog_values_for_masters", "threshold": 1.67, "current": 0.54, "variation": 14.89}, {"name": "Get_Applicant_custom", "threshold": 1.13, "current": 0.34, "variation": 0.0}, {"name": "get_candidate_attachments", "threshold": 1.14, "current": 0.33, "variation": 0.0}, {"name": "Get_Candidate_GetById", "threshold": 1.26, "current": 0.45, "variation": -11.76}, {"name": "Get_Login_Stats", "threshold": 1.14, "current": 0.36, "variation": 0.0}, {"name": "Get_Test_Info", "threshold": 1.08, "current": 0.31, "variation": 0.0}, {"name": "Get_initiate_tua", "threshold": 1.14, "current": 0.31, "variation": -3.12}, {"name": "Get_load_test", "threshold": 1.17, "current": 0.39, "variation": 18.18}, {"name": "Get_test_result", "threshold": 1.29, "current": 0.32, "variation": 0.0}, {"name": "Get_Screen_Data", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_ReqId", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_Applicants_Info", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_View_offer", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_embrace_candidate", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_Activity", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_Task", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_Form", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_my_info", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_my_room", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Join", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Save_Participant", "threshold": 0.0, "current": 0.0, "variation": 0}]}, {"sprint": "Sprint_214", "run_date": "2026-01-13", "hits": 100, "apis": [{"name": "Get_tenant_details", "threshold": 1.55, "current": 0.32, "variation": 0.0}, {"name": "Get_all_entity_properties", "threshold": 1.6, "current": 0.48, "variation": -4.0}, {"name": "Group_by_catalog_masters", "threshold": 1.73, "current": 0.37, "variation": 8.82}, {"name": "Get_all_candidates", "threshold": 1.99, "current": 0.35, "variation": -28.57}, {"name": "GetTestUsersForTest", "threshold": 1.8, "current": 0.5, "variation": 38.89}, {"name": "Get_catalog_values_for_masters", "threshold": 1.67, "current": 0.47, "variation": 0.0}, {"name": "Get_Applicant_custom", "threshold": 1.13, "current": 0.34, "variation": 0.0}, {"name": "get_candidate_attachments", "threshold": 1.14, "current": 0.33, "variation": -21.43}, {"name": "Get_Candidate_GetById", "threshold": 1.26, "current": 0.51, "variation": 50.0}, {"name": "Get_Login_Stats", "threshold": 1.14, "current": 0.36, "variation": 0.0}, {"name": "Get_Test_Info", "threshold": 1.08, "current": 0.31, "variation": -3.12}, {"name": "Get_initiate_tua", "threshold": 1.14, "current": 0.32, "variation": -5.88}, {"name": "Get_load_test", "threshold": 1.17, "current": 0.33, "variation": -13.16}, {"name": "Get_test_result", "threshold": 1.29, "current": 0.32, "variation": 0.0}, {"name": "Get_Screen_Data", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_ReqId", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_Applicants_Info", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_View_offer", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_embrace_candidate", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_Activity", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_Task", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_Form", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_my_info", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_my_room", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Join", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Save_Participant", "threshold": 0.0, "current": 0.0, "variation": 0}]}, {"sprint": "Sprint_213", "run_date": "2025-12-03", "hits": 100, "apis": [{"name": "Get_tenant_details", "threshold": 1.55, "current": 0.32, "variation": 0.0}, {"name": "Get_all_entity_properties", "threshold": 1.6, "current": 0.5, "variation": 6.38}, {"name": "Group_by_catalog_masters", "threshold": 1.73, "current": 0.34, "variation": 0.0}, {"name": "Get_all_candidates", "threshold": 1.99, "current": 0.49, "variation": 44.12}, {"name": "GetTestUsersForTest", "threshold": 1.8, "current": 0.36, "variation": -25.0}, {"name": "Get_catalog_values_for_masters", "threshold": 1.67, "current": 0.47, "variation": 4.44}, {"name": "Get_Applicant_custom", "threshold": 1.13, "current": 0.34, "variation": 3.03}, {"name": "get_candidate_attachments", "threshold": 1.14, "current": 0.42, "variation": 23.53}, {"name": "Get_Candidate_GetById", "threshold": 1.26, "current": 0.34, "variation": -33.33}, {"name": "Get_Login_Stats", "threshold": 1.14, "current": 0.36, "variation": -2.7}, {"name": "Get_Test_Info", "threshold": 1.08, "current": 0.32, "variation": 3.23}, {"name": "Get_initiate_tua", "threshold": 1.14, "current": 0.34, "variation": 9.68}, {"name": "Get_load_test", "threshold": 1.17, "current": 0.38, "variation": 15.15}, {"name": "Get_test_result", "threshold": 1.29, "current": 0.32, "variation": -3.03}, {"name": "Get_Screen_Data", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_ReqId", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_Applicants_Info", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_View_offer", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_embrace_candidate", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_Activity", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_Task", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_Form", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_my_info", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_my_room", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Join", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Save_Participant", "threshold": 0.0, "current": 0.0, "variation": 0}]}], "BETA_SG": [{"sprint": "Sprint_217", "run_date": "2026-04-22", "hits": 100, "apis": [{"name": "Get_tenant_details", "threshold": 0.33, "current": 0.15, "variation": 7.14}, {"name": "Get_all_entity_properties", "threshold": 0.52, "current": 0.17, "variation": 0.0}, {"name": "Group_by_catalog_masters", "threshold": 0.61, "current": 0.26, "variation": 0.0}, {"name": "Get_all_candidates", "threshold": 0.75, "current": 0.44, "variation": -12.0}, {"name": "GetTestUsersForTest", "threshold": 0.51, "current": 0.34, "variation": 0.0}, {"name": "Get_catalog_values_for_masters", "threshold": 0.5, "current": 0.21, "variation": 5.0}, {"name": "Get_Applicant_custom", "threshold": 0.5, "current": 0.17, "variation": -5.56}, {"name": "get_candidate_attachments", "threshold": 0.5, "current": 0.23, "variation": 0.0}, {"name": "Get_Candidate_GetById", "threshold": 0.5, "current": 0.29, "variation": -3.33}, {"name": "Get_Login_Stats", "threshold": 0.5, "current": 0.19, "variation": 5.56}, {"name": "Get_Test_Info", "threshold": 0.5, "current": 0.15, "variation": -6.25}, {"name": "Get_initiate_tua", "threshold": 0.5, "current": 0.25, "variation": 0.0}, {"name": "Get_load_test", "threshold": 0.5, "current": 0.21, "variation": -4.55}, {"name": "Get_test_result", "threshold": 0.64, "current": 0.27, "variation": 3.85}, {"name": "Get_Screen_Data", "threshold": 0.8, "current": 0.67, "variation": 1.52}, {"name": "Get_ReqId", "threshold": 0.99, "current": 0.7, "variation": -5.41}, {"name": "Get_Applicants_Info", "threshold": 0.71, "current": 0.46, "variation": -2.13}, {"name": "Get_View_offer", "threshold": 0.67, "current": 0.31, "variation": -3.12}, {"name": "Get_embrace_candidate", "threshold": 0.9, "current": 0.8, "variation": -1.23}, {"name": "Get_Activity", "threshold": 0.5, "current": 0.27, "variation": 0.0}, {"name": "Get_Task", "threshold": 0.5, "current": 0.49, "variation": 0.0}, {"name": "Get_Form", "threshold": 0.5, "current": 0.36, "variation": 5.88}, {"name": "Get_my_info", "threshold": 0.5, "current": 0.27, "variation": -6.9}, {"name": "Get_my_room", "threshold": 0.8, "current": 0.18, "variation": 0.0}, {"name": "Join", "threshold": 1.0, "current": 0.18, "variation": 0.0}, {"name": "Save_Participant", "threshold": 0.5, "current": 0.14, "variation": 0.0}]}, {"sprint": "Sprint_216", "run_date": "2026-03-18", "hits": 100, "apis": [{"name": "Get_tenant_details", "threshold": 0.33, "current": 0.14, "variation": -12.5}, {"name": "Get_all_entity_properties", "threshold": 0.52, "current": 0.17, "variation": -15.0}, {"name": "Group_by_catalog_masters", "threshold": 0.61, "current": 0.26, "variation": -3.7}, {"name": "Get_all_candidates", "threshold": 0.75, "current": 0.5, "variation": 13.64}, {"name": "GetTestUsersForTest", "threshold": 0.51, "current": 0.34, "variation": -5.56}, {"name": "Get_catalog_values_for_masters", "threshold": 0.5, "current": 0.2, "variation": 5.26}, {"name": "Get_Applicant_custom", "threshold": 0.5, "current": 0.18, "variation": 12.5}, {"name": "get_candidate_attachments", "threshold": 0.5, "current": 0.23, "variation": -4.17}, {"name": "Get_Candidate_GetById", "threshold": 0.5, "current": 0.3, "variation": 0.0}, {"name": "Get_Login_Stats", "threshold": 0.5, "current": 0.18, "variation": -10.0}, {"name": "Get_Test_Info", "threshold": 0.5, "current": 0.16, "variation": -5.88}, {"name": "Get_initiate_tua", "threshold": 0.5, "current": 0.25, "variation": 4.17}, {"name": "Get_load_test", "threshold": 0.5, "current": 0.22, "variation": 0.0}, {"name": "Get_test_result", "threshold": 0.64, "current": 0.26, "variation": -10.34}, {"name": "Get_Screen_Data", "threshold": 0.8, "current": 0.66, "variation": -2.94}, {"name": "Get_ReqId", "threshold": 0.99, "current": 0.74, "variation": 1.37}, {"name": "Get_Applicants_Info", "threshold": 0.71, "current": 0.47, "variation": -2.08}, {"name": "Get_View_offer", "threshold": 0.67, "current": 0.32, "variation": -3.03}, {"name": "Get_embrace_candidate", "threshold": 0.9, "current": 0.81, "variation": 2.53}, {"name": "Get_Activity", "threshold": 0.5, "current": 0.27, "variation": 0.0}, {"name": "Get_Task", "threshold": 0.5, "current": 0.49, "variation": -2.0}, {"name": "Get_Form", "threshold": 0.5, "current": 0.34, "variation": -2.86}, {"name": "Get_my_info", "threshold": 0.5, "current": 0.29, "variation": 7.41}, {"name": "Get_my_room", "threshold": 0.8, "current": 0.18, "variation": 0.0}, {"name": "Join", "threshold": 1.0, "current": 0.18, "variation": -5.26}, {"name": "Save_Participant", "threshold": 0.5, "current": 0.14, "variation": 0.0}]}, {"sprint": "Sprint_215", "run_date": "2026-02-10", "hits": 100, "apis": [{"name": "Get_tenant_details", "threshold": 0.33, "current": 0.16, "variation": -5.88}, {"name": "Get_all_entity_properties", "threshold": 0.52, "current": 0.2, "variation": 0.0}, {"name": "Group_by_catalog_masters", "threshold": 0.61, "current": 0.27, "variation": -3.57}, {"name": "Get_all_candidates", "threshold": 0.75, "current": 0.44, "variation": 2.33}, {"name": "GetTestUsersForTest", "threshold": 0.51, "current": 0.36, "variation": -12.2}, {"name": "Get_catalog_values_for_masters", "threshold": 0.5, "current": 0.19, "variation": -17.39}, {"name": "Get_Applicant_custom", "threshold": 0.5, "current": 0.16, "variation": -11.11}, {"name": "get_candidate_attachments", "threshold": 0.5, "current": 0.24, "variation": 0.0}, {"name": "Get_Candidate_GetById", "threshold": 0.5, "current": 0.3, "variation": -3.23}, {"name": "Get_Login_Stats", "threshold": 0.5, "current": 0.2, "variation": 0.0}, {"name": "Get_Test_Info", "threshold": 0.5, "current": 0.17, "variation": 6.25}, {"name": "Get_initiate_tua", "threshold": 0.5, "current": 0.24, "variation": -4.0}, {"name": "Get_load_test", "threshold": 0.5, "current": 0.22, "variation": 0.0}, {"name": "Get_test_result", "threshold": 0.64, "current": 0.29, "variation": 0.0}, {"name": "Get_Screen_Data", "threshold": 0.8, "current": 0.68, "variation": -1.45}, {"name": "Get_ReqId", "threshold": 0.99, "current": 0.73, "variation": 62.22}, {"name": "Get_Applicants_Info", "threshold": 0.71, "current": 0.48, "variation": 0.0}, {"name": "Get_View_offer", "threshold": 0.67, "current": 0.33, "variation": -2.94}, {"name": "Get_embrace_candidate", "threshold": 0.9, "current": 0.79, "variation": -1.25}, {"name": "Get_Activity", "threshold": 0.5, "current": 0.27, "variation": -3.57}, {"name": "Get_Task", "threshold": 0.5, "current": 0.5, "variation": -1.96}, {"name": "Get_Form", "threshold": 0.5, "current": 0.35, "variation": -2.78}, {"name": "Get_my_info", "threshold": 0.5, "current": 0.27, "variation": -6.9}, {"name": "Get_my_room", "threshold": 0.8, "current": 0.18, "variation": -10.0}, {"name": "Join", "threshold": 1.0, "current": 0.19, "variation": -5.0}, {"name": "Save_Participant", "threshold": 0.5, "current": 0.14, "variation": -6.67}]}, {"sprint": "Sprint_214", "run_date": "2026-01-13", "hits": 100, "apis": [{"name": "Get_tenant_details", "threshold": 0.33, "current": 0.17, "variation": 13.33}, {"name": "Get_all_entity_properties", "threshold": 0.52, "current": 0.2, "variation": 5.26}, {"name": "Group_by_catalog_masters", "threshold": 0.61, "current": 0.28, "variation": 3.7}, {"name": "Get_all_candidates", "threshold": 0.75, "current": 0.43, "variation": 2.38}, {"name": "GetTestUsersForTest", "threshold": 0.51, "current": 0.41, "variation": 5.13}, {"name": "Get_catalog_values_for_masters", "threshold": 0.5, "current": 0.23, "variation": 4.55}, {"name": "Get_Applicant_custom", "threshold": 0.5, "current": 0.18, "variation": 0.0}, {"name": "get_candidate_attachments", "threshold": 0.5, "current": 0.24, "variation": 26.32}, {"name": "Get_Candidate_GetById", "threshold": 0.5, "current": 0.31, "variation": 0.0}, {"name": "Get_Login_Stats", "threshold": 0.5, "current": 0.2, "variation": 0.0}, {"name": "Get_Test_Info", "threshold": 0.5, "current": 0.16, "variation": -11.11}, {"name": "Get_initiate_tua", "threshold": 0.5, "current": 0.25, "variation": -3.85}, {"name": "Get_load_test", "threshold": 0.5, "current": 0.22, "variation": 4.76}, {"name": "Get_test_result", "threshold": 0.64, "current": 0.29, "variation": 3.57}, {"name": "Get_Screen_Data", "threshold": 0.8, "current": 0.69, "variation": 1.47}, {"name": "Get_ReqId", "threshold": 0.99, "current": 0.45, "variation": -42.31}, {"name": "Get_Applicants_Info", "threshold": 0.71, "current": 0.48, "variation": 0.0}, {"name": "Get_View_offer", "threshold": 0.67, "current": 0.34, "variation": 6.25}, {"name": "Get_embrace_candidate", "threshold": 0.9, "current": 0.8, "variation": -1.23}, {"name": "Get_Activity", "threshold": 0.5, "current": 0.28, "variation": 0.0}, {"name": "Get_Task", "threshold": 0.5, "current": 0.51, "variation": 4.08}, {"name": "Get_Form", "threshold": 0.5, "current": 0.36, "variation": 2.86}, {"name": "Get_my_info", "threshold": 0.5, "current": 0.29, "variation": 0.0}, {"name": "Get_my_room", "threshold": 0.8, "current": 0.2, "variation": 5.26}, {"name": "Join", "threshold": 1.0, "current": 0.2, "variation": 0.0}, {"name": "Save_Participant", "threshold": 0.5, "current": 0.15, "variation": 7.14}]}, {"sprint": "Sprint_213", "run_date": "2025-12-03", "hits": 100, "apis": [{"name": "Get_tenant_details", "threshold": 0.33, "current": 0.15, "variation": 7.14}, {"name": "Get_all_entity_properties", "threshold": 0.52, "current": 0.19, "variation": 5.56}, {"name": "Group_by_catalog_masters", "threshold": 0.61, "current": 0.27, "variation": 50.0}, {"name": "Get_all_candidates", "threshold": 0.75, "current": 0.42, "variation": 180.0}, {"name": "GetTestUsersForTest", "threshold": 0.51, "current": 0.39, "variation": 105.26}, {"name": "Get_catalog_values_for_masters", "threshold": 0.5, "current": 0.22, "variation": 10.0}, {"name": "Get_Applicant_custom", "threshold": 0.5, "current": 0.18, "variation": 5.88}, {"name": "get_candidate_attachments", "threshold": 0.5, "current": 0.19, "variation": 5.56}, {"name": "Get_Candidate_GetById", "threshold": 0.5, "current": 0.31, "variation": 10.71}, {"name": "Get_Login_Stats", "threshold": 0.5, "current": 0.2, "variation": 11.11}, {"name": "Get_Test_Info", "threshold": 0.5, "current": 0.18, "variation": 12.5}, {"name": "Get_initiate_tua", "threshold": 0.5, "current": 0.26, "variation": 8.33}, {"name": "Get_load_test", "threshold": 0.5, "current": 0.21, "variation": 5.0}, {"name": "Get_test_result", "threshold": 0.64, "current": 0.28, "variation": 0.0}, {"name": "Get_Screen_Data", "threshold": 0.8, "current": 0.68, "variation": 3.03}, {"name": "Get_ReqId", "threshold": 0.99, "current": 0.78, "variation": 13.04}, {"name": "Get_Applicants_Info", "threshold": 0.71, "current": 0.48, "variation": 4.35}, {"name": "Get_View_offer", "threshold": 0.67, "current": 0.32, "variation": 3.23}, {"name": "Get_embrace_candidate", "threshold": 0.5, "current": 0.81, "variation": 24.62}, {"name": "Get_Activity", "threshold": 0.5, "current": 0.28, "variation": 47.37}, {"name": "Get_Task", "threshold": 0.5, "current": 0.49, "variation": 157.89}, {"name": "Get_Form", "threshold": 0.5, "current": 0.35, "variation": 84.21}, {"name": "Get_my_info", "threshold": 0.5, "current": 0.29, "variation": 3.57}, {"name": "Get_my_room", "threshold": 0.8, "current": 0.19, "variation": 0.0}, {"name": "Join", "threshold": 1.0, "current": 0.2, "variation": 5.26}, {"name": "Save_Participant", "threshold": 0.5, "current": 0.14, "variation": -6.67}]}], "BETA_EU": [{"sprint": "Sprint_217", "run_date": "2026-04-22", "hits": 100, "apis": [{"name": "Get_tenant_details", "threshold": 1.49, "current": 0.35, "variation": 2.94}, {"name": "Get_all_entity_properties", "threshold": 1.81, "current": 0.43, "variation": -6.52}, {"name": "Group_by_catalog_masters", "threshold": 1.77, "current": 0.39, "variation": 0.0}, {"name": "Get_all_candidates", "threshold": 2.05, "current": 0.45, "variation": 32.35}, {"name": "GetTestUsersForTest", "threshold": 1.89, "current": 0.48, "variation": -12.73}, {"name": "Get_catalog_values_for_masters", "threshold": 1.8, "current": 0.48, "variation": 17.07}, {"name": "Get_Applicant_custom", "threshold": 1.55, "current": 0.33, "variation": -19.51}, {"name": "get_candidate_attachments", "threshold": 1.43, "current": 0.35, "variation": 6.06}, {"name": "Get_Candidate_GetById", "threshold": 1.62, "current": 0.42, "variation": -6.67}, {"name": "Get_Login_Stats", "threshold": 1.62, "current": 0.39, "variation": 2.63}, {"name": "Get_Test_Info", "threshold": 1.68, "current": 0.33, "variation": 3.12}, {"name": "Get_initiate_tua", "threshold": 1.46, "current": 0.37, "variation": 0.0}, {"name": "Get_load_test", "threshold": 1.37, "current": 0.41, "variation": -14.58}, {"name": "Get_test_result", "threshold": 1.78, "current": 0.38, "variation": -5.0}, {"name": "Get_Screen_Data", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_ReqId", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_Applicants_Info", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_View_offer", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_embrace_candidate", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_Activity", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_Task", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_Form", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_my_info", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_my_room", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Join", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Save_Participant", "threshold": 0.0, "current": 0.0, "variation": 0}]}, {"sprint": "Sprint_216", "run_date": "2026-03-18", "hits": 100, "apis": [{"name": "Get_tenant_details", "threshold": 1.49, "current": 0.34, "variation": -5.56}, {"name": "Get_all_entity_properties", "threshold": 1.81, "current": 0.46, "variation": 0.0}, {"name": "Group_by_catalog_masters", "threshold": 1.77, "current": 0.39, "variation": 0.0}, {"name": "Get_all_candidates", "threshold": 2.05, "current": 0.34, "variation": -2.86}, {"name": "GetTestUsersForTest", "threshold": 1.89, "current": 0.55, "variation": -1.79}, {"name": "Get_catalog_values_for_masters", "threshold": 1.8, "current": 0.41, "variation": -4.65}, {"name": "Get_Applicant_custom", "threshold": 1.55, "current": 0.41, "variation": 20.59}, {"name": "get_candidate_attachments", "threshold": 1.43, "current": 0.33, "variation": -5.71}, {"name": "Get_Candidate_GetById", "threshold": 1.62, "current": 0.45, "variation": -16.67}, {"name": "Get_Login_Stats", "threshold": 1.62, "current": 0.38, "variation": -5.0}, {"name": "Get_Test_Info", "threshold": 1.68, "current": 0.32, "variation": -3.03}, {"name": "Get_initiate_tua", "threshold": 1.46, "current": 0.37, "variation": 0.0}, {"name": "Get_load_test", "threshold": 1.37, "current": 0.48, "variation": 14.29}, {"name": "Get_test_result", "threshold": 1.78, "current": 0.4, "variation": 0.0}, {"name": "Get_Screen_Data", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_ReqId", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_Applicants_Info", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_View_offer", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_embrace_candidate", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_Activity", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_Task", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_Form", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_my_info", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_my_room", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Join", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Save_Participant", "threshold": 0.0, "current": 0.0, "variation": 0}]}, {"sprint": "Sprint_215", "run_date": "2026-02-10", "hits": 100, "apis": [{"name": "Get_tenant_details", "threshold": 1.49, "current": 0.36, "variation": 0.0}, {"name": "Get_all_entity_properties", "threshold": 1.81, "current": 0.46, "variation": 6.98}, {"name": "Group_by_catalog_masters", "threshold": 1.77, "current": 0.39, "variation": 2.63}, {"name": "Get_all_candidates", "threshold": 2.05, "current": 0.35, "variation": 0.0}, {"name": "GetTestUsersForTest", "threshold": 1.89, "current": 0.56, "variation": 1.82}, {"name": "Get_catalog_values_for_masters", "threshold": 1.8, "current": 0.43, "variation": 4.88}, {"name": "Get_Applicant_custom", "threshold": 1.55, "current": 0.34, "variation": 3.03}, {"name": "get_candidate_attachments", "threshold": 1.43, "current": 0.35, "variation": 9.38}, {"name": "Get_Candidate_GetById", "threshold": 1.62, "current": 0.54, "variation": 3.85}, {"name": "Get_Login_Stats", "threshold": 1.62, "current": 0.4, "variation": 5.26}, {"name": "Get_Test_Info", "threshold": 1.68, "current": 0.33, "variation": 3.12}, {"name": "Get_initiate_tua", "threshold": 1.46, "current": 0.37, "variation": 0.0}, {"name": "Get_load_test", "threshold": 1.37, "current": 0.42, "variation": 2.44}, {"name": "Get_test_result", "threshold": 1.78, "current": 0.4, "variation": 2.56}, {"name": "Get_Screen_Data", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_ReqId", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_Applicants_Info", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_View_offer", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_embrace_candidate", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_Activity", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_Task", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_Form", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_my_info", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_my_room", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Join", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Save_Participant", "threshold": 0.0, "current": 0.0, "variation": 0}]}, {"sprint": "Sprint_214", "run_date": "2026-01-13", "hits": 100, "apis": [{"name": "Get_tenant_details", "threshold": 1.49, "current": 0.36, "variation": -5.26}, {"name": "Get_all_entity_properties", "threshold": 1.81, "current": 0.43, "variation": -15.69}, {"name": "Group_by_catalog_masters", "threshold": 1.77, "current": 0.38, "variation": -15.56}, {"name": "Get_all_candidates", "threshold": 2.05, "current": 0.35, "variation": -2.78}, {"name": "GetTestUsersForTest", "threshold": 1.89, "current": 0.55, "variation": -5.17}, {"name": "Get_catalog_values_for_masters", "threshold": 1.8, "current": 0.41, "variation": -8.89}, {"name": "Get_Applicant_custom", "threshold": 1.55, "current": 0.33, "variation": -5.71}, {"name": "get_candidate_attachments", "threshold": 1.43, "current": 0.32, "variation": -11.11}, {"name": "Get_Candidate_GetById", "threshold": 1.62, "current": 0.52, "variation": 8.33}, {"name": "Get_Login_Stats", "threshold": 1.62, "current": 0.38, "variation": -7.32}, {"name": "Get_Test_Info", "threshold": 1.68, "current": 0.32, "variation": -13.51}, {"name": "Get_initiate_tua", "threshold": 1.46, "current": 0.37, "variation": -9.76}, {"name": "Get_load_test", "threshold": 1.37, "current": 0.41, "variation": -4.65}, {"name": "Get_test_result", "threshold": 1.78, "current": 0.39, "variation": -11.36}, {"name": "Get_Screen_Data", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_ReqId", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_Applicants_Info", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_View_offer", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_embrace_candidate", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_Activity", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_Task", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_Form", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_my_info", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_my_room", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Join", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Save_Participant", "threshold": 0.0, "current": 0.0, "variation": 0}]}, {"sprint": "Sprint_213", "run_date": "2025-12-03", "hits": 100, "apis": [{"name": "Get_tenant_details", "threshold": 1.49, "current": 0.38, "variation": 8.57}, {"name": "Get_all_entity_properties", "threshold": 1.81, "current": 0.51, "variation": 21.43}, {"name": "Group_by_catalog_masters", "threshold": 1.77, "current": 0.45, "variation": 12.5}, {"name": "Get_all_candidates", "threshold": 2.05, "current": 0.36, "variation": 9.09}, {"name": "GetTestUsersForTest", "threshold": 1.89, "current": 0.58, "variation": 11.54}, {"name": "Get_catalog_values_for_masters", "threshold": 1.8, "current": 0.45, "variation": 9.76}, {"name": "Get_Applicant_custom", "threshold": 1.55, "current": 0.35, "variation": 9.38}, {"name": "get_candidate_attachments", "threshold": 1.43, "current": 0.36, "variation": 5.88}, {"name": "Get_Candidate_GetById", "threshold": 1.62, "current": 0.48, "variation": 6.67}, {"name": "Get_Login_Stats", "threshold": 1.62, "current": 0.41, "variation": 13.89}, {"name": "Get_Test_Info", "threshold": 1.68, "current": 0.37, "variation": 15.62}, {"name": "Get_initiate_tua", "threshold": 1.46, "current": 0.41, "variation": 17.14}, {"name": "Get_load_test", "threshold": 1.37, "current": 0.43, "variation": 13.16}, {"name": "Get_test_result", "threshold": 1.78, "current": 0.44, "variation": 7.32}, {"name": "Get_Screen_Data", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_ReqId", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_Applicants_Info", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_View_offer", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_embrace_candidate", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_Activity", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_Task", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_Form", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_my_info", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_my_room", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Join", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Save_Participant", "threshold": 0.0, "current": 0.0, "variation": 0}]}], "AMS_SG": [{"sprint": "Sprint_217", "run_date": "2026-04-22", "hits": 100, "apis": [{"name": "Get_tenant_details", "threshold": 0.44, "current": 0.15, "variation": 15.38}, {"name": "Get_all_entity_properties", "threshold": 0.51, "current": 0.18, "variation": 5.88}, {"name": "Group_by_catalog_masters", "threshold": 0.65, "current": 0.27, "variation": 3.85}, {"name": "Get_all_candidates", "threshold": 0.68, "current": 0.49, "variation": 2.08}, {"name": "GetTestUsersForTest", "threshold": 0.58, "current": 0.35, "variation": -2.78}, {"name": "Get_catalog_values_for_masters", "threshold": 0.5, "current": 0.22, "variation": 15.79}, {"name": "Get_Applicant_custom", "threshold": 0.5, "current": 0.19, "variation": 5.56}, {"name": "get_candidate_attachments", "threshold": 0.5, "current": 0.24, "variation": -4.0}, {"name": "Get_Candidate_GetById", "threshold": 0.64, "current": 0.3, "variation": 3.45}, {"name": "Get_Login_Stats", "threshold": 0.5, "current": 0.2, "variation": 0.0}, {"name": "Get_Test_Info", "threshold": 0.5, "current": 0.17, "variation": 6.25}, {"name": "Get_initiate_tua", "threshold": 0.5, "current": 0.26, "variation": 13.04}, {"name": "Get_load_test", "threshold": 0.5, "current": 0.21, "variation": -4.55}, {"name": "Get_test_result", "threshold": 0.59, "current": 0.28, "variation": 3.7}, {"name": "Get_Screen_Data", "threshold": 0.86, "current": 0.66, "variation": -2.94}, {"name": "Get_ReqId", "threshold": 1.0, "current": 0.69, "variation": -2.82}, {"name": "Get_Applicants_Info", "threshold": 0.69, "current": 0.47, "variation": -4.08}, {"name": "Get_View_offer", "threshold": 0.65, "current": 0.32, "variation": -3.03}, {"name": "Get_embrace_candidate", "threshold": 0.9, "current": 0.81, "variation": -1.22}, {"name": "Get_Activity", "threshold": 0.5, "current": 0.27, "variation": -6.9}, {"name": "Get_Task", "threshold": 0.5, "current": 0.5, "variation": 0.0}, {"name": "Get_Form", "threshold": 0.5, "current": 0.35, "variation": 0.0}, {"name": "Get_my_info", "threshold": 0.5, "current": 0.28, "variation": 7.69}, {"name": "Get_my_room", "threshold": 0.8, "current": 0.19, "variation": 5.56}, {"name": "Join", "threshold": 1.0, "current": 0.18, "variation": 5.88}, {"name": "Save_Participant", "threshold": 0.5, "current": 0.14, "variation": 0.0}]}, {"sprint": "Sprint_216", "run_date": "2026-03-20", "hits": 100, "apis": [{"name": "Get_tenant_details", "threshold": 0.44, "current": 0.13, "variation": -13.33}, {"name": "Get_all_entity_properties", "threshold": 0.51, "current": 0.17, "variation": 0.0}, {"name": "Group_by_catalog_masters", "threshold": 0.65, "current": 0.26, "variation": -10.34}, {"name": "Get_all_candidates", "threshold": 0.68, "current": 0.48, "variation": -4.0}, {"name": "GetTestUsersForTest", "threshold": 0.58, "current": 0.36, "variation": -2.7}, {"name": "Get_catalog_values_for_masters", "threshold": 0.5, "current": 0.19, "variation": -13.64}, {"name": "Get_Applicant_custom", "threshold": 0.5, "current": 0.18, "variation": -5.26}, {"name": "get_candidate_attachments", "threshold": 0.5, "current": 0.25, "variation": 8.7}, {"name": "Get_Candidate_GetById", "threshold": 0.64, "current": 0.29, "variation": -3.33}, {"name": "Get_Login_Stats", "threshold": 0.5, "current": 0.2, "variation": 0.0}, {"name": "Get_Test_Info", "threshold": 0.5, "current": 0.16, "variation": -11.11}, {"name": "Get_initiate_tua", "threshold": 0.5, "current": 0.23, "variation": -14.81}, {"name": "Get_load_test", "threshold": 0.5, "current": 0.22, "variation": -12.0}, {"name": "Get_test_result", "threshold": 0.59, "current": 0.27, "variation": -3.57}, {"name": "Get_Screen_Data", "threshold": 0.86, "current": 0.68, "variation": -2.86}, {"name": "Get_ReqId", "threshold": 1.0, "current": 0.71, "variation": -8.97}, {"name": "Get_Applicants_Info", "threshold": 0.69, "current": 0.49, "variation": -3.92}, {"name": "Get_View_offer", "threshold": 0.65, "current": 0.33, "variation": 3.12}, {"name": "Get_embrace_candidate", "threshold": 0.9, "current": 0.82, "variation": -3.53}, {"name": "Get_Activity", "threshold": 0.5, "current": 0.29, "variation": 3.57}, {"name": "Get_Task", "threshold": 0.5, "current": 0.5, "variation": 0.0}, {"name": "Get_Form", "threshold": 0.5, "current": 0.35, "variation": 0.0}, {"name": "Get_my_info", "threshold": 0.5, "current": 0.26, "variation": -10.34}, {"name": "Get_my_room", "threshold": 0.8, "current": 0.18, "variation": 0.0}, {"name": "Join", "threshold": 1.0, "current": 0.17, "variation": -10.53}, {"name": "Save_Participant", "threshold": 0.5, "current": 0.14, "variation": -6.67}]}, {"sprint": "Sprint_215", "run_date": "2026-02-10", "hits": 100, "apis": [{"name": "Get_tenant_details", "threshold": 0.44, "current": 0.15, "variation": -34.78}, {"name": "Get_all_entity_properties", "threshold": 0.51, "current": 0.17, "variation": 0.0}, {"name": "Group_by_catalog_masters", "threshold": 0.65, "current": 0.29, "variation": 16.0}, {"name": "Get_all_candidates", "threshold": 0.68, "current": 0.5, "variation": 13.64}, {"name": "GetTestUsersForTest", "threshold": 0.58, "current": 0.37, "variation": 0.0}, {"name": "Get_catalog_values_for_masters", "threshold": 0.5, "current": 0.22, "variation": 0.0}, {"name": "Get_Applicant_custom", "threshold": 0.5, "current": 0.19, "variation": 5.56}, {"name": "get_candidate_attachments", "threshold": 0.5, "current": 0.23, "variation": -4.17}, {"name": "Get_Candidate_GetById", "threshold": 0.64, "current": 0.3, "variation": 0.0}, {"name": "Get_Login_Stats", "threshold": 0.5, "current": 0.2, "variation": 11.11}, {"name": "Get_Test_Info", "threshold": 0.5, "current": 0.18, "variation": 5.88}, {"name": "Get_initiate_tua", "threshold": 0.5, "current": 0.27, "variation": 3.85}, {"name": "Get_load_test", "threshold": 0.5, "current": 0.25, "variation": 8.7}, {"name": "Get_test_result", "threshold": 0.59, "current": 0.28, "variation": -3.45}, {"name": "Get_Screen_Data", "threshold": 0.86, "current": 0.7, "variation": 2.94}, {"name": "Get_ReqId", "threshold": 1.0, "current": 0.78, "variation": 52.94}, {"name": "Get_Applicants_Info", "threshold": 0.69, "current": 0.51, "variation": 6.25}, {"name": "Get_View_offer", "threshold": 0.65, "current": 0.32, "variation": -8.57}, {"name": "Get_embrace_candidate", "threshold": 0.9, "current": 0.85, "variation": 3.66}, {"name": "Get_Activity", "threshold": 0.5, "current": 0.28, "variation": 3.7}, {"name": "Get_Task", "threshold": 0.5, "current": 0.5, "variation": 4.17}, {"name": "Get_Form", "threshold": 0.5, "current": 0.35, "variation": -2.78}, {"name": "Get_my_info", "threshold": 0.5, "current": 0.29, "variation": 7.41}, {"name": "Get_my_room", "threshold": 0.8, "current": 0.18, "variation": 0.0}, {"name": "Join", "threshold": 1.0, "current": 0.19, "variation": 0.0}, {"name": "Save_Participant", "threshold": 0.5, "current": 0.15, "variation": 0.0}]}, {"sprint": "Sprint_214", "run_date": "2026-01-13", "hits": 100, "apis": [{"name": "Get_tenant_details", "threshold": 0.44, "current": 0.23, "variation": 64.29}, {"name": "Get_all_entity_properties", "threshold": 0.51, "current": 0.17, "variation": 0.0}, {"name": "Group_by_catalog_masters", "threshold": 0.65, "current": 0.25, "variation": -3.85}, {"name": "Get_all_candidates", "threshold": 0.68, "current": 0.44, "variation": 4.76}, {"name": "GetTestUsersForTest", "threshold": 0.58, "current": 0.37, "variation": 2.78}, {"name": "Get_catalog_values_for_masters", "threshold": 0.5, "current": 0.22, "variation": 10.0}, {"name": "Get_Applicant_custom", "threshold": 0.5, "current": 0.18, "variation": 5.88}, {"name": "get_candidate_attachments", "threshold": 0.5, "current": 0.24, "variation": 20.0}, {"name": "Get_Candidate_GetById", "threshold": 0.64, "current": 0.3, "variation": -3.23}, {"name": "Get_Login_Stats", "threshold": 0.5, "current": 0.18, "variation": 0.0}, {"name": "Get_Test_Info", "threshold": 0.5, "current": 0.17, "variation": -5.56}, {"name": "Get_initiate_tua", "threshold": 0.5, "current": 0.26, "variation": 8.33}, {"name": "Get_load_test", "threshold": 0.5, "current": 0.23, "variation": 4.55}, {"name": "Get_test_result", "threshold": 0.59, "current": 0.29, "variation": 7.41}, {"name": "Get_Screen_Data", "threshold": 0.86, "current": 0.68, "variation": 1.49}, {"name": "Get_ReqId", "threshold": 1.0, "current": 0.51, "variation": -28.17}, {"name": "Get_Applicants_Info", "threshold": 0.69, "current": 0.48, "variation": 0.0}, {"name": "Get_View_offer", "threshold": 0.65, "current": 0.35, "variation": 6.06}, {"name": "Get_embrace_candidate", "threshold": 0.9, "current": 0.82, "variation": 1.23}, {"name": "Get_Activity", "threshold": 0.5, "current": 0.27, "variation": -6.9}, {"name": "Get_Task", "threshold": 0.5, "current": 0.48, "variation": 0.0}, {"name": "Get_Form", "threshold": 0.5, "current": 0.36, "variation": 2.86}, {"name": "Get_my_info", "threshold": 0.5, "current": 0.27, "variation": 0.0}, {"name": "Get_my_room", "threshold": 0.8, "current": 0.18, "variation": 0.0}, {"name": "Join", "threshold": 1.0, "current": 0.19, "variation": 5.56}, {"name": "Save_Participant", "threshold": 0.5, "current": 0.15, "variation": 7.14}]}, {"sprint": "Sprint_213", "run_date": "2025-12-03", "hits": 100, "apis": [{"name": "Get_tenant_details", "threshold": 0.44, "current": 0.14, "variation": -6.67}, {"name": "Get_all_entity_properties", "threshold": 0.51, "current": 0.17, "variation": -5.56}, {"name": "Group_by_catalog_masters", "threshold": 0.65, "current": 0.26, "variation": -7.14}, {"name": "Get_all_candidates", "threshold": 0.68, "current": 0.42, "variation": 23.53}, {"name": "GetTestUsersForTest", "threshold": 0.58, "current": 0.36, "variation": -10.0}, {"name": "Get_catalog_values_for_masters", "threshold": 0.5, "current": 0.2, "variation": 0.0}, {"name": "Get_Applicant_custom", "threshold": 0.5, "current": 0.17, "variation": 6.25}, {"name": "get_candidate_attachments", "threshold": 0.5, "current": 0.2, "variation": 5.26}, {"name": "Get_Candidate_GetById", "threshold": 0.64, "current": 0.31, "variation": 10.71}, {"name": "Get_Login_Stats", "threshold": 0.5, "current": 0.18, "variation": -14.29}, {"name": "Get_Test_Info", "threshold": 0.5, "current": 0.18, "variation": 5.88}, {"name": "Get_initiate_tua", "threshold": 0.5, "current": 0.24, "variation": 0.0}, {"name": "Get_load_test", "threshold": 0.5, "current": 0.22, "variation": 0.0}, {"name": "Get_test_result", "threshold": 0.59, "current": 0.27, "variation": 3.85}, {"name": "Get_Screen_Data", "threshold": 0.86, "current": 0.67, "variation": 1.52}, {"name": "Get_ReqId", "threshold": 1.0, "current": 0.71, "variation": 1.43}, {"name": "Get_Applicants_Info", "threshold": 0.69, "current": 0.48, "variation": 2.13}, {"name": "Get_View_offer", "threshold": 0.65, "current": 0.33, "variation": 3.12}, {"name": "Get_embrace_candidate", "threshold": 0.9, "current": 0.81, "variation": 0.0}, {"name": "Get_Activity", "threshold": 0.5, "current": 0.29, "variation": 7.41}, {"name": "Get_Task", "threshold": 0.5, "current": 0.48, "variation": -2.04}, {"name": "Get_Form", "threshold": 0.5, "current": 0.35, "variation": -28.57}, {"name": "Get_my_info", "threshold": 0.5, "current": 0.27, "variation": -3.57}, {"name": "Get_my_room", "threshold": 0.8, "current": 0.18, "variation": 0.0}, {"name": "Join", "threshold": 1.0, "current": 0.18, "variation": 0.0}, {"name": "Save_Participant", "threshold": 0.5, "current": 0.14, "variation": -6.67}]}], "AMS_EU": [{"sprint": "Sprint_217", "run_date": "2026-04-22", "hits": 100, "apis": [{"name": "Get_tenant_details", "threshold": 1.64, "current": 0.34, "variation": -2.86}, {"name": "Get_all_entity_properties", "threshold": 1.63, "current": 0.37, "variation": -11.9}, {"name": "Group_by_catalog_masters", "threshold": 1.79, "current": 0.39, "variation": 0.0}, {"name": "Get_all_candidates", "threshold": 2.41, "current": 0.35, "variation": -10.26}, {"name": "GetTestUsersForTest", "threshold": 1.9, "current": 0.57, "variation": 18.75}, {"name": "Get_catalog_values_for_masters", "threshold": 1.9, "current": 0.42, "variation": -12.5}, {"name": "Get_Applicant_custom", "threshold": 1.43, "current": 0.33, "variation": 0.0}, {"name": "get_candidate_attachments", "threshold": 1.47, "current": 0.32, "variation": -3.03}, {"name": "Get_Candidate_GetById", "threshold": 1.67, "current": 0.43, "variation": -6.52}, {"name": "Get_Login_Stats", "threshold": 1.45, "current": 0.37, "variation": -2.63}, {"name": "Get_Test_Info", "threshold": 1.37, "current": 0.32, "variation": 0.0}, {"name": "Get_initiate_tua", "threshold": 1.31, "current": 0.36, "variation": -7.69}, {"name": "Get_load_test", "threshold": 1.33, "current": 0.39, "variation": -9.3}, {"name": "Get_test_result", "threshold": 1.75, "current": 0.39, "variation": -4.88}, {"name": "Get_Screen_Data", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_ReqId", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_Applicants_Info", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_View_offer", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_embrace_candidate", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_Activity", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_Task", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_Form", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_my_info", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_my_room", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Join", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Save_Participant", "threshold": 0.0, "current": 0.0, "variation": 0}]}, {"sprint": "Sprint_216", "run_date": "2026-03-20", "hits": 100, "apis": [{"name": "Get_tenant_details", "threshold": 1.64, "current": 0.35, "variation": -10.26}, {"name": "Get_all_entity_properties", "threshold": 1.63, "current": 0.42, "variation": 5.0}, {"name": "Group_by_catalog_masters", "threshold": 1.79, "current": 0.39, "variation": -2.5}, {"name": "Get_all_candidates", "threshold": 2.41, "current": 0.39, "variation": -13.33}, {"name": "GetTestUsersForTest", "threshold": 1.9, "current": 0.48, "variation": -5.88}, {"name": "Get_catalog_values_for_masters", "threshold": 1.9, "current": 0.48, "variation": 14.29}, {"name": "Get_Applicant_custom", "threshold": 1.43, "current": 0.33, "variation": -5.71}, {"name": "get_candidate_attachments", "threshold": 1.47, "current": 0.33, "variation": -2.94}, {"name": "Get_Candidate_GetById", "threshold": 1.67, "current": 0.46, "variation": -8.0}, {"name": "Get_Login_Stats", "threshold": 1.45, "current": 0.38, "variation": -41.54}, {"name": "Get_Test_Info", "threshold": 1.37, "current": 0.32, "variation": -8.57}, {"name": "Get_initiate_tua", "threshold": 1.31, "current": 0.39, "variation": -4.88}, {"name": "Get_load_test", "threshold": 1.33, "current": 0.43, "variation": -6.52}, {"name": "Get_test_result", "threshold": 1.75, "current": 0.41, "variation": 7.89}, {"name": "Get_Screen_Data", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_ReqId", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_Applicants_Info", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_View_offer", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_embrace_candidate", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_Activity", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_Task", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_Form", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_my_info", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_my_room", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Join", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Save_Participant", "threshold": 0.0, "current": 0.0, "variation": 0}]}, {"sprint": "Sprint_215", "run_date": "2026-02-10", "hits": 100, "apis": [{"name": "Get_tenant_details", "threshold": 1.64, "current": 0.39, "variation": 50.0}, {"name": "Get_all_entity_properties", "threshold": 1.63, "current": 0.4, "variation": 2.56}, {"name": "Group_by_catalog_masters", "threshold": 1.79, "current": 0.4, "variation": -9.09}, {"name": "Get_all_candidates", "threshold": 2.41, "current": 0.45, "variation": 32.35}, {"name": "GetTestUsersForTest", "threshold": 1.9, "current": 0.51, "variation": -7.27}, {"name": "Get_catalog_values_for_masters", "threshold": 1.9, "current": 0.42, "variation": -2.33}, {"name": "Get_Applicant_custom", "threshold": 1.43, "current": 0.35, "variation": -12.5}, {"name": "get_candidate_attachments", "threshold": 1.47, "current": 0.34, "variation": 0.0}, {"name": "Get_Candidate_GetById", "threshold": 1.67, "current": 0.5, "variation": -1.96}, {"name": "Get_Login_Stats", "threshold": 1.45, "current": 0.65, "variation": 71.05}, {"name": "Get_Test_Info", "threshold": 1.37, "current": 0.35, "variation": 6.06}, {"name": "Get_initiate_tua", "threshold": 1.31, "current": 0.41, "variation": -4.65}, {"name": "Get_load_test", "threshold": 1.33, "current": 0.46, "variation": 9.52}, {"name": "Get_test_result", "threshold": 1.75, "current": 0.38, "variation": -7.32}, {"name": "Get_Screen_Data", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_ReqId", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_Applicants_Info", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_View_offer", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_embrace_candidate", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_Activity", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_Task", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_Form", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_my_info", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_my_room", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Join", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Save_Participant", "threshold": 0.0, "current": 0.0, "variation": 0}]}, {"sprint": "Sprint_214", "run_date": "2026-01-13", "hits": 100, "apis": [{"name": "Get_tenant_details", "threshold": 1.64, "current": 0.26, "variation": -23.53}, {"name": "Get_all_entity_properties", "threshold": 1.63, "current": 0.39, "variation": -4.88}, {"name": "Group_by_catalog_masters", "threshold": 1.79, "current": 0.44, "variation": 10.0}, {"name": "Get_all_candidates", "threshold": 2.41, "current": 0.34, "variation": 3.03}, {"name": "GetTestUsersForTest", "threshold": 1.9, "current": 0.55, "variation": -15.38}, {"name": "Get_catalog_values_for_masters", "threshold": 1.9, "current": 0.43, "variation": 2.38}, {"name": "Get_Applicant_custom", "threshold": 1.43, "current": 0.4, "variation": 21.21}, {"name": "get_candidate_attachments", "threshold": 1.47, "current": 0.34, "variation": -19.05}, {"name": "Get_Candidate_GetById", "threshold": 1.67, "current": 0.51, "variation": 10.87}, {"name": "Get_Login_Stats", "threshold": 1.45, "current": 0.38, "variation": 0.0}, {"name": "Get_Test_Info", "threshold": 1.37, "current": 0.33, "variation": -2.94}, {"name": "Get_initiate_tua", "threshold": 1.31, "current": 0.43, "variation": 16.22}, {"name": "Get_load_test", "threshold": 1.33, "current": 0.42, "variation": 5.0}, {"name": "Get_test_result", "threshold": 1.75, "current": 0.41, "variation": -16.33}, {"name": "Get_Screen_Data", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_ReqId", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_Applicants_Info", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_View_offer", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_embrace_candidate", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_Activity", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_Task", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_Form", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_my_info", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_my_room", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Join", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Save_Participant", "threshold": 0.0, "current": 0.0, "variation": 0}]}, {"sprint": "Sprint_213", "run_date": "2025-12-03", "hits": 100, "apis": [{"name": "Get_tenant_details", "threshold": 1.64, "current": 0.34, "variation": 3.03}, {"name": "Get_all_entity_properties", "threshold": 1.63, "current": 0.41, "variation": 13.89}, {"name": "Group_by_catalog_masters", "threshold": 1.79, "current": 0.4, "variation": 0.0}, {"name": "Get_all_candidates", "threshold": 2.41, "current": 0.33, "variation": -5.71}, {"name": "GetTestUsersForTest", "threshold": 1.9, "current": 0.65, "variation": 20.37}, {"name": "Get_catalog_values_for_masters", "threshold": 1.9, "current": 0.42, "variation": 0.0}, {"name": "Get_Applicant_custom", "threshold": 1.43, "current": 0.33, "variation": 0.0}, {"name": "get_candidate_attachments", "threshold": 1.47, "current": 0.42, "variation": 23.53}, {"name": "Get_Candidate_GetById", "threshold": 1.67, "current": 0.46, "variation": -2.13}, {"name": "Get_Login_Stats", "threshold": 1.45, "current": 0.38, "variation": -2.56}, {"name": "Get_Test_Info", "threshold": 1.37, "current": 0.34, "variation": 6.25}, {"name": "Get_initiate_tua", "threshold": 1.31, "current": 0.37, "variation": -2.63}, {"name": "Get_load_test", "threshold": 1.33, "current": 0.4, "variation": 2.56}, {"name": "Get_test_result", "threshold": 1.75, "current": 0.49, "variation": 22.5}, {"name": "Get_Screen_Data", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_ReqId", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_Applicants_Info", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_View_offer", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_embrace_candidate", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_Activity", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_Task", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_Form", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_my_info", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Get_my_room", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Join", "threshold": 0.0, "current": 0.0, "variation": 0}, {"name": "Save_Participant", "threshold": 0.0, "current": 0.0, "variation": 0}]}]}, "SET": {"AMSIN_MU": [{"sprint": "Sprint_217", "run_date": "2026-04-22", "hits": 100, "apis": [{"name": "Create candidate chaining", "threshold": 2.0, "current": 0.49, "variation": 6.52}, {"name": "Create candidate", "threshold": 1.5, "current": 0.4, "variation": -13.04}, {"name": "Status_Change", "threshold": 0.5, "current": 0.23, "variation": 4.55}, {"name": "Create Job", "threshold": 1.0, "current": 1.0, "variation": 0}, {"name": "candidate Create", "threshold": 1.0, "current": 1.0, "variation": 0}]}, {"sprint": "Sprint_216", "run_date": "2026-03-18", "hits": 100, "apis": [{"name": "Create candidate chaining", "threshold": 2.0, "current": 0.46, "variation": -70.89}, {"name": "Create candidate", "threshold": 1.5, "current": 0.46, "variation": -61.67}, {"name": "Status_Change", "threshold": 0.5, "current": 0.22, "variation": -4.35}, {"name": "Create Job", "threshold": 1.0, "current": 1.0, "variation": 0}, {"name": "candidate Create", "threshold": 1.0, "current": 1.0, "variation": 0}]}, {"sprint": "Sprint_215", "run_date": "2026-02-10", "hits": 100, "apis": [{"name": "Create candidate chaining", "threshold": 2.0, "current": 1.58, "variation": -16.4}, {"name": "Create candidate", "threshold": 1.5, "current": 1.2, "variation": 4.35}, {"name": "Status_Change", "threshold": 0.5, "current": 0.23, "variation": 0.0}, {"name": "Create Job", "threshold": 1.0, "current": 1.0, "variation": 0}, {"name": "candidate Create", "threshold": 1.0, "current": 1.0, "variation": 0}]}, {"sprint": "Sprint_214", "run_date": "2026-01-13", "hits": 100, "apis": [{"name": "Create candidate chaining", "threshold": 2.0, "current": 1.89, "variation": -18.18}, {"name": "Create candidate", "threshold": 1.5, "current": 1.15, "variation": 1.77}, {"name": "Status_Change", "threshold": 0.5, "current": 0.23, "variation": 4.55}, {"name": "Create Job", "threshold": 1.0, "current": 1.0, "variation": 0}, {"name": "candidate Create", "threshold": 1.0, "current": 1.0, "variation": 0}]}, {"sprint": "Sprint_213", "run_date": "2025-12-03", "hits": 100, "apis": [{"name": "Create candidate chaining", "threshold": 2.0, "current": 2.31, "variation": 8.96}, {"name": "Create candidate", "threshold": 1.5, "current": 1.13, "variation": -29.81}, {"name": "Status_Change", "threshold": 0.5, "current": 0.22, "variation": -8.33}, {"name": "Create Job", "threshold": 0, "current": 0, "variation": 0}, {"name": "candidate Create", "threshold": 0, "current": 0, "variation": 0}]}], "AMSIN_EU": [{"sprint": "Sprint 100", "run_date": "2025-07-22", "hits": 1, "apis": [{"name": "Create candidate chaining", "threshold": 1.0, "current": 1.0, "variation": 0.0}, {"name": "Create candidate", "threshold": 1.0, "current": 1.0, "variation": 0.0}, {"name": "Status_Change", "threshold": 0.5, "current": 0.5, "variation": 0.0}]}], "BETA_SG": [{"sprint": "Sprint_217", "run_date": "2026-04-22", "hits": 100, "apis": [{"name": "Create candidate chaining", "threshold": 2.0, "current": 0.42, "variation": -2.33}, {"name": "Create candidate", "threshold": 1.5, "current": 0.44, "variation": 2.33}, {"name": "Status_Change", "threshold": 0.5, "current": 0.18, "variation": 0.0}, {"name": "Create Job", "threshold": 1.0, "current": 0.16, "variation": 0}, {"name": "candidate Create", "threshold": 1.0, "current": 0.18, "variation": 0}]}, {"sprint": "Sprint_216", "run_date": "2026-03-18", "hits": 100, "apis": [{"name": "Create candidate chaining", "threshold": 2.0, "current": 0.43, "variation": -4.44}, {"name": "Create candidate", "threshold": 1.5, "current": 0.43, "variation": -4.44}, {"name": "Status_Change", "threshold": 0.5, "current": 0.18, "variation": 5.88}, {"name": "Create Job", "threshold": 1.0, "current": 0.17, "variation": 0}, {"name": "candidate Create", "threshold": 1.0, "current": 0.18, "variation": 0}]}, {"sprint": "Sprint_215", "run_date": "2026-02-10", "hits": 100, "apis": [{"name": "Create candidate chaining", "threshold": 2.0, "current": 0.45, "variation": -2.17}, {"name": "Create candidate", "threshold": 1.5, "current": 0.45, "variation": -2.17}, {"name": "Status_Change", "threshold": 0.5, "current": 0.17, "variation": -5.56}, {"name": "Create Job", "threshold": 1.0, "current": 0.17, "variation": 0}, {"name": "candidate Create", "threshold": 1.0, "current": 0.18, "variation": 0}]}, {"sprint": "Sprint_214", "run_date": "2026-01-13", "hits": 100, "apis": [{"name": "Create candidate chaining", "threshold": 2.0, "current": 0.46, "variation": 4.55}, {"name": "Create candidate", "threshold": 1.5, "current": 0.46, "variation": 4.55}, {"name": "Status_Change", "threshold": 0.5, "current": 0.18, "variation": -5.26}, {"name": "Create Job", "threshold": 1.0, "current": 0.18, "variation": 0}, {"name": "candidate Create", "threshold": 1.0, "current": 0.19, "variation": 0}]}, {"sprint": "Sprint_213", "run_date": "2025-12-03", "hits": 100, "apis": [{"name": "Create candidate chaining", "threshold": 2.0, "current": 0.44, "variation": -72.5}, {"name": "Create candidate", "threshold": 1.5, "current": 0.44, "variation": -71.05}, {"name": "Status_Change", "threshold": 0.5, "current": 0.19, "variation": 11.76}, {"name": "Create Job", "threshold": 0, "current": 0, "variation": 0}, {"name": "candidate Create", "threshold": 0, "current": 0, "variation": 0}]}], "BETA_EU": [{"sprint": "Sprint 100", "run_date": "2025-07-22", "hits": 1, "apis": [{"name": "Create candidate chaining", "threshold": 1.0, "current": 1.0, "variation": 0.0}, {"name": "Create candidate", "threshold": 1.0, "current": 1.0, "variation": 0.0}, {"name": "Status_Change", "threshold": 0.5, "current": 0.5, "variation": 0.0}]}], "AMS_SG": [{"sprint": "Sprint_217", "run_date": "2026-04-22", "hits": 100, "apis": [{"name": "Create candidate chaining", "threshold": 2.0, "current": 0.44, "variation": 2.33}, {"name": "Create candidate", "threshold": 1.5, "current": 0.45, "variation": 4.65}, {"name": "Status_Change", "threshold": 0.5, "current": 0.17, "variation": 6.25}, {"name": "Create Job", "threshold": 1.0, "current": 0.19, "variation": 0}, {"name": "candidate Create", "threshold": 1.0, "current": 0.17, "variation": 0}]}, {"sprint": "Sprint_216", "run_date": "2026-03-20", "hits": 100, "apis": [{"name": "Create candidate chaining", "threshold": 2.0, "current": 0.43, "variation": -10.42}, {"name": "Create candidate", "threshold": 1.5, "current": 0.43, "variation": -2.27}, {"name": "Status_Change", "threshold": 0.5, "current": 0.16, "variation": -15.79}, {"name": "Create Job", "threshold": 1.0, "current": 0.18, "variation": 0}, {"name": "candidate Create", "threshold": 1.0, "current": 0.18, "variation": 0}]}, {"sprint": "Sprint_215", "run_date": "2026-02-10", "hits": 100, "apis": [{"name": "Create candidate chaining", "threshold": 2.0, "current": 0.48, "variation": 11.63}, {"name": "Create candidate", "threshold": 1.5, "current": 0.44, "variation": 4.76}, {"name": "Status_Change", "threshold": 0.5, "current": 0.19, "variation": 11.76}, {"name": "Create Job", "threshold": 1.0, "current": 0.19, "variation": 0}, {"name": "candidate Create", "threshold": 1.0, "current": 0.2, "variation": 0}]}, {"sprint": "Sprint_214", "run_date": "2026-01-13", "hits": 100, "apis": [{"name": "Create candidate chaining", "threshold": 2.0, "current": 0.43, "variation": 0.0}, {"name": "Create candidate", "threshold": 1.5, "current": 0.42, "variation": -2.33}, {"name": "Status_Change", "threshold": 0.5, "current": 0.17, "variation": -5.56}, {"name": "Create Job", "threshold": 1.0, "current": 0.19, "variation": 0}, {"name": "candidate Create", "threshold": 1.0, "current": 0.17, "variation": 0}]}, {"sprint": "Sprint_213", "run_date": "2025-12-03", "hits": 100, "apis": [{"name": "Create candidate chaining", "threshold": 2.0, "current": 0.43, "variation": 2.38}, {"name": "Create candidate", "threshold": 1.5, "current": 0.43, "variation": -2.27}, {"name": "Status_Change", "threshold": 0.5, "current": 0.18, "variation": 5.88}, {"name": "Create Job", "threshold": 0, "current": 0, "variation": 0}, {"name": "candidate Create", "threshold": 0, "current": 0, "variation": 0}]}], "AMS_EU": [{"sprint": "Sprint 100", "run_date": "2025-07-22", "hits": 1, "apis": [{"name": "Create candidate chaining", "threshold": 1.0, "current": 1.0, "variation": 0.0}, {"name": "Create candidate", "threshold": 1.0, "current": 1.0, "variation": 0.0}, {"name": "Status_Change", "threshold": 0.5, "current": 0.5, "variation": 0.0}]}]}, "environments": ["AMSIN_MU", "AMSIN_EU", "BETA_SG", "BETA_EU", "AMS_SG", "AMS_EU"]};
+        let currentEnv = "AMSIN_MU";
+        let currentOp = "GET";
+        let charts = {};
+
+        const colors = [
+            '#FF6B00', '#2563eb', '#10b981', '#f59e0b', '#8b5cf6', 
+            '#ec4899', '#06b6d4', '#64748b', '#1e293b', '#ef4444'
+        ];
+
+        function switchEnv(env, btn) {
+            currentEnv = env;
+            document.querySelectorAll('.env-nav .nav-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            renderContent();
+        }
+
+        function switchOp(op, btn) {
+            currentOp = op;
+            document.querySelectorAll('.op-nav .nav-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            renderContent();
+        }
+
+        function renderContent() {
+            const container = document.getElementById('report-content');
+            const data = rawData[currentOp][currentEnv] || [];
+            
+            if (data.length === 0) {
+                container.innerHTML = `<div style="text-align:center; padding: 50px; color: #64748b;">No data available for ${currentEnv}</div>`;
+                return;
+            }
+
+            // Prepare Chart Data
+            const labels = data.map(d => d.run_date).reverse();
+            const apiNames = data[0].apis.map(a => a.name);
+            const datasets = apiNames.map((name, idx) => {
+                return {
+                    label: name,
+                    data: data.map(d => {
+                        const api = d.apis.find(a => a.name === name);
+                        return api ? api.current : null;
+                    }).reverse(),
+                    borderColor: colors[idx % colors.length],
+                    backgroundColor: colors[idx % colors.length] + '20',
+                    borderWidth: 3,
+                    tension: 0.4,
+                    pointRadius: 4,
+                    pointHoverRadius: 6,
+                    hidden: idx >= 5 // Hide some by default to avoid clutter
+                };
+            });
+
+            container.innerHTML = `
+                <div class="section-title"><i class="fas fa-chart-line"></i> ${currentOp} Performance Trend - ${currentEnv}</div>
+                <div class="chart-card">
+                    <div class="chart-container">
+                        <canvas id="mainChart"></canvas>
+                    </div>
+                    <div id="chartLegend" class="custom-legend"></div>
+                </div>
+
+                <div class="section-title"><i class="fas fa-list-ul"></i> Detailed Audit - Latest Run</div>
+                <div class="data-table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>API Endpoint</th>
+                                <th>Threshold (s)</th>
+                                <th>Response Time (s)</th>
+                                <th>Variation (%)</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${data[0].apis.map(api => `
+                                <tr>
+                                    <td><div class="api-name">${api.name}</div></td>
+                                    <td><span style="font-weight:700;">${api.threshold.toFixed(2)}s</span></td>
+                                    <td><span class="api-name" style="color:var(--primary)">${api.current.toFixed(2)}s</span></td>
+                                    <td>
+                                        <span class="variation ${api.variation > 0 ? 'var-up' : 'var-down'}">
+                                            ${api.variation > 0 ? '+' : ''}${api.variation.toFixed(1)}%
+                                            <i class="fas fa-caret-${api.variation > 0 ? 'up' : 'down'}"></i>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="val-badge ${api.current <= api.threshold ? 'val-pass' : 'val-fail'}">
+                                            ${api.current <= api.threshold ? 'PASSED' : 'BREACHED'}
+                                        </span>
+                                    </td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            `;
+
+            initChart(labels, datasets);
+        }
+
+        function initChart(labels, datasets) {
+            const ctx = document.getElementById('mainChart').getContext('2d');
+            
+            if (charts.main) charts.main.destroy();
+
+            charts.main = new Chart(ctx, {
+                type: 'line',
+                data: { labels, datasets },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: { mode: 'index', intersect: false },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                            titleColor: '#1e293b',
+                            bodyColor: '#1e293b',
+                            borderColor: '#e2e8f0',
+                            borderWidth: 1,
+                            padding: 12,
+                            boxPadding: 6,
+                            usePointStyle: true,
+                            callbacks: {
+                                label: function(context) {
+                                    return context.dataset.label + ': ' + context.parsed.y.toFixed(3) + 's';
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: { 
+                            beginAtZero: true,
+                            grid: { borderDash: [5, 5], color: '#f1f5f9' },
+                            ticks: { font: { weight: '600' }, callback: value => value + 's' }
+                        },
+                        x: { grid: { display: false }, ticks: { font: { weight: '600' } } }
+                    }
+                }
+            });
+
+            // Custom Legend
+            const legendContainer = document.getElementById('chartLegend');
+            legendContainer.innerHTML = datasets.map((ds, idx) => `
+                <div class="legend-item ${ds.hidden ? 'hidden' : ''}" onclick="toggleDataset(${idx}, this)">
+                    <div class="legend-dot" style="background:${ds.borderColor}"></div>
+                    <span>${ds.label}</span>
+                </div>
+            `).join('');
+        }
+
+        function toggleDataset(idx, el) {
+            const meta = charts.main.getDatasetMeta(idx);
+            meta.hidden = meta.hidden === null ? !charts.main.data.datasets[idx].hidden : null;
+            el.classList.toggle('hidden');
+            charts.main.update();
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            renderContent();
+        });
     </script>
 </body>
 </html>

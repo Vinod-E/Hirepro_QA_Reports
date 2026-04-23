@@ -5,68 +5,91 @@ import subprocess
 from datetime import datetime
 from Config import configfile
 
-def process_report(file_path):
+def process_all_sheets(file_path):
     if not os.path.exists(file_path):
-        return []
+        return {}
     
-    df = pd.read_excel(file_path)
-    # Take last 5 results based on index (assuming they are chronological) or sorted by Sprint
-    # Sort by 'Sprint' might be tricky if it's string 'Sprint_196', 'Sprint_200'
-    # Let's try to extract numeric part for sorting if needed, but tail(5) usually works for these reports.
-    df_last_5 = df.tail(5).copy()
+    xl = pd.ExcelFile(file_path)
+    sheets_data = {}
     
-    report_data = []
-    
-    for _, row in df_last_5.iterrows():
-        row_entry = {
-            "sprint": str(row.get("Sprint", "")),
-            "run_date": str(row.get("Run Date", "")),
-            "hits": int(row.get("Number of hits", 0)) if pd.notnull(row.get("Number of hits")) else 0,
-            "apis": []
-        }
+    for sheet_name in xl.sheet_names:
+        df = pd.read_excel(xl, sheet_name=sheet_name)
+        # Take last 5 results
+        df_last_5 = df.tail(5).copy()
         
-        # Filter out "Unnamed" columns
-        cols = [c for c in df.columns if not str(c).startswith("Unnamed")]
+        report_data = []
         
-        # Only take data columns (starting from index 5)
-        for i in range(5, len(cols) - 2, 3):
-            threshold_col = cols[i]
-            current_col = cols[i+1]
-            variation_col = cols[i+2]
+        for _, row in df_last_5.iterrows():
+            row_entry = {
+                "sprint": str(row.get("Sprint", "")),
+                "run_date": str(row.get("Run Date", "")),
+                "hits": int(row.get("Number of hits", 0)) if pd.notnull(row.get("Number of hits")) else 0,
+                "apis": []
+            }
             
-            # Skip if any of these columns are beyond index or headers are missing
-            if any(pd.isnull(c) for c in [threshold_col, current_col, variation_col]):
-                continue
-
-            # API name from current column header
-            api_name = str(current_col).replace(" Previous sprint(%)", "").replace(" Threshold", "").strip()
+            cols = [c for c in df.columns if not str(c).startswith("Unnamed")]
             
-            # Map values, handling potential non-numeric data
-            try:
-                thresh_val = float(row[threshold_col]) if pd.notnull(row[threshold_col]) else 0
-                curr_val = float(row[current_col]) if pd.notnull(row[current_col]) else 0
-                var_val = float(row[variation_col]) if pd.notnull(row[variation_col]) else 0
+            for i in range(5, len(cols) - 2, 3):
+                threshold_col = cols[i]
+                current_col = cols[i+1]
+                variation_col = cols[i+2]
                 
-                row_entry["apis"].append({
-                    "name": api_name,
-                    "threshold": thresh_val,
-                    "current": curr_val,
-                    "variation": var_val
-                })
-            except (ValueError, TypeError):
-                continue
-        
-        report_data.append(row_entry)
-    
-    report_data.reverse() # Make latest sprint first
-    return report_data
+                if any(pd.isnull(c) for c in [threshold_col, current_col, variation_col]):
+                    continue
 
-get_report = process_report(configfile.GET_PERFORMANCE_REPORT)
-set_report = process_report(configfile.SET_PERFORMANCE_REPORT)
+                api_name = str(current_col).replace(" Previous sprint(%)", "").replace(" Threshold", "").strip()
+                
+                try:
+                    thresh_val = float(row[threshold_col]) if pd.notnull(row[threshold_col]) else 0
+                    curr_val = float(row[current_col]) if pd.notnull(row[current_col]) else 0
+                    var_val = float(row[variation_col]) if pd.notnull(row[variation_col]) else 0
+                    
+                    row_entry["apis"].append({
+                        "name": api_name,
+                        "threshold": thresh_val,
+                        "current": curr_val,
+                        "variation": var_val
+                    })
+                except (ValueError, TypeError):
+                    continue
+            
+            report_data.append(row_entry)
+        
+        report_data.reverse() # Latest first
+        sheets_data[sheet_name] = report_data
+    
+    return sheets_data
+
+get_data = process_all_sheets(configfile.GET_PERFORMANCE_REPORT)
+set_data = process_all_sheets(configfile.SET_PERFORMANCE_REPORT)
+
+# Get list of all unique environments across both files
+raw_envs = list(set(list(get_data.keys()) + list(set_data.keys())))
+
+def custom_env_sort(env):
+    # Sort by group first (AMSIN, BETA, AMS), then ensure EU is second in each pair
+    group_order = {"AMSIN": 0, "BETA": 1, "AMS": 2}
+    if "_" in env:
+        base = env.rsplit("_", 1)[0]
+        suffix = env.rsplit("_", 1)[1]
+    else:
+        base = env
+        suffix = ""
+    
+    g_weight = group_order.get(base, 99)
+    is_eu = 1 if suffix == "EU" else 0
+    return (g_weight, base, is_eu, env)
+
+environments = sorted(raw_envs, key=custom_env_sort)
 
 final_data = {
-    "get_report": get_report,
-    "set_report": set_report
+    "environments": environments,
+    "reports": {
+        env: {
+            "get": get_data.get(env, []),
+            "set": set_data.get(env, [])
+        } for env in environments
+    }
 }
 
 # Write data to a JSON for the HTML to consume or just generate the HTML directly
@@ -86,8 +109,8 @@ html_template = """
         @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
         
         :root {
-            --primary: #FF6B00;
-            --primary-gradient: linear-gradient(135deg, #FF6B00 0%, #FF9E00 100%);
+            --primary: #2563eb;
+            --primary-gradient: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
             --bg: #fdfdfd;
             --card-bg: #ffffff;
             --text: #000000;
@@ -119,13 +142,37 @@ html_template = """
         }
 
         body {
-            background-color: #ffffff;
+            background: #ffffff;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(37, 99, 235, 0.05) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(99, 102, 241, 0.05) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(37, 99, 235, 0.05) 0px, transparent 50%),
+                radial-gradient(at 0% 100%, rgba(99, 102, 241, 0.05) 0px, transparent 50%);
             color: var(--text-main);
             min-height: 100vh;
             padding-bottom: 40px;
             overflow-y: auto;
             width: 100vw;
             font-family: 'Outfit', sans-serif;
+            position: relative;
+        }
+
+        /* Liquid Glass Background */
+        .bg-blobs {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; overflow: hidden; pointer-events: none;
+        }
+        .blob {
+            position: absolute; width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(37, 99, 235, 0.07) 0%, transparent 70%);
+            border-radius: 50%; filter: blur(80px);
+            animation: move 25s infinite alternate;
+        }
+        .blob-1 { top: -200px; left: -100px; animation-duration: 30s; }
+        .blob-2 { bottom: -200px; right: -100px; background: radial-gradient(circle, rgba(99, 102, 241, 0.07) 0%, transparent 70%); animation-duration: 35s; }
+        @keyframes move {
+            from { transform: translate(0, 0) rotate(0deg) scale(1); }
+            to { transform: translate(150px, 100px) rotate(30deg) scale(1.2); }
         }
 
         /* Premium Loader */
@@ -187,8 +234,8 @@ html_template = """
             width: auto;
         }
 
-        .header-home-btn { display: none; text-decoration: none; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 12px; background: rgba(255, 107, 0, 0.1); color: #FF6B00; transition: all 0.2s; margin: 0 auto 0.25rem auto; border: 1px solid rgba(255, 107, 0, 0.2); }
-        .header-home-btn:active { background: rgba(255, 107, 0, 0.2); transform: scale(0.95); }
+        .header-home-btn { display: none; text-decoration: none; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 12px; background: rgba(37, 99, 235, 0.1); color: var(--primary); transition: all 0.2s; margin: 0 auto 0.25rem auto; border: 1px solid rgba(37, 99, 235, 0.2); }
+        .header-home-btn:active { background: rgba(37, 99, 235, 0.2); transform: scale(0.95); }
 
         .title-section h1 {
             font-size: 1.6rem;
@@ -253,20 +300,54 @@ html_template = """
         /* Liquid Glass Navigation */
         .main-nav { 
             display: flex; position: relative; justify-content: center; gap: 0; 
-            margin-bottom: 2.5rem; background: rgba(241, 245, 249, 0.7); 
+            margin-bottom: 1.5rem; background: rgba(241, 245, 249, 0.7); 
             backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-            padding: 0.5rem; border-radius: 99px; width: fit-content; margin: 0 auto 2.5rem auto;
+            padding: 0.5rem; border-radius: 99px; width: fit-content; margin: 0 auto 1rem auto;
             border: 1px solid rgba(255,255,255,0.8); box-shadow: 0 12px 40px rgba(0,0,0,0.06);
             overflow: hidden;
         }
+        
+        .env-nav {
+            display: flex; position: relative; justify-content: center; gap: 0; 
+            margin-bottom: 2.5rem; background: rgba(241, 245, 249, 0.4); 
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            padding: 0.4rem; border-radius: 99px; width: fit-content; margin: 0 auto 2.5rem auto;
+            border: 1px solid rgba(255,255,255,0.6); box-shadow: 0 8px 30px rgba(0,0,0,0.04);
+            overflow: hidden;
+        }
+
         .nav-btn { 
-            position: relative; z-index: 2; padding: 0.8rem 3rem; border-radius: 99px; 
+            position: relative; z-index: 2; padding: 0.8rem 2.5rem; border-radius: 99px; 
             border: none; background: transparent; color: #64748b; 
-            font-weight: 800; cursor: pointer; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); 
-            display: flex; align-items: center; gap: 0.85rem; font-size: 0.95rem; 
+            font-weight: 800; cursor: pointer; transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); 
+            display: flex; align-items: center; gap: 0.85rem; font-size: 0.85rem; 
             text-transform: uppercase; letter-spacing: 0.08em;
             user-select: none; -webkit-user-select: none; white-space: nowrap;
         }
+        .nav-btn:active { transform: scale(0.96); transition: 0.1s; }
+        
+        .env-btn {
+            position: relative; z-index: 2;
+            padding: 10px 24px; font-size: 0.75rem; 
+            background: transparent;
+            color: #64748b; border-radius: 99px; 
+            border: none;
+            font-weight: 700; cursor: pointer; 
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            text-transform: uppercase; letter-spacing: 0.05em;
+        }
+        .env-btn:active { transform: scale(0.95); }
+        .env-btn:hover { color: var(--primary); }
+        .env-btn.active { color: white; }
+
+        .env-indicator {
+            position: absolute; height: calc(100% - 0.8rem); top: 0.4rem; left: 0.4rem;
+            background: var(--primary); border-radius: 99px; z-index: 1;
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.25);
+            width: 0; pointer-events: none;
+        }
+
         .nav-btn:hover { color: var(--text-main); }
         .nav-btn.active { color: var(--primary); }
         .nav-btn i { font-size: 1.1rem; transition: transform 0.3s; }
@@ -275,23 +356,18 @@ html_template = """
             position: absolute; height: calc(100% - 1rem); top: 0.5rem; left: 0.5rem;
             background: white; border-radius: 99px; z-index: 1;
             transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-            box-shadow: 0 8px 25px rgba(255, 107, 0, 0.12);
+            box-shadow: 0 8px 25px rgba(37, 99, 235, 0.12);
             width: 0; pointer-events: none;
         }
 
         main { max-width: 1400px; margin: 0 auto; padding: 0 20px; }
 
-        .chart-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 32px;
-            padding: 2rem;
-            margin-bottom: 4rem;
-            box-shadow: 0 15px 45px rgba(0,0,0,0.03);
-            position: relative;
-            overflow: hidden;
-            border-top: 5px solid var(--primary);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        .chart-card { 
+            background: transparent;
+            border: none;
+            box-shadow: none;
+            padding: 0;
+            margin-bottom: 0; 
         }
         
         /* Glass Legend System */
@@ -303,8 +379,8 @@ html_template = """
         .legend-controls { display: flex; gap: 8px; }
         
         .legend-btn {
-            padding: 0.5rem 1.25rem; border-radius: 12px; border: 1px solid rgba(255,107,0,0.2);
-            background: rgba(255,107,0,0.05); color: var(--primary); font-size: 0.7rem; font-weight: 800;
+            padding: 0.5rem 1.25rem; border-radius: 12px; border: 1px solid rgba(37, 99, 235, 0.2);
+            background: rgba(37, 99, 235, 0.05); color: var(--primary); font-size: 0.7rem; font-weight: 800;
             cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex; align-items: center; gap: 8px; text-transform: uppercase;
             letter-spacing: 0.02em;
@@ -313,7 +389,7 @@ html_template = """
         .legend-btn:hover { 
             background: var(--primary); color: white; 
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(255,107,0,0.25);
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.25);
         }
         .legend-btn:active { transform: translateY(0); }
         .legend-btn.unselect { background: #f1f5f9; color: #64748b; border-color: #e2e8f0; }
@@ -322,7 +398,7 @@ html_template = """
         .custom-legend {
             display: flex; flex-wrap: wrap; gap: 10px; padding: 1.5rem;
             background: rgba(248, 250, 252, 0.5); border-radius: 24px;
-            margin-top: 20px; border: 1px solid rgba(255,107,0,0.05);
+            margin-top: 20px; border: 1px solid rgba(37, 99, 235, 0.05);
             backdrop-filter: blur(8px);
         }
         .legend-item {
@@ -332,57 +408,247 @@ html_template = """
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             user-select: none; -webkit-tap-highlight-color: transparent;
         }
-        .legend-item:hover { transform: translateY(-2px); border-color: var(--primary); box-shadow: 0 4px 12px rgba(255,107,0,0.1); }
+        .legend-item:hover { transform: translateY(-2px); border-color: var(--primary); box-shadow: 0 4px 12px rgba(37, 99, 235, 0.1); }
         .legend-item.hidden { opacity: 0.4; background: #f8fafc; filter: grayscale(1); }
         .legend-item.hidden i { border-color: #94a3b8 !important; background: transparent !important; }
         
         .legend-dot { width: 10px; height: 10px; border-radius: 50%; border: 2.5px solid transparent; }
         .legend-text { font-size: 0.75rem; font-weight: 600; color: #334155; }
         
+        .search-box {
+            position: relative;
+            flex: 1;
+            margin-bottom: 1.5rem;
+        }
+        .search-box i.search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+            font-size: 0.9rem;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .chart-loader {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255,255,255,0.9); backdrop-filter: blur(4px);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            z-index: 100; gap: 15px; border-radius: 32px;
+        }
+        .chart-spinner {
+            width: 40px; height: 40px; border: 3px solid rgba(37, 99, 235, 0.1);
+            border-top: 3px solid var(--primary); border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        .clear-search-btn {
+            background: white;
+            border: 1px solid #cbd5e1;
+            color: #475569;
+            padding: 0.8rem 1.5rem;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            white-space: nowrap;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+        .clear-search-btn:active { transform: scale(0.96); }
+        .clear-search-btn.active {
+            background: #fef2f2;
+            border-color: #fecaca;
+            color: #ef4444;
+            box-shadow: 0 2px 8px rgba(239, 68, 68, 0.1);
+        }
+        .clear-search-btn.active:hover {
+            background: #fee2e2;
+            transform: translateY(-1px);
+        }
+        .clear-search-btn i { font-size: 0.9rem; }
+
+        .search-controls-group {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+            flex: 1;
+            max-width: 600px;
+        }
+
+        .history-section-card {
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            border-radius: 32px;
+            padding: 2rem;
+            margin-top: 1.5rem;
+            box-shadow: 0 15px 45px rgba(0,0,0,0.02);
+        }
+
+        .history-header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: transparent;
+            padding: 1rem 0 2rem 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 2rem;
+            flex-wrap: wrap;
+            transition: all 0.4s ease;
+        }
+        .history-header.stuck {
+            padding: 1.25rem 2rem;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(15px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.06);
+            border-bottom: 1px solid #e2e8f0;
+            border-radius: 20px;
+            margin: 0 -1rem;
+        }
+
+        .history-header .search-box {
+            margin-bottom: 0;
+            flex: 1;
+            min-width: 300px;
+            max-width: 500px;
+        }
+
         .section-title {
             display: flex;
             align-items: center;
+            justify-content: space-between;
             gap: 12px;
-            font-size: 1.3rem;
+            font-size: 1.85rem;
             font-weight: 800;
             color: #494444;
             margin-top: 1rem;
             margin-bottom: 1.5rem;
-            padding-left: 5px;
-            border-left: 4px solid var(--primary);
+            padding-left: 0;
         }
+        .toggle-btn {
+            background: rgba(37, 99, 235, 0.05);
+            border: 1px solid rgba(37, 99, 235, 0.1);
+            color: var(--primary);
+            padding: 0.5rem 1rem;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .toggle-btn:hover { background: rgba(37, 99, 235, 0.1); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(37, 99, 235, 0.1); }
+        .toggle-btn:active { transform: scale(0.95); }
+        
+        summary.search-active { 
+            background: #f5f7ff !important; 
+            border-left: 6px solid #4f46e5 !important;
+            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.1) !important;
+        }
+        summary.search-active .sprint-id { color: #4338ca !important; }
+        summary.search-active .meta-item i { color: #4f46e5 !important; }
+        
+        .search-box input {
+            width: 100%;
+            padding: 0.8rem 1rem 0.8rem 2.8rem;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            background: #ffffff;
+            color: #1e293b;
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            outline: none;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        .search-box input:focus {
+            background: #ffffff;
+            border-color: #94a3b8;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        .search-box input::placeholder { color: #94a3b8; font-weight: 500; }
+        .search-box i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #64748b;
+            font-size: 1rem;
+            pointer-events: none;
+            z-index: 10;
+        }
+        
+        .nav-btn {
+            padding: 1rem 2rem;
+            border-radius: 99px;
+            border: none;
+            background: transparent;
+            color: #64748b;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            position: relative;
+            z-index: 2;
+        }
+        .nav-btn:active { transform: scale(0.95); }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #494444;
+            margin-top: 1rem;
+            margin-bottom: 1.5rem;
+            padding-left: 0;
+        }
+        .title-highlight { color: var(--primary); }
 
         .section-title i {
             color: var(--primary);
             font-size: 1.1rem;
         }
         
-        .chart-card::before {
-            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: var(--primary-gradient); opacity: 0.8;
-        }
+
 
         .chart-container { height: 450px; }
 
         /* Collapse Section Branding */
         details { 
-            background: white; 
-            border: 1px solid var(--border); 
+            background: #f0f9ff; 
+            backdrop-filter: blur(12px);
+            border: 1px solid #e0f2fe; 
             border-radius: 24px; 
             margin-bottom: 1.5rem; 
-            box-shadow: 0 2px 8px rgba(0,0,0,0.02); 
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.03); 
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); 
             overflow: hidden;
         }
         details:hover { 
             transform: translateY(-2px); 
-            box-shadow: 0 12px 25px rgba(0,0,0,0.05);
-            border-color: rgba(255, 107, 0, 0.2);
+            box-shadow: 0 12px 25px rgba(37, 99, 235, 0.08);
+            border-color: #bae6fd;
         }
         
         summary { 
             padding: 1.75rem 2rem; 
             cursor: pointer; 
-            background: white; 
+            background: #f0f9ff; 
             display: flex; 
             justify-content: space-between; 
             align-items: center; 
@@ -396,7 +662,7 @@ html_template = """
             display: grid; 
             grid-template-rows: 0fr; 
             transition: grid-template-rows 0.5s cubic-bezier(0.4, 0, 0.2, 1); 
-            background: #fff;
+            background: #f8fafc;
         }
         details[open] .content-wrapper { grid-template-rows: 1fr; }
         .content-inner { overflow: hidden; }
@@ -413,20 +679,26 @@ html_template = """
             border-radius: 50%;
             font-size: 0.85rem;
         }
-        details[open] summary::after { transform: rotate(180deg); background: rgba(255, 107, 0, 0.1); color: var(--primary); }
-        details[open] summary { border-bottom: 1px solid var(--border); }
+        details[open] summary::after { transform: rotate(180deg); background: rgba(37, 99, 235, 0.1); color: var(--primary); }
+        details[open] summary { background: #f8fafc; border-bottom: 1px solid var(--border); }
         
-        .sprint-label { display: flex; align-items: center; gap: 1.25rem; }
-        .sprint-id { font-size: 1.1rem; font-weight: 800; color: var(--text-main); letter-spacing: -0.02em; }
-        
-        .sprint-meta { display: flex; gap: 1.5rem; }
+        .sprint-header-left { display: flex; align-items: center; gap: 3.5rem; flex: 1; }
+        .sprint-id { font-size: 1.1rem; font-weight: 800; color: var(--text-main); white-space: nowrap; }
+        .sprint-meta { display: flex; gap: 2.5rem; align-items: center; }
         .meta-item { display: flex; align-items: center; gap: 8px; font-size: 0.90rem; font-weight: 800; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.05em; }
+        .sprint-stats-right { text-align: right; color: var(--primary); font-weight: 800; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.05em; }
         .meta-item i { color: var(--primary); }
 
         /* Beautiful Rows for Table */
-        .table-wrapper { padding: 0.5rem; }
+        .table-wrapper { padding: 0 0.75rem 0.75rem 0.75rem; }
         table { width: 100%; border-collapse: separate; border-spacing: 0 12px; }
-        th { padding: 1.25rem; font-size: 0.7rem; font-weight: 900; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.1em; border: none; text-align: left; }
+        th { 
+            padding: 1rem 1.25rem; font-size: 0.7rem; font-weight: 900; 
+            color: #94a3b8; text-transform: uppercase; letter-spacing: 0.1em; 
+            border: none; text-align: left; background: #f8fafc;
+        }
+        th:first-child { border-radius: 12px 0 0 12px; }
+        th:last-child { border-radius: 0 12px 12px 0; }
         
         .api-row td { 
             background: #ffffff; 
@@ -440,7 +712,7 @@ html_template = """
         
         .api-row:hover td { 
             background: #fffcf9; 
-            border-color: rgba(255, 107, 0, 0.1); 
+            border-color: rgba(37, 99, 235, 0.1); 
             transform: scale(1.005);
         }
 
@@ -454,10 +726,10 @@ html_template = """
         .api-row:hover .api-icon { background: var(--primary); color: white; transform: rotate(10deg); }
         
         .api-details h4 { font-size: 1rem; font-weight: 800; color: var(--text-main); margin-bottom: 2px; }
-        .api-details p { font-size: 0.7rem; color: var(--text-dim); font-weight: 700; text-transform: uppercase; }
+        .api-details p { font-size: 0.7rem; color: #94a3b8; font-weight: 700; text-transform: uppercase; }
 
         .stat-value { font-size: 1.1rem; font-weight: 900; color: var(--text-main); }
-        .stat-label { font-size: 0.65rem; color: var(--text-dim); font-weight: 700; text-transform: uppercase; margin-top: 4px; }
+        .stat-label { font-size: 0.65rem; color: #94a3b8; font-weight: 700; text-transform: uppercase; margin-top: 4px; }
         
         .variation-badge {
             display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 12px;
@@ -493,7 +765,7 @@ html_template = """
             .chart-card { padding: 1rem; border-radius: 20px; margin-bottom: 1.5rem; }
             .chart-container { height: 260px !important; }
 
-            .section-title { font-size: 1.1rem; padding-left: 0; border: none; margin-bottom: 1.25rem; }
+            .section-title { font-size: 1.3rem; padding-left: 0; border: none; margin-bottom: 1.25rem; }
 
             /* Refined Table to Card Transformation */
             .table-wrapper { 
@@ -510,7 +782,7 @@ html_template = """
                 display: block;
             }
             .table-wrapper::-webkit-scrollbar-thumb {
-                background: rgba(255, 107, 0, 0.2);
+                background: rgba(37, 99, 235, 0.2);
                 border-radius: 10px;
             }
             
@@ -550,10 +822,10 @@ html_template = """
             
             .api-info { width: 100%; }
             .api-details h4 { font-size: 0.85rem; word-break: break-all; width: 100%; white-space: normal; line-height: 1.3; }
-            .api-details p { font-size: 0.6rem; opacity: 0.7; font-weight: 700; text-transform: uppercase; margin-top: 2px; }
+            .api-details p { font-size: 0.6rem; color: #94a3b8; font-weight: 700; text-transform: uppercase; margin-top: 2px; }
             
             .stat-value { font-size: 0.9rem; font-weight: 800; }
-            .stat-label { font-size: 0.55rem; font-weight: 700; color: #64748b; text-transform: uppercase; margin-top: 2px; }
+            .stat-label { font-size: 0.55rem; font-weight: 700; color: #94a3b8; text-transform: uppercase; margin-top: 2px; }
             
             .variation-badge { padding: 4px 10px; font-size: 0.7rem; border-radius: 8px; font-weight: 900; }
             
@@ -562,10 +834,10 @@ html_template = """
             
             .api-info { width: 100%; }
             .api-details h4 { font-size: 0.85rem; word-break: break-all; width: 100%; white-space: normal; }
-            .api-details p { font-size: 0.6rem; opacity: 0.8; }
+            .api-details p { font-size: 0.6rem; color: #94a3b8; }
             
             .stat-value { font-size: 0.85rem; }
-            .stat-label { font-size: 0.5rem; }
+            .stat-label { font-size: 0.5rem; color: #94a3b8; }
             
             .variation-badge { padding: 4px 8px; font-size: 0.7rem; border-radius: 8px; }
             
@@ -608,18 +880,24 @@ html_template = """
         .floating-home {
             position: fixed; bottom: 30px; right: 30px; z-index: 9999;
             width: 56px; height: 56px; border-radius: 20px;
-            background: rgba(255,107,0,0.9); backdrop-filter: blur(8px);
+            background: rgba(37, 99, 235, 0.9); backdrop-filter: blur(8px);
             display: flex; align-items: center; justify-content: center;
             color: white; font-size: 1.4rem; text-decoration: none;
-            box-shadow: 0 10px 30px rgba(255,107,0,0.3);
+            box-shadow: 0 10px 30px rgba(37, 99, 235, 0.3);
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             border: 1px solid rgba(255,255,255,0.2);
         }
-        .floating-home:hover { transform: scale(1.1) translateY(-5px); box-shadow: 0 15px 40px rgba(255,107,0,0.45); background: #ff6b00; }
+        .floating-home:hover { transform: scale(1.1) translateY(-5px); box-shadow: 0 15px 40px rgba(37, 99, 235, 0.45); background: var(--primary); }
         .floating-home i { transition: transform 0.3s ease; }
         .floating-home:hover i { transform: rotate(-10deg); }
 
         @media (max-width: 768px) {
+            main { padding: 0 10px; }
+            .history-section-card { padding: 1.25rem 0.75rem; border-radius: 24px; margin-top: 1rem; }
+            .chart-card { padding: 0; }
+            .chart-container { height: 350px !important; margin: 0 -0.25rem; }
+            .history-header { padding: 0 0 1rem 0; }
+            
             header { padding: 10px 0 20px 0; margin-bottom: 10px; }
             .header-container { grid-template-columns: 1fr; gap: 15px; text-align: center; }
             .logo-img { height: 35px; }
@@ -635,13 +913,22 @@ html_template = """
             .chart-container { height: 260px !important; }
             .section-title { font-size: 1rem; justify-content: center; margin-bottom: 1.25rem; text-align: center; }
 
-            summary { padding: 1.25rem 1rem; display: flex !important; flex-direction: column !important; align-items: center !important; gap: 10px; border-radius: 16px !important; position: relative; }
-            .sprint-label { display: contents !important; }
-            .sprint-id { font-size: 1.1rem; font-weight: 800; color: #1e293b; margin-bottom: 2px; text-align: center; }
-            .sprint-meta { display: flex; gap: 15px; flex-direction: row !important; align-items: center; justify-content: center; flex-wrap: wrap; }
-            .meta-item { font-size: 0.7rem; gap: 5px; font-weight: 700; justify-content: center; }
-            summary > div:last-child { margin-top: 0; display: flex; justify-content: center; width: 100%; } /* Endpoints alignment */
-            summary::after { position: absolute; right: 1rem; top: 1.25rem; width: 32px; height: 32px; transform: none; }
+            summary { 
+                padding: 1.5rem !important; 
+                display: flex !important; 
+                flex-direction: column !important; 
+                align-items: center !important; 
+                gap: 0.75rem !important; 
+                text-align: center !important;
+                border-radius: 20px !important;
+                position: relative;
+            }
+            .sprint-header-left { display: flex !important; flex-direction: column; align-items: center; width: 100%; gap: 8px !important; }
+            .sprint-id { font-size: 1.1rem; font-weight: 800; color: #1e293b; margin: 0 0 2px 0 !important; text-align: center; }
+            .sprint-meta { display: flex; gap: 1rem; flex-direction: row !important; align-items: center; justify-content: center !important; flex-wrap: wrap; width: 100%; }
+            .meta-item { font-size: 0.7rem; gap: 6px; font-weight: 700; color: #475569; }
+            .sprint-stats-right { display: flex; justify-content: center !important; width: 100%; margin-top: 2px; text-align: center; }
+            summary::after { position: absolute; right: 1rem; top: 1.25rem; width: 28px; height: 28px; transform: none; }
             details[open] summary::after { transform: rotate(180deg); }
 
             .api-row td { padding: 0.8rem 1rem !important; }
@@ -661,6 +948,40 @@ html_template = """
             }
             .legend-text { font-size: 0.65rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
             
+            .env-nav { 
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+                gap: 8px;
+                padding: 8px;
+                width: 100%;
+                border-radius: 16px;
+                margin-bottom: 2rem;
+                background: rgba(255, 255, 255, 0.5);
+                backdrop-filter: blur(10px);
+            }
+            .env-btn { 
+                padding: 10px 4px;
+                font-size: 0.7rem;
+                width: 100%;
+                text-align: center;
+                min-width: 0;
+                border-radius: 10px;
+                background: transparent;
+                transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+            .env-btn.active {
+                background: var(--primary) !important;
+                color: white !important;
+                box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+            }
+            .env-indicator { display: none !important; }
+            
+            .history-header { flex-direction: column; align-items: flex-start; gap: 1.5rem; padding: 1.5rem 0; }
+            .history-header .section-title { width: 100%; text-align: center; }
+            .search-controls-group { flex-direction: column; width: 100%; max-width: none !important; }
+            .search-box { min-width: 0 !important; width: 100% !important; margin-bottom: 0; }
+            .clear-search-btn { width: 100%; justify-content: center; }
+            
             .legend-header { flex-direction: column; align-items: flex-start; gap: 12px; }
             .legend-controls { width: 100%; justify-content: space-between; }
             .legend-btn { flex: 1; justify-content: center; padding: 0.6rem; font-size: 0.6rem; }
@@ -673,7 +994,7 @@ html_template = """
         }
 
         @media (max-width: 480px) {
-            .chart-container { height: 240px !important; }
+            .chart-container { height: 320px !important; }
             .title-section h1 { font-size: 1.2rem; }
             .subtitle { font-size: 0.75rem; }
             .main-nav { margin: 0 auto 1.5rem auto; }
@@ -681,6 +1002,10 @@ html_template = """
     </style>
 </head>
 <body>
+    <div class="bg-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+    </div>
 
     <div id="loader">
         <div class="loader-spinner"></div>
@@ -713,62 +1038,67 @@ html_template = """
 
     <div class="main-nav">
             <div class="nav-indicator"></div>
-            <button class="nav-btn active" onclick="showReport('get-report', this)">
+            <button class="nav-btn active" onclick="switchOp('get', this)">
                 <i class="fas fa-chart-line"></i> GET Operations
             </button>
-            <button class="nav-btn" onclick="showReport('set-report', this)">
+            <button class="nav-btn" onclick="switchOp('set', this)">
                 <i class="fas fa-upload"></i> SET Operations
             </button>
         </div>
 
-        <section id="get-report" class="report-section active">
-            <div class="section-title"><i class="fas fa-wave-square"></i> GET APIs Performance Trend</div>
-            
-            <div class="chart-card">
-                <div class="legend-header">
-                    <div class="legend-title">API Visibility Control</div>
-                    <div class="legend-controls">
-                        <button class="legend-btn" onclick="toggleAll('getChart', true)">
-                            <i class="fas fa-check-double"></i> Select All
-                        </button>
-                        <button class="legend-btn unselect" onclick="toggleAll('getChart', false)">
-                            <i class="fas fa-times-circle"></i> Clear All
+        <div class="env-nav">
+            __ENV_BTNS__
+        </div>
+
+        <section id="report-content">
+            <div class="history-section-card" id="chart-section-wrapper" style="margin-bottom: 1.5rem;">
+                <div class="history-header" style="position: static; background: transparent; box-shadow: none; padding-top: 0; display: flex; align-items: center; justify-content: space-between;">
+                    <div class="section-title" style="margin: 0; font-family: auto;">
+                        <span id="chart-title">GET APIs Performance Trend | <span class="title-highlight">__ENV__</span></span>
+                    </div>
+                    <button class="toggle-btn" onclick="toggleChart()">
+                        <i class="fas fa-eye-slash"></i> Hide Graph
+                    </button>
+                </div>
+                
+                <div class="chart-card" style="position: relative;">
+                    <div id="chart-loader" class="chart-loader" style="display: none;">
+                        <div class="chart-spinner"></div>
+                        <div style="font-weight: 700; color: var(--primary); font-size: 0.9rem; letter-spacing: 0.02em;">Synchronizing Trend Data...</div>
+                    </div>
+                    <div class="legend-header">
+                        <div class="legend-title">API Visibility Control</div>
+                        <div class="legend-controls">
+                            <button class="legend-btn" onclick="toggleAll(true)">
+                                <i class="fas fa-check-double"></i> Select All
+                            </button>
+                            <button class="legend-btn unselect" onclick="toggleAll(false)">
+                                <i class="fas fa-times-circle"></i> Clear All
+                            </button>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="mainChart"></canvas>
+                    </div>
+                    <div id="main-legend" class="custom-legend"></div>
+                </div>
+            </div>
+
+            <div class="history-section-card">
+                <div class="history-header">
+                    <div class="section-title" style="margin: 0; font-family: auto;"><span id="history-title">GET Historical Data Audit | <span class="title-highlight">__ENV__</span></span></div>
+                    <div class="search-controls-group">
+                        <div class="search-box">
+                            <i class="fas fa-search search-icon"></i>
+                            <input type="text" id="apiSearch" placeholder="Search API endpoint..." oninput="handleSearch(this.value)">
+                        </div>
+                        <button class="clear-search-btn" id="clearBtn" onclick="clearSearch()">
+                            <i class="fas fa-redo-alt"></i> Clear Search
                         </button>
                     </div>
                 </div>
-                <div class="chart-container">
-                    <canvas id="getChart"></canvas>
-                </div>
-                <div id="getChart-legend" class="custom-legend"></div>
+                <div id="history-list"></div>
             </div>
-
-            <div class="section-title"><i class="fas fa-history"></i> Historical Data Audit</div>
-            <div id="get-history-list"></div>
-        </section>
-
-        <section id="set-report" class="report-section">
-            <div class="section-title"><i class="fas fa-wave-square"></i> SET APIs Performance Trend</div>
-            
-            <div class="chart-card">
-                <div class="legend-header">
-                    <div class="legend-title">API Visibility Control</div>
-                    <div class="legend-controls">
-                        <button class="legend-btn" onclick="toggleAll('setChart', true)">
-                            <i class="fas fa-check-double"></i> Select All
-                        </button>
-                        <button class="legend-btn unselect" onclick="toggleAll('setChart', false)">
-                            <i class="fas fa-times-circle"></i> Clear All
-                        </button>
-                    </div>
-                </div>
-                <div class="chart-container">
-                    <canvas id="setChart"></canvas>
-                </div>
-                <div id="setChart-legend" class="custom-legend"></div>
-            </div>
-
-            <div class="section-title"><i class="fas fa-history"></i> Historical Data Audit</div>
-            <div id="set-history-list"></div>
         </section>
     </main>
 
@@ -784,39 +1114,87 @@ html_template = """
 
     <script>
         const data = __DATA_JSON__;
+        let currentEnv = "__DEFAULT_ENV__";
+        let currentOp = "get";
+        let mainChart = null;
 
         function updateIndicator(btn) {
             const indicator = document.querySelector('.nav-indicator');
-            const activeBtn = btn || document.querySelector('.nav-btn.active');
+            const activeBtn = btn || document.querySelector('.main-nav .nav-btn.active');
             if (activeBtn && indicator) {
                 indicator.style.width = activeBtn.offsetWidth + 'px';
                 indicator.style.left = activeBtn.offsetLeft + 'px';
             }
         }
 
-        function showReport(id, btn) {
-            document.querySelectorAll('.report-section').forEach(s => s.classList.remove('active'));
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
+        function updateEnvIndicator(btn) {
+            const indicator = document.querySelector('.env-indicator');
+            const activeBtn = btn || document.querySelector('.env-nav .env-btn.active');
+            if (activeBtn && indicator) {
+                indicator.style.width = activeBtn.offsetWidth + 'px';
+                indicator.style.left = activeBtn.offsetLeft + 'px';
+            }
+        }
+
+        function switchOp(op, btn) {
+            currentOp = op;
+            document.querySelectorAll('.main-nav .nav-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
             updateIndicator(btn);
+            renderContent();
+        }
+
+        function switchEnv(env, btn) {
+            currentEnv = env;
+            document.querySelectorAll('.env-nav .env-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            updateEnvIndicator(btn);
+            renderContent();
+        }
+
+        function renderContent() {
+            // Reset search on content switch
+            const searchInput = document.getElementById('apiSearch');
+            if (searchInput) searchInput.value = '';
+
+            const reportData = data.reports[currentEnv][currentOp];
+            
+            // Update Titles
+            document.getElementById('chart-title').innerHTML = `${currentOp.toUpperCase()} APIs Performance Trend | <span class="title-highlight">${currentEnv}</span>`;
+            document.getElementById('history-title').innerHTML = `${currentOp.toUpperCase()} Historical Data Audit | <span class="title-highlight">${currentEnv}</span>`;
+
+            // Reset List
+            const list = document.getElementById('history-list');
+            list.innerHTML = '';
+            populateGroups('history-list', reportData);
+
+            // Re-init Chart
+            if (mainChart) mainChart.destroy();
+            initChart(reportData);
         }
 
         function populateGroups(listId, reportData) {
             const list = document.getElementById(listId);
+            if (!reportData || reportData.length === 0) {
+                list.innerHTML = '<div style="padding: 2rem; text-align: center; color: #64748b; font-weight: 700;">No data available for this environment</div>';
+                return;
+            }
+            
             reportData.forEach((sprint, idx) => {
                 const details = document.createElement('details');
                 
                 details.innerHTML = `
                     <summary>
-                        <div class="sprint-label">
-                            <span class="sprint-id">${sprint.sprint}</span>
+                        <div class="sprint-header-left">
+                            <div class="sprint-id">${sprint.sprint}</div>
                             <div class="sprint-meta">
                                 <div class="meta-item"><i class="fas fa-calendar-alt"></i> ${sprint.run_date}</div>
                                 <div class="meta-item"><i class="fas fa-mouse-pointer"></i> ${sprint.hits} Hits</div>
                             </div>
                         </div>
-                        <div class="meta-item" style="color: var(--primary);"><i class="fas fa-microchip"></i> ${sprint.apis.length} Endpoints</div>
+                        <div class="sprint-stats-right">
+                            <i class="fas fa-microchip"></i> ${sprint.apis.length} Endpoints
+                        </div>
                     </summary>
                     <div class="content-wrapper">
                         <div class="content-inner">
@@ -832,7 +1210,6 @@ html_template = """
                                     </thead>
                                     <tbody>
                                         ${sprint.apis.map(api => {
-                                            const diff = api.threshold - api.current;
                                             const varClass = api.variation > 0 ? 'var-up' : 'var-down';
                                             const varIcon = api.variation > 0 ? 'fa-arrow-trend-up' : 'fa-arrow-trend-down';
                                             
@@ -874,25 +1251,136 @@ html_template = """
             });
         }
 
-        const charts = {};
+        function handleSearch(query) {
+            const q = query.toLowerCase();
+            const clearBtn = document.getElementById('clearBtn');
+            const chartCard = document.querySelector('.chart-card');
+            const toggleBtn = document.querySelector('.toggle-btn');
 
-        function toggleAll(chartId, show) {
-            const chart = charts[chartId];
-            if (!chart) return;
-            chart.data.datasets.forEach((ds, i) => {
-                chart.setDatasetVisibility(i, show);
+            if (clearBtn) {
+                if (q !== '') {
+                    clearBtn.classList.add('active');
+                    // Auto-hide graph on search to focus on results
+                    if (chartCard && chartCard.style.display !== 'none') {
+                        chartCard.style.display = 'none';
+                        if (toggleBtn) toggleBtn.innerHTML = '<i class="fas fa-chart-area"></i> Show Graph';
+                    }
+                } else {
+                    clearBtn.classList.remove('active');
+                }
+            }
+
+            // Visual feedback on headers
+            document.querySelectorAll('summary').forEach(s => {
+                if (q !== "") {
+                    s.classList.add('search-active');
+                    s.parentElement.classList.add('search-active');
+                } else {
+                    s.classList.remove('search-active');
+                    s.parentElement.classList.remove('search-active');
+                }
             });
-            chart.update();
-            renderLegend(chartId, chart);
+            
+            // Filter Chart Datasets
+            if (mainChart) {
+                mainChart.data.datasets.forEach((ds, i) => {
+                    const matches = ds.label.toLowerCase().includes(q);
+                    mainChart.setDatasetVisibility(i, matches);
+                });
+                mainChart.update();
+            }
+            
+            // Filter Legend Items
+            document.querySelectorAll('.legend-item').forEach(item => {
+                const text = item.querySelector('.legend-text').innerText.toLowerCase();
+                item.style.display = text.includes(q) ? 'flex' : 'none';
+            });
+
+            // Filter Audit Logs and Sprints (Across all 5 sprints)
+            document.querySelectorAll('details').forEach(details => {
+                let matchCount = 0;
+                const rows = details.querySelectorAll('.api-row');
+                rows.forEach(row => {
+                    const apiName = row.querySelector('h4').innerText.toLowerCase();
+                    const matches = apiName.includes(q);
+                    row.style.display = matches ? 'table-row' : 'none';
+                    if (matches) matchCount++;
+                });
+
+                if (q === "") {
+                    details.style.display = 'block';
+                    details.open = false;
+                } else {
+                    if (matchCount > 0) {
+                        details.style.display = 'block';
+                        details.open = true;
+                    } else {
+                        details.style.display = 'none';
+                    }
+                }
+            });
         }
 
-        function renderLegend(chartId, chart) {
-            const legendContainer = document.getElementById(chartId + '-legend');
-            if (!legendContainer) return;
+        function clearSearch() {
+            const input = document.getElementById('apiSearch');
+            input.value = '';
+            handleSearch('');
+        }
+
+        function toggleChart() {
+            const card = document.querySelector('.chart-card');
+            const btn = document.querySelector('.toggle-btn');
+            const loader = document.getElementById('chart-loader');
+            
+            if (card.style.display === 'none') {
+                if (loader) loader.style.display = 'flex';
+                card.style.display = 'block';
+                btn.innerHTML = '<i class="fas fa-eye-slash"></i> Hide Graph';
+                
+                // Smooth transition for loader
+                setTimeout(() => {
+                    if (loader) {
+                        loader.style.opacity = '0';
+                        setTimeout(() => { 
+                            loader.style.display = 'none'; 
+                            loader.style.opacity = '1'; 
+                        }, 400);
+                    }
+                }, 700);
+            } else {
+                card.style.display = 'none';
+                btn.innerHTML = '<i class="fas fa-chart-area"></i> Show Graph';
+            }
+        }
+
+        function toggleAll(show) {
+            if (!mainChart) return;
+            mainChart.data.datasets.forEach((ds, i) => {
+                mainChart.setDatasetVisibility(i, show);
+            });
+            mainChart.update();
+            renderLegend();
+        }
+
+        // Sticky Header Observer
+        document.addEventListener('DOMContentLoaded', () => {
+            const historyHeader = document.querySelector('.history-header');
+            if (historyHeader) {
+                const observer = new IntersectionObserver( 
+                    ([e]) => e.target.classList.toggle('stuck', e.intersectionRatio < 1),
+                    { threshold: [1] }
+                );
+                observer.observe(historyHeader);
+            }
+        });
+
+        function renderLegend() {
+            const legendContainer = document.getElementById('main-legend');
+            if (!legendContainer || !mainChart) return;
             legendContainer.innerHTML = '';
             
-            chart.data.datasets.forEach((dataset, i) => {
-                const isVisible = chart.isDatasetVisible(i);
+            mainChart.data.datasets.forEach((dataset, i) => {
+                const isVisible = mainChart.isDatasetVisible(i);
                 const item = document.createElement('div');
                 item.classList.add('legend-item');
                 if (!isVisible) item.classList.add('hidden');
@@ -903,83 +1391,100 @@ html_template = """
                 `;
                 
                 item.onclick = () => {
-                    chart.setDatasetVisibility(i, !chart.isDatasetVisible(i));
-                    chart.update();
-                    renderLegend(chartId, chart);
+                    mainChart.setDatasetVisibility(i, !mainChart.isDatasetVisible(i));
+                    mainChart.update();
+                    renderLegend();
                 };
                 
                 legendContainer.appendChild(item);
             });
         }
 
-        function initCharts() {
-            const config = (type) => ({
+        function initChart(reportData) {
+            if (!reportData || reportData.length === 0) return;
+            
+            const ctx = document.getElementById('mainChart').getContext('2d');
+            const sprints = [...reportData].reverse();
+            const labels = sprints.map(s => s.sprint);
+            
+            const datasets = sprints[0].apis.map((api, idx) => ({
+                label: api.name,
+                data: sprints.map(s => {
+                    const match = s.apis.find(a => a.name === api.name);
+                    return match ? match.current : 0;
+                }),
+                borderColor: `hsl(${(idx * 137) % 360}, 75%, 60%)`,
+                backgroundColor: `hsl(${(idx * 137) % 360}, 75%, 60%, 0.05)`,
+                tension: 0.4,
+                borderWidth: 2,
+                pointRadius: 3,
+                pointHoverRadius: 6,
+                pointBackgroundColor: 'white',
+                fill: true
+            }));
+
+            mainChart = new Chart(ctx, {
                 type: 'line',
-                data: {
-                    labels: data[`${type}_report`].map(s => s.sprint).reverse(),
-                    datasets: data[`${type}_report`][0].apis.map((api, idx) => ({
-                        label: api.name,
-                        data: data[`${type}_report`].map(s => {
-                            const match = s.apis.find(a => a.name === api.name);
-                            return match ? match.current : 0;
-                        }).reverse(),
-                        borderColor: `hsl(${(idx * 137) % 360}, 75%, 60%)`,
-                        backgroundColor: `hsl(${(idx * 137) % 360}, 75%, 60%, 0.1)`,
-                        tension: 0.4,
-                        borderWidth: 3,
-                        pointRadius: 4,
-                        pointBackgroundColor: 'white',
-                        fill: true
-                    }))
-                },
+                data: { labels, datasets },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
                     plugins: { 
                         legend: { display: false },
-                        tooltip: { 
-                            enabled: window.innerWidth > 768,
-                            mode: 'index', 
-                            intersect: false 
-                        }
+                        tooltip: { mode: 'index', intersect: false }
                     },
                     scales: {
                         y: { 
                             beginAtZero: true, 
-                            grid: { color: 'rgba(0,0,0,0.04)' }, 
+                            grid: { color: 'rgba(0,0,0,0.03)', drawBorder: false }, 
                             ticks: { 
-                                color: '#64748b', 
-                                font: { size: 10, weight: 600 },
-                                callback: v => v + 's'
+                                callback: v => v + 's',
+                                font: { size: 11, weight: '600' },
+                                color: '#94a3b8'
                             } 
                         },
-                        x: { grid: { display: false }, ticks: { color: '#64748b', font: { size: 10, weight: 600 } } }
+                        x: { 
+                            grid: { display: false },
+                            ticks: {
+                                maxRotation: 0,
+                                autoSkip: true,
+                                font: { size: 11, weight: '600' },
+                                color: '#94a3b8'
+                            }
+                        }
                     }
                 }
             });
-
-            charts['getChart'] = new Chart(document.getElementById('getChart'), config('get'));
-            charts['setChart'] = new Chart(document.getElementById('setChart'), config('set'));
             
-            renderLegend('getChart', charts['getChart']);
-            renderLegend('setChart', charts['setChart']);
+            renderLegend();
         }
 
         window.onload = () => {
-            populateGroups('get-history-list', data.get_report);
-            populateGroups('set-history-list', data.set_report);
-            initCharts();
+            renderContent();
             updateIndicator();
+            
+            // Auto-hide graph on mobile on load for a cleaner start
+            if (window.innerWidth <= 768) {
+                const chartCard = document.querySelector('.chart-card');
+                const toggleBtn = document.querySelector('.toggle-btn');
+                if (chartCard && toggleBtn) {
+                    chartCard.style.display = 'none';
+                    toggleBtn.innerHTML = '<i class="fas fa-chart-area"></i> Show Graph';
+                }
+            }
             const loader = document.getElementById('loader');
             setTimeout(() => {
                 loader.style.opacity = '0';
-                setTimeout(() => { 
-                    loader.style.display = 'none'; 
-                }, 500);
+                updateIndicator();
+                updateEnvIndicator();
+                setTimeout(() => { loader.style.display = 'none'; }, 500);
             }, 800);
         };
 
-        window.onresize = () => updateIndicator();
+        window.onresize = () => {
+            updateIndicator();
+            updateEnvIndicator();
+        };
     </script>
 </body>
 </html>
@@ -993,12 +1498,22 @@ except:
 
 latest_display = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
+# Generate Env Buttons
+env_btns_html = '<div class="env-indicator"></div>\n'
+for i, env in enumerate(environments):
+    active_class = "active" if i == 0 else ""
+    env_btns_html += f'<button class="env-btn {active_class}" onclick="switchEnv(\'{env}\', this)">{env}</button>\n'
+
+default_env = environments[0] if environments else ""
+
 full_html = html_template.replace("__DATA_JSON__", json.dumps(final_data))
 full_html = full_html.replace("__BUILD_ID__", build_id)
 full_html = full_html.replace("__LATEST_DATE__", latest_display)
+full_html = full_html.replace("__ENV_BTNS__", env_btns_html)
+full_html = full_html.replace("__DEFAULT_ENV__", default_env)
 
 output_file = configfile.PERFORMANCE_HTML
 with open(output_file, "w") as f:
     f.write(full_html)
 
-print("Performance HTML generated successfully.")
+print(f"Performance HTML generated successfully for {len(environments)} environments.")

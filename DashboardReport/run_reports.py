@@ -29,6 +29,15 @@ def run_reports():
     except subprocess.CalledProcessError as e:
         print(f"❌ Error in Performance Report: {e}\n")
 
+    # 1.5 Run Daily Performance Report Generator
+    print("📅 Step 1.5: Generating Daily Performance Report (Multi-Env)...")
+    try:
+        daily_perf_script = os.path.join(scripts_dir, "generate_performance_daily.py")
+        subprocess.run([sys.executable, daily_perf_script], cwd=root_dir, env=env, check=True)
+        print("✅ Daily Performance Report Updated.\n")
+    except subprocess.CalledProcessError as e:
+        print(f"❌ Error in Daily Performance Report: {e}\n")
+
     # 2. Run Main Dashboard Generator
     print("🖥️  Step 2: Generating Main Automation Dashboard...")
     try:
