@@ -801,22 +801,22 @@ def generate_landing_page():
         </button>
     </div>
 
-    <div class="flex flex-col items-center justify-between min-h-screen p-2 lg:p-6 py-4 lg:py-12 relative z-10">
+    <div class="flex flex-col items-center justify-between min-h-screen p-4 lg:p-6 py-8 lg:py-12 relative z-10">
 
-        <header class="w-full max-w-full lg:max-w-6xl text-center mb-2 lg:mb-10 px-4">
-            <div class="flex flex-col items-center justify-center gap-2 lg:gap-4 mb-2 lg:mb-6">
-                <img src="https://hirepro.in/wp-content/uploads/2025/05/HirePro-logo.svg" alt="HirePro Logo" class="h-8 lg:h-12 w-auto dark:brightness-200">
-                <h1 class="text-xl lg:text-5xl font-black tracking-tighter text-slate-900 dark:text-white">QA<span class="font-extralight text-slate-500">Insights</span></h1>
+        <header class="w-full max-w-full lg:max-w-6xl text-center mb-6 lg:mb-12 px-4">
+            <div class="flex flex-col items-center justify-center gap-4 lg:gap-6 mb-4 lg:mb-8">
+                <img src="https://hirepro.in/wp-content/uploads/2025/05/HirePro-logo.svg" alt="HirePro Logo" class="h-8 lg:h-14 w-auto dark:brightness-200">
+                <h1 class="text-2xl lg:text-5xl font-black tracking-tighter text-slate-900 dark:text-white">QA<span class="font-extralight text-slate-500">Insights</span></h1>
             </div>
         </header>
 
 
-        <main class="w-full max-w-full lg:max-w-5xl space-y-3 lg:space-y-12 px-2 lg:px-0 flex-1">
+        <main class="w-full max-w-full lg:max-w-5xl space-y-12 lg:space-y-12 px-2 lg:px-0 flex-1">
 
             <div class="space-y-3 lg:space-y-8">
                 <div class="flex items-center gap-4 lg:gap-6">
                     <div class="h-px flex-1 bg-slate-300 dark:bg-slate-700"></div>
-                    <h2 class="text-[8px] lg:text-xs font-black uppercase tracking-[0.3em] lg:tracking-[0.4em] text-slate-900 dark:text-slate-100 text-center">Daily Execution Results</h2>
+                    <h2 class="text-[10px] lg:text-xs font-black uppercase tracking-[0.1em] lg:tracking-[0.4em] text-slate-900 dark:text-slate-100 text-center">Daily Execution Results</h2>
                     <div class="h-px flex-1 bg-slate-300 dark:bg-slate-700"></div>
                 </div>
 
@@ -827,33 +827,33 @@ def generate_landing_page():
                         <div class="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
 
                         <div class="flex justify-center mb-1 lg:mb-8 relative z-10">
-                            <h3 class="text-[9px] lg:text-xs font-bold tracking-widest text-slate-500 dark:text-slate-400 uppercase">Automation Test Report</h3>
+                            <h3 class="text-[11px] lg:text-xs font-bold tracking-widest text-slate-500 dark:text-slate-400 uppercase">Automation Test Report</h3>
                         </div>
 
                         <div class="grid grid-cols-3 gap-2 lg:gap-4 mb-2 lg:mb-10 flex-1 relative z-10">
                             <div class="flex flex-col items-center text-center group/item">
-                                <div class="p-1.5 lg:p-3 rounded-lg lg:rounded-2xl bg-green-500/10 mb-1 lg:mb-3 group-hover/item:scale-110 transition-transform">
-                                    <i data-lucide="check-circle" class="w-4 h-4 lg:w-8 lg:h-8 text-green-600 dark:text-green-500"></i>
+                                <div class="p-2 lg:p-3 rounded-lg lg:rounded-2xl bg-green-500/10 mb-2 lg:mb-3 group-hover/item:scale-110 transition-transform">
+                                    <i data-lucide="check-circle" class="w-5 h-5 lg:w-8 lg:h-8 text-green-600 dark:text-green-500"></i>
                                 </div>
-                                <span class="text-[7px] lg:text-[11px] font-semibold text-slate-500 dark:text-slate-400 leading-tight">Success Rate</span>
+                                <span class="text-[9px] lg:text-[11px] font-semibold text-slate-500 dark:text-slate-400 leading-tight">Success Rate</span>
                             </div>
                             <div class="flex flex-col items-center text-center group/item">
-                                <div class="p-1.5 lg:p-3 rounded-lg lg:rounded-2xl bg-orange-500/10 mb-1 lg:mb-3 group-hover/item:scale-110 transition-transform">
-                                    <i data-lucide="play-circle" class="w-4 h-4 lg:w-8 lg:h-8 text-orange-500 dark:text-orange-400"></i>
+                                <div class="p-2 lg:p-3 rounded-lg lg:rounded-2xl bg-orange-500/10 mb-2 lg:mb-3 group-hover/item:scale-110 transition-transform">
+                                    <i data-lucide="play-circle" class="w-5 h-5 lg:w-8 lg:h-8 text-orange-500 dark:text-orange-400"></i>
                                 </div>
-                                <span class="text-[7px] lg:text-[11px] font-semibold text-slate-500 dark:text-slate-400 leading-tight">Total Tests</span>
+                                <span class="text-[9px] lg:text-[11px] font-semibold text-slate-500 dark:text-slate-400 leading-tight">Total Tests</span>
                             </div>
                             <div class="flex flex-col items-center text-center group/item">
-                                <div class="p-1.5 lg:p-3 rounded-lg lg:rounded-2xl bg-blue-500/10 mb-1 lg:mb-3 group-hover/item:scale-110 transition-transform">
-                                    <i data-lucide="monitor" class="w-4 h-4 lg:w-8 lg:h-8 text-blue-600 dark:text-blue-400"></i>
+                                <div class="p-2 lg:p-3 rounded-lg lg:rounded-2xl bg-blue-500/10 mb-2 lg:mb-3 group-hover/item:scale-110 transition-transform">
+                                    <i data-lucide="monitor" class="w-5 h-5 lg:w-8 lg:h-8 text-blue-600 dark:text-blue-400"></i>
                                 </div>
-                                <span class="text-[7px] lg:text-[11px] font-semibold text-slate-500 dark:text-slate-400 leading-tight">Browser(Chrome)<br>Coverage</span>
+                                <span class="text-[9px] lg:text-[11px] font-semibold text-slate-500 dark:text-slate-400 leading-tight">Browser(Chrome)<br>Coverage</span>
                             </div>
                         </div>
 
                         <a href="automationreports.html" 
                            onclick="event.stopPropagation();"
-                           class="flex items-center justify-center gap-2 w-full bg-green-500/10 dark:bg-green-400/10 text-green-600 dark:text-green-400 font-bold py-2.5 lg:py-4 rounded-xl lg:rounded-2xl text-[9px] lg:text-xs tracking-widest hover:bg-green-500/20 dark:hover:bg-green-400/20 border border-green-500/20 transition-all uppercase mt-auto relative z-10">
+                           class="flex items-center justify-center gap-2 w-full bg-green-500/10 dark:bg-green-400/10 text-green-600 dark:text-green-400 font-bold py-3 lg:py-4 rounded-xl lg:rounded-2xl text-[10px] lg:text-xs tracking-widest hover:bg-green-500/20 dark:hover:bg-green-400/20 border border-green-500/20 transition-all uppercase mt-auto relative z-10">
                             View Automation Test Report
                             <i data-lucide="external-link" class="w-4 h-4"></i>
                         </a>
@@ -865,37 +865,37 @@ def generate_landing_page():
                         <div class="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
 
                         <div class="flex justify-center mb-1 lg:mb-8 relative z-10">
-                            <h3 class="text-[9px] lg:text-xs font-bold tracking-widest text-slate-500 dark:text-slate-400 uppercase">Performance Report - Daily</h3>
+                            <h3 class="text-[11px] lg:text-xs font-bold tracking-widest text-slate-500 dark:text-slate-400 uppercase">Performance Report - Daily</h3>
                         </div>
 
                         <div class="grid grid-cols-3 gap-2 lg:gap-4 mb-2 lg:mb-10 flex-1 relative z-10">
                             <div class="flex flex-col items-center text-center group/item">
-                                <div class="p-1.5 lg:p-3 rounded-lg lg:rounded-2xl bg-yellow-500/10 mb-1 lg:mb-3 group-hover/item:scale-110 transition-transform">
-                                    <i data-lucide="timer" class="w-4 h-4 lg:w-8 lg:h-8 text-yellow-600 dark:text-yellow-500"></i>
+                                <div class="p-2 lg:p-3 rounded-lg lg:rounded-2xl bg-yellow-500/10 mb-2 lg:mb-3 group-hover/item:scale-110 transition-transform">
+                                    <i data-lucide="timer" class="w-5 h-5 lg:w-8 lg:h-8 text-yellow-600 dark:text-yellow-500"></i>
                                 </div>
-                                <span class="text-[7px] lg:text-[11px] font-semibold text-slate-500 dark:text-slate-400 leading-tight">Analyze API<br>Performance</span>
+                                <span class="text-[9px] lg:text-[11px] font-semibold text-slate-500 dark:text-slate-400 leading-tight">Analyze API<br>Performance</span>
                             </div>
                             <div class="flex flex-col items-center text-center group/item">
-                                <div class="p-1.5 lg:p-3 rounded-lg lg:rounded-2xl bg-blue-500/10 mb-1 lg:mb-3 group-hover/item:scale-110 transition-transform">
-                                    <i data-lucide="gauge" class="w-4 h-4 lg:w-8 lg:h-8 text-blue-600 dark:text-blue-400"></i>
+                                <div class="p-2 lg:p-3 rounded-lg lg:rounded-2xl bg-blue-500/10 mb-2 lg:mb-3 group-hover/item:scale-110 transition-transform">
+                                    <i data-lucide="gauge" class="w-5 h-5 lg:w-8 lg:h-8 text-blue-600 dark:text-blue-400"></i>
                                 </div>
-                                <span class="text-[7px] lg:text-[11px] font-semibold text-slate-500 dark:text-slate-400 leading-tight">Track<br>Response Times</span>
+                                <span class="text-[9px] lg:text-[11px] font-semibold text-slate-500 dark:text-slate-400 leading-tight">Track<br>Response Times</span>
                             </div>
                             <div class="flex flex-col items-center text-center group/item">
-                                <div class="p-1.5 lg:p-3 rounded-lg lg:rounded-2xl bg-red-500/10 mb-1 lg:mb-3 group-hover/item:scale-110 transition-transform relative">
-                                    <i data-lucide="globe" class="w-4 h-4 lg:w-8 lg:h-8 text-blue-500 dark:text-blue-300"></i>
+                                <div class="p-2 lg:p-3 rounded-lg lg:rounded-2xl bg-red-500/10 mb-2 lg:mb-3 group-hover/item:scale-110 transition-transform relative">
+                                    <i data-lucide="globe" class="w-5 h-5 lg:w-8 lg:h-8 text-blue-500 dark:text-blue-300"></i>
                                     <span class="absolute top-1 lg:top-2 right-1 lg:right-2 flex h-2 lg:h-3 w-2 lg:w-3">
                                         <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
                                         <span class="relative inline-flex rounded-full h-2 lg:h-3 w-2 lg:w-3 bg-red-500"></span>
                                     </span>
                                 </div>
-                                <span class="text-[7px] lg:text-[11px] font-semibold text-slate-500 dark:text-slate-400 leading-tight">Error Rates</span>
+                                <span class="text-[9px] lg:text-[11px] font-semibold text-slate-500 dark:text-slate-400 leading-tight">Error Rates</span>
                             </div>
                         </div>
 
                         <a href="performance_daily.html" 
                            onclick="event.stopPropagation();"
-                           class="flex items-center justify-center gap-2 w-full bg-orange-500/10 dark:bg-orange-400/10 text-orange-600 dark:text-orange-400 font-bold py-2 lg:py-4 rounded-lg lg:rounded-2xl text-[9px] lg:text-xs tracking-widest hover:bg-orange-500/20 dark:hover:bg-orange-400/20 border border-orange-500/20 transition-all uppercase mt-auto relative z-10">
+                           class="flex items-center justify-center gap-2 w-full bg-orange-500/10 dark:bg-orange-400/10 text-orange-600 dark:text-orange-400 font-bold py-3 lg:py-4 rounded-lg lg:rounded-2xl text-[10px] lg:text-xs tracking-widest hover:bg-orange-500/20 dark:hover:bg-orange-400/20 border border-orange-500/20 transition-all uppercase mt-auto relative z-10">
                             View Performance Report
                             <i data-lucide="external-link" class="w-4 h-4"></i>
                         </a>
@@ -906,7 +906,7 @@ def generate_landing_page():
             <div class="space-y-2 lg:space-y-8">
                 <div class="flex items-center gap-4 lg:gap-6">
                     <div class="h-px flex-1 bg-slate-300 dark:bg-slate-700"></div>
-                    <h2 class="text-[8px] lg:text-xs font-black uppercase tracking-[0.3em] lg:tracking-[0.4em] text-slate-900 dark:text-slate-100 text-center">SPRINT Execution Results</h2>
+                    <h2 class="text-[10px] lg:text-xs font-black uppercase tracking-[0.1em] lg:tracking-[0.4em] text-slate-900 dark:text-slate-100 text-center">SPRINT Execution Results</h2>
                     <div class="h-px flex-1 bg-slate-300 dark:bg-slate-700"></div>
                 </div>
 
@@ -917,33 +917,33 @@ def generate_landing_page():
                         <div class="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
 
                         <div class="flex justify-center mb-1 lg:mb-8 relative z-10">
-                            <h3 class="text-[9px] lg:text-xs font-bold tracking-widest text-slate-500 dark:text-slate-400 uppercase">Performance Report - SPRINT</h3>
+                            <h3 class="text-[11px] lg:text-xs font-bold tracking-widest text-slate-500 dark:text-slate-400 uppercase">Performance Report - SPRINT</h3>
                         </div>
 
                         <div class="grid grid-cols-3 gap-2 lg:gap-4 mb-2 lg:mb-10 relative z-10">
                             <div class="flex flex-col items-center text-center group/item">
-                                <div class="p-1.5 lg:p-3 rounded-lg lg:rounded-2xl bg-indigo-500/10 mb-1 lg:mb-3 group-hover/item:scale-110 transition-transform">
-                                    <i data-lucide="layers" class="w-4 h-4 lg:w-8 lg:h-8 text-indigo-600 dark:text-indigo-400"></i>
+                                <div class="p-2 lg:p-3 rounded-lg lg:rounded-2xl bg-indigo-500/10 mb-2 lg:mb-3 group-hover/item:scale-110 transition-transform">
+                                    <i data-lucide="layers" class="w-5 h-5 lg:w-8 lg:h-8 text-indigo-600 dark:text-indigo-400"></i>
                                 </div>
-                                <span class="text-[7px] lg:text-[11px] font-semibold text-slate-500 dark:text-slate-400 leading-tight">Sprint<br>Analytics</span>
+                                <span class="text-[9px] lg:text-[11px] font-semibold text-slate-500 dark:text-slate-400 leading-tight">Sprint<br>Analytics</span>
                             </div>
                             <div class="flex flex-col items-center text-center group/item">
-                                <div class="p-1.5 lg:p-3 rounded-lg lg:rounded-2xl bg-purple-500/10 mb-1 lg:mb-3 group-hover/item:scale-110 transition-transform">
-                                    <i data-lucide="zap" class="w-4 h-4 lg:w-8 lg:h-8 text-purple-600 dark:text-purple-400"></i>
+                                <div class="p-2 lg:p-3 rounded-lg lg:rounded-2xl bg-purple-500/10 mb-2 lg:mb-3 group-hover/item:scale-110 transition-transform">
+                                    <i data-lucide="zap" class="w-5 h-5 lg:w-8 lg:h-8 text-purple-600 dark:text-purple-400"></i>
                                 </div>
-                                <span class="text-[7px] lg:text-[11px] font-semibold text-slate-500 dark:text-slate-400 leading-tight">Threshold<br>Analysis</span>
+                                <span class="text-[9px] lg:text-[11px] font-semibold text-slate-500 dark:text-slate-400 leading-tight">Threshold<br>Analysis</span>
                             </div>
                             <div class="flex flex-col items-center text-center group/item">
-                                <div class="p-1.5 lg:p-3 rounded-lg lg:rounded-2xl bg-fuchsia-500/10 mb-1 lg:mb-3 group-hover/item:scale-110 transition-transform">
-                                    <i data-lucide="bar-chart-3" class="w-4 h-4 lg:w-8 lg:h-8 text-fuchsia-600 dark:text-fuchsia-400"></i>
+                                <div class="p-2 lg:p-3 rounded-lg lg:rounded-2xl bg-fuchsia-500/10 mb-2 lg:mb-3 group-hover/item:scale-110 transition-transform">
+                                    <i data-lucide="bar-chart-3" class="w-5 h-5 lg:w-8 lg:h-8 text-fuchsia-600 dark:text-fuchsia-400"></i>
                                 </div>
-                                <span class="text-[7px] lg:text-[11px] font-semibold text-slate-500 dark:text-slate-400 leading-tight">Benchmarking<br>Insight</span>
+                                <span class="text-[9px] lg:text-[11px] font-semibold text-slate-500 dark:text-slate-400 leading-tight">Benchmarking<br>Insight</span>
                             </div>
                         </div>
 
                         <a href="performance.html" 
                            onclick="event.stopPropagation();"
-                           class="flex items-center justify-center gap-2 w-full bg-indigo-500/10 dark:bg-indigo-400/10 text-indigo-600 dark:text-indigo-400 font-bold py-2 lg:py-4 rounded-lg lg:rounded-2xl text-[9px] lg:text-xs tracking-widest hover:bg-indigo-500/20 dark:hover:bg-indigo-400/20 border border-indigo-500/20 transition-all uppercase relative z-10">
+                           class="flex items-center justify-center gap-2 w-full bg-indigo-500/10 dark:bg-indigo-400/10 text-indigo-600 dark:text-indigo-400 font-bold py-3 lg:py-4 rounded-lg lg:rounded-2xl text-[10px] lg:text-xs tracking-widest hover:bg-indigo-500/20 dark:hover:bg-indigo-400/20 border border-indigo-500/20 transition-all uppercase relative z-10">
                             View Sprint Performance
                             <i data-lucide="external-link" class="w-4 h-4"></i>
                         </a>
@@ -953,7 +953,7 @@ def generate_landing_page():
 
         </main>
 
-        <footer class="mt-auto py-4 text-slate-400 dark:text-slate-600 text-[8px] lg:text-[10px] uppercase tracking-widest text-center w-full">
+        <footer class="mt-auto py-6 text-slate-400 dark:text-slate-600 text-[10px] lg:text-[10px] uppercase tracking-widest text-center w-full">
             &copy; 2026 HirePro Technologies Pvt. Ltd.
         </footer>
     </div>
