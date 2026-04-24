@@ -145,21 +145,21 @@ html_template = """
         .header-container {
             max-width: 1400px;
             margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
             align-items: center;
             padding: 10px 20px;
             border-bottom: 1px solid #D9D7D7;
         }
 
-        .logo-section { display: flex; align-items: center; gap: 1rem; }
+        .logo-section { display: flex; align-items: center; gap: 1rem; justify-self: start; }
         .logo-img { height: 35px; }
         
         .title-section { text-align: center; }
-        .title-section h1 { font-size: 1.6rem; font-weight: 800; }
-        .subtitle { font-size: 0.8rem; color: #64748b; font-weight: 600; text-transform: uppercase; }
+        .title-section h1 { font-size: 1.6rem; font-weight: 800; color: #000000; line-height: 1.2; }
+        .subtitle { font-size: 0.85rem; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 4px; }
 
-        .audit-section { text-align: right; }
+        .audit-section { justify-self: end; text-align: right; }
         .audit-label { font-size: 0.7rem; color: #64748b; font-weight: 700; }
         .audit-time { 
             font-weight: 800; 
@@ -255,10 +255,12 @@ html_template = """
         .section-title {
             font-size: 1.2rem;
             font-weight: 800;
-            margin: 30px 0 20px;
+            margin-bottom: 20px;
             display: flex;
             align-items: center;
             gap: 12px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #f1f5f9;
         }
 
         .section-card {
@@ -327,9 +329,22 @@ html_template = """
 
         .chart-header {
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
             align-items: center;
-            margin-bottom: 20px;
+            gap: 15px;
+            margin-bottom: 15px;
+            margin-top: -10px;
+        }
+        .axis-label {
+            font-size: 0.7rem;
+            font-weight: 800;
+            color: #94a3b8;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
 
         .legend-controls {
@@ -338,18 +353,67 @@ html_template = """
         }
 
         .control-btn {
-            padding: 8px 18px;
-            border-radius: 99px;
+            padding: 10px 22px;
+            border-radius: 12px;
             font-size: 0.75rem;
             font-weight: 800;
             cursor: pointer;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 8px;
             text-transform: uppercase;
             letter-spacing: 0.05em;
             border: 1px solid transparent;
+        }
+        .control-btn i { font-size: 0.8rem; }
+
+        .toggle-btn {
+            background: #eff6ff;
+            color: #2563eb;
+            border: 1px solid #dbeafe;
+            padding: 10px 24px;
+            border-radius: 14px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-bottom: 20px;
+        }
+        .toggle-btn:hover { background: #dbeafe; transform: translateY(-2px); }
+        .toggle-btn:active { transform: scale(0.95); }
+
+        .api-visibility-label {
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        @media (min-width: 769px) {
+            .toggle-btn, .api-visibility-label {
+                display: none;
+            }
+            .chart-header {
+                flex-direction: row;
+                justify-content: flex-end;
+                align-items: center;
+                margin-top: 0;
+                margin-bottom: 20px;
+            }
+            #controlsWrapper {
+                flex-direction: row !important;
+                justify-content: flex-end !important;
+                gap: 20px;
+                width: 100%;
+            }
         }
 
         .btn-select {
@@ -418,30 +482,61 @@ html_template = """
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 50px;
-            height: 50px;
-            border-radius: 16px;
-            background: #fffaf0;
-            color: #f97316;
+            width: 56px;
+            height: 56px;
+            border-radius: 20px;
+            background: rgba(255, 107, 0, 0.9);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            color: white;
             text-decoration: none;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 1px solid #ffedd5;
-            box-shadow: 0 8px 20px rgba(249, 115, 22, 0.15);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 30px rgba(255, 107, 0, 0.3);
             position: fixed;
             bottom: 30px;
             right: 30px;
             z-index: 2000;
+            border: 1px solid rgba(255,255,255,0.2);
         }
+
+        .home-btn i { transition: transform 0.3s ease; }
+
         .home-btn:hover {
-            transform: translateY(-5px) scale(1.05);
-            background: #ffedd5;
-            box-shadow: 0 12px 25px rgba(249, 115, 22, 0.2);
+            transform: scale(1.1) translateY(-5px);
+            box-shadow: 0 15px 40px rgba(255, 107, 0, 0.45);
+            background: #ff6b00;
+        }
+
+        .home-btn:hover i { transform: rotate(-10deg); }
+
+        /* Tooltip for Desktop */
+        .home-btn::after {
+            content: "Back to Dashboard";
+            position: absolute;
+            right: 75px;
+            background: #1e293b;
+            color: white;
+            padding: 8px 14px;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s;
+            transform: translateX(10px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .home-btn:hover::after {
+            opacity: 1;
+            transform: translateX(0);
         }
         .home-btn:active { transform: scale(0.94); }
 
         @media (max-width: 768px) {
-            .header-container { flex-direction: column; gap: 15px; text-align: center; }
-            .logo-section { flex-direction: column; }
+            .header-container { display: flex; flex-direction: column; gap: 15px; text-align: center; }
+            .logo-section { flex-direction: column; justify-self: center; }
             .home-btn { 
                 position: static;
                 width: 42px;
@@ -449,9 +544,14 @@ html_template = """
                 border-radius: 12px;
                 order: -1; 
                 margin-bottom: 5px; 
-                box-shadow: 0 2px 8px rgba(249, 115, 22, 0.08);
+                box-shadow: 0 2px 8px rgba(255, 107, 0, 0.08);
+                border-width: 1px;
+                background: #eff6ff;
+                color: #2563eb;
+                backdrop-filter: none;
             }
-            .audit-section { text-align: center; }
+            .home-btn::after { display: none; }
+            .audit-section { text-align: center; justify-self: center; }
             .nav-container { width: 100%; padding-bottom: 10px; }
             .glass-nav { border-radius: 20px; width: 100%; display: flex; }
             .nav-btn { flex: 1; padding: 12px 10px; font-size: 0.8rem; text-align: center; }
@@ -489,10 +589,9 @@ html_template = """
     <header>
         <div class="header-container">
             <div class="logo-section">
-                <a href="dashboard.html" class="home-btn">
-                    <i class="fas fa-home"></i>
+                <a href="dashboard.html" style="text-decoration: none; display: flex; align-items: center;">
+                    <img src="https://hirepro.in/wp-content/uploads/2025/05/HirePro-logo.svg" alt="HirePro Logo" class="logo-img">
                 </a>
-                <img src="https://hirepro.in/wp-content/uploads/2025/05/HirePro-logo.svg" alt="HirePro Logo" class="logo-img">
             </div>
             <div class="title-section">
                 <h1>Daily Performance</h1>
@@ -512,8 +611,12 @@ html_template = """
         <div class="nav-container">
             <!-- Operation Selector -->
             <div class="glass-nav op-nav">
-                <button class="nav-btn active" onclick="switchOp('GET', this)">GET APIs</button>
-                <button class="nav-btn" onclick="switchOp('SET', this)">SET APIs</button>
+                <button class="nav-btn active" onclick="switchOp('GET', this)">
+                    <i class="fas fa-chart-line"></i> GET APIs
+                </button>
+                <button class="nav-btn" onclick="switchOp('SET', this)">
+                    <i class="fas fa-upload"></i> SET APIs
+                </button>
             </div>
 
             <!-- Environment Selector -->
@@ -534,6 +637,10 @@ html_template = """
         <div>&copy; 2026 HirePro Analytics . Confidential</div>
         <div>v2.4.0-daily</div>
     </footer>
+
+    <a href="dashboard.html" class="home-btn">
+        <i class="fas fa-home"></i>
+    </a>
 
     <script>
         const rawData = __DATA_JSON__;
@@ -590,27 +697,44 @@ html_template = """
             });
 
             container.innerHTML = `
-                <div class="section-title">${currentOp} Performance Trend | <span class="text-orange">${currentEnv}</span></div>
                 <div class="section-card">
+                    <div class="section-title">
+                        ${currentOp} Performance Trend | <span class="text-orange">${currentEnv}</span>
+                    </div>
                     <div class="chart-header">
-                        <div style="font-size: 0.8rem; font-weight: 700; color: #64748b;">RESPONSE TIME (S)</div>
-                        <div class="legend-controls">
-                            <button class="control-btn btn-select" onclick="toggleAllDatasets(true)">
-                                <i class="fas fa-check-double"></i> SELECT ALL
-                            </button>
-                            <button class="control-btn btn-clear" onclick="toggleAllDatasets(false)">
-                                <i class="fas fa-times-circle"></i> CLEAR ALL
-                            </button>
+                        <button class="toggle-btn" onclick="toggleMainChart()">
+                            <i class="fas fa-eye-slash" id="toggleIcon"></i> <span id="toggleText">Hide Graph</span>
+                        </button>
+                        
+                        <div id="controlsWrapper" style="display: flex; flex-direction: column; align-items: center; width: 100%;">
+                            <div class="api-visibility-label">API VISIBILITY CONTROL</div>
+                            
+                            <div class="legend-controls">
+                                <button class="control-btn btn-select" onclick="toggleAllDatasets(true)">
+                                    <i class="fas fa-check-double"></i> SELECT ALL
+                                </button>
+                                <button class="control-btn btn-clear" onclick="toggleAllDatasets(false)">
+                                    <i class="fas fa-times-circle"></i> CLEAR ALL
+                                </button>
+                            </div>
                         </div>
                     </div>
-                    <div class="chart-container">
-                        <canvas id="mainChart"></canvas>
+                    <div id="chartWrapper">
+                        <div class="axis-label">
+                            <i class="fas fa-stopwatch" style="color: var(--primary); font-size: 0.8rem;"></i>
+                            RESPONSE TIME (S)
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="mainChart"></canvas>
+                        </div>
+                        <div id="chartLegend" class="custom-legend"></div>
                     </div>
-                    <div id="chartLegend" class="custom-legend"></div>
                 </div>
 
-                <div class="section-title">Detailed Audit | <span class="text-orange">${currentEnv}</span></div>
                 <div class="section-card">
+                    <div class="section-title">
+                        Detailed Audit | <span class="text-orange">${currentEnv}</span>
+                    </div>
                     <div class="chart-header">
                         <div style="font-size: 0.8rem; font-weight: 700; color: #64748b;">API PERFORMANCE METRICS</div>
                     </div>
@@ -724,6 +848,25 @@ html_template = """
                 if (show) el.classList.remove('hidden');
                 else el.classList.add('hidden');
             });
+        }
+
+        function toggleMainChart() {
+            const wrapper = document.getElementById('chartWrapper');
+            const controls = document.getElementById('controlsWrapper');
+            const icon = document.getElementById('toggleIcon');
+            const text = document.getElementById('toggleText');
+            
+            if (wrapper.style.display === 'none') {
+                wrapper.style.display = 'block';
+                controls.style.display = 'flex';
+                icon.className = 'fas fa-eye-slash';
+                text.innerText = 'Hide Graph';
+            } else {
+                wrapper.style.display = 'none';
+                controls.style.display = 'none';
+                icon.className = 'fas fa-eye';
+                text.innerText = 'Show Graph';
+            }
         }
 
         // Initialize
