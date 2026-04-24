@@ -804,6 +804,7 @@ def generate_landing_page():
         @media (max-width: 768px) {
             html.dark, html.dark body { background-color: #0f172a !important; }
             html.dark .bg-darkBg { background-image: none !important; }
+            .liquid-blob { display: none !important; }
         }
 
         /* Premium Loader */
