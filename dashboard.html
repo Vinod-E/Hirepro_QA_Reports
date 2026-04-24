@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" id="status-bar-color" content="#ffffff">
     <script>
         // Immediate theme detection to prevent flash
         (function() {
@@ -31,7 +32,7 @@
             theme: {
                 extend: {
                     colors: {
-                        darkBg: '#0f172a',
+                        darkBg: '#0a0e21',
                         lightBg: '#f8fafc',
                     }
                 }
@@ -45,7 +46,9 @@
             -ms-overflow-style: none;
             overflow-x: hidden;
             scroll-behavior: smooth;
+            background-color: #f8fafc; /* lightBg default */
         }
+        html.dark, html.dark body { background-color: #0a0e21; }
         html::-webkit-scrollbar, body::-webkit-scrollbar {
             display: none;
         }
@@ -59,8 +62,8 @@
             -webkit-backdrop-filter: blur(20px) saturate(180%);
         }
 
-        .bg-lightBg { background-image: radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.03) 0, transparent 50%), radial-gradient(at 50% 0%, rgba(168, 85, 247, 0.03) 0, transparent 50%); }
-        .bg-darkBg { background-image: radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.1) 0, transparent 50%), radial-gradient(at 50% 0%, rgba(168, 85, 247, 0.1) 0, transparent 50%); }
+        .bg-lightBg { background-image: radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.05) 0, transparent 50%), radial-gradient(at 50% 0%, rgba(168, 85, 247, 0.05) 0, transparent 50%); }
+        .bg-darkBg { background-image: radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.15) 0, transparent 50%), radial-gradient(at 50% 0%, rgba(168, 85, 247, 0.15) 0, transparent 50%); }
 
         /* Glassmorphism & Gradients */
         .perf-card { 
@@ -83,9 +86,11 @@
 
         .liquid-blob {
             position: fixed;
-            z-index: -1;
-            filter: blur(80px);
-            opacity: 0.15;
+            z-index: 0;
+            filter: blur(100px);
+            opacity: 0.2;
+            will-change: transform;
+            pointer-events: none;
             border-radius: 50%;
             animation: float 20s infinite alternate ease-in-out;
         }
@@ -104,14 +109,41 @@
         .animate-spin-slow {
             animation: spin-slow 3s linear infinite;
         }
+
+        /* Premium Loader */
+        #loader {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #f8fafc; z-index: 10000; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; transition: opacity 0.5s ease, visibility 0.5s;
+        }
+        html.dark #loader { background: #0a0e21; }
+        .loader-spinner {
+            width: 50px; height: 50px; border: 3px solid rgba(59, 130, 246, 0.1);
+            border-top: 3px solid #3b82f6; border-radius: 50%;
+            animation: spin 1s linear infinite; margin-bottom: 24px;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .loader-logo { width: 120px; transition: filter 0.5s; }
+        .pulse-animation { animation: logoPulse 1.5s ease-in-out infinite; }
+        @keyframes logoPulse { 
+            0% { opacity: 0.4; transform: scale(0.95); } 
+            50% { opacity: 1; transform: scale(1.05); } 
+            100% { opacity: 0.4; transform: scale(0.95); } 
+        }
     </style>
 </head>
 <body class="bg-lightBg dark:bg-darkBg text-slate-900 dark:text-slate-100 min-h-screen transition-colors duration-500 overflow-x-hidden overflow-y-auto">
 
+    <!-- Premium Loader -->
+    <div id="loader">
+        <div class="loader-spinner"></div>
+        <img src="https://hirepro.in/wp-content/uploads/2025/05/HirePro-logo.svg" alt="HirePro Logo" class="loader-logo pulse-animation dark:brightness-200">
+    </div>
+
     <!-- Liquid Background Blobs -->
-    <div class="liquid-blob bg-blue-400 w-96 h-96 -top-20 -left-20 opacity-10 dark:opacity-20"></div>
-    <div class="liquid-blob bg-purple-400 w-[30rem] h-[30rem] top-1/2 -right-20 opacity-10 dark:opacity-20" style="animation-delay: -5s;"></div>
-    <div class="liquid-blob bg-orange-300 w-80 h-80 bottom-0 left-1/4 opacity-10 dark:opacity-20" style="animation-delay: -10s;"></div>
+    <div class="liquid-blob bg-blue-500 w-96 h-96 -top-20 -left-20 opacity-15 dark:opacity-25"></div>
+    <div class="liquid-blob bg-purple-500 w-[30rem] h-[30rem] top-1/2 -right-20 opacity-10 dark:opacity-20" style="animation-delay: -5s;"></div>
+    <div class="liquid-blob bg-orange-400 w-80 h-80 bottom-0 left-1/4 opacity-10 dark:opacity-20" style="animation-delay: -10s;"></div>
 
     <div class="fixed top-4 right-4 lg:top-6 lg:right-6 z-50">
         <button onclick="toggleTheme()" class="p-3 rounded-full bg-white dark:bg-slate-800 shadow-xl border border-slate-200 dark:border-slate-700 hover:scale-110 active:scale-95 transition-all">
@@ -284,6 +316,7 @@
         function toggleTheme() {
             const html = document.documentElement;
             const icon = document.getElementById('theme-icon');
+            const metaThemeColor = document.getElementById('status-bar-color');
             const isDark = html.classList.contains('dark');
 
             if (isDark) {
@@ -292,12 +325,14 @@
                 localStorage.setItem('theme', 'light');
                 icon.setAttribute('data-lucide', 'moon');
                 icon.classList.replace('text-yellow-500', 'text-slate-600');
+                if (metaThemeColor) metaThemeColor.setAttribute('content', '#ffffff');
             } else {
                 html.classList.remove('light');
                 html.classList.add('dark');
                 localStorage.setItem('theme', 'dark');
                 icon.setAttribute('data-lucide', 'sun');
                 icon.classList.replace('text-slate-600', 'text-yellow-500');
+                if (metaThemeColor) metaThemeColor.setAttribute('content', '#0a0e21');
             }
             lucide.createIcons();
         }
@@ -306,15 +341,29 @@
         (function initThemeUI() {
             const html = document.documentElement;
             const icon = document.getElementById('theme-icon');
+            const metaThemeColor = document.getElementById('status-bar-color');
             if (html.classList.contains('dark')) {
                 icon.setAttribute('data-lucide', 'sun');
                 icon.classList.add('text-yellow-500');
+                if (metaThemeColor) metaThemeColor.setAttribute('content', '#0a0e21');
             } else {
                 icon.setAttribute('data-lucide', 'moon');
                 icon.classList.add('text-slate-600');
+                if (metaThemeColor) metaThemeColor.setAttribute('content', '#ffffff');
             }
             lucide.createIcons();
         })();
+
+        // Loader Cleanup
+        window.addEventListener('load', () => {
+            const loader = document.getElementById('loader');
+            setTimeout(() => {
+                if (loader) {
+                    loader.style.opacity = '0';
+                    setTimeout(() => loader.style.display = 'none', 500);
+                }
+            }, 800);
+        });
     </script>
 </body>
 </html>

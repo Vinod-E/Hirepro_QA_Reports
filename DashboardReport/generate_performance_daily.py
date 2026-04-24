@@ -351,9 +351,33 @@ html_template = """
             text-decoration: none; transition: all 0.2s;
         }
         .mobile-home-btn:active { transform: scale(0.9); background: #ffedd5; }
+
+        /* Premium Loader */
+        #loader {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: white; z-index: 10000; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; transition: opacity 0.5s ease;
+        }
+        .loader-logo { width: 120px; animation: logoPulse 1.5s ease-in-out infinite; }
+        .loader-spinner {
+            width: 50px; height: 50px; border: 3px solid rgba(255, 107, 0, 0.1);
+            border-top: 3px solid #FF6B00; border-radius: 50%;
+            animation: spin 1s linear infinite; margin-bottom: 24px;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes logoPulse { 
+            0% { opacity: 0.4; transform: scale(0.95); } 
+            50% { opacity: 1; transform: scale(1.05); } 
+            100% { opacity: 0.4; transform: scale(0.95); } 
+        }
     </style>
 </head>
 <body>
+
+    <div id="loader">
+        <div class="loader-spinner"></div>
+        <img src="https://hirepro.in/wp-content/uploads/2025/05/HirePro-logo.svg" alt="HirePro Logo" class="loader-logo">
+    </div>
 
     <header>
         <div class="header-container">
@@ -563,6 +587,16 @@ html_template = """
         // Initialize
         document.addEventListener('DOMContentLoaded', () => {
             renderContent();
+        });
+        // Loader Cleanup
+        window.addEventListener('load', () => {
+            const loader = document.getElementById('loader');
+            setTimeout(() => {
+                if (loader) {
+                    loader.style.opacity = '0';
+                    setTimeout(() => loader.style.display = 'none', 500);
+                }
+            }, 800);
         });
     </script>
 </body>
