@@ -246,16 +246,28 @@
             .glass-nav { width: max-content; }
             .section-title { font-size: 1.1rem; }
             .chart-container { height: 300px; }
+            .mobile-home-btn { display: flex !important; margin: 0 auto 5px; }
         }
+        .mobile-home-btn {
+            display: none; align-items: center; justify-content: center; width: 44px; height: 44px;
+            border-radius: 12px; background: #fffaf0; color: #f97316;
+            border: 1px solid #ffedd5; box-shadow: 0 4px 10px rgba(249, 115, 22, 0.1);
+            text-decoration: none; transition: all 0.2s;
+        }
+        .mobile-home-btn:active { transform: scale(0.9); background: #ffedd5; }
     </style>
 </head>
 <body>
 
     <header>
         <div class="header-container">
+            <a href="dashboard.html" class="mobile-home-btn">
+                <i class="fas fa-home"></i>
+            </a>
             <div class="logo-section">
-                <a href="dashboard.html" style="color: var(--primary); font-size: 1.2rem;"><i class="fas fa-arrow-left"></i></a>
-                <img src="https://hirepro.in/wp-content/uploads/2025/05/HirePro-logo.svg" alt="HirePro Logo" class="logo-img">
+                <a href="dashboard.html" style="text-decoration: none; display: flex; align-items: center;">
+                    <img src="https://hirepro.in/wp-content/uploads/2025/05/HirePro-logo.svg" alt="HirePro Logo" class="logo-img">
+                </a>
             </div>
             <div class="title-section">
                 <h1>Daily Performance</h1>
