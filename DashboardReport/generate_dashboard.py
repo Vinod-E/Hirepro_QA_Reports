@@ -801,6 +801,11 @@ def generate_landing_page():
             animation: spin-slow 3s linear infinite;
         }
 
+        @media (max-width: 768px) {
+            html.dark, html.dark body { background-color: #0f172a !important; }
+            html.dark .bg-darkBg { background-image: none !important; }
+        }
+
         /* Premium Loader */
         #loader {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -1009,6 +1014,7 @@ def generate_landing_page():
             const icon = document.getElementById('theme-icon');
             const metaThemeColor = document.getElementById('status-bar-color');
             const isDark = html.classList.contains('dark');
+            const isMobile = window.innerWidth < 768;
 
             if (isDark) {
                 html.classList.remove('dark');
@@ -1023,7 +1029,9 @@ def generate_landing_page():
                 localStorage.setItem('theme', 'dark');
                 icon.setAttribute('data-lucide', 'sun');
                 icon.classList.replace('text-slate-600', 'text-yellow-500');
-                if (metaThemeColor) metaThemeColor.setAttribute('content', '#0a0e21');
+                if (metaThemeColor) {
+                    metaThemeColor.setAttribute('content', isMobile ? '#0f172a' : '#0a0e21');
+                }
             }
             lucide.createIcons();
         }
@@ -1033,10 +1041,13 @@ def generate_landing_page():
             const html = document.documentElement;
             const icon = document.getElementById('theme-icon');
             const metaThemeColor = document.getElementById('status-bar-color');
+            const isMobile = window.innerWidth < 768;
             if (html.classList.contains('dark')) {
                 icon.setAttribute('data-lucide', 'sun');
                 icon.classList.add('text-yellow-500');
-                if (metaThemeColor) metaThemeColor.setAttribute('content', '#0a0e21');
+                if (metaThemeColor) {
+                    metaThemeColor.setAttribute('content', isMobile ? '#0f172a' : '#0a0e21');
+                }
             } else {
                 icon.setAttribute('data-lucide', 'moon');
                 icon.classList.add('text-slate-600');
