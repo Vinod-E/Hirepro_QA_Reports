@@ -15,6 +15,9 @@ def process_all_sheets(file_path):
     sheets_data = {}
     
     for sheet_name in xl.sheet_names:
+        if sheet_name in ["BETA_SG", "BETA_EU", "AMS_SG", "AMS_EU"]:
+            continue
+        
         df = pd.read_excel(xl, sheet_name=sheet_name)
         
         # Ensure Run Date is treated as string for grouping/consistency if it's already a datetime
@@ -87,12 +90,8 @@ final_data = {
     "environments": list(get_data.keys()) if get_data else []
 }
 
-# Latest update date from the first available sheet and first row
-latest_date = "N/A"
-if get_data:
-    first_env = list(get_data.keys())[0]
-    if get_data[first_env]:
-        latest_date = get_data[first_env][0].get("run_date", "N/A")
+# Latest update date
+latest_date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
 html_template = """
 <!DOCTYPE html>
@@ -139,12 +138,8 @@ html_template = """
         }
 
         header {
-            padding: 20px 0;
-            border-bottom: 1px solid #D9D7D7;
+            padding: 10px 0;
             background: white;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
         }
 
         .header-container {
@@ -153,33 +148,60 @@ html_template = """
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0 20px;
+            padding: 10px 20px;
+            border-bottom: 1px solid #D9D7D7;
         }
 
         .logo-section { display: flex; align-items: center; gap: 1rem; }
-        .logo-img { height: 32px; }
+        .logo-img { height: 35px; }
         
         .title-section { text-align: center; }
-        .title-section h1 { font-size: 1.5rem; font-weight: 800; }
+        .title-section h1 { font-size: 1.6rem; font-weight: 800; }
         .subtitle { font-size: 0.8rem; color: #64748b; font-weight: 600; text-transform: uppercase; }
 
         .audit-section { text-align: right; }
         .audit-label { font-size: 0.7rem; color: #64748b; font-weight: 700; }
-        .audit-time { font-weight: 800; font-size: 0.9rem; color: var(--success); }
+        .audit-time { 
+            font-weight: 800; 
+            font-size: 0.9rem; 
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 6px;
+        }
 
-        main { max-width: 1400px; margin: 30px auto; padding: 0 20px; }
+        main { max-width: 1400px; margin: 10px auto; padding: 0 20px; }
 
         /* Multi-level Navigation */
         .nav-container {
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 25px;
             margin-bottom: 30px;
             align-items: center;
         }
 
+        .nav-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+        }
+
+        .nav-label {
+            font-size: 0.65rem;
+            font-weight: 800;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+        }
+
         .glass-nav {
             display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
             background: rgba(241, 245, 249, 0.7);
             backdrop-filter: blur(16px);
             padding: 6px;
@@ -197,12 +219,15 @@ html_template = """
             color: #64748b;
             font-weight: 800;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             font-size: 1rem;
             text-transform: uppercase;
             letter-spacing: 0.08em;
             white-space: nowrap;
         }
+
+        .nav-btn:hover { color: var(--primary); background: rgba(255, 107, 0, 0.05); }
+        .nav-btn:active { transform: scale(0.96); }
 
         .nav-btn.active {
             background: white;
@@ -217,8 +242,8 @@ html_template = """
         }
 
         .env-nav .nav-btn.active {
-            color: #2563eb;
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.1);
+            color: var(--primary);
+            box-shadow: 0 4px 12px rgba(255, 107, 0, 0.1);
         }
 
         /* Content Sections */
@@ -236,7 +261,7 @@ html_template = """
             gap: 12px;
         }
 
-        .chart-card {
+        .section-card {
             background: white;
             border-radius: 24px;
             padding: 24px;
@@ -298,6 +323,60 @@ html_template = """
         .var-up { color: #ef4444; }
         .var-down { color: #10b981; }
 
+        .text-orange { color: var(--primary) !important; }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .legend-controls {
+            display: flex;
+            gap: 8px;
+        }
+
+        .control-btn {
+            padding: 8px 18px;
+            border-radius: 99px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border: 1px solid transparent;
+        }
+
+        .btn-select {
+            background: #fff7ed;
+            color: #f97316;
+            border-color: #ffedd5;
+        }
+
+        .btn-select:hover {
+            background: #ffedd5;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(249, 115, 22, 0.1);
+        }
+
+        .btn-clear {
+            background: #f1f5f9;
+            color: #64748b;
+            border-color: #e2e8f0;
+        }
+
+        .btn-clear:hover {
+            background: #e2e8f0;
+            color: #475569;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(100, 116, 139, 0.1);
+        }
+
         /* Environment Cards */
         .env-grid {
             display: grid;
@@ -335,22 +414,50 @@ html_template = """
         }
 
         /* Mobile */
+        .home-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            border-radius: 16px;
+            background: #fffaf0;
+            color: #f97316;
+            text-decoration: none;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid #ffedd5;
+            box-shadow: 0 8px 20px rgba(249, 115, 22, 0.15);
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 2000;
+        }
+        .home-btn:hover {
+            transform: translateY(-5px) scale(1.05);
+            background: #ffedd5;
+            box-shadow: 0 12px 25px rgba(249, 115, 22, 0.2);
+        }
+        .home-btn:active { transform: scale(0.94); }
+
         @media (max-width: 768px) {
             .header-container { flex-direction: column; gap: 15px; text-align: center; }
+            .logo-section { flex-direction: column; }
+            .home-btn { 
+                position: static;
+                width: 42px;
+                height: 42px;
+                border-radius: 12px;
+                order: -1; 
+                margin-bottom: 5px; 
+                box-shadow: 0 2px 8px rgba(249, 115, 22, 0.08);
+            }
             .audit-section { text-align: center; }
-            .nav-container { overflow-x: auto; width: 100%; padding-bottom: 10px; }
-            .glass-nav { width: max-content; }
+            .nav-container { width: 100%; padding-bottom: 10px; }
+            .glass-nav { border-radius: 20px; width: 100%; display: flex; }
+            .nav-btn { flex: 1; padding: 12px 10px; font-size: 0.8rem; text-align: center; }
             .section-title { font-size: 1.1rem; }
             .chart-container { height: 300px; }
-            .mobile-home-btn { display: flex !important; margin: 0 auto 5px; }
         }
-        .mobile-home-btn {
-            display: none; align-items: center; justify-content: center; width: 44px; height: 44px;
-            border-radius: 12px; background: #fffaf0; color: #f97316;
-            border: 1px solid #ffedd5; box-shadow: 0 4px 10px rgba(249, 115, 22, 0.1);
-            text-decoration: none; transition: all 0.2s;
-        }
-        .mobile-home-btn:active { transform: scale(0.9); background: #ffedd5; }
 
         /* Premium Loader */
         #loader {
@@ -381,21 +488,22 @@ html_template = """
 
     <header>
         <div class="header-container">
-            <a href="dashboard.html" class="mobile-home-btn">
-                <i class="fas fa-home"></i>
-            </a>
             <div class="logo-section">
-                <a href="dashboard.html" style="text-decoration: none; display: flex; align-items: center;">
-                    <img src="https://hirepro.in/wp-content/uploads/2025/05/HirePro-logo.svg" alt="HirePro Logo" class="logo-img">
+                <a href="dashboard.html" class="home-btn">
+                    <i class="fas fa-home"></i>
                 </a>
+                <img src="https://hirepro.in/wp-content/uploads/2025/05/HirePro-logo.svg" alt="HirePro Logo" class="logo-img">
             </div>
             <div class="title-section">
                 <h1>Daily Performance</h1>
                 <div class="subtitle">Multi-Environment API Audit</div>
             </div>
             <div class="audit-section">
-                <div class="audit-label">LATEST SYNC</div>
-                <div class="audit-time">__LATEST_DATE__</div>
+                <div class="audit-label">LATEST AUDIT</div>
+                <div class="audit-time">
+                    <i class="fas fa-sync-alt" style="color: var(--success); font-size: 0.8rem;"></i>
+                    __LATEST_DATE__
+                </div>
             </div>
         </div>
     </header>
@@ -409,8 +517,11 @@ html_template = """
             </div>
 
             <!-- Environment Selector -->
-            <div class="glass-nav env-nav">
-                __ENV_BTNS__
+            <div class="nav-group">
+                <div class="nav-label">ENVIRONMENT SELECTION</div>
+                <div class="glass-nav env-nav">
+                    __ENV_BTNS__
+                </div>
             </div>
         </div>
 
@@ -479,47 +590,63 @@ html_template = """
             });
 
             container.innerHTML = `
-                <div class="section-title"><i class="fas fa-chart-line"></i> ${currentOp} Performance Trend - ${currentEnv}</div>
-                <div class="chart-card">
+                <div class="section-title">${currentOp} Performance Trend | <span class="text-orange">${currentEnv}</span></div>
+                <div class="section-card">
+                    <div class="chart-header">
+                        <div style="font-size: 0.8rem; font-weight: 700; color: #64748b;">RESPONSE TIME (S)</div>
+                        <div class="legend-controls">
+                            <button class="control-btn btn-select" onclick="toggleAllDatasets(true)">
+                                <i class="fas fa-check-double"></i> SELECT ALL
+                            </button>
+                            <button class="control-btn btn-clear" onclick="toggleAllDatasets(false)">
+                                <i class="fas fa-times-circle"></i> CLEAR ALL
+                            </button>
+                        </div>
+                    </div>
                     <div class="chart-container">
                         <canvas id="mainChart"></canvas>
                     </div>
                     <div id="chartLegend" class="custom-legend"></div>
                 </div>
 
-                <div class="section-title"><i class="fas fa-list-ul"></i> Detailed Audit - Latest Run</div>
-                <div class="data-table-container">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>API Endpoint</th>
-                                <th>Threshold (s)</th>
-                                <th>Response Time (s)</th>
-                                <th>Variation (%)</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${data[0].apis.map(api => `
+                <div class="section-title">Detailed Audit | <span class="text-orange">${currentEnv}</span></div>
+                <div class="section-card">
+                    <div class="chart-header">
+                        <div style="font-size: 0.8rem; font-weight: 700; color: #64748b;">API PERFORMANCE METRICS</div>
+                    </div>
+                    <div class="data-table-container">
+                        <table>
+                            <thead>
                                 <tr>
-                                    <td><div class="api-name">${api.name}</div></td>
-                                    <td><span style="font-weight:700;">${api.threshold.toFixed(2)}s</span></td>
-                                    <td><span class="api-name" style="color:var(--primary)">${api.current.toFixed(2)}s</span></td>
-                                    <td>
-                                        <span class="variation ${api.variation > 0 ? 'var-up' : 'var-down'}">
-                                            ${api.variation > 0 ? '+' : ''}${api.variation.toFixed(1)}%
-                                            <i class="fas fa-caret-${api.variation > 0 ? 'up' : 'down'}"></i>
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <span class="val-badge ${api.current <= api.threshold ? 'val-pass' : 'val-fail'}">
-                                            ${api.current <= api.threshold ? 'PASSED' : 'BREACHED'}
-                                        </span>
-                                    </td>
+                                    <th>API Endpoint</th>
+                                    <th>Threshold (s)</th>
+                                    <th>Response Time (s)</th>
+                                    <th>Variation (%)</th>
+                                    <th>Status</th>
                                 </tr>
-                            `).join('')}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                ${data[0].apis.map(api => `
+                                    <tr>
+                                        <td><div class="api-name">${api.name}</div></td>
+                                        <td><span style="font-weight:700;">${api.threshold.toFixed(2)}s</span></td>
+                                        <td><span class="api-name" style="color:var(--primary)">${api.current.toFixed(2)}s</span></td>
+                                        <td>
+                                            <span class="variation ${api.variation > 0 ? 'var-up' : 'var-down'}">
+                                                ${api.variation > 0 ? '+' : ''}${api.variation.toFixed(1)}%
+                                                <i class="fas fa-caret-${api.variation > 0 ? 'up' : 'down'}"></i>
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span class="val-badge ${api.current <= api.threshold ? 'val-pass' : 'val-fail'}">
+                                                ${api.current <= api.threshold ? 'PASSED' : 'BREACHED'}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             `;
 
@@ -582,6 +709,21 @@ html_template = """
             meta.hidden = meta.hidden === null ? !charts.main.data.datasets[idx].hidden : null;
             el.classList.toggle('hidden');
             charts.main.update();
+        }
+
+        function toggleAllDatasets(show) {
+            if (!charts.main) return;
+            charts.main.data.datasets.forEach((ds, idx) => {
+                const meta = charts.main.getDatasetMeta(idx);
+                meta.hidden = !show;
+            });
+            charts.main.update();
+            
+            // Update legend UI
+            document.querySelectorAll('.legend-item').forEach(el => {
+                if (show) el.classList.remove('hidden');
+                else el.classList.add('hidden');
+            });
         }
 
         // Initialize
