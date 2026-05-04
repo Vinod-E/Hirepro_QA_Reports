@@ -9,6 +9,7 @@ def run_reports():
     # Paths to the report generation scripts
     perf_script = os.path.join(scripts_dir, "generate_performance.py")
     dash_script = os.path.join(scripts_dir, "generate_dashboard.py")
+    landing_script = os.path.join(scripts_dir, "generate_landing.py")
     
     # Root directory for correctly importing modules like Config
     root_dir = os.path.dirname(scripts_dir)
@@ -45,6 +46,14 @@ def run_reports():
         print("✅ Main Dashboard Updated.\n")
     except subprocess.CalledProcessError as e:
         print(f"❌ Error in Dashboard Report: {e}\n")
+
+    # 3. Run Landing Page Generator
+    print("🏠 Step 3: Generating Main Landing Hub (dashboard.html)...")
+    try:
+        subprocess.run([sys.executable, landing_script], cwd=root_dir, env=env, check=True)
+        print("✅ Landing Hub Updated.\n")
+    except subprocess.CalledProcessError as e:
+        print(f"❌ Error in Landing Hub: {e}\n")
 
     print("="*50)
     print("✨ ALL REPORTS ARE NOW UP TO DATE!")
