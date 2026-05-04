@@ -14,7 +14,7 @@ else:
     HOME_PATH = os.path.expanduser("~")
 
 # Construct automation path
-AUTOMATION_PATH = os.path.join(HOME_PATH, "hirepro_automation", "Hirepro_QA_Reports")
+AUTOMATION_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 
 
 # Paths
