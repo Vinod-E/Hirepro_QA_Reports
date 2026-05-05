@@ -253,6 +253,24 @@ html_template = """
             margin-top: 5px;
         }
 
+        .nav-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 2rem;
+        }
+
+        .nav-label {
+            font-size: 0.7rem;
+            font-weight: 800;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
         .audit-label {
             font-size: 0.75rem;
             color: #64748b;
@@ -302,7 +320,7 @@ html_template = """
             display: flex; position: relative; justify-content: center; gap: 0; 
             margin-bottom: 1.5rem; background: rgba(241, 245, 249, 0.7); 
             backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-            padding: 0.5rem; border-radius: 99px; width: fit-content; margin: 0 auto 1rem auto;
+            padding: 0.5rem; border-radius: 99px; width: fit-content; margin: 0 auto 2rem auto;
             border: 1px solid rgba(255,255,255,0.8); box-shadow: 0 12px 40px rgba(0,0,0,0.06);
             overflow: hidden;
         }
@@ -311,7 +329,7 @@ html_template = """
             display: flex; position: relative; justify-content: center; gap: 0; 
             margin-bottom: 2.5rem; background: rgba(241, 245, 249, 0.4); 
             backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-            padding: 0.4rem; border-radius: 99px; width: fit-content; margin: 0 auto 2.5rem auto;
+            padding: 0.4rem; border-radius: 99px; width: fit-content; margin: 0 auto;
             border: 1px solid rgba(255,255,255,0.6); box-shadow: 0 8px 30px rgba(0,0,0,0.04);
             overflow: hidden;
         }
@@ -412,7 +430,13 @@ html_template = """
         .legend-item.hidden { opacity: 0.4; background: #f8fafc; filter: grayscale(1); }
         .legend-item.hidden i { border-color: #94a3b8 !important; background: transparent !important; }
         
-        .legend-dot { width: 10px; height: 10px; border-radius: 50%; border: 2.5px solid transparent; }
+        .legend-dot { 
+            width: 12px; 
+            height: 12px; 
+            border-radius: 50%; 
+            border: 2.5px solid;
+            background: transparent;
+        }
         .legend-text { font-size: 0.75rem; font-weight: 600; color: #334155; }
         
         .search-box {
@@ -878,16 +902,17 @@ html_template = """
             border: 1px solid var(--border); font-size: 0.75rem; 
         }
         .floating-home {
-            position: fixed; bottom: 30px; right: 30px; z-index: 9999;
-            width: 56px; height: 56px; border-radius: 20px;
+            position: fixed; top: 50%; right: 25px; z-index: 9999;
+            margin-top: -21px;
+            width: 42px; height: 42px; border-radius: 14px;
             background: rgba(37, 99, 235, 0.9); backdrop-filter: blur(8px);
             display: flex; align-items: center; justify-content: center;
-            color: white; font-size: 1.4rem; text-decoration: none;
+            color: white; font-size: 1.1rem; text-decoration: none;
             box-shadow: 0 10px 30px rgba(37, 99, 235, 0.3);
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             border: 1px solid rgba(255,255,255,0.2);
         }
-        .floating-home:hover { transform: scale(1.1) translateY(-5px); box-shadow: 0 15px 40px rgba(37, 99, 235, 0.45); background: var(--primary); }
+        .floating-home:hover { transform: scale(1.1) translateX(-5px); box-shadow: 0 15px 40px rgba(37, 99, 235, 0.45); background: var(--primary); }
         .floating-home i { transition: transform 0.3s ease; }
         .floating-home:hover i { transform: rotate(-10deg); }
 
@@ -1056,8 +1081,11 @@ html_template = """
             </button>
         </div>
 
-        <div class="env-nav">
-            __ENV_BTNS__
+        <div class="nav-group">
+            <div class="nav-label">ENVIRONMENT SELECTION</div>
+            <div class="env-nav">
+                __ENV_BTNS__
+            </div>
         </div>
 
         <section id="report-content">
@@ -1396,7 +1424,7 @@ html_template = """
                 if (!isVisible) item.classList.add('hidden');
                 
                 item.innerHTML = `
-                    <div class="legend-dot" style="border-color: ${dataset.borderColor}; background: ${dataset.backgroundColor}"></div>
+                    <div class="legend-dot" style="border-color: ${dataset.borderColor}"></div>
                     <span class="legend-text">${dataset.label}</span>
                 `;
                 
@@ -1441,7 +1469,11 @@ html_template = """
                     maintainAspectRatio: false,
                     plugins: { 
                         legend: { display: false },
-                        tooltip: { mode: 'index', intersect: false }
+                        tooltip: { 
+                            enabled: window.innerWidth > 768,
+                            mode: 'index', 
+                            intersect: false 
+                        }
                     },
                     scales: {
                         y: { 

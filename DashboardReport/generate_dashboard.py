@@ -353,7 +353,7 @@ def generate_styles():
         html, body { -ms-overflow-style: none; scrollbar-width: none; overflow-x: hidden; scroll-behavior: smooth; }
         html::-webkit-scrollbar, body::-webkit-scrollbar { display: none; }
         body { background-color: var(--bg); color: var(--text); padding: 1.5rem 1rem; width: 100%; min-height: 100vh; touch-action: manipulation; }
-        .container { max-width: 1240px; margin: 0 auto; }
+        .container { max-width: 1300px; margin: 0 auto; }
         header { margin-bottom: 1.5rem; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
         h1 { font-size: 1.4rem; font-weight: 800; color: var(--text); line-height: 1.2; }
         .subtitle { color: var(--text-muted); font-size: 0.75rem; margin-top: 0.25rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
@@ -398,6 +398,28 @@ def generate_styles():
         .stat-info .label { color: var(--text-muted); font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 0.25rem; }
 
         .alert-row { margin-bottom: 2rem; }
+
+        /* Premium Loader */
+        #loader {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: #ffffff; z-index: 100000; display: flex;
+            flex-direction: column; align-items: center; justify-content: center;
+            transition: opacity 0.5s ease;
+        }
+        .loader-logo { width: 120px; animation: logoPulse 1.5s ease-in-out infinite; }
+        .loader-spinner {
+            width: 50px; height: 50px; border: 3px solid rgba(79, 70, 229, 0.1);
+            border-top: 3px solid var(--primary); border-radius: 50%;
+            animation: spin 1s linear infinite; margin-bottom: 24px;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes logoPulse { 
+            0% { opacity: 0.4; transform: scale(0.95); } 
+            50% { opacity: 1; transform: scale(1.05); } 
+            100% { opacity: 0.4; transform: scale(0.95); } 
+        }
+
+        .tab-content { display: none; }
         .alert-card { background: #fff5f5; border: 1px solid #fed7d7; padding: 1rem 1.5rem; border-radius: 1rem; display: flex; align-items: center; justify-content: space-between; color: #c53030; }
         .alert-card i { font-size: 1.25rem; margin-right: 0.75rem; }
 
@@ -437,7 +459,7 @@ def generate_styles():
         .search-area i { position: absolute; left: 1.4rem; top: 50%; transform: translateY(-50%); color: var(--text-muted); z-index: 10; pointer-events: none; transition: color 0.3s; }
         .search-area input:focus + i { color: var(--primary); }
 
-        footer { margin-top: 4rem; padding: 2rem 0; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; color: var(--text-muted); font-size: 0.85rem; font-weight: 500; }
+        footer { margin-top: 4rem; padding: 2rem 0; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; color: #64748b; font-size: 0.85rem; font-weight: 700; }
         .commit-badge { background: #f1f5f9; padding: 0.25rem 0.6rem; border-radius: 6px; font-family: monospace; font-weight: 700; color: var(--text); border: 1px solid var(--border); font-size: 0.75rem; }
 
         /* Liquid Glass Navigation */
@@ -543,34 +565,34 @@ def generate_styles():
         .history-date { font-weight: 700; color: var(--text); white-space: nowrap; }
 
         .floating-home {
-            position: fixed; bottom: 2rem; right: 2rem; width: 56px; height: 56px; 
-            background: var(--primary); color: white; border-radius: 20px; 
+            position: fixed; right: 1.5rem; bottom: calc(50% - 25px); width: 42px; height: 42px; 
+            background: var(--primary); color: white; border-radius: 14px; 
             display: flex; align-items: center; justify-content: center;
             box-shadow: 0 10px 30px rgba(79, 70, 229, 0.3);
             z-index: 9999; border: 1px solid rgba(255,255,255,0.2);
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            text-decoration: none; font-size: 1.4rem;
+            text-decoration: none; font-size: 1.1rem;
             backdrop-filter: blur(8px);
         }
-        .floating-home:hover { transform: scale(1.1) translateY(-5px); box-shadow: 0 15px 40px rgba(79, 70, 229, 0.45); background: var(--primary-dark); }
+        .floating-home:hover { transform: scale(1.1) translateX(-5px); box-shadow: 0 15px 40px rgba(79, 70, 229, 0.45); background: var(--primary-dark); }
         .floating-home i { transition: transform 0.3s ease; }
         .floating-home:hover i { transform: rotate(-10deg); }
-        .floating-home[data-tooltip]:hover::before { transform: translateX(-50%) translateY(0); }
+        .floating-home[data-tooltip]:hover::before { transform: translateX(0) translateY(0); right: 120%; bottom: 50%; transform: translateY(50%); left: auto; }
 
         .floating-reset {
-            position: fixed; bottom: 2rem; right: 6.5rem; width: 56px; height: 56px; 
-            background: var(--primary); color: white; border-radius: 20px; 
+            position: fixed; right: 1.5rem; bottom: calc(50% + 25px); width: 42px; height: 42px; 
+            background: var(--primary); color: white; border-radius: 14px; 
             display: flex; align-items: center; justify-content: center;
             box-shadow: 0 10px 30px rgba(79, 70, 229, 0.3); cursor: pointer;
             z-index: 9999; border: 1px solid rgba(255,255,255,0.2); transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            text-decoration: none; font-size: 1.2rem;
+            text-decoration: none; font-size: 1rem;
             backdrop-filter: blur(8px);
         }
-        .floating-reset:hover { transform: scale(1.1) translateY(-5px); box-shadow: 0 15px 40px rgba(79, 70, 229, 0.45); }
+        .floating-reset:hover { transform: scale(1.1) translateX(-5px); box-shadow: 0 15px 40px rgba(79, 70, 229, 0.45); }
         .floating-reset:hover i { transform: rotate(45deg); }
         .floating-reset i { transition: transform 0.3s; }
         .floating-reset:active { transform: scale(0.9); }
-        .floating-reset[data-tooltip]:hover::before { transform: translateX(-50%) translateY(0); }
+        .floating-reset[data-tooltip]:hover::before { transform: translateX(0) translateY(0); right: 120%; bottom: 50%; transform: translateY(50%); left: auto; }
 
         @media (max-width: 768px) {
             body { padding: 1rem 0.5rem; overflow-x: hidden; }
@@ -868,6 +890,10 @@ def generate():
     <title>HirePro Quality Dashboard</title><link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     {generate_styles()}</head><body>
+    <div id="loader">
+        <div class="loader-spinner"></div>
+        <img src="https://hirepro.in/wp-content/uploads/2025/05/HirePro-logo.svg" alt="HirePro Logo" class="loader-logo">
+    </div>
     <div class="container">
     <header>
         <div style="display: flex; align-items: center; gap: 1rem;">
@@ -875,7 +901,7 @@ def generate():
                 <i class="fas fa-home"></i>
             </a>
             <a href="dashboard.html" style="text-decoration: none;">
-                <img src="https://hirepro.in/wp-content/uploads/2025/05/HirePro-logo.svg" alt="HirePro Logo" style="height: 32px; width: auto;">
+                <img src="https://hirepro.in/wp-content/uploads/2025/05/HirePro-logo.svg" alt="HirePro Logo" style="height: 2rem; width: auto;">
             </a>
         </div>
         <div style="text-align: center;"><h1>Quality Dashboard</h1><p class="subtitle">Unified Test Lifecycle Monitoring</p></div>
@@ -892,12 +918,6 @@ def generate():
     </div>
 
     <div id="dashboard-main" style="position: relative;">
-        <div id="loader" class="loader-overlay">
-            <div style="text-align: center;">
-                <div class="loader-spinner" style="margin: 0 auto;"></div>
-                <div class="loader-text">Syncing Dashboard...</div>
-            </div>
-        </div>
         <div id="tab-history" class="tab-content">
             <div class="history-section">
                 <div class="trend-title" style="margin-bottom: 1.5rem;"><i class="fas fa-history"></i> Historical Audit Timeline</div>

@@ -7,6 +7,14 @@ from datetime import datetime
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from Config import configfile
 
+import subprocess
+
+def get_git_commit():
+    try:
+        return subprocess.check_output(['git', 'rev-parse', '--short', 'HEAD']).decode('ascii').strip()
+    except:
+        return "N/A"
+
 def process_all_sheets(file_path):
     if not os.path.exists(file_path):
         return {}
@@ -129,12 +137,19 @@ html_template = """
             -webkit-tap-highlight-color: transparent;
         }
 
+        html, body {
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+        html::-webkit-scrollbar, body::-webkit-scrollbar {
+            display: none;
+        }
         body {
             background-color: #ffffff;
             color: var(--text-main);
             min-height: 100vh;
-            padding-bottom: 40px;
-            overflow-x: hidden;
         }
 
         header {
@@ -143,7 +158,7 @@ html_template = """
         }
 
         .header-container {
-            max-width: 1400px;
+            max-width: 1300px;
             margin: 0 auto;
             display: grid;
             grid-template-columns: 1fr auto 1fr;
@@ -171,7 +186,26 @@ html_template = """
             gap: 6px;
         }
 
-        main { max-width: 1400px; margin: 10px auto; padding: 0 20px; }
+        .header-home-btn {
+            display: none;
+            width: 38px;
+            height: 38px;
+            background: rgba(255, 107, 0, 0.1);
+            color: var(--primary);
+            border-radius: 10px;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+            transition: all 0.3s;
+        }
+        .header-home-btn:active { transform: scale(0.9); background: var(--primary); color: white; }
+
+        main { max-width: 1300px; margin: 10px auto; padding: 0 20px; }
+        #report-content { 
+            transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
 
         /* Multi-level Navigation */
         .nav-container {
@@ -199,90 +233,134 @@ html_template = """
         }
 
         .glass-nav {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            background: rgba(241, 245, 249, 0.7);
-            backdrop-filter: blur(16px);
-            padding: 6px;
-            border-radius: 99px;
-            border: 1px solid rgba(255,255,255,0.8);
-            box-shadow: 0 8px 30px rgba(0,0,0,0.04);
+            display: inline-flex;
+            background: #f1f5f9;
+            padding: 5px;
+            border-radius: 16px;
+            border: 1px solid #e2e8f0;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.03);
             position: relative;
+            gap: 4px;
         }
 
         .nav-btn {
-            padding: 14px 40px;
-            border-radius: 99px;
+            padding: 12px 32px;
+            border-radius: 12px;
             border: none;
             background: transparent;
             color: #64748b;
-            font-weight: 800;
+            font-weight: 700;
             cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            font-size: 1rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 0.9rem;
             text-transform: uppercase;
-            letter-spacing: 0.08em;
+            letter-spacing: 0.05em;
             white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
-
-        .nav-btn:hover { color: var(--primary); background: rgba(255, 107, 0, 0.05); }
-        .nav-btn:active { transform: scale(0.96); }
+        .nav-btn i { font-size: 1rem; opacity: 0.8; transition: transform 0.3s ease; }
+        .nav-btn:hover { color: var(--primary); background: rgba(255, 107, 0, 0.04); }
+        .nav-btn:hover i { transform: translateY(-1px); }
+        .nav-btn:active { transform: scale(0.97); }
 
         .nav-btn.active {
             background: white;
             color: var(--primary);
-            box-shadow: 0 4px 12px rgba(255, 107, 0, 0.1);
+            box-shadow: 0 4px 20px rgba(255, 107, 0, 0.12), 0 2px 5px rgba(0,0,0,0.05);
+            transform: translateY(0);
         }
 
         .env-nav .nav-btn {
-            padding: 8px 20px;
+            padding: 8px 18px;
             font-size: 0.75rem;
-            font-weight: 700;
+            border-radius: 10px;
         }
-
         .env-nav .nav-btn.active {
-            color: var(--primary);
             box-shadow: 0 4px 12px rgba(255, 107, 0, 0.1);
         }
 
         /* Content Sections */
         .report-section { display: none; animation: fadeIn 0.4s ease; }
         .report-section.active { display: block; }
+        .mobile-only-label { display: none; }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         .section-title {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: 800;
-            margin-bottom: 20px;
+            margin-bottom: 12px;
             display: flex;
             align-items: center;
+            justify-content: space-between;
             gap: 12px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #f1f5f9;
+            padding-bottom: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .section-title { flex-wrap: wrap; justify-content: center; text-align: center; gap: 16px; font-size: 1rem; }
+            .section-title div { white-space: nowrap; }
+            .section-title span { margin-left: 0; }
         }
 
         .section-card {
             background: white;
-            border-radius: 24px;
-            padding: 24px;
+            border-radius: 16px;
+            padding: 16px;
             border: 1px solid var(--border);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.02);
-            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+            margin-bottom: 20px;
         }
 
         .chart-container { height: 400px; position: relative; }
+        .chart-section { display: none; padding-top: 20px; }
+        .chart-section.active { display: block; }
+        
+        .toggle-graph-btn {
+            background: #f1f5f9;
+            color: var(--primary);
+            border: 1px solid #e2e8f0;
+            padding: 6px 14px;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .toggle-graph-btn:hover { background: #e2e8f0; color: var(--primary); }
+        .toggle-graph-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
 
         /* Custom Legend */
+        .commit-badge { background: #f1f5f9; padding: 0.25rem 0.6rem; border-radius: 6px; font-family: monospace; font-weight: 700; color: #0f172a; border: 1px solid var(--border); font-size: 0.75rem; }
+        .home-btn {
+            position: fixed; right: 1.5rem; width: 42px; height: 42px; 
+            background: var(--primary); color: white; border-radius: 14px; 
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 10px 30px rgba(255, 107, 0, 0.3);
+            z-index: 9999; border: 1px solid rgba(255,255,255,0.2);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-decoration: none; font-size: 1.1rem;
+            backdrop-filter: blur(8px);
+        }
+        .home-btn { bottom: calc(50% + 25px); }
+
+        
+        .home-btn:hover { transform: scale(1.1) translateX(-5px); box-shadow: 0 15px 40px rgba(255, 107, 0, 0.45); }
+        .home-btn i { transition: transform 0.3s ease; }
+        .home-btn:hover i { transform: rotate(-10deg); }
+        .home-btn:active { transform: scale(0.9); }
+
         .custom-legend {
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 20px;
-            padding: 15px;
-            background: #f8fafc;
-            border-radius: 16px;
+            gap: 12px;
+            margin-top: 25px;
+            justify-content: center;
         }
 
         .legend-item {
@@ -301,7 +379,13 @@ html_template = """
 
         .legend-item.hidden { opacity: 0.5; grayscale: 1; }
 
-        .legend-dot { width: 8px; height: 8px; border-radius: 50%; }
+        .legend-dot { 
+            width: 12px; 
+            height: 12px; 
+            border-radius: 50%; 
+            border: 2.5px solid;
+            background: transparent;
+        }
 
         /* Table Styles */
         .data-table-container { overflow-x: auto; margin-top: 20px; }
@@ -441,6 +525,8 @@ html_template = """
             box-shadow: 0 4px 12px rgba(100, 116, 139, 0.1);
         }
 
+
+
         /* Environment Cards */
         .env-grid {
             display: grid;
@@ -466,104 +552,53 @@ html_template = """
         .env-card p { font-size: 0.7rem; color: #64748b; font-weight: 600; }
 
         footer {
-            max-width: 1400px;
-            margin: 60px auto 0;
-            padding: 30px 20px;
-            border-top: 1px solid #D9D7D7;
+            margin-top: 50px; padding: 30px 20px; border-top: 1px solid #f1f5f9;
+            color: #64748b; font-size: 0.85rem; font-weight: 700;
+        }
+        .footer-container {
+            max-width: 1300px;
+            margin: 0 auto;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            color: #64748b;
-            font-size: 0.8rem;
         }
 
-        /* Mobile */
-        .home-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 56px;
-            height: 56px;
-            border-radius: 20px;
-            background: rgba(255, 107, 0, 0.9);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            color: white;
-            text-decoration: none;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 10px 30px rgba(255, 107, 0, 0.3);
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            z-index: 2000;
-            border: 1px solid rgba(255,255,255,0.2);
-        }
 
-        .home-btn i { transition: transform 0.3s ease; }
-
-        .home-btn:hover {
-            transform: scale(1.1) translateY(-5px);
-            box-shadow: 0 15px 40px rgba(255, 107, 0, 0.45);
-            background: #ff6b00;
-        }
-
-        .home-btn:hover i { transform: rotate(-10deg); }
-
-        /* Tooltip for Desktop */
-        .home-btn::after {
-            content: "Back to Dashboard";
-            position: absolute;
-            right: 75px;
-            background: #1e293b;
-            color: white;
-            padding: 8px 14px;
-            border-radius: 10px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            white-space: nowrap;
-            opacity: 0;
-            pointer-events: none;
-            transition: all 0.3s;
-            transform: translateX(10px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-
-        .home-btn:hover::after {
-            opacity: 1;
-            transform: translateX(0);
-        }
-        .home-btn:active { transform: scale(0.94); }
 
         @media (max-width: 768px) {
-            .header-container { display: flex; flex-direction: column; gap: 15px; text-align: center; }
-            .logo-section { flex-direction: column; justify-self: center; }
-            .home-btn { 
-                position: static;
-                width: 42px;
-                height: 42px;
-                border-radius: 12px;
-                order: -1; 
-                margin-bottom: 5px; 
-                box-shadow: 0 2px 8px rgba(255, 107, 0, 0.08);
-                border-width: 1px;
-                background: #eff6ff;
-                color: #2563eb;
-                backdrop-filter: none;
-            }
-            .home-btn::after { display: none; }
-            .audit-section { text-align: center; justify-self: center; }
-            .nav-container { width: 100%; padding-bottom: 10px; }
-            .glass-nav { border-radius: 20px; width: 100%; display: flex; }
-            .nav-btn { flex: 1; padding: 12px 10px; font-size: 0.8rem; text-align: center; }
-            .section-title { font-size: 1.1rem; }
-            .chart-container { height: 300px; }
+            .header-container { grid-template-columns: 1fr; gap: 1rem; }
+            .logo-section { justify-self: center; flex-direction: column; }
+            .title-section h1 { font-size: 1.3rem; }
+            .audit-section { justify-self: center; text-align: center; }
+            main { padding: 0 10px; }
+            .home-btn { display: none !important; }
+            .header-home-btn { display: flex; width: 32px; height: 32px; font-size: 0.85rem; }
+            .footer-container { flex-direction: column; gap: 1rem; text-align: center; }
+            
+            .nav-container { width: 100%; padding-bottom: 0; margin-bottom: 15px; gap: 15px; }
+            .nav-group { gap: 8px; }
+            .glass-nav { border-radius: 14px; width: auto; display: inline-flex; gap: 5px; padding: 5px; }
+            .nav-btn { padding: 12px 24px; font-size: 0.85rem; justify-content: center; border-radius: 10px; }
+            .env-nav .nav-btn { padding: 8px 15px; }
+            .section-title { font-size: 1rem; }
+            .chart-container { height: 280px; }
+            .mobile-only-label { display: block; margin-bottom: 8px; }
         }
 
         /* Premium Loader */
         #loader {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: white; z-index: 10000; display: flex; flex-direction: column;
-            align-items: center; justify-content: center; transition: opacity 0.5s ease;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #ffffff;
+            z-index: 100000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.5s ease;
         }
         .loader-logo { width: 120px; animation: logoPulse 1.5s ease-in-out infinite; }
         .loader-spinner {
@@ -589,6 +624,8 @@ html_template = """
     <header>
         <div class="header-container">
             <div class="logo-section">
+                <a href="dashboard.html" class="header-home-btn"><i class="fas fa-home"></i></a>
+
                 <a href="dashboard.html" style="text-decoration: none; display: flex; align-items: center;">
                     <img src="https://hirepro.in/wp-content/uploads/2025/05/HirePro-logo.svg" alt="HirePro Logo" class="logo-img">
                 </a>
@@ -634,13 +671,19 @@ html_template = """
     </main>
 
     <footer>
-        <div>&copy; 2026 HirePro Analytics . Confidential</div>
-        <div>v2.4.0-daily</div>
+        <div class="footer-container">
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+                <span style="text-transform: uppercase; font-size: 0.7rem; letter-spacing: 0.05em; font-weight: 700;">Build ID:</span>
+                <span class="commit-badge"><i class="fas fa-code-branch" style="margin-right:0.4rem; opacity:0.5;"></i>{commit_id}</span>
+            </div>
+            <div>&copy; 2026 HirePro. All rights reserved.</div>
+        </div>
     </footer>
 
-    <a href="dashboard.html" class="home-btn">
+    <a href="dashboard.html" class="home-btn" title="Go to Dashboard">
         <i class="fas fa-home"></i>
     </a>
+
 
     <script>
         const rawData = __DATA_JSON__;
@@ -667,16 +710,31 @@ html_template = """
             renderContent();
         }
 
+        function toggleChart(btn) {
+            const card = btn.closest('.section-card');
+            const section = card.querySelector('.chart-section');
+            const isVisible = section.classList.toggle('active');
+            btn.classList.toggle('active', isVisible);
+            btn.querySelector('span').innerText = isVisible ? 'Hide Graph' : 'Show Graph';
+        }
+
         function renderContent() {
             const container = document.getElementById('report-content');
-            const data = rawData[currentOp][currentEnv] || [];
+            container.style.opacity = '0';
+            container.style.transform = 'translateY(15px)';
             
-            if (data.length === 0) {
-                container.innerHTML = `<div style="text-align:center; padding: 50px; color: #64748b;">No data available for ${currentEnv}</div>`;
-                return;
-            }
+            setTimeout(() => {
+                const data = rawData[currentOp][currentEnv] || [];
+                
+                if (data.length === 0) {
+                    container.innerHTML = `<div style="text-align:center; padding: 50px; color: #64748b;">No data available for ${currentEnv}</div>`;
+                    container.style.opacity = '1';
+                    container.style.transform = 'translateY(0)';
+                    return;
+                }
 
             // Prepare Chart Data
+            const isWebView = window.innerWidth > 768;
             const labels = data.map(d => d.run_date).reverse();
             const apiNames = data[0].apis.map(a => a.name);
             const datasets = apiNames.map((name, idx) => {
@@ -699,14 +757,14 @@ html_template = """
             container.innerHTML = `
                 <div class="section-card">
                     <div class="section-title">
-                        ${currentOp} Performance Trend | <span class="text-orange">${currentEnv}</span>
+                        <div>${currentOp} Performance Trend | <span class="text-orange">${currentEnv}</span></div>
+                        <button class="toggle-graph-btn" onclick="toggleMainChart()">
+                            <i class="${isWebView ? 'fas fa-eye-slash' : 'fas fa-eye'}" id="toggleIcon"></i> 
+                            <span id="toggleText">${isWebView ? 'Hide Graph' : 'Show Graph'}</span>
+                        </button>
                     </div>
                     <div class="chart-header">
-                        <button class="toggle-btn" onclick="toggleMainChart()">
-                            <i class="fas fa-eye-slash" id="toggleIcon"></i> <span id="toggleText">Hide Graph</span>
-                        </button>
-                        
-                        <div id="controlsWrapper" style="display: flex; flex-direction: column; align-items: center; width: 100%;">
+                        <div id="controlsWrapper" style="display: ${isWebView ? 'flex' : 'none'}; flex-direction: column; align-items: center; width: 100%;">
                             <div class="api-visibility-label">API VISIBILITY CONTROL</div>
                             
                             <div class="legend-controls">
@@ -719,7 +777,7 @@ html_template = """
                             </div>
                         </div>
                     </div>
-                    <div id="chartWrapper">
+                    <div id="chartWrapper" style="display: ${isWebView ? 'block' : 'none'};">
                         <div class="axis-label">
                             <i class="fas fa-stopwatch" style="color: var(--primary); font-size: 0.8rem;"></i>
                             RESPONSE TIME (S)
@@ -733,10 +791,10 @@ html_template = """
 
                 <div class="section-card">
                     <div class="section-title">
-                        Detailed Audit | <span class="text-orange">${currentEnv}</span>
+                        <div>Detailed Audit | <span class="text-orange">${currentEnv}</span></div>
                     </div>
                     <div class="chart-header">
-                        <div style="font-size: 0.8rem; font-weight: 700; color: #64748b;">API PERFORMANCE METRICS</div>
+                        <div class="mobile-only-label" style="font-size: 0.8rem; font-weight: 700; color: #64748b;">API PERFORMANCE METRICS</div>
                     </div>
                     <div class="data-table-container">
                         <table>
@@ -775,7 +833,14 @@ html_template = """
             `;
 
             initChart(labels, datasets);
-        }
+            
+            // Trigger Fade In with a slight delay to ensure DOM update
+            setTimeout(() => {
+                container.style.opacity = '1';
+                container.style.transform = 'translateY(0)';
+            }, 50);
+        }, 150);
+    }
 
         function initChart(labels, datasets) {
             const ctx = document.getElementById('mainChart').getContext('2d');
@@ -792,6 +857,7 @@ html_template = """
                     plugins: {
                         legend: { display: false },
                         tooltip: {
+                            enabled: window.innerWidth > 768,
                             backgroundColor: 'rgba(255, 255, 255, 0.9)',
                             titleColor: '#1e293b',
                             bodyColor: '#1e293b',
@@ -822,7 +888,7 @@ html_template = """
             const legendContainer = document.getElementById('chartLegend');
             legendContainer.innerHTML = datasets.map((ds, idx) => `
                 <div class="legend-item ${ds.hidden ? 'hidden' : ''}" onclick="toggleDataset(${idx}, this)">
-                    <div class="legend-dot" style="background:${ds.borderColor}"></div>
+                    <div class="legend-dot" style="border-color:${ds.borderColor}"></div>
                     <span>${ds.label}</span>
                 </div>
             `).join('');
@@ -861,6 +927,7 @@ html_template = """
                 controls.style.display = 'flex';
                 icon.className = 'fas fa-eye-slash';
                 text.innerText = 'Hide Graph';
+                if (charts.main) charts.main.resize();
             } else {
                 wrapper.style.display = 'none';
                 controls.style.display = 'none';
@@ -899,6 +966,8 @@ full_html = html_template.replace("__DATA_JSON__", json.dumps(final_data))
 full_html = full_html.replace("__LATEST_DATE__", latest_date)
 full_html = full_html.replace("__ENV_BTNS__", env_btns)
 full_html = full_html.replace("__DEFAULT_ENV__", default_env)
+commit_id = get_git_commit()
+full_html = full_html.replace("{commit_id}", commit_id)
 
 with open(os.path.join(configfile.AUTOMATION_PATH, "performance_daily.html"), "w") as f:
     f.write(full_html)
