@@ -84,7 +84,7 @@
       <td>Candidate 1 created successfully.</td>
       <td>API returns status OK and a valid CandidateId.</td>
       <td>PASS</td>
-      <td>candidateId=1761</td>
+      <td>candidateId=1803</td>
     </tr>
     <tr>
       <td>TC-01-2: Create candidate 2</td>
@@ -95,7 +95,7 @@
       <td>Candidate 2 created successfully.</td>
       <td>API returns status OK and a valid CandidateId.</td>
       <td>PASS</td>
-      <td>candidateId=1763</td>
+      <td>candidateId=1807</td>
     </tr>
     <tr>
       <td>TC-01-3: Create candidate 3</td>
@@ -106,7 +106,7 @@
       <td>Candidate 3 created successfully.</td>
       <td>API returns status OK and a valid CandidateId.</td>
       <td>PASS</td>
-      <td>candidateId=1767</td>
+      <td>candidateId=1813</td>
     </tr>
     <tr>
       <td>TC-01-4: Tag candidates to event+job</td>
@@ -139,18 +139,18 @@
       <td>ContextId is returned immediately for tracking.</td>
       <td>ContextId string length &gt; 0.</td>
       <td>PASS</td>
-      <td>ContextId=4ee3aa00-a05f-405e-baf9-d2487740696b</td>
+      <td>ContextId=d2f9dbc2-4709-4a62-9b3f-cc9f01222080</td>
     </tr>
     <tr>
       <td>TC-03b: Async task completes</td>
       <td>Happy Path</td>
       <td>High</td>
       <td>Verify the background task completes successfully.</td>
-      <td>Poll /py/crpo/api/v1/getStatusOfAsyncAPI with ContextId 4ee3aa00-a05f-405e-baf9-d2487740696b.</td>
+      <td>Poll /py/crpo/api/v1/getStatusOfAsyncAPI with ContextId d2f9dbc2-4709-4a62-9b3f-cc9f01222080.</td>
       <td>JobState reaches SUCCESS or OK.</td>
       <td>JobState matches 'SUCCESS' or 'OK' within 60 seconds.</td>
-      <td>FAIL</td>
-      <td>final state=TIMEOUT</td>
+      <td>PASS</td>
+      <td>final state=SUCCESS</td>
     </tr>
     <tr>
       <td>TC-04: Invalid candidateIds → No data</td>
@@ -326,7 +326,7 @@
       <td>Response does not contain the unescaped script tag.</td>
       <td>JSON response does not contain the raw '&lt;script&gt;' string.</td>
       <td>PASS</td>
-      <td>HTTP 403, xss_reflected=False</td>
+      <td>HTTP 200, xss_reflected=False</td>
     </tr>
     <tr>
       <td>TC-S6: Oversized list (1000 IDs) → no crash</td>
@@ -336,8 +336,8 @@
       <td>Call bulk status change with 1000 candidate IDs.</td>
       <td>Server processes the request within reasonable time limits.</td>
       <td>Elapsed time &lt; 30s and no HTTP 500.</td>
-      <td>FAIL</td>
-      <td>HTTP 403, status=None, elapsed=0.1s</td>
+      <td>PASS</td>
+      <td>HTTP 200, status=KO, elapsed=0.2s</td>
     </tr>
     <tr>
       <td>TC-S7: IDOR wrong eventId → no data returned</td>

@@ -84,7 +84,7 @@
       <td>API returns OK with a valid FilePath (S3 URL).</td>
       <td>FilePath is present or KO returned with valid error reason.</td>
       <td>PASS</td>
-      <td>status=KO, FilePath=missing, error={'description': 'Unable to form admit card'}</td>
+      <td>status=KO, FilePath=present, error=None</td>
     </tr>
     <tr>
       <td>TC-02: getAdmitCard (async)</td>
@@ -106,7 +106,7 @@
       <td>API returns status=OK and a previewUrl for verification.</td>
       <td>previewUrl is present in response.</td>
       <td>PASS</td>
-      <td>status=KO, previewUrl=missing, error={'description': 'Unable to form admit card'}</td>
+      <td>status=OK, previewUrl=present, error=None</td>
     </tr>
     <tr>
       <td>TC-04: generateAndSaveQRCode</td>
@@ -491,7 +491,7 @@
       <td>Server escapes or rejects tag; no reflection in response.</td>
       <td>No raw '&lt;script&gt;' in JSON body.</td>
       <td>PASS</td>
-      <td>status=None, xss_reflected=False</td>
+      <td>status=OK, xss_reflected=False</td>
     </tr>
     <tr>
       <td>TC-S06: IDOR Applicant</td>

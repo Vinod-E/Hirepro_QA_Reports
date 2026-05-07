@@ -106,7 +106,7 @@
       <td>Candidate created.</td>
       <td>Candidate created successfully.</td>
       <td>PASS</td>
-      <td>CandidateId=1757</td>
+      <td>CandidateId=1817</td>
     </tr>
     <tr>
       <td>TC-04: Verify masked AadhaarNo</td>
@@ -139,7 +139,7 @@
       <td>Candidate created.</td>
       <td>Candidate created successfully.</td>
       <td>PASS</td>
-      <td>CandidateId=1769</td>
+      <td>CandidateId=1819</td>
     </tr>
     <tr>
       <td>TC-07: Verify unmasked AadhaarNo</td>
@@ -172,7 +172,7 @@
       <td>Candidate created.</td>
       <td>No server error.</td>
       <td>PASS</td>
-      <td>CandidateId=1773</td>
+      <td>CandidateId=1823</td>
     </tr>
     <tr>
       <td>TC-10b: Empty AadhaarNo stored as empty/null</td>
@@ -194,7 +194,7 @@
       <td>Candidate created.</td>
       <td>No server error.</td>
       <td>PASS</td>
-      <td>CandidateId=1775</td>
+      <td>CandidateId=1825</td>
     </tr>
     <tr>
       <td>TC-U1a: Candidate created with raw Aadhaar</td>
@@ -205,7 +205,7 @@
       <td>Candidate created with raw Aadhaar.</td>
       <td>AadhaarNo is stored as-is.</td>
       <td>PASS</td>
-      <td>CandidateId=1777, AadhaarNo=[MASKED_AADHAAR]</td>
+      <td>CandidateId=1827, AadhaarNo=[MASKED_AADHAAR]</td>
     </tr>
     <tr>
       <td>TC-U1b: AadhaarNo masked after update with flag=true</td>
@@ -227,7 +227,7 @@
       <td>AadhaarNo stored as-is.</td>
       <td>Stored value = Raw number.</td>
       <td>PASS</td>
-      <td>CandidateId=1779, AadhaarNo=[MASKED_AADHAAR]</td>
+      <td>CandidateId=1829, AadhaarNo=[MASKED_AADHAAR]</td>
     </tr>
     <tr>
       <td>TC-U2b: AadhaarNo stays raw when not in update payload</td>
@@ -293,7 +293,7 @@
       <td>No crash/leak.</td>
       <td>No 500 error, data stored as string.</td>
       <td>PASS</td>
-      <td>payload="'; DROP TABLE candidates; --": created cid=1785, stored='XXXX-XXXX-XXXX-XXXX-XXXX-XXXX-'; payload='1 OR 1=1': created cid=1787, stored='XXXX- 1=1'; payload="[MASKED_AADHAAR]' UNION SELECT * F": created cid=1789, stored='XXXX-XXXX-XXXX-XXXX-XXXX-XXXX-'</td>
+      <td>payload="'; DROP TABLE candidates; --": created cid=1835, stored='XXXX-XXXX-XXXX-XXXX-XXXX-XXXX-'; payload='1 OR 1=1': created cid=1837, stored='XXXX- 1=1'; payload="[MASKED_AADHAAR]' UNION SELECT * F": created cid=1839, stored='XXXX-XXXX-XXXX-XXXX-XXXX-XXXX-'</td>
     </tr>
     <tr>
       <td>TC-S4: XSS in AadhaarNo not reflected</td>
@@ -304,7 +304,7 @@
       <td>Not reflected unescaped.</td>
       <td>No script execution/raw reflection.</td>
       <td>PASS</td>
-      <td>Rejected: status=None, message=''</td>
+      <td>cid=1841, stored='XXXX-XXXX-XXXX-XXXX-XXXX-XXXX-X-ipt&gt;', xss_reflected=False</td>
     </tr>
     <tr>
       <td>TC-S5: No auth token on get_candidate</td>
@@ -348,7 +348,7 @@
       <td>Value is masked.</td>
       <td>Masking removes/replaces script tags.</td>
       <td>PASS</td>
-      <td>Rejected: None</td>
+      <td>cid=1843, stored='XXXX-XXXX-XXXX-XXXX-XXXX-XXXX-XXXX-XXXX-XXXX-9012', has_html=False</td>
     </tr>
     <tr>
       <td>TC-08: Restore original config</td>

@@ -84,7 +84,7 @@
       <td>validityTill is null.</td>
       <td>Initial validity value is null.</td>
       <td>PASS</td>
-      <td>roleId=377, userId=453, email=[MASKED_EMAIL], initial validity_till=None (expected null)</td>
+      <td>roleId=397, userId=479, email=[MASKED_EMAIL], initial validity_till=None (expected null)</td>
     </tr>
     <tr>
       <td>TC-02: Set validity by userId</td>
@@ -95,7 +95,7 @@
       <td>validityTill is set to ~now + 30d.</td>
       <td>Response message matches and stored date is correct.</td>
       <td>PASS</td>
-      <td>message='Updated successfully.', expected~=2026-06-06 11:46:31, stored=2026-06-06 11:46:32</td>
+      <td>message='Updated successfully.', expected~=2026-06-06 18:38:57, stored=2026-06-06 18:39:01</td>
     </tr>
     <tr>
       <td>TC-03: validityTill in user details</td>
@@ -106,7 +106,7 @@
       <td>validityTill is present.</td>
       <td>Field exists and is not null.</td>
       <td>PASS</td>
-      <td>userId=453, roleId=377, validityTill=2026-06-06T11:46:32</td>
+      <td>userId=479, roleId=397, validityTill=2026-06-06T18:39:01</td>
     </tr>
     <tr>
       <td>TC-04: Set validity by email</td>
@@ -117,7 +117,7 @@
       <td>Updated successfully.</td>
       <td>Stored date matches expected (+30d).</td>
       <td>PASS</td>
-      <td>email=[MASKED_EMAIL], message='Updated successfully.', expected~=2026-06-06 11:46:34, stored=2026-06-06 11:46:35</td>
+      <td>email=[MASKED_EMAIL], message='Updated successfully.', expected~=2026-06-06 18:39:10, stored=2026-06-06 18:39:11</td>
     </tr>
     <tr>
       <td>TC-05: Update to different days</td>
@@ -128,7 +128,7 @@
       <td>Previous validity is overwritten.</td>
       <td>New date is correct.</td>
       <td>PASS</td>
-      <td>old=2026-06-06T11:46:32, new=2026-05-17 11:46:41, expected~=2026-05-17 11:46:36</td>
+      <td>old=2026-06-06T18:39:01, new=2026-05-17 18:39:21, expected~=2026-05-17 18:39:13</td>
     </tr>
     <tr>
       <td>TC-06: Max 365 days</td>
@@ -205,7 +205,7 @@
       <td>validityTill is null.</td>
       <td>Initial validity is not automatically inherited.</td>
       <td>PASS</td>
-      <td>userId=453, roleId=383, validity_till=None (expected null)</td>
+      <td>userId=479, roleId=407, validity_till=None (expected null)</td>
     </tr>
     <tr>
       <td>TC-13: GetAllUsers validity filter</td>
@@ -216,7 +216,7 @@
       <td>User is found.</td>
       <td>Filter correctly identifies users with active validity.</td>
       <td>PASS</td>
-      <td>filter=IsUserRoleValidityOver=false, role=377, user=453, total=1, found_in_page=False</td>
+      <td>filter=IsUserRoleValidityOver=false, role=397, user=479, total=1, found_in_page=False</td>
     </tr>
     <tr>
       <td>TC-15: Bulk update</td>
@@ -227,7 +227,7 @@
       <td>All items updated.</td>
       <td>Individual users get correct unique timestamps.</td>
       <td>PASS</td>
-      <td>userA: msg='Updated successfully.', stored=2026-07-06 11:46:50, expected~=2026-07-06 11:46:49 | userB: msg='Updated successfully.', stored=2026-08-05 11:46:50, expected~=2026-08-05 11:46:49</td>
+      <td>userA: msg='Updated successfully.', stored=2026-07-06 18:39:36, expected~=2026-07-06 18:39:35 | userB: msg='Updated successfully.', stored=2026-08-05 18:39:36, expected~=2026-08-05 18:39:35</td>
     </tr>
     <tr>
       <td>TC-16: Exact 365 days</td>
@@ -238,7 +238,7 @@
       <td>Accepted.</td>
       <td>Stored date is exactly +365 days.</td>
       <td>PASS</td>
-      <td>message='Updated successfully.', expected~=2027-05-07 11:46:52, stored=2027-05-07 11:46:53</td>
+      <td>message='Updated successfully.', expected~=2027-05-07 18:39:38, stored=2027-05-07 18:39:38</td>
     </tr>
     <tr>
       <td>TC-17: Minimum 1 day</td>
@@ -249,7 +249,7 @@
       <td>Accepted.</td>
       <td>Stored date is exactly +1 day.</td>
       <td>PASS</td>
-      <td>message='Updated successfully.', expected~=2026-05-08 11:46:58, stored=2026-05-08 11:46:59</td>
+      <td>message='Updated successfully.', expected~=2026-05-08 18:39:40, stored=2026-05-08 18:39:40</td>
     </tr>
     <tr>
       <td>TC-18: Missing userId and email</td>
@@ -348,7 +348,7 @@
       <td>No 500 error.</td>
       <td>Script is not executed and handles safely.</td>
       <td>PASS</td>
-      <td>HTTP 403</td>
+      <td>HTTP 200, error='Users not found.'</td>
     </tr>
     <tr>
       <td>TC-19: Teardown cleanup</td>

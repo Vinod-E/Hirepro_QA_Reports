@@ -79,12 +79,12 @@
       <td>TC-01: Create role with expiry</td>
       <td>Setup</td>
       <td>High</td>
-      <td>Create role 'AutoRoleExp_efea4f_01' with DefaultExpiryInDays=30.</td>
+      <td>Create role 'AutoRoleExp_5f1eb1_01' with DefaultExpiryInDays=30.</td>
       <td>1. Login to CRPO.\n2. Create role with DefaultExpiryInDays.</td>
       <td>Role is created.</td>
       <td>RoleId is returned.</td>
       <td>PASS</td>
-      <td>RoleId=375, name=AutoRoleExp_efea4f_01, days=30</td>
+      <td>RoleId=395, name=AutoRoleExp_5f1eb1_01, days=30</td>
     </tr>
     <tr>
       <td>TC-02: Role stores DefaultExpiryInDays</td>
@@ -106,7 +106,7 @@
       <td>User created.</td>
       <td>expiry_on = ~now + days.</td>
       <td>PASS</td>
-      <td>userId=455, expected~=2026-06-06 11:46:29, stored=2026-06-06 11:46:30</td>
+      <td>userId=481, expected~=2026-06-06 18:38:51, stored=2026-06-06 18:38:54</td>
     </tr>
     <tr>
       <td>TC-04: expiryOn in role details</td>
@@ -117,7 +117,7 @@
       <td>User details returned.</td>
       <td>expiryOn field is present.</td>
       <td>PASS</td>
-      <td>userId=455, roleId=375, expiryOn=2026-06-06T11:46:30</td>
+      <td>userId=481, roleId=395, expiryOn=2026-06-06T18:38:54</td>
     </tr>
     <tr>
       <td>TC-05: No expiry without default</td>
@@ -128,7 +128,7 @@
       <td>User created.</td>
       <td>expiry_on is null.</td>
       <td>PASS</td>
-      <td>userId=459, roleId=379, expiry_on=None (expected null)</td>
+      <td>userId=483, roleId=399, expiry_on=None (expected null)</td>
     </tr>
     <tr>
       <td>TC-06: Different expiry days</td>
@@ -139,7 +139,7 @@
       <td>User created.</td>
       <td>expiry_on matches new days.</td>
       <td>PASS</td>
-      <td>days=10, userId=461, expected~=2026-05-17 11:46:37, stored=2026-05-17 11:46:45</td>
+      <td>days=10, userId=487, expected~=2026-05-17 18:39:12, stored=2026-05-17 18:39:15</td>
     </tr>
     <tr>
       <td>TC-07: Refresh skips non-expired</td>
@@ -161,7 +161,7 @@
       <td>Expiry is reset.</td>
       <td>expiry_on is updated to now + days.</td>
       <td>PASS</td>
-      <td>message='Refreshed successfully.', old=2026-06-06T11:46:30, new~=2026-06-06 11:46:48, expected~=2026-06-06 11:46:47</td>
+      <td>message='Refreshed successfully.', old=2026-06-06T18:38:54, new~=2026-06-06 18:39:21, expected~=2026-06-06 18:39:21</td>
     </tr>
     <tr>
       <td>TC-09: Soft-delete skips non-expired</td>
@@ -183,7 +183,7 @@
       <td>Expiry is reset.</td>
       <td>Uses current DefaultExpiryInDays.</td>
       <td>PASS</td>
-      <td>role_days=15, new~=2026-05-22 11:46:50, expected~=2026-05-22 11:46:49</td>
+      <td>role_days=15, new~=2026-05-22 18:39:23, expected~=2026-05-22 18:39:22</td>
     </tr>
     <tr>
       <td>TC-11: Refresh skips no default</td>
@@ -205,7 +205,7 @@
       <td>One record remains.</td>
       <td>Only one user_roles record.</td>
       <td>PASS</td>
-      <td>roleId=375, records=1 (expected 1)</td>
+      <td>roleId=395, records=1 (expected 1)</td>
     </tr>
     <tr>
       <td>TC-S1: No auth on role create</td>
@@ -271,7 +271,7 @@
       <td>Not 500.</td>
       <td>Server does not crash.</td>
       <td>PASS</td>
-      <td>HTTP 200, role created (id=389) — accepted negative value</td>
+      <td>HTTP 200, role created (id=409) — accepted negative value</td>
     </tr>
     <tr>
       <td>TC-S7: Zero DefaultExpiryInDays</td>
@@ -282,7 +282,7 @@
       <td>Not 500.</td>
       <td>Server does not crash.</td>
       <td>PASS</td>
-      <td>HTTP 200, role created (id=391), user expiry_on=None</td>
+      <td>HTTP 200, role created (id=411), user expiry_on=None</td>
     </tr>
     <tr>
       <td>TC-S8: Huge DefaultExpiryInDays</td>
@@ -293,7 +293,7 @@
       <td>Not 500.</td>
       <td>Server does not crash.</td>
       <td>PASS</td>
-      <td>HTTP 200, role created (id=393) — large value accepted</td>
+      <td>HTTP 200, role created (id=413) — large value accepted</td>
     </tr>
     <tr>
       <td>TC-S9: Refresh non-existent user</td>
@@ -326,7 +326,7 @@
       <td>Not 500.</td>
       <td>Payloads stored or rejected safely.</td>
       <td>PASS</td>
-      <td>SQL: HTTP 200, rejected | XSS: HTTP 403 | SQL_UNION: HTTP 200, rejected</td>
+      <td>SQL: HTTP 200, rejected | XSS: HTTP 200, rejected | SQL_UNION: HTTP 200, rejected</td>
     </tr>
     <tr>
       <td>TC-13: Teardown cleanup</td>
