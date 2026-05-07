@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preview: API_role_expiry_claude.xlsx</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --primary: #4f46e5; --bg: #f8fafc; --text: #1e293b; --border: #e2e8f0; --success: #10b981; --danger: #ef4444; }
+        body { font-family: 'Outfit', sans-serif; background-color: var(--bg); color: var(--text); padding: 2rem; margin: 0; }
+        .container { max-width: 1400px; margin: 0 auto; background: white; padding: 2.5rem; border-radius: 1.5rem; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05); border: 1px solid var(--border); }
+        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 2px solid var(--bg); }
+        .title-area { display: flex; align-items: center; gap: 1rem; }
+        .title-area i { font-size: 2rem; color: var(--primary); }
+        h1 { font-size: 1.5rem; font-weight: 800; margin: 0; }
+        .actions { display: flex; gap: 1rem; }
+        .btn { text-decoration: none; padding: 0.6rem 1.25rem; border-radius: 10px; font-weight: 700; font-size: 0.85rem; display: flex; align-items: center; gap: 0.5rem; transition: all 0.2s; border: none; cursor: pointer; }
+        .btn-download { background: var(--primary); color: white; }
+        .btn-download:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3); }
+        .btn-back { background: #f1f5f9; color: var(--text); }
+        .btn-back:hover { background: #e2e8f0; }
+        .table-wrapper { overflow-x: auto; border-radius: 12px; border: 1px solid var(--border); background: white; }
+        .preview-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; border-spacing: 0; }
+        .preview-table td { padding: 0.85rem 1.15rem; border-bottom: 1px solid var(--border); border-right: 1px solid var(--border); white-space: nowrap; color: var(--text); }
+        .preview-table tr:hover { background: #f1f5f9 !important; }
+
+        /* Header & Sub-header Styling */
+        .preview-table tr:first-child td,
+        .preview-table tr.sub-header td { 
+            background: #f1f5f9 !important; 
+            font-weight: 800 !important; 
+            color: #475569 !important; 
+            text-transform: uppercase; 
+            font-size: 0.75rem; 
+            letter-spacing: 0.025em;
+            border-bottom: 2px solid #cbd5e1 !important;
+        }
+
+        .preview-table tr:nth-child(even) { background: #fafbfc; }
+        .preview-table tr:hover { background: #f1f5f9 !important; }
+
+        /* Status Colors */
+        .status-pass { color: var(--success) !important; font-weight: 800; background: #ecfdf5 !important; }
+        .status-fail { color: var(--danger) !important; font-weight: 800; background: #fef2f2 !important; }
+        .status-na { color: #94a3b8; font-style: italic; opacity: 0.5; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="title-area">
+                <i class="fas fa-file-excel"></i>
+                <div>
+                    <h1>API_role_expiry_claude.xlsx</h1>
+                    <div style="font-size: 0.75rem; color: #64748b; font-weight: 600; margin-top: 0.2rem; text-transform: uppercase;">Spreadsheet Preview (All Rows)</div>
+                </div>
+            </div>
+            <div class="actions">
+                <button onclick="window.close()" class="btn btn-back"><i class="fas fa-times"></i> Close Tab</button>
+                <a href="API_role_expiry_claude.xlsx" download="API_role_expiry_claude.xlsx" class="btn btn-download"><i class="fas fa-download"></i> Download Excel</a>
+            </div>
+        </header>
+        <div class="table-wrapper">
+            <table border="1" class="dataframe preview-table">
+  <tbody>
+    <tr>
+      <td>TC ID</td>
+      <td>Group</td>
+      <td>Priority</td>
+      <td>Title / Description</td>
+      <td>Steps / Details</td>
+      <td>Expected Result</td>
+      <td>Pass Criteria</td>
+      <td>Status</td>
+      <td>Actual Result</td>
+    </tr>
+    <tr>
+      <td>TC-01: Create role with expiry</td>
+      <td>Setup</td>
+      <td>High</td>
+      <td>Create role 'AutoRoleExp_efea4f_01' with DefaultExpiryInDays=30.</td>
+      <td>1. Login to CRPO.\n2. Create role with DefaultExpiryInDays.</td>
+      <td>Role is created.</td>
+      <td>RoleId is returned.</td>
+      <td>PASS</td>
+      <td>RoleId=375, name=AutoRoleExp_efea4f_01, days=30</td>
+    </tr>
+    <tr>
+      <td>TC-02: Role stores DefaultExpiryInDays</td>
+      <td>Role Config</td>
+      <td>Medium</td>
+      <td>GET role by ID and verify DefaultExpiryInDays matches what was sent.</td>
+      <td>1. GET role by ID.\n2. Verify DefaultExpiryInDays.</td>
+      <td>Role details returned.</td>
+      <td>DefaultExpiryInDays matches input.</td>
+      <td>PASS</td>
+      <td>expected=30, stored=30</td>
+    </tr>
+    <tr>
+      <td>TC-03: User gets expiry_on</td>
+      <td>Assignment</td>
+      <td>High</td>
+      <td>expiry_on must be ~now + 30 days.</td>
+      <td>1. Create user with expiry role.\n2. Verify expiry_on.</td>
+      <td>User created.</td>
+      <td>expiry_on = ~now + days.</td>
+      <td>PASS</td>
+      <td>userId=455, expected~=2026-06-06 11:46:29, stored=2026-06-06 11:46:30</td>
+    </tr>
+    <tr>
+      <td>TC-04: expiryOn in role details</td>
+      <td>Assignment</td>
+      <td>Medium</td>
+      <td>GET user by ID must include expiryOn in UserRoleDetails for roles with default expiry.</td>
+      <td>1. GET user by ID.\n2. Check UserRoleDetails.</td>
+      <td>User details returned.</td>
+      <td>expiryOn field is present.</td>
+      <td>PASS</td>
+      <td>userId=455, roleId=375, expiryOn=2026-06-06T11:46:30</td>
+    </tr>
+    <tr>
+      <td>TC-05: No expiry without default</td>
+      <td>Assignment</td>
+      <td>Medium</td>
+      <td>Role without DefaultExpiryInDays -&gt; user_roles.expiry_on must be null.</td>
+      <td>1. Create role without expiry.\n2. Assign to user.\n3. Check expiry_on.</td>
+      <td>User created.</td>
+      <td>expiry_on is null.</td>
+      <td>PASS</td>
+      <td>userId=459, roleId=379, expiry_on=None (expected null)</td>
+    </tr>
+    <tr>
+      <td>TC-06: Different expiry days</td>
+      <td>Role Config</td>
+      <td>Medium</td>
+      <td>Create role with DefaultExpiryInDays=10. User's expiry_on must be ~now + 10 days.</td>
+      <td>1. Create role with different days.\n2. Assign to user.\n3. Check expiry_on.</td>
+      <td>User created.</td>
+      <td>expiry_on matches new days.</td>
+      <td>PASS</td>
+      <td>days=10, userId=461, expected~=2026-05-17 11:46:37, stored=2026-05-17 11:46:45</td>
+    </tr>
+    <tr>
+      <td>TC-07: Refresh skips non-expired</td>
+      <td>Refresh</td>
+      <td>Medium</td>
+      <td>Refresh without isForce on a non-expired role must skip with 'User role not expired.'</td>
+      <td>1. Refresh non-expired role without force.</td>
+      <td>Refresh skipped.</td>
+      <td>Message contains 'not expired'.</td>
+      <td>PASS</td>
+      <td>message='User role not expired.'</td>
+    </tr>
+    <tr>
+      <td>TC-08: Force refresh resets expiry</td>
+      <td>Refresh</td>
+      <td>High</td>
+      <td>Refresh with isForce=true must reset expiry_on to now + DefaultExpiryInDays.</td>
+      <td>1. Refresh with isForce=true.</td>
+      <td>Expiry is reset.</td>
+      <td>expiry_on is updated to now + days.</td>
+      <td>PASS</td>
+      <td>message='Refreshed successfully.', old=2026-06-06T11:46:30, new~=2026-06-06 11:46:48, expected~=2026-06-06 11:46:47</td>
+    </tr>
+    <tr>
+      <td>TC-09: Soft-delete skips non-expired</td>
+      <td>Soft Delete</td>
+      <td>Medium</td>
+      <td>Soft-delete on a non-expired role must skip with 'User role not expired.'</td>
+      <td>1. Soft-delete non-expired role.</td>
+      <td>Delete skipped.</td>
+      <td>Message contains 'not expired'.</td>
+      <td>PASS</td>
+      <td>message='User role not expired.'</td>
+    </tr>
+    <tr>
+      <td>TC-10: Refresh uses role's days</td>
+      <td>Refresh</td>
+      <td>Medium</td>
+      <td>Force-refresh must compute expiry from the role's DefaultExpiryInDays (15).</td>
+      <td>1. Force refresh on role with updated days.</td>
+      <td>Expiry is reset.</td>
+      <td>Uses current DefaultExpiryInDays.</td>
+      <td>PASS</td>
+      <td>role_days=15, new~=2026-05-22 11:46:50, expected~=2026-05-22 11:46:49</td>
+    </tr>
+    <tr>
+      <td>TC-11: Refresh skips no default</td>
+      <td>Refresh</td>
+      <td>Medium</td>
+      <td>Force-refresh on role without DefaultExpiryInDays must skip with 'Role default expiry not exists.'</td>
+      <td>1. Refresh role without DefaultExpiryInDays.</td>
+      <td>Refresh skipped.</td>
+      <td>Message contains 'not exists'.</td>
+      <td>PASS</td>
+      <td>message='Role default expiry not exists.'</td>
+    </tr>
+    <tr>
+      <td>TC-12: No duplicate on re-assign</td>
+      <td>Assignment</td>
+      <td>Medium</td>
+      <td>Assigning the same role twice must not create a duplicate user_roles record.</td>
+      <td>1. Assign same role twice.\n2. Check UserRoleDetails.</td>
+      <td>One record remains.</td>
+      <td>Only one user_roles record.</td>
+      <td>PASS</td>
+      <td>roleId=375, records=1 (expected 1)</td>
+    </tr>
+    <tr>
+      <td>TC-S1: No auth on role create</td>
+      <td>Security: Auth</td>
+      <td>High</td>
+      <td>Role create without X-Auth-Token must be rejected — no role created.</td>
+      <td>1. Create role without token.</td>
+      <td>Rejected.</td>
+      <td>HTTP 401/403 or KO status.</td>
+      <td>PASS</td>
+      <td>HTTP 400, roleId=None, status=KO</td>
+    </tr>
+    <tr>
+      <td>TC-S2: Forged token on role create</td>
+      <td>Security: Auth</td>
+      <td>High</td>
+      <td>Role create with forged/random token must be rejected.</td>
+      <td>1. Create role with random token.</td>
+      <td>Rejected.</td>
+      <td>HTTP 401/403 or KO status.</td>
+      <td>PASS</td>
+      <td>HTTP 200, roleId=None, status=KO</td>
+    </tr>
+    <tr>
+      <td>TC-S3: No auth on refresh expiry</td>
+      <td>Security: Auth</td>
+      <td>High</td>
+      <td>Refresh expiry without X-Auth-Token must be rejected.</td>
+      <td>1. Refresh without token.</td>
+      <td>Rejected.</td>
+      <td>HTTP 401/403 or KO status.</td>
+      <td>PASS</td>
+      <td>HTTP 400, status=KO</td>
+    </tr>
+    <tr>
+      <td>TC-S4: Forged token on refresh expiry</td>
+      <td>Security: Auth</td>
+      <td>High</td>
+      <td>Refresh expiry with forged token must be rejected.</td>
+      <td>1. Refresh with forged token.</td>
+      <td>Rejected.</td>
+      <td>HTTP 401/403 or KO status.</td>
+      <td>PASS</td>
+      <td>HTTP 200, status=KO</td>
+    </tr>
+    <tr>
+      <td>TC-S5: No auth on soft delete</td>
+      <td>Security: Auth</td>
+      <td>High</td>
+      <td>Soft-delete without X-Auth-Token must be rejected.</td>
+      <td>1. Soft delete without token.</td>
+      <td>Rejected.</td>
+      <td>HTTP 401/403 or KO status.</td>
+      <td>PASS</td>
+      <td>HTTP 400, status=KO</td>
+    </tr>
+    <tr>
+      <td>TC-S6: Negative DefaultExpiryInDays</td>
+      <td>Security: Input Validation</td>
+      <td>Medium</td>
+      <td>Negative DefaultExpiryInDays must not cause a 500 server error.</td>
+      <td>1. Create role with negative days.</td>
+      <td>Not 500.</td>
+      <td>Server does not crash.</td>
+      <td>PASS</td>
+      <td>HTTP 200, role created (id=389) — accepted negative value</td>
+    </tr>
+    <tr>
+      <td>TC-S7: Zero DefaultExpiryInDays</td>
+      <td>Security: Input Validation</td>
+      <td>Medium</td>
+      <td>Zero DefaultExpiryInDays must not cause 500. Zero is falsy so expiry_on should be null.</td>
+      <td>1. Create role with zero days.</td>
+      <td>Not 500.</td>
+      <td>Server does not crash.</td>
+      <td>PASS</td>
+      <td>HTTP 200, role created (id=391), user expiry_on=None</td>
+    </tr>
+    <tr>
+      <td>TC-S8: Huge DefaultExpiryInDays</td>
+      <td>Security: Input Validation</td>
+      <td>Medium</td>
+      <td>Extremely large DefaultExpiryInDays must not cause 500.</td>
+      <td>1. Create role with days=999999.</td>
+      <td>Not 500.</td>
+      <td>Server does not crash.</td>
+      <td>PASS</td>
+      <td>HTTP 200, role created (id=393) — large value accepted</td>
+    </tr>
+    <tr>
+      <td>TC-S9: Refresh non-existent user</td>
+      <td>Security: Invalid IDs</td>
+      <td>Medium</td>
+      <td>Refresh with bogus user ID must return error gracefully, not crash with 500.</td>
+      <td>1. Refresh bogus user ID.</td>
+      <td>Not 500.</td>
+      <td>Error handled gracefully.</td>
+      <td>PASS</td>
+      <td>HTTP 200, status=KO, error={'errorCode': 1000, 'errorDescription': 'Users roles not found.', 'errorDict': None}</td>
+    </tr>
+    <tr>
+      <td>TC-S10: Soft-delete non-existent IDs</td>
+      <td>Security: Invalid IDs</td>
+      <td>Medium</td>
+      <td>Soft-delete with bogus IDs must return 'User role not found', not crash.</td>
+      <td>1. Soft delete bogus IDs.</td>
+      <td>Not 500.</td>
+      <td>Error handled gracefully.</td>
+      <td>PASS</td>
+      <td>HTTP 200, message='User role not found.'</td>
+    </tr>
+    <tr>
+      <td>TC-S11: SQL/XSS injection in role name</td>
+      <td>Security: Injection</td>
+      <td>High</td>
+      <td>SQL/XSS payloads in role name must not crash the server or execute.</td>
+      <td>1. Create role with injection payload.</td>
+      <td>Not 500.</td>
+      <td>Payloads stored or rejected safely.</td>
+      <td>PASS</td>
+      <td>SQL: HTTP 200, rejected | XSS: HTTP 403 | SQL_UNION: HTTP 200, rejected</td>
+    </tr>
+    <tr>
+      <td>TC-13: Teardown cleanup</td>
+      <td>Teardown</td>
+      <td>Medium</td>
+      <td>Delete all test users and roles created during the test run.</td>
+      <td>1. Delete all test users and roles.</td>
+      <td>Cleaned up.</td>
+      <td>Users/Roles deleted successfully.</td>
+      <td>PASS</td>
+      <td>users=7 deleted=True, roles=8 deleted=True</td>
+    </tr>
+  </tbody>
+</table>
+        </div>
+    </div>
+    <script>
+        document.querySelectorAll('.preview-table tr').forEach((tr, rowIndex) => {
+            let statusCount = 0;
+            const cells = tr.querySelectorAll('td');
+
+            cells.forEach(td => {
+                const text = td.innerText.trim().toUpperCase();
+
+                // Highlight Pass/Fail
+                if (['PASS', 'SUCCESS', 'PASSED'].includes(text)) {
+                    td.classList.add('status-pass');
+                } else if (['FAIL', 'FAILURE', 'FAILED', 'ERROR'].includes(text)) {
+                    td.classList.add('status-fail');
+                } else if (text === 'NA') {
+                    td.classList.add('status-na');
+                }
+
+                // Header detection keywords
+                if (['STATUS', 'IDENTITY', 'ID'].includes(text)) {
+                    statusCount++;
+                }
+            });
+
+            // If row has multiple 'Status' labels, it's a sub-header
+            if (statusCount >= 2 && rowIndex > 0) {
+                tr.classList.add('sub-header');
+            }
+        });
+    </script>
+</body>
+</html>
