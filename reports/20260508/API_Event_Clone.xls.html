@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preview: API_Event_Clone.xls</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --primary: #4f46e5; --bg: #f8fafc; --text: #1e293b; --border: #e2e8f0; --success: #10b981; --danger: #ef4444; }
+        body { font-family: 'Outfit', sans-serif; background-color: var(--bg); color: var(--text); padding: 2rem; margin: 0; }
+        .container { max-width: 1400px; margin: 0 auto; background: white; padding: 2.5rem; border-radius: 1.5rem; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05); border: 1px solid var(--border); }
+        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 2px solid var(--bg); }
+        .title-area { display: flex; align-items: center; gap: 1rem; }
+        .title-area i { font-size: 2rem; color: var(--primary); }
+        h1 { font-size: 1.5rem; font-weight: 800; margin: 0; }
+        .actions { display: flex; gap: 1rem; }
+        .btn { text-decoration: none; padding: 0.6rem 1.25rem; border-radius: 10px; font-weight: 700; font-size: 0.85rem; display: flex; align-items: center; gap: 0.5rem; transition: all 0.2s; border: none; cursor: pointer; }
+        .btn-download { background: var(--primary); color: white; }
+        .btn-download:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3); }
+        .btn-back { background: #f1f5f9; color: var(--text); }
+        .btn-back:hover { background: #e2e8f0; }
+        .table-wrapper { overflow-x: auto; border-radius: 12px; border: 1px solid var(--border); background: white; }
+        .preview-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; border-spacing: 0; }
+        .preview-table td { padding: 0.85rem 1.15rem; border-bottom: 1px solid var(--border); border-right: 1px solid var(--border); white-space: nowrap; color: var(--text); }
+        .preview-table tr:hover { background: #f1f5f9 !important; }
+
+        /* Header & Sub-header Styling */
+        .preview-table tr:first-child td,
+        .preview-table tr.sub-header td { 
+            background: #f1f5f9 !important; 
+            font-weight: 800 !important; 
+            color: #475569 !important; 
+            text-transform: uppercase; 
+            font-size: 0.75rem; 
+            letter-spacing: 0.025em;
+            border-bottom: 2px solid #cbd5e1 !important;
+        }
+
+        .preview-table tr:nth-child(even) { background: #fafbfc; }
+        .preview-table tr:hover { background: #f1f5f9 !important; }
+
+        /* Status Colors */
+        .status-pass { color: var(--success) !important; font-weight: 800; background: #ecfdf5 !important; }
+        .status-fail { color: var(--danger) !important; font-weight: 800; background: #fef2f2 !important; }
+        .status-na { color: #94a3b8; font-style: italic; opacity: 0.5; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="title-area">
+                <i class="fas fa-file-excel"></i>
+                <div>
+                    <h1>API_Event_Clone.xls</h1>
+                    <div style="font-size: 0.75rem; color: #64748b; font-weight: 600; margin-top: 0.2rem; text-transform: uppercase;">Spreadsheet Preview (All Rows)</div>
+                </div>
+            </div>
+            <div class="actions">
+                <button onclick="window.close()" class="btn btn-back"><i class="fas fa-times"></i> Close Tab</button>
+                <a href="API_Event_Clone.xls" download="API_Event_Clone.xls" class="btn btn-download"><i class="fas fa-download"></i> Download Excel</a>
+            </div>
+        </header>
+        <div class="table-wrapper">
+            <table border="1" class="dataframe preview-table">
+  <tbody>
+    <tr>
+      <td>Clone Event</td>
+      <td>Pass</td>
+      <td>Login Server</td>
+      <td>QA</td>
+      <td>Lambda</td>
+      <td>On</td>
+      <td>APP Name</td>
+      <td>crpo</td>
+      <td>No.of Test cases</td>
+      <td>4</td>
+      <td>Start Time</td>
+      <td>2026-05-08 15:38:31.557420</td>
+      <td>Failed Test cases</td>
+      <td>0</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Comparision</td>
+      <td>Status</td>
+      <td>Event ID</td>
+      <td>Test ID</td>
+      <td>EventName</td>
+      <td>EventType</td>
+      <td>Requirement</td>
+      <td>Job</td>
+      <td>Test</td>
+      <td>EventFrom</td>
+      <td>EventTo</td>
+      <td>EventSlot</td>
+      <td>Colleges</td>
+      <td>Venue</td>
+      <td>City</td>
+      <td>State</td>
+      <td>Address</td>
+      <td>OwnerName</td>
+      <td>OwnerEmail</td>
+      <td>EC</td>
+      <td>PositiveStage</td>
+      <td>PositiveStatus</td>
+      <td>NegativeStage</td>
+      <td>NegativeStatus</td>
+      <td>RegistrationFrom</td>
+      <td>RegistrationTo</td>
+    </tr>
+    <tr>
+      <td>Input</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>Clone_InCampus</td>
+      <td>InCampus</td>
+      <td>CloneRequirement</td>
+      <td>CloneJob</td>
+      <td>Clone_InCampus_Test</td>
+      <td>2019-11-09 00:00:00</td>
+      <td>2020-11-09 00:00:01</td>
+      <td>Day 1 Exclusive</td>
+      <td>Indian Institute of Management Bangalore</td>
+      <td>Indian Institute of Management Bangalore</td>
+      <td>Bengaluru</td>
+      <td>Karnataka</td>
+      <td>Bangalore, Karnataka</td>
+      <td>admin</td>
+      <td>[USER]@hirepro.in</td>
+      <td>Bussiness_EC_1</td>
+      <td>Eligibility Check</td>
+      <td>Eligible</td>
+      <td>Eligibility Check</td>
+      <td>Not Eligible</td>
+      <td>2019-11-09 00:00:00</td>
+      <td>2020-11-09 00:00:00</td>
+    </tr>
+    <tr>
+      <td>Output</td>
+      <td>Pass</td>
+      <td>33755</td>
+      <td>29187</td>
+      <td>Clone_InCampus</td>
+      <td>InCampus</td>
+      <td>CloneRequirement</td>
+      <td>CloneJob</td>
+      <td>Clone_InCampus_Test</td>
+      <td>2019-11-09T00:00:00</td>
+      <td>2020-11-09T00:00:00</td>
+      <td>Day 1 Exclusive</td>
+      <td>Indian Institute of Management Bangalore</td>
+      <td>Indian Institute of Management Bangalore</td>
+      <td>Bengaluru</td>
+      <td>Karnataka</td>
+      <td>Bangalore, Karnataka</td>
+      <td>admin</td>
+      <td>[USER]@hirepro.in</td>
+      <td>Bussiness_EC_1</td>
+      <td>Eligibility Check</td>
+      <td>Eligible</td>
+      <td>Eligibility Check</td>
+      <td>Not Eligible</td>
+      <td>2019-11-09 00:00:00</td>
+      <td>2020-11-09 00:00:00</td>
+    </tr>
+    <tr>
+      <td>Input</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>Clone_OffCampus</td>
+      <td>OutCampus</td>
+      <td>CloneRequirement</td>
+      <td>CloneJob</td>
+      <td>Clone_OffCampus_Test</td>
+      <td>2019-11-09 00:00:00</td>
+      <td>2020-11-09 00:00:01</td>
+      <td>Day 1 Exclusive</td>
+      <td>A.D.Patel Institute of Technology (ADPIT)-Ahmedabad,Aalim Mohammed Salegh (AMS) - Chennai,Abacus Institute Of Engineering And Management (AIEM)-Mogra,ABES Institute of Technology-Ghaziabad</td>
+      <td>NA</td>
+      <td>Bengaluru</td>
+      <td>Karnataka</td>
+      <td>HirePro Consulting Pvt. Ltd.\nCareerNet Campus, Plot No. 53,\nKariyammana Agrahara Road,\nDevarabisana Halli,\n(Next to Intel Junction Flyover),\nOuter Ring Road,\nBangalore - 560 103</td>
+      <td>HiringManager</td>
+      <td>[MASKED_EMAIL]</td>
+      <td>Bussiness_EC_2</td>
+      <td>Eligibility Check</td>
+      <td>Eligible</td>
+      <td>Eligibility Check</td>
+      <td>Not Eligible</td>
+      <td>2019-11-09 00:00:00</td>
+      <td>2020-11-09 00:00:00</td>
+    </tr>
+    <tr>
+      <td>Output</td>
+      <td>Pass</td>
+      <td>33759</td>
+      <td>29189</td>
+      <td>Clone_OffCampus</td>
+      <td>OutCampus</td>
+      <td>CloneRequirement</td>
+      <td>CloneJob</td>
+      <td>Clone_OffCampus_Test</td>
+      <td>2019-11-09T00:00:00</td>
+      <td>2020-11-09T00:00:00</td>
+      <td>Day 1 Exclusive</td>
+      <td>A.D.Patel Institute of Technology (ADPIT)-Ahmedabad,Aalim Mohammed Salegh (AMS) - Chennai,Abacus Institute Of Engineering And Management (AIEM)-Mogra,ABES Institute of Technology-Ghaziabad</td>
+      <td>NA</td>
+      <td>Bengaluru</td>
+      <td>Karnataka</td>
+      <td>HirePro Consulting Pvt. Ltd.\nCareerNet Campus, Plot No. 53,\nKariyammana Agrahara Road,\nDevarabisana Halli,\n(Next to Intel Junction Flyover),\nOuter Ring Road,\nBangalore - 560 103</td>
+      <td>HiringManager</td>
+      <td>[MASKED_EMAIL]</td>
+      <td>Bussiness_EC_2</td>
+      <td>Eligibility Check</td>
+      <td>Eligible</td>
+      <td>Eligibility Check</td>
+      <td>Not Eligible</td>
+      <td>2019-11-09 00:00:00</td>
+      <td>2020-11-09 00:00:00</td>
+    </tr>
+    <tr>
+      <td>Input</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>Clone_PoolCampus</td>
+      <td>PoolCampus</td>
+      <td>CloneRequirement</td>
+      <td>CloneJob</td>
+      <td>Clone_PoolCampus_Test</td>
+      <td>2019-11-09 00:00:00</td>
+      <td>2020-11-09 00:00:01</td>
+      <td>Day 1 Exclusive</td>
+      <td>Agannath Gupta Institute of Engineering and Technology (AGIET) - Jaipur,Aditya Institute of Engineering College(AIEC) - Kakinada,Agasthya College of Management Studies-ACMS- Mangalore</td>
+      <td>Agasthya College of Management Studies-ACMS- Mangalore</td>
+      <td>Mangalore</td>
+      <td>Karnataka</td>
+      <td>Mangalore, Karnataka</td>
+      <td>automation</td>
+      <td>[MASKED_EMAIL]</td>
+      <td>Bussiness_EC_3</td>
+      <td>Eligibility Check</td>
+      <td>Eligible</td>
+      <td>Eligibility Check</td>
+      <td>Not Eligible</td>
+      <td>2019-11-09 00:00:00</td>
+      <td>2020-11-09 00:00:00</td>
+    </tr>
+    <tr>
+      <td>Output</td>
+      <td>Pass</td>
+      <td>33771</td>
+      <td>29191</td>
+      <td>Clone_PoolCampus</td>
+      <td>PoolCampus</td>
+      <td>CloneRequirement</td>
+      <td>CloneJob</td>
+      <td>Clone_PoolCampus_Test</td>
+      <td>2019-11-09T00:00:00</td>
+      <td>2020-11-09T00:00:00</td>
+      <td>Day 1 Exclusive</td>
+      <td>Agannath Gupta Institute of Engineering and Technology (AGIET) - Jaipur,Aditya Institute of Engineering College(AIEC) - Kakinada,Agasthya College of Management Studies-ACMS- Mangalore</td>
+      <td>Agasthya College of Management Studies-ACMS- Mangalore</td>
+      <td>Mangalore</td>
+      <td>Karnataka</td>
+      <td>Mangalore, Karnataka</td>
+      <td>automation</td>
+      <td>[MASKED_EMAIL]</td>
+      <td>Bussiness_EC_3</td>
+      <td>Eligibility Check</td>
+      <td>Eligible</td>
+      <td>Eligibility Check</td>
+      <td>Not Eligible</td>
+      <td>2019-11-09 00:00:00</td>
+      <td>2020-11-09 00:00:00</td>
+    </tr>
+    <tr>
+      <td>Input</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>Clone_WalkIn</td>
+      <td>Walkin</td>
+      <td>CloneRequirement</td>
+      <td>CloneJob</td>
+      <td>Clone_WalkIn_Test</td>
+      <td>2019-11-09 00:00:00</td>
+      <td>2020-11-09 00:00:01</td>
+      <td>Day 2</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>Bengaluru</td>
+      <td>Karnataka</td>
+      <td>HirePro Consulting Pvt. Ltd.\nCareerNet Campus, Plot No. 53,\nKariyammana Agrahara Road,\nDevarabisana Halli,\n(Next to Intel Junction Flyover),\nOuter Ring Road,\nBangalore - 560 103</td>
+      <td>login</td>
+      <td>[MASKED_EMAIL]</td>
+      <td>EC_Automation_1</td>
+      <td>Eligibility Check</td>
+      <td>Eligible</td>
+      <td>Eligibility Check</td>
+      <td>Not Eligible</td>
+      <td>2019-11-09 00:00:00</td>
+      <td>2020-11-09 00:00:00</td>
+    </tr>
+    <tr>
+      <td>Output</td>
+      <td>Pass</td>
+      <td>33775</td>
+      <td>29193</td>
+      <td>Clone_WalkIn</td>
+      <td>Walkin</td>
+      <td>CloneRequirement</td>
+      <td>CloneJob</td>
+      <td>Clone_WalkIn_Test</td>
+      <td>2019-11-09T00:00:00</td>
+      <td>2020-11-09T00:00:00</td>
+      <td>Day 2</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>Bengaluru</td>
+      <td>Karnataka</td>
+      <td>HirePro Consulting Pvt. Ltd.\nCareerNet Campus, Plot No. 53,\nKariyammana Agrahara Road,\nDevarabisana Halli,\n(Next to Intel Junction Flyover),\nOuter Ring Road,\nBangalore - 560 103</td>
+      <td>login</td>
+      <td>[MASKED_EMAIL]</td>
+      <td>EC_Automation_1</td>
+      <td>Eligibility Check</td>
+      <td>Eligible</td>
+      <td>Eligibility Check</td>
+      <td>Not Eligible</td>
+      <td>2019-11-09 00:00:00</td>
+      <td>2020-11-09 00:00:00</td>
+    </tr>
+  </tbody>
+</table>
+        </div>
+    </div>
+    <script>
+        document.querySelectorAll('.preview-table tr').forEach((tr, rowIndex) => {
+            let statusCount = 0;
+            const cells = tr.querySelectorAll('td');
+
+            cells.forEach(td => {
+                const text = td.innerText.trim().toUpperCase();
+
+                // Highlight Pass/Fail
+                if (['PASS', 'SUCCESS', 'PASSED'].includes(text)) {
+                    td.classList.add('status-pass');
+                } else if (['FAIL', 'FAILURE', 'FAILED', 'ERROR'].includes(text)) {
+                    td.classList.add('status-fail');
+                } else if (text === 'NA') {
+                    td.classList.add('status-na');
+                }
+
+                // Header detection keywords
+                if (['STATUS', 'IDENTITY', 'ID'].includes(text)) {
+                    statusCount++;
+                }
+            });
+
+            // If row has multiple 'Status' labels, it's a sub-header
+            if (statusCount >= 2 && rowIndex > 0) {
+                tr.classList.add('sub-header');
+            }
+        });
+    </script>
+</body>
+</html>

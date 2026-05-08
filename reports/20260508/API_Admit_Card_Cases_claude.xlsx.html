@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preview: API_Admit_Card_Cases_claude.xlsx</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --primary: #4f46e5; --bg: #f8fafc; --text: #1e293b; --border: #e2e8f0; --success: #10b981; --danger: #ef4444; }
+        body { font-family: 'Outfit', sans-serif; background-color: var(--bg); color: var(--text); padding: 2rem; margin: 0; }
+        .container { max-width: 1400px; margin: 0 auto; background: white; padding: 2.5rem; border-radius: 1.5rem; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05); border: 1px solid var(--border); }
+        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 2px solid var(--bg); }
+        .title-area { display: flex; align-items: center; gap: 1rem; }
+        .title-area i { font-size: 2rem; color: var(--primary); }
+        h1 { font-size: 1.5rem; font-weight: 800; margin: 0; }
+        .actions { display: flex; gap: 1rem; }
+        .btn { text-decoration: none; padding: 0.6rem 1.25rem; border-radius: 10px; font-weight: 700; font-size: 0.85rem; display: flex; align-items: center; gap: 0.5rem; transition: all 0.2s; border: none; cursor: pointer; }
+        .btn-download { background: var(--primary); color: white; }
+        .btn-download:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3); }
+        .btn-back { background: #f1f5f9; color: var(--text); }
+        .btn-back:hover { background: #e2e8f0; }
+        .table-wrapper { overflow-x: auto; border-radius: 12px; border: 1px solid var(--border); background: white; }
+        .preview-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; border-spacing: 0; }
+        .preview-table td { padding: 0.85rem 1.15rem; border-bottom: 1px solid var(--border); border-right: 1px solid var(--border); white-space: nowrap; color: var(--text); }
+        .preview-table tr:hover { background: #f1f5f9 !important; }
+
+        /* Header & Sub-header Styling */
+        .preview-table tr:first-child td,
+        .preview-table tr.sub-header td { 
+            background: #f1f5f9 !important; 
+            font-weight: 800 !important; 
+            color: #475569 !important; 
+            text-transform: uppercase; 
+            font-size: 0.75rem; 
+            letter-spacing: 0.025em;
+            border-bottom: 2px solid #cbd5e1 !important;
+        }
+
+        .preview-table tr:nth-child(even) { background: #fafbfc; }
+        .preview-table tr:hover { background: #f1f5f9 !important; }
+
+        /* Status Colors */
+        .status-pass { color: var(--success) !important; font-weight: 800; background: #ecfdf5 !important; }
+        .status-fail { color: var(--danger) !important; font-weight: 800; background: #fef2f2 !important; }
+        .status-na { color: #94a3b8; font-style: italic; opacity: 0.5; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="title-area">
+                <i class="fas fa-file-excel"></i>
+                <div>
+                    <h1>API_Admit_Card_Cases_claude.xlsx</h1>
+                    <div style="font-size: 0.75rem; color: #64748b; font-weight: 600; margin-top: 0.2rem; text-transform: uppercase;">Spreadsheet Preview (All Rows)</div>
+                </div>
+            </div>
+            <div class="actions">
+                <button onclick="window.close()" class="btn btn-back"><i class="fas fa-times"></i> Close Tab</button>
+                <a href="API_Admit_Card_Cases_claude.xlsx" download="API_Admit_Card_Cases_claude.xlsx" class="btn btn-download"><i class="fas fa-download"></i> Download Excel</a>
+            </div>
+        </header>
+        <div class="table-wrapper">
+            <table border="1" class="dataframe preview-table">
+  <tbody>
+    <tr>
+      <td>TC ID</td>
+      <td>Group</td>
+      <td>Priority</td>
+      <td>Title / Description</td>
+      <td>Steps / Details</td>
+      <td>Expected Result</td>
+      <td>Pass Criteria</td>
+      <td>Status</td>
+      <td>Actual Result</td>
+    </tr>
+    <tr>
+      <td>TC-01: getAdmitCard (sync)</td>
+      <td>Happy Path</td>
+      <td>Critical</td>
+      <td>Generate admit card PDF for applicant 557 synchronously.</td>
+      <td>POST /py/crpo/candidatecommunication/api/v1/getAdmitCardOfApplicants with Applicant=557 and isSync=True.</td>
+      <td>API returns OK with a valid FilePath (S3 URL).</td>
+      <td>FilePath is present or KO returned with valid error reason.</td>
+      <td>PASS</td>
+      <td>status=KO, FilePath=present, error=None</td>
+    </tr>
+    <tr>
+      <td>TC-02: getAdmitCard (async)</td>
+      <td>Happy Path</td>
+      <td>High</td>
+      <td>Async admit card generation for applicant 555.</td>
+      <td>POST /py/crpo/candidatecommunication/api/v1/getAdmitCardOfApplicants with Applicant=555 and isSync=False.</td>
+      <td>API returns a ContextId for background processing.</td>
+      <td>ContextId is present in response data.</td>
+      <td>PASS</td>
+      <td>status=KO, ContextId=present, error=None</td>
+    </tr>
+    <tr>
+      <td>TC-03: sendAdmitCards (dryRun)</td>
+      <td>Happy Path</td>
+      <td>Critical</td>
+      <td>dryRun=true returns a preview URL. No emails sent.</td>
+      <td>POST /py/crpo/candidatecommunication/api/v1/sendAdmitCardsToApplicants with dryRun=True and StatusId=231.</td>
+      <td>API returns status=OK and a previewUrl for verification.</td>
+      <td>previewUrl is present in response.</td>
+      <td>PASS</td>
+      <td>status=OK, previewUrl=present, error=None</td>
+    </tr>
+    <tr>
+      <td>TC-04: generateAndSaveQRCode</td>
+      <td>Happy Path</td>
+      <td>High</td>
+      <td>Generate QR code image for applicant 557.</td>
+      <td>POST /py/crpo/applicant/api/v1/generateAndSaveQRCode/ with applicantId=557.</td>
+      <td>QR code image is generated and stored; fileUrl is returned.</td>
+      <td>status=OK and fileUrl matches an image path.</td>
+      <td>PASS</td>
+      <td>status=OK, fileUrl=present</td>
+    </tr>
+    <tr>
+      <td>TC-05: admitcardQrCode/download</td>
+      <td>Happy Path</td>
+      <td>Medium</td>
+      <td>Download QR codes for applicants [557, 555].</td>
+      <td>GET /py/crpo/candidatecommunication/api/v1/admitcardQrCode/download with isSync=True and applicantIds.</td>
+      <td>API provides a download link for a bulk CSV/ZIP file.</td>
+      <td>status=OK and downloadLink is returned.</td>
+      <td>PASS</td>
+      <td>status=OK, downloadLink=present</td>
+    </tr>
+    <tr>
+      <td>TC-06: decodeAdmitCardQR (invalid)</td>
+      <td>Happy Path</td>
+      <td>High</td>
+      <td>Invalid base64 token. Expect KO with 'Unable to decode token' error.</td>
+      <td>POST /py/crpo/candidatecommunication/api/v1/decodeAdmitCardQRCode with malformed base64 token.</td>
+      <td>API decryption fails gracefully.</td>
+      <td>status=KO and error contains 'decode'.</td>
+      <td>PASS</td>
+      <td>status=KO, error=Unable to decode token</td>
+    </tr>
+    <tr>
+      <td>TC-07: markVerified</td>
+      <td>Happy Path</td>
+      <td>High</td>
+      <td>Mark applicant 557 as admit card verified.</td>
+      <td>POST /py/crpo/applicant/api/v1/markAdmitCardVerifiedStatus/ with status=True and comment.</td>
+      <td>Admit card verification record is created in the database.</td>
+      <td>status=OK and success message returned.</td>
+      <td>PASS</td>
+      <td>status=OK, message=Successfully marked., error=None</td>
+    </tr>
+    <tr>
+      <td>TC-08: singlePdf (sync)</td>
+      <td>Happy Path</td>
+      <td>Medium</td>
+      <td>Merge admit cards for candidates [731, 729].</td>
+      <td>GET /py/crpo/candidatecommunication/api/v1/getCanAdmitCardSinglePdf with isSync=True and candidateIds.</td>
+      <td>Merged PDF generated containing admit cards for specified candidates.</td>
+      <td>status=OK and singlePdfUrl is returned.</td>
+      <td>PASS</td>
+      <td>status=KO, singlePdfUrl=missing, error={'message': 'No Admit card url found for given candidate ids', 'errorDescription': 'Unable to generate'}</td>
+    </tr>
+    <tr>
+      <td>TC-F01: decodeQR with real token</td>
+      <td>Functional</td>
+      <td>Critical</td>
+      <td>Encrypt applicant 557 as QR token, decode via API.</td>
+      <td>Manually encrypt 'APP=557' using AES-ECB and send to decodeAdmitCardQRCode.</td>
+      <td>API decrypts token and returns correct applicant data.</td>
+      <td>Returned applicantId matches input.</td>
+      <td>PASS</td>
+      <td>status=OK, applicantId=557, candidateName=Scan2</td>
+    </tr>
+    <tr>
+      <td>TC-F02: decodeQR returns full data</td>
+      <td>Functional</td>
+      <td>High</td>
+      <td>Decoded QR response must include candidate metadata.</td>
+      <td>Inspect API response for candidateId, candidateName, and candidatePhotoPath.</td>
+      <td>Response dictionary contains all required candidate fields.</td>
+      <td>status=OK and all fields present.</td>
+      <td>PASS</td>
+      <td>candidateId=729, name=Scan2, photo=null</td>
+    </tr>
+    <tr>
+      <td>TC-F03: decodeQR - wrong event</td>
+      <td>Functional</td>
+      <td>High</td>
+      <td>Applicant token with wrong event ID context.</td>
+      <td>Send valid token for applicant 557 with EventId=99999.</td>
+      <td>API rejects the request because applicant does not belong to Event 99999.</td>
+      <td>status=KO and error contains 'not belonging to event'.</td>
+      <td>PASS</td>
+      <td>status=KO, error=Invalid applicant. Applicant 557 found not belonging to event 99999</td>
+    </tr>
+    <tr>
+      <td>TC-F04: markScanned (JWT)</td>
+      <td>Functional</td>
+      <td>High</td>
+      <td>JWT scan for applicant 559.</td>
+      <td>Generate HS256 JWT and POST to markApplicantAdmitCardScanned.</td>
+      <td>API marks applicant as scanned or returns known bug error.</td>
+      <td>status=OK (SCANNED) or status=KO with decode error.</td>
+      <td>PASS</td>
+      <td>KNOWN BUG: status=KO, error=Unable to decode token (server jwt.decode missing algorithms= param)</td>
+    </tr>
+    <tr>
+      <td>TC-F05: markScanned (already)</td>
+      <td>Functional</td>
+      <td>High</td>
+      <td>Re-scan applicant 559.</td>
+      <td>Send the same JWT token twice.</td>
+      <td>Second response should be ALREADY_SCANNED.</td>
+      <td>response='ALREADY_SCANNED' or bug error.</td>
+      <td>PASS</td>
+      <td>KNOWN BUG: status=KO, error=Unable to decode token (server jwt.decode missing algorithms= param)</td>
+    </tr>
+    <tr>
+      <td>TC-F06: markScanned (invalid JWT)</td>
+      <td>Functional</td>
+      <td>Medium</td>
+      <td>Invalid JWT token signature/format.</td>
+      <td>Send forged JWT 'invalid.jwt.token' to scanning endpoint.</td>
+      <td>API rejects decode attempt gracefully.</td>
+      <td>status=KO and error includes 'decode'.</td>
+      <td>PASS</td>
+      <td>status=KO, error=Unable to decode token</td>
+    </tr>
+    <tr>
+      <td>TC-F07: E2E Lifecycle</td>
+      <td>Functional</td>
+      <td>Critical</td>
+      <td>Full chain for applicant 555: generate -&gt; decode -&gt; verify.</td>
+      <td>Sequential calls to QR generation, then decoding that QR, then marking applicant verified.</td>
+      <td>All steps complete successfully in sequence.</td>
+      <td>All 3 APIs return status=OK.</td>
+      <td>PASS</td>
+      <td>genQR=OK, decQR=OK, markVer=OK</td>
+    </tr>
+    <tr>
+      <td>TC-N01: getAdmitCard - missing ID</td>
+      <td>Negative</td>
+      <td>High</td>
+      <td>Omit mandatory 'Applicant' param.</td>
+      <td>POST /py/crpo/candidatecommunication/api/v1/getAdmitCardOfApplicants with empty body.</td>
+      <td>API returns validation error for missing Applicant.</td>
+      <td>status=KO.</td>
+      <td>PASS</td>
+      <td>status=KO, error={'errorCode': 422, 'errorDescription': 'Missing mandatory JSON Params(Applicant,) '}</td>
+    </tr>
+    <tr>
+      <td>TC-N02: getAdmitCard - invalid ID</td>
+      <td>Negative</td>
+      <td>Medium</td>
+      <td>Applicant 99999999 does not exist.</td>
+      <td>POST /py/crpo/candidatecommunication/api/v1/getAdmitCardOfApplicants with Applicant=99999999.</td>
+      <td>API returns KO with 'Applicant not exists'.</td>
+      <td>status=KO.</td>
+      <td>PASS</td>
+      <td>status=KO, error={'description': 'Invalid Applicant'}</td>
+    </tr>
+    <tr>
+      <td>TC-N03: sendAdmitCards - missing EventId</td>
+      <td>Negative</td>
+      <td>High</td>
+      <td>Omit mandatory 'EventId'.</td>
+      <td>POST /py/crpo/candidatecommunication/api/v1/sendAdmitCardsToApplicants without EventId.</td>
+      <td>API returns validation error.</td>
+      <td>status=KO.</td>
+      <td>PASS</td>
+      <td>status=KO, error={'errorCode': 422, 'errorDescription': 'Missing mandatory JSON Params(EventId,) '}</td>
+    </tr>
+    <tr>
+      <td>TC-N04: sendAdmitCards - missing Apps</td>
+      <td>Negative</td>
+      <td>High</td>
+      <td>Omit mandatory 'Applicants'.</td>
+      <td>POST /py/crpo/candidatecommunication/api/v1/sendAdmitCardsToApplicants without Applicants list.</td>
+      <td>API returns validation error.</td>
+      <td>status=KO.</td>
+      <td>PASS</td>
+      <td>status=KO, error={'errorCode': 422, 'errorDescription': 'Missing mandatory JSON Params(Applicants,) '}</td>
+    </tr>
+    <tr>
+      <td>TC-N05: sendAdmitCards - empty Apps</td>
+      <td>Negative</td>
+      <td>Medium</td>
+      <td>Empty applicants list.</td>
+      <td>POST /py/crpo/candidatecommunication/api/v1/sendAdmitCardsToApplicants with Applicants=[].</td>
+      <td>API returns KO with 'No Applicant(s)' message.</td>
+      <td>status=KO.</td>
+      <td>PASS</td>
+      <td>status=KO, error=There are no Applicant(s) in the specified criteria</td>
+    </tr>
+    <tr>
+      <td>TC-N06: decodeQR - missing Token</td>
+      <td>Negative</td>
+      <td>High</td>
+      <td>Omit mandatory 'Token' param.</td>
+      <td>POST /py/crpo/candidatecommunication/api/v1/decodeAdmitCardQRCode without Token.</td>
+      <td>API returns validation error.</td>
+      <td>status=KO.</td>
+      <td>PASS</td>
+      <td>status=KO, error={'errorCode': 422, 'errorDescription': 'Missing mandatory JSON Params(Token,) '}</td>
+    </tr>
+    <tr>
+      <td>TC-N07: decodeQR - empty Token</td>
+      <td>Negative</td>
+      <td>Medium</td>
+      <td>Empty string Token.</td>
+      <td>POST /py/crpo/candidatecommunication/api/v1/decodeAdmitCardQRCode with Token=''.</td>
+      <td>API returns validation error.</td>
+      <td>status=KO.</td>
+      <td>PASS</td>
+      <td>status=KO, error=Invalid Request</td>
+    </tr>
+    <tr>
+      <td>TC-N08: markVerified - missing ID</td>
+      <td>Negative</td>
+      <td>High</td>
+      <td>Omit applicantId.</td>
+      <td>POST /py/crpo/applicant/api/v1/markAdmitCardVerifiedStatus/ without applicantId.</td>
+      <td>API returns 'Please specify applicant'.</td>
+      <td>status=KO.</td>
+      <td>PASS</td>
+      <td>status=KO, error={'errorCode': 1000, 'errorDescription': 'Please specify applicant.', 'errorDict': None}</td>
+    </tr>
+    <tr>
+      <td>TC-N09: markVerified - missing status</td>
+      <td>Negative</td>
+      <td>High</td>
+      <td>Omit status field.</td>
+      <td>POST /py/crpo/applicant/api/v1/markAdmitCardVerifiedStatus/ without status.</td>
+      <td>API returns 'Please specify status'.</td>
+      <td>status=KO.</td>
+      <td>PASS</td>
+      <td>status=KO, error={'errorCode': 1000, 'errorDescription': 'Please specify status.', 'errorDict': None}</td>
+    </tr>
+    <tr>
+      <td>TC-N10: markVerified - invalid ID</td>
+      <td>Negative</td>
+      <td>Medium</td>
+      <td>Applicant 99999999 does not exist.</td>
+      <td>POST /py/crpo/applicant/api/v1/markAdmitCardVerifiedStatus/ with applicantId=99999999.</td>
+      <td>API returns 'Applicant not exists'.</td>
+      <td>status=KO.</td>
+      <td>PASS</td>
+      <td>status=KO, error={'errorCode': 1000, 'errorDescription': 'Applicant not exists.', 'errorDict': None}</td>
+    </tr>
+    <tr>
+      <td>TC-N11: downloadQR - missing IDs</td>
+      <td>Negative</td>
+      <td>High</td>
+      <td>Omit mandatory 'applicantIds'.</td>
+      <td>GET /py/crpo/candidatecommunication/api/v1/admitcardQrCode/download without applicantIds.</td>
+      <td>API returns validation error.</td>
+      <td>status=KO.</td>
+      <td>PASS</td>
+      <td>status=KO, error={'errorCode': 422, 'errorDescription': 'Missing mandatory JSON Params(applicantIds,) '}</td>
+    </tr>
+    <tr>
+      <td>TC-N12: singlePdf - missing IDs</td>
+      <td>Negative</td>
+      <td>High</td>
+      <td>Omit mandatory 'candidateIds'.</td>
+      <td>GET /py/crpo/candidatecommunication/api/v1/getCanAdmitCardSinglePdf without candidateIds.</td>
+      <td>API returns validation error.</td>
+      <td>status=KO.</td>
+      <td>PASS</td>
+      <td>status=KO, error={'errorCode': 422, 'errorDescription': 'Missing mandatory JSON Params(candidateIds,) '}</td>
+    </tr>
+    <tr>
+      <td>TC-E01: getAdmitCard - string ID</td>
+      <td>Edge Case</td>
+      <td>Low</td>
+      <td>String Applicant value.</td>
+      <td>POST /py/crpo/candidatecommunication/api/v1/getAdmitCardOfApplicants with Applicant='not_a_number'.</td>
+      <td>Server rejects non-integer input gracefully.</td>
+      <td>status=KO or HTTP 500.</td>
+      <td>PASS</td>
+      <td>http=500, status=None, error=None</td>
+    </tr>
+    <tr>
+      <td>TC-E02: getAdmitCard - negative ID</td>
+      <td>Edge Case</td>
+      <td>Low</td>
+      <td>Negative Applicant ID.</td>
+      <td>POST /py/crpo/candidatecommunication/api/v1/getAdmitCardOfApplicants with Applicant=-1.</td>
+      <td>Server rejects negative ID.</td>
+      <td>status=KO.</td>
+      <td>PASS</td>
+      <td>status=KO, error={'description': 'Invalid Applicant'}</td>
+    </tr>
+    <tr>
+      <td>TC-E03: decodeQR - bad base64</td>
+      <td>Edge Case</td>
+      <td>Medium</td>
+      <td>Non-base64 token.</td>
+      <td>POST /py/crpo/candidatecommunication/api/v1/decodeAdmitCardQRCode with Token='!!!not-base64!!!'.</td>
+      <td>API returns 'Unable to decode token'.</td>
+      <td>status=KO.</td>
+      <td>PASS</td>
+      <td>status=KO, error=Unable to decode token</td>
+    </tr>
+    <tr>
+      <td>TC-E04: decodeQR - wrong Event ID</td>
+      <td>Edge Case</td>
+      <td>Medium</td>
+      <td>Fake 16-byte token with non-existent event.</td>
+      <td>Send forged 16-byte base64 token with Event=99999.</td>
+      <td>API rejects token/event mismatch.</td>
+      <td>status=KO.</td>
+      <td>PASS</td>
+      <td>status=KO, error=Unable to decode token</td>
+    </tr>
+    <tr>
+      <td>TC-E05: markVerified - unverify</td>
+      <td>Edge Case</td>
+      <td>Medium</td>
+      <td>Toggle verified status to false.</td>
+      <td>POST /py/crpo/applicant/api/v1/markAdmitCardVerifiedStatus/ with status=False.</td>
+      <td>Applicant is unverified successfully.</td>
+      <td>status=OK.</td>
+      <td>PASS</td>
+      <td>status=OK, message=Successfully marked., error=None</td>
+    </tr>
+    <tr>
+      <td>TC-E06: markVerified - reverify</td>
+      <td>Edge Case</td>
+      <td>Medium</td>
+      <td>Verify applicant again after un-verifying.</td>
+      <td>Sequential calls to unverify then verify.</td>
+      <td>Idempotent/correct toggle behavior.</td>
+      <td>status=OK.</td>
+      <td>PASS</td>
+      <td>status=OK, message=Successfully marked., error=None</td>
+    </tr>
+    <tr>
+      <td>TC-S01: no auth token</td>
+      <td>Security</td>
+      <td>Critical</td>
+      <td>Request without X-Auth-Token header.</td>
+      <td>Call API with no auth header.</td>
+      <td>API returns 400 'Missing X-AUTH-TOKEN'.</td>
+      <td>status=KO.</td>
+      <td>PASS</td>
+      <td>status=KO, errorCode=400, error=Missing X-AUTH-TOKEN</td>
+    </tr>
+    <tr>
+      <td>TC-S02: forged token</td>
+      <td>Security</td>
+      <td>Critical</td>
+      <td>Request with forged auth token.</td>
+      <td>Call API with random string in X-Auth-Token.</td>
+      <td>API rejects the forged token.</td>
+      <td>status=KO.</td>
+      <td>PASS</td>
+      <td>status=KO</td>
+    </tr>
+    <tr>
+      <td>TC-S03: SQLi Applicant</td>
+      <td>Security</td>
+      <td>Critical</td>
+      <td>SQL injection in Applicant field.</td>
+      <td>Pass '557 OR 1=1; DROP TABLE applicants; --' to Applicant field.</td>
+      <td>No database metadata or command execution occurs.</td>
+      <td>No SQL payload keywords reflected in response.</td>
+      <td>PASS</td>
+      <td>http=500, status=None, leaked=False</td>
+    </tr>
+    <tr>
+      <td>TC-S04: SQLi Event</td>
+      <td>Security</td>
+      <td>Critical</td>
+      <td>SQL injection in Event field.</td>
+      <td>Pass '23 OR 1=1' to Event ID field in QR decode.</td>
+      <td>API handles input as literal; no SQL execution.</td>
+      <td>No SQL keywords reflected in response.</td>
+      <td>PASS</td>
+      <td>http=500, status=None, leaked=False</td>
+    </tr>
+    <tr>
+      <td>TC-S05: XSS Comment</td>
+      <td>Security</td>
+      <td>Medium</td>
+      <td>XSS payload in comment field.</td>
+      <td>Pass '&lt;script&gt;alert(1)&lt;/script&gt;' to comment field.</td>
+      <td>Server escapes or rejects tag; no reflection in response.</td>
+      <td>No raw '&lt;script&gt;' in JSON body.</td>
+      <td>PASS</td>
+      <td>status=OK, xss_reflected=False</td>
+    </tr>
+    <tr>
+      <td>TC-S06: IDOR Applicant</td>
+      <td>Security</td>
+      <td>Critical</td>
+      <td>Access applicant ID from non-existent context.</td>
+      <td>Mark verification for non-existent/cross-tenant ID 99999999.</td>
+      <td>API returns 'Applicant not exists'.</td>
+      <td>status=KO.</td>
+      <td>PASS</td>
+      <td>status=KO, error=Applicant not exists.</td>
+    </tr>
+  </tbody>
+</table>
+        </div>
+    </div>
+    <script>
+        document.querySelectorAll('.preview-table tr').forEach((tr, rowIndex) => {
+            let statusCount = 0;
+            const cells = tr.querySelectorAll('td');
+
+            cells.forEach(td => {
+                const text = td.innerText.trim().toUpperCase();
+
+                // Highlight Pass/Fail
+                if (['PASS', 'SUCCESS', 'PASSED'].includes(text)) {
+                    td.classList.add('status-pass');
+                } else if (['FAIL', 'FAILURE', 'FAILED', 'ERROR'].includes(text)) {
+                    td.classList.add('status-fail');
+                } else if (text === 'NA') {
+                    td.classList.add('status-na');
+                }
+
+                // Header detection keywords
+                if (['STATUS', 'IDENTITY', 'ID'].includes(text)) {
+                    statusCount++;
+                }
+            });
+
+            // If row has multiple 'Status' labels, it's a sub-header
+            if (statusCount >= 2 && rowIndex > 0) {
+                tr.classList.add('sub-header');
+            }
+        });
+    </script>
+</body>
+</html>
